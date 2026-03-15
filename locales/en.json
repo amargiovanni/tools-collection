@@ -6,6 +6,13 @@
   "app.searchPlaceholder": "Search tools...",
   "app.switchLanguageAria": "Switch language",
   "app.switchLanguageTitle": "Switch language",
+  "app.backHomeAria": "Back to home",
+  "app.backHomeTitle": "Back to home",
+
+  "home.eyebrow": "Collection",
+  "home.title": "Online Tools for Daily Work",
+  "home.description": "Pick a tool from the catalog below. When you open one, the full tools list moves into the sidebar for faster navigation.",
+  "home.openTool": "Open tool",
 
   "sidebar.textProcessing": "Text Processing",
   "sidebar.generators": "Generators",

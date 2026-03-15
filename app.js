@@ -1,7 +1,8 @@
 // App initialization and management
 class OnlineToolsApp {
     constructor() {
-        this.currentTool = 'list-generator';
+        this.currentTool = null;
+        this.currentView = 'home';
         this.supportedLanguages = ['en', 'it'];
         this.defaultLanguage = 'en';
         this.currentLanguage = this.defaultLanguage;
@@ -18,9 +19,15 @@ class OnlineToolsApp {
         this.initSearch();
         this.initTools();
         this.initRouting();
-        
-        // Set initial tool
-        this.switchTool(this.getInitialTool(), { updateHash: false });
+        this.initHomeButton();
+        this.renderHomeCatalog();
+
+        const initialTool = this.getInitialTool();
+        if (initialTool) {
+            this.switchTool(initialTool, { updateHash: false });
+        } else {
+            this.showHome({ updateHash: false });
+        }
     }
 
     // Language Management
@@ -35,13 +42,19 @@ class OnlineToolsApp {
         const applyTranslations = (messages) => {
             this.messages = messages;
             this.applySelectorTranslations();
+            this.renderHomeCatalog();
 
             document.documentElement.lang = this.currentLanguage;
             document.title = this.t('app.documentTitle', 'Tools Collection');
+            const homeToggle = document.getElementById('homeToggle');
             if (langToggle) {
                 langToggle.textContent = this.currentLanguage.toUpperCase();
                 langToggle.setAttribute('aria-label', this.t('app.switchLanguageAria', 'Switch language'));
                 langToggle.title = this.t('app.switchLanguageTitle', 'Switch language');
+            }
+            if (homeToggle) {
+                homeToggle.setAttribute('aria-label', this.t('app.backHomeAria', 'Back to home'));
+                homeToggle.title = this.t('app.backHomeTitle', 'Back to home');
             }
         };
 
@@ -83,6 +96,9 @@ class OnlineToolsApp {
             { selector: '.sidebar-header h1', key: 'app.title' },
             { selector: '.sidebar-header p', key: 'app.description' },
             { selector: '#searchInput', key: 'app.searchPlaceholder', attr: 'placeholder' },
+            { selector: '#homeView .home-eyebrow', key: 'home.eyebrow' },
+            { selector: '#homeView .home-hero h1', key: 'home.title' },
+            { selector: '#homeView .home-hero p', key: 'home.description' },
 
             { selector: '.tool-category:nth-of-type(1) h3', key: 'sidebar.textProcessing' },
             { selector: '.tool-category:nth-of-type(2) h3', key: 'sidebar.generators' },
@@ -472,19 +488,30 @@ class OnlineToolsApp {
             const hashToolId = this.getToolIdFromHash();
             if (hashToolId) {
                 this.switchTool(hashToolId, { updateHash: false });
+            } else {
+                this.showHome({ updateHash: false });
             }
         });
     }
 
     getToolIdFromHash() {
         const hash = window.location.hash.replace(/^#/, '').trim();
-        if (!hash) return null;
+        if (!hash || hash === 'home') return null;
 
         return document.getElementById(hash) ? hash : null;
     }
 
     getInitialTool() {
-        return this.getToolIdFromHash() || this.currentTool;
+        return this.getToolIdFromHash();
+    }
+
+    initHomeButton() {
+        const homeToggle = document.getElementById('homeToggle');
+        if (!homeToggle) return;
+
+        homeToggle.addEventListener('click', () => {
+            this.showHome();
+        });
     }
 
     // Mobile Menu Management
@@ -526,6 +553,11 @@ class OnlineToolsApp {
         }
 
         console.log(`Switching to tool: ${toolId}`);
+        const homeView = document.getElementById('homeView');
+        if (homeView) {
+            homeView.classList.remove('active');
+        }
+        document.body.dataset.view = 'tool';
         
         // Hide all tool containers
         const allContainers = document.querySelectorAll('.tool-container');
@@ -552,10 +584,113 @@ class OnlineToolsApp {
         }
 
         this.currentTool = toolId;
+        this.currentView = 'tool';
+        this.syncHomeToggleState();
 
         if (updateHash && window.location.hash !== `#${toolId}`) {
             window.location.hash = toolId;
         }
+    }
+
+    showHome(options = {}) {
+        const { updateHash = true } = options;
+        const homeView = document.getElementById('homeView');
+
+        document.body.dataset.view = 'home';
+
+        document.querySelectorAll('.tool-container').forEach(container => {
+            container.classList.remove('active');
+        });
+
+        document.querySelectorAll('.tool-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        if (homeView) {
+            homeView.classList.add('active');
+        }
+
+        this.currentTool = null;
+        this.currentView = 'home';
+        this.syncHomeToggleState();
+
+        if (updateHash && window.location.hash !== '#home') {
+            window.location.hash = 'home';
+        }
+    }
+
+    syncHomeToggleState() {
+        const homeToggle = document.getElementById('homeToggle');
+        if (!homeToggle) return;
+
+        const isHome = this.currentView === 'home';
+        homeToggle.classList.toggle('active', isHome);
+        homeToggle.setAttribute('aria-pressed', isHome ? 'true' : 'false');
+    }
+
+    renderHomeCatalog() {
+        const catalog = document.getElementById('homeCatalog');
+        if (!catalog) return;
+
+        const categories = [...document.querySelectorAll('.tool-category')];
+        catalog.innerHTML = '';
+
+        categories.forEach((category, index) => {
+            const categoryTitle = category.querySelector('h3')?.textContent?.trim();
+            const links = [...category.querySelectorAll('.tool-link')];
+            if (!categoryTitle || links.length === 0) return;
+
+            const section = document.createElement('section');
+            section.className = 'home-category';
+            section.style.setProperty('--home-category-accent', `var(--color-bg-${(index % 8) + 1})`);
+
+            const header = document.createElement('div');
+            header.className = 'home-category-header';
+
+            const title = document.createElement('h2');
+            title.textContent = categoryTitle;
+
+            const count = document.createElement('span');
+            count.className = 'home-category-count';
+            count.textContent = `${links.length}`;
+
+            header.append(title, count);
+
+            const grid = document.createElement('div');
+            grid.className = 'home-card-grid';
+
+            links.forEach(link => {
+                const toolId = link.getAttribute('data-tool');
+                const toolContainer = document.getElementById(toolId);
+                if (!toolId || !toolContainer) return;
+
+                const card = document.createElement('a');
+                card.className = 'home-tool-card';
+                card.href = `#${toolId}`;
+                card.dataset.tool = toolId;
+
+                const cardTitle = document.createElement('h3');
+                cardTitle.textContent = link.textContent.trim();
+
+                const cardDescription = document.createElement('p');
+                cardDescription.textContent = toolContainer.querySelector('.tool-header p')?.textContent?.trim() || '';
+
+                const cardCta = document.createElement('span');
+                cardCta.className = 'home-tool-card-cta';
+                cardCta.textContent = this.t('home.openTool', 'Open tool');
+
+                card.append(cardTitle, cardDescription, cardCta);
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTool(toolId);
+                });
+
+                grid.appendChild(card);
+            });
+
+            section.append(header, grid);
+            catalog.appendChild(section);
+        });
     }
 
     // Search Management

@@ -740,6 +740,16 @@ select.form-control {
   overflow: hidden;
 }
 
+.app-controls {
+  position: fixed;
+  top: var(--space-20);
+  right: var(--space-20);
+  z-index: 1200;
+  display: flex;
+  gap: var(--space-8);
+  align-items: center;
+}
+
 /* Sidebar Styles */
 .sidebar {
   background-color: var(--color-surface);
@@ -750,14 +760,6 @@ select.form-control {
 .sidebar-header {
   padding: var(--space-24);
   border-bottom: 1px solid var(--color-border);
-}
-
-.sidebar-controls {
-  display: flex;
-  gap: var(--space-8);
-  margin-top: var(--space-16);
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .sidebar-header h1 {
@@ -773,7 +775,8 @@ select.form-control {
 }
 
 .theme-toggle,
-.lang-toggle {
+.lang-toggle,
+.home-toggle {
   background: transparent;
   border: 1px solid var(--color-border);
   color: var(--color-text);
@@ -791,10 +794,22 @@ select.form-control {
   font-size: var(--font-size-lg);
 }
 
+.home-toggle {
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
 .theme-toggle:hover,
-.lang-toggle:hover {
+.lang-toggle:hover,
+.home-toggle:hover {
   background-color: var(--color-secondary);
   border-color: var(--color-primary);
+}
+
+.home-toggle.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-btn-primary-text);
 }
 
 .search-container {
@@ -850,7 +865,163 @@ select.form-control {
 .main-content {
   background-color: var(--color-background);
   overflow-y: auto;
-  padding: var(--space-32);
+  padding: 88px var(--space-32) var(--space-32);
+}
+
+.home-view {
+  display: none;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.home-view.active {
+  display: block;
+}
+
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(32px, 5vw, 56px);
+  border-radius: 28px;
+  border: 1px solid var(--color-card-border);
+  background:
+    radial-gradient(circle at top left, rgba(var(--color-teal-500-rgb), 0.18), transparent 36%),
+    radial-gradient(circle at bottom right, rgba(var(--color-slate-900-rgb), 0.08), transparent 38%),
+    linear-gradient(135deg, var(--color-surface), rgba(var(--color-brown-600-rgb), 0.06));
+  box-shadow: var(--shadow-md);
+}
+
+.home-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--space-16);
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--radius-full);
+  background: rgba(var(--color-teal-500-rgb), 0.12);
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.home-hero h1 {
+  max-width: 10ch;
+  margin: 0 0 var(--space-16);
+  font-size: clamp(40px, 7vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--color-text);
+}
+
+.home-hero p {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+}
+
+.home-catalog {
+  margin-top: var(--space-32);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.home-category {
+  padding: var(--space-24);
+  border-radius: 24px;
+  border: 1px solid var(--color-card-border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+    var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-12);
+  margin-bottom: var(--space-20);
+}
+
+.home-category-header h2 {
+  margin: 0;
+  font-size: var(--font-size-2xl);
+  color: var(--color-text);
+}
+
+.home-category-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0 var(--space-10);
+  border-radius: var(--radius-full);
+  background: var(--home-category-accent, var(--color-secondary));
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.home-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-16);
+}
+
+.home-tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  min-height: 186px;
+  padding: var(--space-20);
+  border-radius: 20px;
+  border: 1px solid var(--color-card-border-inner);
+  background:
+    linear-gradient(180deg, var(--home-category-accent, rgba(var(--color-teal-500-rgb), 0.08)), transparent 50%),
+    var(--color-background);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--duration-normal) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.home-tool-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--color-teal-500-rgb), 0.35);
+  box-shadow: var(--shadow-md);
+}
+
+.home-tool-card h3 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.home-tool-card p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.home-tool-card-cta {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+body[data-view="home"] .app-container {
+  grid-template-columns: 1fr;
+}
+
+body[data-view="home"] .sidebar {
+  display: none;
 }
 
 .tool-container {
@@ -1206,6 +1377,11 @@ select.form-control {
   .mobile-menu-toggle {
     display: block;
   }
+
+  .app-controls {
+    top: var(--space-16);
+    right: var(--space-16);
+  }
   
   /* App layout for mobile */
   .app-container {
@@ -1244,6 +1420,19 @@ select.form-control {
   .main-content {
     padding: var(--space-16);
     padding-top: calc(var(--space-16) + 48px); /* Space for menu button */
+  }
+
+  .home-hero {
+    padding: var(--space-24);
+    border-radius: 22px;
+  }
+
+  .home-category {
+    padding: var(--space-20);
+  }
+
+  .home-card-grid {
+    grid-template-columns: 1fr;
   }
   
   /* Tool container responsive */
@@ -1388,6 +1577,19 @@ select.form-control {
     padding: var(--space-12);
     padding-top: calc(var(--space-12) + 48px);
   }
+
+  .app-controls {
+    top: var(--space-12);
+    right: var(--space-12);
+  }
+
+  .home-hero h1 {
+    max-width: none;
+  }
+
+  .home-category-header {
+    align-items: flex-start;
+  }
   
   .tool-header h2 {
     font-size: var(--font-size-xl);
@@ -1410,6 +1612,10 @@ select.form-control {
   .username-text {
     font-size: var(--font-size-xs);
   }
+}
+
+body[data-view="home"] .mobile-menu-toggle {
+  display: none;
 }
 
 /* Search Highlighting */

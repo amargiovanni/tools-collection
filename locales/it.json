@@ -6,6 +6,13 @@
   "app.searchPlaceholder": "Cerca strumenti...",
   "app.switchLanguageAria": "Cambia lingua",
   "app.switchLanguageTitle": "Cambia lingua",
+  "app.backHomeAria": "Torna alla home",
+  "app.backHomeTitle": "Torna alla home",
+
+  "home.eyebrow": "Collezione",
+  "home.title": "Strumenti Online per il Lavoro di Tutti i Giorni",
+  "home.description": "Scegli uno strumento dal catalogo qui sotto. Quando ne apri uno, l'elenco completo si sposta nella sidebar per una navigazione piu rapida.",
+  "home.openTool": "Apri tool",
 
   "sidebar.textProcessing": "Elaborazione Testo",
   "sidebar.generators": "Generatori",
