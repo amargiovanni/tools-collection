@@ -13,6 +13,8 @@ class OnlineToolsApp {
     }
 
     init() {
+        this.initVersionDisplay();
+        this.initHomeHeroLogo();
         this.initLanguage();
         this.initTheme();
         this.initNavigation();
@@ -29,6 +31,25 @@ class OnlineToolsApp {
         } else {
             this.showHome({ updateHash: false });
         }
+    }
+
+    initVersionDisplay() {
+        const versionLabel = `v${this.assetVersion}`;
+        const versionBadge = document.getElementById('versionBadge');
+        const footerVersion = document.getElementById('homeFooterVersion');
+
+        if (versionBadge) {
+            versionBadge.textContent = versionLabel;
+        }
+
+        if (footerVersion) {
+            footerVersion.textContent = versionLabel;
+        }
+    }
+
+    initHomeHeroLogo() {
+        const logoImg = document.querySelector('.home-hero-logo');
+        logoImg?.addEventListener('error', () => logoImg.remove());
     }
 
     // Language Management

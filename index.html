@@ -15,7 +15,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="app-controls">
-        <span class="version-badge" id="versionBadge">v0.4.5</span>
+        <span class="version-badge" id="versionBadge"></span>
         <button class="home-toggle" id="homeToggle" type="button" aria-label="Back to home">⌂</button>
         <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">EN</button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
@@ -126,7 +126,6 @@
                             src="data/logo.png"
                             alt=""
                             loading="lazy"
-                            onerror="this.remove()"
                         >
                     </div>
                 </div>
@@ -137,7 +136,7 @@
                 <footer class="home-footer">
                     <span class="home-footer-name">Tools Collection</span>
                     <span class="home-footer-separator">•</span>
-                    <span class="home-footer-version">v0.4.5</span>
+                    <span class="home-footer-version" id="homeFooterVersion"></span>
                     <span class="home-footer-separator">•</span>
                     <a class="home-footer-link" href="https://github.com/amargiovanni/tools-collection" target="_blank" rel="noreferrer">GitHub</a>
                 </footer>

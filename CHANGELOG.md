@@ -2,16 +2,65 @@
 
 All notable changes to this project are documented in this file.
 
-This changelog currently tracks the recent evolution of the project by published commit and keeps local, not-yet-pushed work under `Unreleased`.
+This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
 
-## Unreleased
+## Upcoming release
+
+### Added
+- Added `.dockerignore` exclusions for `Dockerfile` and `compose.yaml` so they are not copied into the final production image.
+- Added `.github/dependabot.yml` to keep GitHub Actions and Docker base image dependencies updated automatically.
+
+### Changed
+- Updated `.github/workflows/dockerbuild.yml` to publish the `tools-collection` image only to GitHub Container Registry (`ghcr.io`).
+- Removed Docker Hub-specific authentication and metadata publishing from the image build workflow.
+- Moved the visible UI version badge and footer version text to JavaScript so both are sourced from `this.assetVersion`.
+- Removed the inline home logo `onerror` handler and now manage logo fallback behavior from `app.js`.
+
+## Published: `05aba28`
+
+### Changed
+- Updated the home footer link to point to the upstream project repository.
+
+## Published: `416dc89`
+
+### Changed
+- Updated the tool inventory in [README.md](README.md) and [README-it.md](README-it.md) to match the current application.
+- Refreshed documentation links to align them with the current project structure and references.
+
+## Published: `b555798`
 
 ### Added
 - Added a new `Reg2GPO` utility to convert Windows `.reg` exports into Group Policy Preferences XML with paste, upload, copy, and download flows.
 
 ### Changed
-- Aligned [README.md](README.md) to [README-it.md](README-it.md) as a faithful English translation of the Italian source document.
 - Bumped the frontend asset version to `v0.4.5` for the new tool rollout.
+- Improved the shared output header layout and monospace input/output styling for converter-heavy tools.
+
+## Published: `a1640f5`
+
+### Changed
+- Documented custom logo setup requirements and file permissions in [README.md](README.md) and [README-it.md](README-it.md).
+
+## Published: `ff96af8`
+
+### Added
+- Added a `PIN Generator` utility.
+- Added a `TimeConvert` utility for converting milliseconds, seconds, minutes, hours, and days, including `HH:MM:SS` formatting.
+
+### Changed
+- Reworked the password generator options layout for a cleaner two-column arrangement with improved mobile behavior.
+
+## Published: `02141ec`
+
+### Added
+- Added support for a custom home hero logo loaded from the local `data/` directory.
+- Added a branded footer area to the home view with project ownership and repository links.
+- Added `data/.gitkeep` so the customization directory is preserved in the repository.
+
+### Changed
+- Aligned [README.md](README.md) to [README-it.md](README-it.md) as a faithful English translation of the Italian source document.
+- Refined the home hero layout and related responsive styling for custom branding.
+- Updated `compose.yaml` to include the local `data/` mount used for customization assets.
 
 ## Published: `f3d17f2`
 
