@@ -31,14 +31,6 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
     <link rel="alternate" hreflang={lang} href={canonicalUrl} />
     <link rel="alternate" hreflang={altLang} href={altUrl} />
     <ClientRouter />
-    <!-- Theme flash prevention: runs before any paint -->
-    <script is:inline>
-      ;(function () {
-        var t = localStorage.getItem('theme')
-        var dark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)
-        if (dark) document.documentElement.classList.add('dark')
-      })()
-    </script>
     <!-- Legacy hash redirect: #json-formatter → /en/tools/json-formatter -->
     <script is:inline>
       ;(function () {
