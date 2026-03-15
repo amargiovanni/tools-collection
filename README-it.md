@@ -1,450 +1,203 @@
-# 🔧 Online Tools Collection
+# Tools Collection
 
-Una collezione completa di strumenti online COPIATA PARI PARI da Andrea Draghetti per l'elaborazione di testo, generazione di contenuti, estrazione dati e sicurezza informatica. Applicazione web moderna costruita con HTML5, CSS3 e JavaScript vanilla.
+Una raccolta modulare e type-safe di 27 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
+![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
+![Astro](https://img.shields.io/badge/Astro-6-ff5d01.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)
-![Status](https://img.shields.io/badge/status-active-success.svg)
 
-## 📋 Indice
+## Cosa Fa
 
-- [Panoramica](#panoramica)
-- [Caratteristiche](#caratteristiche)
-- [Strumenti Disponibili](#strumenti-disponibili)
-- [Installazione](#installazione)
-- [Utilizzo](#utilizzo)
-- [Struttura del Progetto](#struttura-del-progetto)
-- [Architettura](#architettura)
-- [Personalizzazione](#personalizzazione)
-- [Contribuire](#contribuire)
-- [Roadmap](#roadmap)
-- [Licenza](#licenza)
-- [Autori](#autori)
+27 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Due lingue (EN/IT), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-## 🎯 Panoramica
+## Strumenti
 
-Online Tools Collection è un'applicazione web single-page che fornisce una suite di strumenti utili per sviluppatori, content creator e professionisti della sicurezza. L'interfaccia è intuitiva, responsiva e supporta sia la modalità chiara che quella scura.
+| Categoria | Strumenti |
+|---|---|
+| **Elaborazione Testo** | List Generator, Add Text to Lines, Convert Case, Remove Duplicate Lines, Remove Line Breaks, Remove Lines Containing |
+| **Generatori** | Password Generator (crypto API), Username Generator, PIN Generator |
+| **Estrazione** | Domain Extractor, Email Extractor |
+| **Analisi** | Count Duplicates |
+| **Sicurezza** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
+| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder |
+| **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier |
+| **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator |
 
-### Perché questo progetto?
+## Stack Tecnologico
 
-- **JavaScript vanilla**: Nessun framework applicativo, bundle leggero e semplice da manutenere
-- **Privacy-aware**: La maggior parte degli strumenti funziona localmente; il generatore QR usa un servizio esterno
-- **Interfaccia moderna**: Home a catalogo, tema chiaro/scuro e navigazione diretta ai tool
-- **Completamente responsive**: Funziona perfettamente su desktop, tablet e dispositivi mobili
-- **Open source**: Liberamente modificabile e personalizzabile
+| Livello | Tecnologia |
+|---|---|
+| Meta-framework | [Astro](https://astro.build/) 6 — generazione statica, code splitting per pagina |
+| Framework UI | [Solid.js](https://www.solidjs.com/) — reattività fine-grained, zero virtual DOM |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) 4 — design token via `@theme`, switch tema (chiaro/scuro/sistema) |
+| Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
+| i18n | Messaggi JSON type-safe con validazione compile-time delle chiavi |
+| Ricerca | [Fuse.js](https://www.fusejs.io/) — fuzzy search nella command palette |
+| Test | [Vitest](https://vitest.dev/) — oltre 290 test, copertura della logica pura |
+| Varianti | [cva](https://cva.style/) — varianti componenti type-safe |
 
-## ✨ Caratteristiche
+## Architettura
 
-### 🎨 Design e UX
-- **Tema e Lingua**: Switch immediato tra modalità chiara/scura e interfaccia EN/IT
-- **Interfaccia Intuitiva**: Home a catalogo, sidebar organizzata per categorie e ricerca integrata
-- **Design Responsivo**: Layout adattivo per tutti i dispositivi
-- **Link diretti**: Ogni tool ha un URL dedicato tramite hash routing
-- **Feedback Visivo**: Animazioni fluide e feedback immediato alle azioni
+Ogni tool è separato con chiarezza in tre livelli:
 
-### 🚀 Performance
-- **Caricamento Veloce**: Nessuna libreria esterna da caricare
-- **Elaborazione Client-Side**: Tutti i calcoli avvengono nel browser
-- **Ottimizzazione Memoria**: Gestione efficiente delle risorse
+```text
+src/tools/json-formatter.ts             ← Logica pura (senza DOM, restituisce Result<T>)
+src/components/tools/JsonFormatter.tsx ← UI Solid.js (compone componenti condivisi)
+src/pages/en/tools/[tool].astro        ← Pagina Astro (monta l'island con client:load)
+```
 
-### 🔒 Privacy e Sicurezza
-- **Zero Tracking**: Nessun analytics o tracking dell'utente
-- **Dati Locali**: I tool lavorano principalmente nel browser; il QR generator invia il testo al provider remoto
-- **Codice Aperto**: Completamente ispezionabile e verificabile
+```text
+src/
+├── components/
+│   ├── ui/                # 13 componenti Solid riutilizzabili (Button, TextArea, OutputPanel, ...)
+│   ├── tools/             # 27 componenti UI tool (uno per tool)
+│   ├── Sidebar.astro      # Navigazione per categorie
+│   └── HomeCatalog.astro
+├── config/
+│   ├── tools.ts           # Registry tool (27 voci con metadati)
+│   └── tool-components.ts # Mapping componenti per rendering dinamico
+├── i18n/
+│   ├── index.ts           # Helper type-safe t(lang, key)
+│   └── messages/          # en.json, it.json (280+ chiavi per file)
+├── islands/
+│   ├── CommandPalette.tsx # Fuzzy search via Ctrl/Cmd+K
+│   └── ToolRenderer.tsx   # Dispatcher dinamico componenti tool
+├── layouts/
+│   ├── BaseLayout.astro   # HTML head, SEO, redirect legacy
+│   └── ToolLayout.astro   # Sidebar + header + slot tool
+├── lib/
+│   ├── result.ts          # Tipo Result<T> per error handling
+│   ├── clipboard.ts       # Copia con fallback
+│   ├── download.ts        # Utility download file
+│   └── toast.tsx          # Contesto notifiche toast
+├── pages/
+│   ├── index.astro        # Redirect root → /{lang}/
+│   ├── en/                # Pagine inglesi
+│   └── it/                # Pagine italiane
+├── styles/
+│   └── global.css         # Tailwind 4 @theme tokens + dark mode
+└── tools/                 # 27 moduli di logica pura (zero DOM)
+```
 
-## 🛠️ Strumenti Disponibili
-
-> **27 strumenti** per sviluppatori, content creator e attività operative quotidiane
-
-### 📝 Elaborazione Testo (6 strumenti)
-
-- **📋 List Generator** - Converte testo in liste formattate (numerata, puntata, virgole, pipe)
-- **✏️ Aggiungi Testo alle Righe** - Aggiunge prefissi/suffissi a ogni riga
-- **🔠 Converti Maiuscole/Minuscole** - Trasforma in UPPER, lower, Title, camelCase, snake_case
-- **❌ Rimuovi Righe Duplicate** - Elimina duplicati con opzioni case-sensitive
-- **📏 Rimuovi Interruzioni di Riga** - Unisce testo su singola riga
-- **🚫 Rimuovi Righe che Contengono** - Filtra righe per parole specifiche
-
-### 🎲 Generatori (3 strumenti)
-
-- **🔑 Password Generator** - Genera password sicure con crypto API (8-50 caratteri)
-- **👤 Username Generator** - Crea username unici (Random, Tech, Fantasy, Cool)
-- **🔢 PIN Generator** - Genera PIN numerici multipli con lunghezza configurabile e opzione anti-duplicati
-
-### 🔍 Estrazione (2 strumenti)
-
-- **🌐 Estrattore Domini** - Estrae domini da URL con gestione sottodomini
-- **📧 Estrattore Email** - Trova email con pattern avanzati
-
-### 📊 Analisi (1 strumento)
-
-- **🔢 Conta Duplicati** - Analizza occorrenze e frequenze con percentuali
-
-### 🔐 Sicurezza (3 strumenti)
-
-- **📜 PEM Certificate Inspector** - Valida PEM e calcola fingerprint SHA-256 locali
-- **🔒 Password Strength Checker** - Analizza robustezza con scoring 0-8
-- **📱 QR Code Generator/Reader** - Genera QR tramite provider esterno e prova a leggere immagini con le API native del browser
-
-### 🔄 Convertitori (3 strumenti)
-
-- **😎 Emoji Shortcode Converter** - Converte tra emoji e shortcode
-- **🔐 Base64 Encoder/Decoder** - Codifica/decodifica Base64 con UTF-8
-- **🔗 URL Encoder/Decoder** - Encode/decode URL completi o componenti
-
-### 💻 Sviluppo (4 strumenti)
-
-- **📄 JSON Formatter/Validator** - Formatta JSON con indentazione personalizzabile
-- **🔍 Diff Checker** - Confronta testi con opzioni ignore case/whitespace
-- **🔤 Regex Tester** - Testa regex con flags e gruppi di cattura
-- **📋 XML Beautifier** - Formatta e valida XML con indentazione
-
-### ⚙️ Utilità (5 strumenti)
-
-- **🎨 Color Picker/Converter** - Converte HEX, RGB, RGBA, HSL con preview
-- **🕐 Timestamp Converter** - Converte timestamp Unix e formati data
-- **⏱️ TimeConvert** - Converte durate tra millisecondi, secondi, minuti, ore, giorni e formato `HH:MM:SS`
-- **🧩 Reg2GPO** - Converte export `.reg` di Windows in XML per Group Policy Preferences
-- **🔏 Hash Generator** - Genera hash SHA-1, SHA-256, SHA-512
-
-
-## 💻 Installazione
+## Avvio Rapido
 
 ### Prerequisiti
-- Un web server locale (opzionale per sviluppo)
-- Un browser moderno (Chrome, Firefox, Safari, Edge)
 
-### Installazione Locale
+- Node.js 22+
+- npm
 
-1. **Clona il repository**
+### Installazione e Avvio
+
 ```bash
-git clone https://github.com/gioxx/tools-collection.git
+git clone https://github.com/amargiovanni/tools-collection.git
 cd tools-collection
+npm install
+npm run dev
 ```
 
-2. **Apri direttamente nel browser**
+Apri `http://localhost:4321`.
+
+### Build per Produzione
+
 ```bash
-# Su macOS
-open index.html
-
-# Su Linux
-xdg-open index.html
-
-# Su Windows
-start index.html
+npm run build
+npm run preview
 ```
 
-3. **Oppure usa un server locale** (consigliato per sviluppo)
-```bash
-# Con Python 3
-python -m http.server 8000
+L'output viene generato in `dist/`: 57 pagine HTML statiche pronte per qualsiasi hosting.
 
-# Con Node.js
-npx serve
-
-# Con PHP
-php -S localhost:8000
-```
-
-4. **Accedi all'applicazione**
-   - Apri il browser su `http://localhost:8000`
-
-### Docker Compose
-
-Puoi avviare il progetto anche con Docker Compose:
+### Docker
 
 ```bash
 docker compose up --build -d
 ```
 
-L'applicazione sara disponibile su `http://localhost:8080`.
+Disponibile su `http://localhost:8080`.
 
-### Logo personalizzato nella home
+### Logo Personalizzato
 
-La home page puo mostrare un logo custom sulla destra della hero se il file `data/logo.png` e disponibile.
+L'applicazione può mostrare un logo personalizzato preso da `data/logo.png` nella hero della home e accanto a `Online Tools` nella sidebar/header dei tool.
 
 - Percorso atteso nel repository: `./data/logo.png`
-- Percorso servito nel container: `/usr/share/nginx/html/data/logo.png`
-- Se il file non esiste, non viene mostrato nulla
+- Percorso atteso nel container: `/usr/share/nginx/html/data/logo.png`
+- Se il file manca o non è leggibile, viene mostrato il logo di fallback integrato
 
 #### Permessi del file
 
-Il file deve essere leggibile dal web server. In pratica, evita permessi troppo restrittivi come `600`.
+L'immagine deve essere leggibile dal web server che gira nel container. Evita permessi restrittivi come `0600`.
 
 Impostazione consigliata:
 
 ```bash
-chmod 644 data/logo.png
+chmod 0644 data/logo.png
 ```
 
-## 📖 Utilizzo
+### Deploy su Cloudflare Pages
 
-### Navigazione Base
+Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 
-1. **Seleziona uno strumento** dalla sidebar a sinistra
-2. **Inserisci il testo** nell'area di input
-3. **Configura le opzioni** se disponibili
-4. **Clicca sul pulsante** per elaborare
-5. **Copia il risultato** con il pulsante "Copia"
+1. Collega il repository GitHub a Cloudflare Pages
+2. Build command: `npm run build`
+3. Output directory: `dist`
 
-### Funzionalità Avanzate
+## Sviluppo
 
-#### 🔍 Ricerca Strumenti
-- Usa la barra di ricerca nella home o nella sidebar per trovare rapidamente gli strumenti
-- La ricerca filtra in tempo reale mentre digiti
+### Comandi
 
-#### 🌓 Cambio Tema
-- Clicca sull'icona luna/sole per alternare tra tema chiaro e scuro
-- La preferenza viene salvata localmente
+| Comando | Descrizione |
+|---|---|
+| `npm run dev` | Avvia il server di sviluppo con HMR |
+| `npm run build` | Build di produzione (57 pagine) |
+| `npm run preview` | Anteprima della build di produzione |
+| `npm run test` | Esegue tutti i test |
+| `npm run test:watch` | Esegue i test in watch mode |
+| `npm run test:coverage` | Esegue i test con report di copertura |
+| `npm run check` | Type check Astro |
 
-#### ⌨️ Scorciatoie Tastiera
-- `Ctrl/Cmd + K`: Focus sulla ricerca
-- `Esc`: Chiudi dialoghi o resetta ricerca
+### Test
 
-## 📁 Struttura del Progetto
+Oltre 290 test coprono tutti i 27 moduli di logica pura:
 
-```
-tools-collection/
-│
-├── index.html          # File HTML principale con home, sidebar e strumenti
-├── style.css           # Stili CSS con supporto per temi
-├── app.js              # Logica JavaScript per tutti gli strumenti
-├── locales/            # Traduzioni EN/IT
-├── compose.yaml        # Avvio containerizzato con Docker Compose
-├── CHANGELOG.md        # Storico modifiche
-├── README-it.md        # Documentazione italiana
-└── README.md           # Documentazione inglese
-```
-
-### Dettaglio File
-
-#### `index.html`
-- Struttura semantica HTML5
-- Container per ogni strumento
-- Sidebar di navigazione
-- Meta tag per SEO e responsive
-
-#### `style.css`
-- Variabili CSS per temi
-- Layout responsive con flexbox/grid
-- Animazioni e transizioni
-- Stili componenti riutilizzabili
-
-#### `app.js`
-- Classe principale `OnlineToolsApp`
-- Moduli per ogni strumento
-- Gestione eventi e DOM
-- Utility functions condivise
-
-## 🏗️ Architettura
-
-### Design Pattern
-L'applicazione utilizza un pattern MVC leggero:
-
-```javascript
-// Model - Dati e logica business
-class ToolModel {
-    processData(input, options) { }
-}
-
-// View - Interfaccia utente
-class ToolView {
-    render(data) { }
-    bindEvents(handler) { }
-}
-
-// Controller - Coordinamento
-class ToolController {
-    constructor(model, view) {
-        this.model = model;
-        this.view = view;
-    }
-}
-```
-
-### Flusso Dati
-1. **Input utente** → Event Handler
-2. **Validazione** → Controllo parametri
-3. **Elaborazione** → Logica strumento
-4. **Output** → Aggiornamento DOM
-5. **Feedback** → Notifiche utente
-
-### Gestione Stato
-- Stato locale per ogni strumento
-- Nessuno stato globale condiviso
-- Event-driven updates
-
-## 🎨 Personalizzazione
-
-### Aggiungere un Nuovo Strumento
-
-1. **Aggiungi HTML** in `index.html`:
-```html
-<div id="nuovo-strumento" class="tool-container">
-    <div class="tool-header">
-        <h2>🆕 Nuovo Strumento</h2>
-        <p>Descrizione strumento</p>
-    </div>
-    <div class="tool-content">
-        <!-- Contenuto strumento -->
-    </div>
-</div>
-```
-
-2. **Aggiungi link** nella sidebar:
-```html
-<li>
-    <a href="#" data-tool="nuovo-strumento" class="tool-link">
-        🆕 Nuovo Strumento
-    </a>
-</li>
-```
-
-3. **Implementa logica** in `app.js`:
-```javascript
-initNuovoStrumento() {
-    const btn = document.getElementById('nuovoStrumentoBtn');
-    btn?.addEventListener('click', () => {
-        // Logica strumento
-    });
-}
-```
-
-### Personalizzare i Temi
-
-Modifica le variabili CSS in `style.css`:
-
-```css
-:root {
-    /* Colori tema chiaro */
-    --bg-primary: #ffffff;
-    --text-primary: #1a1a1a;
-    --accent: #007bff;
-}
-
-[data-color-scheme="dark"] {
-    /* Colori tema scuro */
-    --bg-primary: #1a1a1a;
-    --text-primary: #ffffff;
-    --accent: #4dabf7;
-}
-```
-
-### Modificare Layout
-
-Il layout utilizza CSS Grid e Flexbox:
-
-```css
-.app-container {
-    display: grid;
-    grid-template-columns: 280px 1fr; /* Sidebar + Content */
-}
-```
-
-## 🤝 Contribuire
-
-Contribuzioni sono benvenute! Ecco come puoi aiutare:
-
-### 1. Fork & Clone
 ```bash
-# Fork su GitHub, poi:
-git clone https://github.com/gioxx/tools-collection.git
-cd tools-collection
-git checkout -b feature/nuovo-strumento
+npm test
 ```
 
-### 2. Sviluppa
-- Segui lo stile di codice esistente
-- Testa su diversi browser
-- Assicurati che sia responsive
+I test si trovano in `tests/` e coprono ogni funzione in `src/tools/`. Solo logica pura: niente DOM, nessuna API browser mockata.
 
-### 3. Commit
-```bash
-git add .
-git commit -m "feat: aggiunto nuovo strumento X"
-```
+### Aggiungere un Nuovo Tool
 
-### 4. Push & PR
-```bash
-git push origin feature/nuovo-strumento
-# Crea Pull Request su GitHub
-```
+1. **Logica pura** — Crea `src/tools/my-tool.ts` che restituisce `Result<T>`
+2. **Test** — Crea `tests/tools/my-tool.test.ts`
+3. **Componente UI** — Crea `src/components/tools/MyTool.tsx` componendo `src/components/ui/*`
+4. **Registry** — Aggiungi la voce in `src/config/tools.ts`
+5. **Component map** — Aggiungi l'import in `src/config/tool-components.ts`
+6. **i18n** — Aggiungi le chiavi sia in `en.json` sia in `it.json`
 
-### Linee Guida
-- **Codice pulito**: Commenti dove necessario
-- **Nomi descrittivi**: Variabili e funzioni autoesplicative
-- **Test manuale**: Verifica tutti i casi d'uso
-- **Documentazione**: Aggiorna README se necessario
+Il tool ottiene automaticamente una pagina in `/{lang}/tools/my-tool` e compare in sidebar, home e command palette.
 
-## 🗺️ Roadmap
+### Design Token
 
-### ✅ Completato
-- [X] **27 Strumenti Disponibili** - Elaborazione testo, generatori, estrazione, sviluppo e utilità
-- [X] **Design Responsive** - Ottimizzato per mobile con menu hamburger
-- [X] **Sistema Temi e Lingue** - Dark/light mode e interfaccia EN/IT con preferenze persistite
-- [X] **Home Catalogo e Link Diretti** - Catalogo iniziale e URL dedicati ai tool
+I colori sono definiti come custom property CSS in `src/styles/global.css` tramite la direttiva `@theme` di Tailwind 4. Il dark mode è controllato con un attributo `data-theme` su `<html>`. Gli utenti possono scegliere tra chiaro, scuro e sistema tramite il pulsante tema. La preferenza viene salvata in `localStorage`.
 
-### 🔧 Sviluppo
-- [ ] API Response Formatter - Formatta risposte API
-- [ ] CRON Expression Builder - Costruisce espressioni cron
-- [ ] Lorem Ipsum Generator - Genera testo placeholder
-- [ ] Favicon Generator - Crea favicon da immagini
+## Privacy
 
-### 🎨 Design & Media 
-- [ ] Image Base64 Converter - Converte immagini in Base64
-- [ ] CSS Minifier/Beautifier - Minifica o formatta CSS
-- [ ] SVG Optimizer - Ottimizza codice SVG
-- [ ] Color Palette Generator - Genera palette colori
+- Tutta l'elaborazione avviene nel browser
+- Nessun analytics, nessun tracking, nessun cookie
+- La generazione QR è l'unica eccezione: usa `api.qrserver.com`
+- Password e PIN usano `crypto.getRandomValues()` (crittograficamente sicuro)
 
-### 📱 Mobile & Responsive
-- [ ] Device Mockup Generator - Preview responsive design
-- [ ] Viewport Size Reference - Dimensioni comuni dispositivi
-- [ ] Touch Target Checker - Verifica dimensioni touch
+## Licenza
 
-### ⚡ Utilità Varie
-- [ ] Text Statistics - Conta parole, caratteri, paragrafi
-- [ ] Random Data Generator - Genera dati casuali (nomi, email, etc.)
-- [ ] Unit Converter - Converte unità di misura
-- [ ] Whitespace Visualizer - Mostra spazi invisibili
+MIT — vedi [LICENSE](LICENSE).
 
-### 🚀 Funzionalità Avanzate
-- [ ] PWA Support - Installazione come app
-- [ ] Offline functionality - Funzionamento offline
-- [ ] Import/Export settings - Salvataggio configurazioni
-- [ ] Keyboard shortcuts - Scorciatoie da tastiera
+## Autori
 
-## 📄 Licenza
-
-Questo progetto è rilasciato sotto licenza MIT. Vedi il file [LICENSE](LICENSE) per i dettagli.
-
-```
-MIT License
-
-Copyright (c) 2024 Andrea M.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction...
-```
-
-## 👥 Autori
-
-- **Andrea Margiovanni** - *Sviluppatore principale* - [@amargiovanni](https://github.com/amargiovanni)
-- **Giovanni "Gioxx" Solone** - *Manutenzione, bugfix, Docker e miglioramenti UX/UI* - [@gioxx](https://github.com/gioxx)
-
-### Ringraziamenti
-
-- Icone emoji native per un'interfaccia amichevole
-- Andrea Draghetti da cui ho copiato tutto
-- Tutti i contributori e tester (no, dai, ha fatto tutto Perplexity)
+- **Andrea Margiovanni** — [@amargiovanni](https://github.com/amargiovanni)
+- **Giovanni "Gioxx" Solone** — [@gioxx](https://github.com/gioxx)
 
 ---
 
 <div align="center">
-    <p>Fatto con ❤️ dalla AI per gli sviluppatori</p>
-    <p>
-        <a href="https://github.com/gioxx/tools-collection/issues">Segnala un Bug</a>
-        ·
-        <a href="https://github.com/gioxx/tools-collection/issues">Richiedi una Feature</a>
-    </p>
+  <a href="https://github.com/amargiovanni/tools-collection/issues">Segnala un bug</a> · <a href="https://github.com/amargiovanni/tools-collection/issues">Richiedi una feature</a>
 </div>

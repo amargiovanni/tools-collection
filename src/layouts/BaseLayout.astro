@@ -89,11 +89,13 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
           if (!image || !fallback) return
 
           image.addEventListener('load', function () {
+            container.dataset.brandMode = 'custom'
             fallback.hidden = true
             image.hidden = false
           })
 
           image.addEventListener('error', function () {
+            container.dataset.brandMode = 'fallback'
             image.hidden = true
             fallback.hidden = false
           })
@@ -102,9 +104,11 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
 
           if (image.complete) {
             if (image.naturalWidth > 0) {
+              container.dataset.brandMode = 'custom'
               fallback.hidden = true
               image.hidden = false
             } else {
+              container.dataset.brandMode = 'fallback'
               image.hidden = true
               fallback.hidden = false
             }

@@ -8,7 +8,7 @@ This changelog currently tracks the recent evolution of the project by published
 
 ### Added
 - Added `.dockerignore` exclusions for `Dockerfile` and `compose.yaml` so they are not copied into the final production image.
-- Added `.github/dependabot.yml` to keep GitHub Actions and Docker base image dependencies updated automatically.
+- Added `.github/dependabot.yml` to keep npm packages, GitHub Actions, and Docker base image dependencies updated automatically.
 - Added a reusable brand mark component with support for a custom `/data/logo.png` image across the home page and tool sidebar.
 
 ### Changed
@@ -17,9 +17,11 @@ This changelog currently tracks the recent evolution of the project by published
 - Restored visible version badges in the home header, home footer, tool header, and tool footer using `package.json` as the shared source of truth.
 - Restored support for a custom `/data/logo.png` brand image on the home page and next to the app title inside the tool sidebar.
 - Made custom logo loading more robust by assigning the image source only after the browser listeners are attached.
+- Refined the custom logo presentation so user-provided branding is shown without the fallback logo tile framing.
 - Restored the full search trigger in tool pages so the search field remains visible alongside the `Ctrl/Cmd+K` hint.
 - Updated `.github/workflows/dockerbuild.yml` to publish the `tools-collection` image only to GitHub Container Registry (`ghcr.io`).
 - Removed Docker Hub-specific authentication and metadata publishing from the image build workflow.
+- Realigned `README.md` and `README-it.md` so both documents describe the current Astro-based project and custom logo setup consistently.
 
 ## Published: `b56cdbb` (`v1.0.0`)
 

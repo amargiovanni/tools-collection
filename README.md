@@ -115,6 +115,24 @@ docker compose up --build -d
 
 Available at `http://localhost:8080`.
 
+### Custom Logo
+
+The application can display a custom logo from `data/logo.png` in the homepage hero and next to `Online Tools` in the tool sidebar/header.
+
+- Expected repository path: `./data/logo.png`
+- Expected container path: `/usr/share/nginx/html/data/logo.png`
+- If the file is missing or unreadable, the built-in fallback logo is shown instead
+
+#### File Permissions
+
+The image must be readable by the web server running inside the container. Avoid restrictive permissions such as `0600`.
+
+Recommended setting:
+
+```bash
+chmod 0644 data/logo.png
+```
+
 ### Deploy to Cloudflare Pages
 
 No adapter needed — Astro's default static output works directly:

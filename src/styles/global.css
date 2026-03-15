@@ -57,3 +57,15 @@ html {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }
+
+[data-brand-container][data-brand-mode='custom'] {
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+[data-brand-container][data-brand-mode='custom'] [data-brand-logo] {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
