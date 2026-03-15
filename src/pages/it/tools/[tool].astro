@@ -1,0 +1,21 @@
+---
+import type { GetStaticPaths } from 'astro'
+import ToolLayout from '../../../layouts/ToolLayout.astro'
+import ToolRenderer from '../../../islands/ToolRenderer'
+import { toolRegistry } from '../../../config/tools'
+import type { ToolMeta } from '../../../config/tools'
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return toolRegistry.map((tool) => ({
+    params: { tool: tool.id },
+    props: { tool },
+  }))
+}
+
+const { tool } = Astro.props as { tool: ToolMeta }
+const lang = 'it' as const
+---
+
+<ToolLayout tool={tool} lang={lang}>
+  <ToolRenderer client:load toolId={tool.id} lang={lang} />
+</ToolLayout>

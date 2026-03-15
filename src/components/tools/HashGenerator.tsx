@@ -1,0 +1,85 @@
+import { createSignal, Show } from 'solid-js'
+import { TextArea } from '../ui/TextArea'
+import { Button } from '../ui/Button'
+import { CopyButton } from '../ui/CopyButton'
+import { StatusMessage } from '../ui/StatusMessage'
+import { generateHashes } from '../../tools/hash-generator'
+import type { HashResult } from '../../tools/hash-generator'
+import { t, translateError } from '../../i18n'
+import type { Language } from '../../i18n'
+
+interface Props {
+  lang: Language
+}
+
+export default function HashGenerator(props: Props) {
+  const [input, setInput] = createSignal('')
+  const [result, setResult] = createSignal<HashResult | null>(null)
+  const [error, setError] = createSignal<string | null>(null)
+  const [loading, setLoading] = createSignal(false)
+
+  const handleGenerate = async () => {
+    if (input().trim() === '') {
+      setError(t(props.lang, 'errors_EMPTY_INPUT'))
+      setResult(null)
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    const hashed = await generateHashes(input())
+    if (hashed.ok) {
+      setResult(hashed.value)
+      setError(null)
+    } else {
+      setError(translateError(props.lang, hashed.error))
+      setResult(null)
+    }
+
+    setLoading(false)
+  }
+
+  const cards = () => {
+    const r = result()
+    if (!r) return []
+    return [
+      { label: 'SHA-1', value: r.sha1 },
+      { label: 'SHA-256', value: r.sha256 },
+      { label: 'SHA-512', value: r.sha512 },
+    ]
+  }
+
+  return (
+    <div class="flex flex-col gap-4">
+      <TextArea
+        label={t(props.lang, 'tools_hashGenerator_inputLabel')}
+        placeholder={t(props.lang, 'tools_hashGenerator_placeholder')}
+        value={input()}
+        onInput={(e) => setInput(e.currentTarget.value)}
+      />
+
+      <Button variant="primary" onClick={handleGenerate} disabled={loading()}>
+        {loading() ? '...' : t(props.lang, 'tools_hashGenerator_generate')}
+      </Button>
+
+      <Show when={error()}>
+        <StatusMessage type="error" message={error()!} />
+      </Show>
+
+      <Show when={result()}>
+        <div class="grid gap-3">
+          {cards().map((card) => (
+            <div class="flex items-center justify-between rounded-lg border border-border bg-surface-raised p-3">
+              <div class="min-w-0 flex-1">
+                <span class="text-xs text-text-muted">{card.label}</span>
+                <p class="truncate font-mono text-sm text-text-primary">{card.value}</p>
+              </div>
+              <CopyButton getValue={() => card.value} />
+            </div>
+          ))}
+        </div>
+      </Show>
+    </div>
+  )
+}

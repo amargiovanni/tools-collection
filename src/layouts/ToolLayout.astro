@@ -1,0 +1,127 @@
+---
+import BaseLayout from './BaseLayout.astro'
+import Sidebar from '../components/Sidebar.astro'
+import { t, getAlternateLanguage } from '../i18n'
+import type { Language, MessageKey } from '../i18n'
+import type { ToolMeta } from '../config/tools'
+
+interface Props {
+  tool: ToolMeta
+  lang: Language
+}
+
+const { tool, lang } = Astro.props
+const altLang = getAlternateLanguage(lang)
+const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
+const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
+const toolName = t(lang, nameKey)
+const toolDesc = t(lang, descKey)
+const currentPath = Astro.url.pathname
+---
+
+<BaseLayout title={`${toolName} — ${t(lang, 'app_documentTitle')}`} description={toolDesc} lang={lang}>
+  <div class="flex min-h-screen">
+    <!-- Sidebar (desktop) -->
+    <aside class="hidden lg:flex w-72 shrink-0 flex-col border-r border-border bg-surface overflow-y-auto h-screen sticky top-0">
+      <div class="flex items-center gap-2 border-b border-border px-4 py-3">
+        <a href={`/${lang}/`} class="text-sm font-semibold text-text-primary hover:text-accent transition-colors" title={t(lang, 'app_backHomeAria')}>
+          {t(lang, 'app_title')}
+        </a>
+      </div>
+      <Sidebar lang={lang} currentPath={currentPath} />
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex flex-1 flex-col">
+      <!-- Top bar -->
+      <header class="flex items-center gap-3 border-b border-border px-4 py-3 lg:px-6">
+        <!-- Mobile menu button -->
+        <button
+          type="button"
+          id="mobile-menu-toggle"
+          class="lg:hidden text-text-secondary hover:text-text-primary cursor-pointer"
+          aria-label={t(lang, 'app_mobileMenuAria')}
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xl" aria-hidden="true">{tool.icon}</span>
+          <h1 class="text-lg font-semibold text-text-primary" tabindex="-1" id="tool-heading">
+            {toolName}
+          </h1>
+        </div>
+
+        <div class="ml-auto flex items-center gap-2">
+          <!-- Cmd+K hint -->
+          <kbd class="hidden sm:inline-flex items-center gap-1 rounded border border-border bg-surface px-2 py-0.5 text-xs text-text-muted">
+            <span>⌘</span>K
+          </kbd>
+          <!-- Language switcher -->
+          <a
+            href={`/${altLang}/tools/${tool.id}`}
+            class="rounded-lg px-2 py-1 text-sm font-medium text-text-secondary hover:bg-surface-raised hover:text-accent transition-colors"
+            title={t(lang, 'app_switchLanguageAria')}
+          >
+            {altLang.toUpperCase()}
+          </a>
+        </div>
+      </header>
+
+      <!-- Mobile sidebar overlay -->
+      <div id="mobile-sidebar-overlay" class="fixed inset-0 z-40 hidden lg:hidden">
+        <div class="absolute inset-0 bg-black/50" id="mobile-overlay-backdrop"></div>
+        <aside class="absolute left-0 top-0 h-full w-72 overflow-y-auto bg-surface border-r border-border">
+          <div class="flex items-center justify-between border-b border-border px-4 py-3">
+            <a href={`/${lang}/`} class="text-sm font-semibold text-text-primary">
+              {t(lang, 'app_title')}
+            </a>
+            <button type="button" id="mobile-menu-close" class="text-text-secondary hover:text-text-primary cursor-pointer" aria-label="Close menu">
+              ✕
+            </button>
+          </div>
+          <Sidebar lang={lang} currentPath={currentPath} />
+        </aside>
+      </div>
+
+      <!-- Tool content -->
+      <main id="main-content" class="flex-1 px-4 py-6 lg:px-8">
+        <p class="mb-6 text-sm text-text-secondary">{toolDesc}</p>
+        <slot />
+      </main>
+    </div>
+  </div>
+
+  <!-- Mobile menu + focus management -->
+  <script>
+    function initToolLayout() {
+      // Mobile menu
+      const toggle = document.getElementById('mobile-menu-toggle')
+      const close = document.getElementById('mobile-menu-close')
+      const overlay = document.getElementById('mobile-sidebar-overlay')
+      const backdrop = document.getElementById('mobile-overlay-backdrop')
+
+      if (toggle && overlay) {
+        const openMenu = () => overlay.classList.remove('hidden')
+        const closeMenu = () => overlay.classList.add('hidden')
+
+        toggle.addEventListener('click', openMenu)
+        close?.addEventListener('click', closeMenu)
+        backdrop?.addEventListener('click', closeMenu)
+        overlay.querySelectorAll('a').forEach((a) => {
+          a.addEventListener('click', closeMenu)
+        })
+      }
+
+      // Focus tool heading on navigation
+      const heading = document.getElementById('tool-heading')
+      if (heading) heading.focus()
+    }
+
+    // Run on initial load and after every client-side navigation
+    initToolLayout()
+    document.addEventListener('astro:page-load', initToolLayout)
+  </script>
+</BaseLayout>
