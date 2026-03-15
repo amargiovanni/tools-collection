@@ -4,20 +4,24 @@ import { join } from 'path'
 
 const ROOT = process.cwd()
 
-describe('dark mode via prefers-color-scheme', () => {
-  it('global CSS uses prefers-color-scheme media query, not .dark class', () => {
+describe('theme toggle', () => {
+  it('global CSS uses data-theme attribute for dark mode', () => {
     const css = readFileSync(join(ROOT, 'src', 'styles', 'global.css'), 'utf-8')
-    expect(css).toContain('prefers-color-scheme: dark')
-    expect(css).not.toContain('.dark {')
+    expect(css).toContain('[data-theme="dark"]')
   })
 
-  it('ToolLayout does not contain a theme-toggle button', () => {
+  it('ToolLayout contains a theme-toggle button', () => {
     const layout = readFileSync(join(ROOT, 'src', 'layouts', 'ToolLayout.astro'), 'utf-8')
-    expect(layout).not.toContain('id="theme-toggle"')
+    expect(layout).toContain('id="theme-toggle"')
   })
 
-  it('BaseLayout does not contain flash prevention script', () => {
+  it('BaseLayout contains theme initialization script', () => {
     const layout = readFileSync(join(ROOT, 'src', 'layouts', 'BaseLayout.astro'), 'utf-8')
-    expect(layout).not.toContain("classList.add('dark')")
+    expect(layout).toContain('data-theme')
+  })
+
+  it('HomeCatalog contains a theme-toggle button', () => {
+    const catalog = readFileSync(join(ROOT, 'src', 'components', 'HomeCatalog.astro'), 'utf-8')
+    expect(catalog).toContain('id="theme-toggle"')
   })
 })

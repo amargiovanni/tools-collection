@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   --color-surface: #faf9f7;
   --color-surface-raised: #ffffff;
@@ -21,25 +23,23 @@
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-surface: #0f172a;
-    --color-surface-raised: #1e293b;
-    --color-text-primary: #f1f5f9;
-    --color-text-secondary: #94a3b8;
-    --color-text-muted: #64748b;
-    --color-accent: #2dd4bf;
-    --color-accent-hover: #5eead4;
-    --color-accent-light: #042f2e;
-    --color-border: #334155;
-    --color-border-focus: #2dd4bf;
-    --color-success: #4ade80;
-    --color-success-light: #052e16;
-    --color-error: #f87171;
-    --color-error-light: #450a0a;
-    --color-warning: #fbbf24;
-    --color-warning-light: #451a03;
-  }
+[data-theme="dark"] {
+  --color-surface: #0f172a;
+  --color-surface-raised: #1e293b;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-accent: #2dd4bf;
+  --color-accent-hover: #5eead4;
+  --color-accent-light: #042f2e;
+  --color-border: #334155;
+  --color-border-focus: #2dd4bf;
+  --color-success: #4ade80;
+  --color-success-light: #052e16;
+  --color-error: #f87171;
+  --color-error-light: #450a0a;
+  --color-warning: #fbbf24;
+  --color-warning-light: #451a03;
 }
 
 html {

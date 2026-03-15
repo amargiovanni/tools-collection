@@ -6,6 +6,10 @@
   "app_searchPlaceholder": "Cerca strumenti...",
   "app_switchLanguageAria": "Cambia lingua",
   "app_backHomeAria": "Torna alla home",
+  "app_themeLight": "Chiaro",
+  "app_themeDark": "Scuro",
+  "app_themeSystem": "Sistema",
+  "app_themeToggleAria": "Cambia tema",
 
   "home_eyebrow": "Collezione",
   "home_title": "Strumenti Online per il Lavoro di Tutti i Giorni",
