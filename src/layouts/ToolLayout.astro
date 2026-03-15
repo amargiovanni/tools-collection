@@ -172,6 +172,7 @@ const currentPath = Astro.url.pathname
         }
 
         let pref = getStoredPreference()
+        applyTheme(pref)
         updateIcon(pref)
 
         themeBtn.addEventListener('click', () => {
