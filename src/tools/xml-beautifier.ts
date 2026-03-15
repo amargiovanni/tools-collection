@@ -26,7 +26,7 @@ export function formatXml(input: string, indent: XmlIndent): Result<string> {
       if (pad !== 0) {
         pad -= 1
       }
-    } else if (/^<\w[^>]*[^/]>.*$/.test(line)) {
+    } else if (/^<\w[^>]*[^/]>.*$/.test(line) || /^<\w+>/.test(line)) {
       indentChange = 1
     }
 
