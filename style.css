@@ -759,6 +759,14 @@ select.form-control {
   position: relative;
 }
 
+.sidebar-controls {
+  position: absolute;
+  top: var(--space-16);
+  right: var(--space-16);
+  display: flex;
+  gap: var(--space-8);
+}
+
 .sidebar-header h1 {
   font-size: var(--font-size-xl);
   margin-bottom: var(--space-8);
@@ -771,21 +779,29 @@ select.form-control {
   margin: 0;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: var(--space-16);
-  right: var(--space-16);
+.theme-toggle,
+.lang-toggle {
   background: transparent;
-  border: none;
-  font-size: var(--font-size-lg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  padding: var(--space-4);
-  border-radius: var(--radius-sm);
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  min-width: 40px;
+  min-height: 36px;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-base);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
 
-.theme-toggle:hover {
+.theme-toggle {
+  font-size: var(--font-size-lg);
+}
+
+.theme-toggle:hover,
+.lang-toggle:hover {
   background-color: var(--color-secondary);
+  border-color: var(--color-primary);
 }
 
 .search-container {

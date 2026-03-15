@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tools-collection
+    ports:
+      - "8080:80"
+    restart: unless-stopped

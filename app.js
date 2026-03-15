@@ -2,25 +2,34 @@
 class OnlineToolsApp {
     constructor() {
         this.currentTool = 'list-generator';
+        this.supportedLanguages = ['en', 'it'];
+        this.defaultLanguage = 'en';
+        this.currentLanguage = this.defaultLanguage;
         this.init();
     }
 
     init() {
         console.log('Initializing Online Tools App');
+        this.initLanguage();
         this.initTheme();
         this.initNavigation();
         this.initMobileMenu();
         this.initSearch();
         this.initTools();
+        this.initRouting();
         
         // Set initial tool
-        this.switchTool(this.currentTool);
+        this.switchTool(this.getInitialTool(), { updateHash: false });
     }
 
     // Language Management
     initLanguage() {
-        const lang = navigator.language.split('-')[0] || 'en';
-        const fallbackLang = 'en';
+        const langToggle = document.getElementById('langToggle');
+        const savedLang = localStorage.getItem('language');
+        const browserLang = (navigator.language.split('-')[0] || this.defaultLanguage).toLowerCase();
+        const initialLang = this.supportedLanguages.includes(savedLang)
+            ? savedLang
+            : (this.supportedLanguages.includes(browserLang) ? browserLang : this.defaultLanguage);
 
         const applyTranslations = (messages) => {
             const elements = document.querySelectorAll('[data-i18n]');
@@ -33,25 +42,48 @@ class OnlineToolsApp {
                     console.warn(`[i18n] Missing translation for key: ${key}`);
                 }
             });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (messages[key]) {
+                    el.setAttribute('placeholder', messages[key]);
+                }
+            });
+
+            document.documentElement.lang = this.currentLanguage;
+            if (langToggle) {
+                langToggle.textContent = this.currentLanguage.toUpperCase();
+                langToggle.setAttribute('aria-label', `Switch language. Current language: ${this.currentLanguage.toUpperCase()}`);
+                langToggle.title = `Language: ${this.currentLanguage.toUpperCase()}`;
+            }
         };
 
         const loadLocale = (code) => {
             fetch(`locales/${code}.json`)
                 .then(res => res.json())
                 .then(data => {
+                    this.currentLanguage = code;
                     applyTranslations(data);
                 })
                 .catch(err => {
-                    if (code !== fallbackLang) {
-                        console.log(`Falling back to ${fallbackLang}`);
-                        loadLocale(fallbackLang);
+                    if (code !== this.defaultLanguage) {
+                        console.log(`Falling back to ${this.defaultLanguage}`);
+                        loadLocale(this.defaultLanguage);
                     } else {
                         console.error('Failed to load translations', err);
                     }
                 });
         };
 
-        loadLocale(lang);
+        if (langToggle) {
+            langToggle.addEventListener('click', () => {
+                const nextLang = this.currentLanguage === 'en' ? 'it' : 'en';
+                localStorage.setItem('language', nextLang);
+                loadLocale(nextLang);
+            });
+        }
+
+        loadLocale(initialLang);
     }
 
     // Theme Management
@@ -102,6 +134,7 @@ class OnlineToolsApp {
 
         toolLinks.forEach((link, index) => {
             const toolId = link.getAttribute('data-tool');
+            link.setAttribute('href', `#${toolId}`);
             console.log(`Tool link ${index}: ${toolId}`);
             
             link.addEventListener('click', (e) => {
@@ -110,6 +143,26 @@ class OnlineToolsApp {
                 this.switchTool(toolId);
             });
         });
+    }
+
+    initRouting() {
+        window.addEventListener('hashchange', () => {
+            const hashToolId = this.getToolIdFromHash();
+            if (hashToolId) {
+                this.switchTool(hashToolId, { updateHash: false });
+            }
+        });
+    }
+
+    getToolIdFromHash() {
+        const hash = window.location.hash.replace(/^#/, '').trim();
+        if (!hash) return null;
+
+        return document.getElementById(hash) ? hash : null;
+    }
+
+    getInitialTool() {
+        return this.getToolIdFromHash() || this.currentTool;
     }
 
     // Mobile Menu Management
@@ -142,7 +195,14 @@ class OnlineToolsApp {
         });
     }
 
-    switchTool(toolId) {
+    switchTool(toolId, options = {}) {
+        const { updateHash = true } = options;
+
+        if (!document.getElementById(toolId)) {
+            console.error(`Tool container not found: ${toolId}`);
+            return;
+        }
+
         console.log(`Switching to tool: ${toolId}`);
         
         // Hide all tool containers
@@ -155,12 +215,8 @@ class OnlineToolsApp {
 
         // Show selected tool
         const selectedTool = document.getElementById(toolId);
-        if (selectedTool) {
-            selectedTool.classList.add('active');
-            console.log(`Activated tool: ${toolId}`);
-        } else {
-            console.error(`Tool container not found: ${toolId}`);
-        }
+        selectedTool.classList.add('active');
+        console.log(`Activated tool: ${toolId}`);
 
         // Update navigation active state
         document.querySelectorAll('.tool-link').forEach(link => {
@@ -174,6 +230,10 @@ class OnlineToolsApp {
         }
 
         this.currentTool = toolId;
+
+        if (updateHash && window.location.hash !== `#${toolId}`) {
+            window.location.hash = toolId;
+        }
     }
 
     // Search Management
@@ -1435,7 +1495,6 @@ class OnlineToolsApp {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing app');
     const app = new OnlineToolsApp();
-    app.initLanguage();
     console.log('Sbrigasigapone, la saponetta');
     window.toolsApp = app;
 });

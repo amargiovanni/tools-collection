@@ -19,11 +19,14 @@
             <div class="sidebar-header">
                 <h1 data-i18n="title">🔧 Online Tools</h1>
                 <p data-i18n="description">A set of useful online tools</p>
-                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <div class="sidebar-controls">
+                    <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">EN</button>
+                    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
+                </div>
             </div>
             
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Cerca strumenti..." class="form-control">
+                <input type="text" id="searchInput" placeholder="Search tools..." data-i18n-placeholder="searchPlaceholder" class="form-control">
             </div>
 
             <nav class="tool-nav">
