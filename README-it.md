@@ -29,16 +29,17 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 - **JavaScript vanilla**: Nessun framework applicativo, bundle leggero e semplice da manutenere
 - **Privacy-aware**: La maggior parte degli strumenti funziona localmente; il generatore QR usa un servizio esterno
-- **Interfaccia moderna**: Design pulito e moderno con supporto per tema scuro
+- **Interfaccia moderna**: Home a catalogo, tema chiaro/scuro e navigazione diretta ai tool
 - **Completamente responsive**: Funziona perfettamente su desktop, tablet e dispositivi mobili
 - **Open source**: Liberamente modificabile e personalizzabile
 
 ## ✨ Caratteristiche
 
 ### 🎨 Design e UX
-- **Tema Dinamico**: Switch immediato tra modalità chiara e scura
-- **Interfaccia Intuitiva**: Sidebar organizzata per categorie con ricerca integrata
+- **Tema e Lingua**: Switch immediato tra modalità chiara/scura e interfaccia EN/IT
+- **Interfaccia Intuitiva**: Home a catalogo, sidebar organizzata per categorie e ricerca integrata
 - **Design Responsivo**: Layout adattivo per tutti i dispositivi
+- **Link diretti**: Ogni tool ha un URL dedicato tramite hash routing
 - **Feedback Visivo**: Animazioni fluide e feedback immediato alle azioni
 
 ### 🚀 Performance
@@ -53,7 +54,7 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 ## 🛠️ Strumenti Disponibili
 
-> **23 strumenti** professionali per sviluppatori, content creator e security specialist
+> **27 strumenti** per sviluppatori, content creator e attività operative quotidiane
 
 ### 📝 Elaborazione Testo (6 strumenti)
 
@@ -64,10 +65,11 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 - **📏 Rimuovi Interruzioni di Riga** - Unisce testo su singola riga
 - **🚫 Rimuovi Righe che Contengono** - Filtra righe per parole specifiche
 
-### 🎲 Generatori (2 strumenti)
+### 🎲 Generatori (3 strumenti)
 
 - **🔑 Password Generator** - Genera password sicure con crypto API (8-50 caratteri)
 - **👤 Username Generator** - Crea username unici (Random, Tech, Fantasy, Cool)
+- **🔢 PIN Generator** - Genera PIN numerici multipli con lunghezza configurabile e opzione anti-duplicati
 
 ### 🔍 Estrazione (2 strumenti)
 
@@ -78,11 +80,8 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 - **🔢 Conta Duplicati** - Analizza occorrenze e frequenze con percentuali
 
-### 🔐 Sicurezza (6 strumenti)
+### 🔐 Sicurezza (3 strumenti)
 
-- **🧪 Curl to Burp Converter** - Converte comandi curl per Burp Suite
-- **🛡️ IoC Escape Tool** - Escape/unescape Indicatori di Compromissione
-- **🔑 JWT Decoder/Inspector** - Decodifica token JWT e controlla claim temporali senza verificare la firma
 - **📜 PEM Certificate Inspector** - Valida PEM e calcola fingerprint SHA-256 locali
 - **🔒 Password Strength Checker** - Analizza robustezza con scoring 0-8
 - **📱 QR Code Generator/Reader** - Genera QR tramite provider esterno e prova a leggere immagini con le API native del browser
@@ -100,10 +99,12 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 - **🔤 Regex Tester** - Testa regex con flags e gruppi di cattura
 - **📋 XML Beautifier** - Formatta e valida XML con indentazione
 
-### ⚙️ Utilità (3 strumenti)
+### ⚙️ Utilità (5 strumenti)
 
 - **🎨 Color Picker/Converter** - Converte HEX, RGB, RGBA, HSL con preview
 - **🕐 Timestamp Converter** - Converte timestamp Unix e formati data
+- **⏱️ TimeConvert** - Converte durate tra millisecondi, secondi, minuti, ore, giorni e formato `HH:MM:SS`
+- **🧩 Reg2GPO** - Converte export `.reg` di Windows in XML per Group Policy Preferences
 - **🔏 Hash Generator** - Genera hash SHA-1, SHA-256, SHA-512
 
 
@@ -117,7 +118,7 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 1. **Clona il repository**
 ```bash
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/gioxx/tools-collection.git
 cd tools-collection
 ```
 
@@ -189,7 +190,7 @@ chmod 644 data/logo.png
 ### Funzionalità Avanzate
 
 #### 🔍 Ricerca Strumenti
-- Usa la barra di ricerca nella sidebar per trovare rapidamente gli strumenti
+- Usa la barra di ricerca nella home o nella sidebar per trovare rapidamente gli strumenti
 - La ricerca filtra in tempo reale mentre digiti
 
 #### 🌓 Cambio Tema
@@ -205,10 +206,14 @@ chmod 644 data/logo.png
 ```
 tools-collection/
 │
-├── index.html          # File HTML principale con struttura e strumenti
-├── style.css          # Stili CSS con supporto per temi
-├── app.js             # Logica JavaScript per tutti gli strumenti
-└── README.md          # Documentazione del progetto
+├── index.html          # File HTML principale con home, sidebar e strumenti
+├── style.css           # Stili CSS con supporto per temi
+├── app.js              # Logica JavaScript per tutti gli strumenti
+├── locales/            # Traduzioni EN/IT
+├── compose.yaml        # Avvio containerizzato con Docker Compose
+├── CHANGELOG.md        # Storico modifiche
+├── README-it.md        # Documentazione italiana
+└── README.md           # Documentazione inglese
 ```
 
 ### Dettaglio File
@@ -343,7 +348,7 @@ Contribuzioni sono benvenute! Ecco come puoi aiutare:
 ### 1. Fork & Clone
 ```bash
 # Fork su GitHub, poi:
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/gioxx/tools-collection.git
 cd tools-collection
 git checkout -b feature/nuovo-strumento
 ```
@@ -374,10 +379,10 @@ git push origin feature/nuovo-strumento
 ## 🗺️ Roadmap
 
 ### ✅ Completato
-- [X] **23 Strumenti Base** - Elaborazione testo, generatori, sicurezza, convertitori
+- [X] **27 Strumenti Disponibili** - Elaborazione testo, generatori, estrazione, sviluppo e utilità
 - [X] **Design Responsive** - Ottimizzato per mobile con menu hamburger
-- [X] **Sistema Temi** - Dark/light mode con rilevamento automatico preferenze
-- [X] **Sicurezza Avanzata** - JWT, certificati, password checker, QR codes
+- [X] **Sistema Temi e Lingue** - Dark/light mode e interfaccia EN/IT con preferenze persistite
+- [X] **Home Catalogo e Link Diretti** - Catalogo iniziale e URL dedicati ai tool
 
 ### 🔧 Sviluppo
 - [ ] API Response Formatter - Formatta risposte API
@@ -438,8 +443,8 @@ in the Software without restriction...
 <div align="center">
     <p>Fatto con ❤️ dalla AI per gli sviluppatori</p>
     <p>
-        <a href="https://github.com/amargiovanni/tools-collection/issues">Segnala un Bug</a>
+        <a href="https://github.com/gioxx/tools-collection/issues">Segnala un Bug</a>
         ·
-        <a href="https://github.com/amargiovanni/tools-collection/issues">Richiedi una Feature</a>
+        <a href="https://github.com/gioxx/tools-collection/issues">Richiedi una Feature</a>
     </p>
 </div>

@@ -29,16 +29,17 @@ Online Tools Collection is a single-page web application that provides a suite o
 
 - **Vanilla JavaScript**: No application framework, lightweight bundle, and easy to maintain
 - **Privacy-aware**: Most tools work locally; the QR generator uses an external service
-- **Modern interface**: Clean and modern design with dark theme support
+- **Modern interface**: Catalog-style home, light/dark theme, and direct tool navigation
 - **Fully responsive**: Works perfectly on desktop, tablet, and mobile devices
 - **Open source**: Freely modifiable and customizable
 
 ## ✨ Features
 
 ### 🎨 Design and UX
-- **Dynamic Theme**: Instant switch between light and dark mode
-- **Intuitive Interface**: Sidebar organized by categories with integrated search
+- **Theme and Language**: Instant switch between light/dark mode and EN/IT interface
+- **Intuitive Interface**: Catalog home, category-based sidebar, and integrated search
 - **Responsive Design**: Adaptive layout for all devices
+- **Direct Links**: Each tool has a dedicated URL via hash routing
 - **Visual Feedback**: Smooth animations and immediate feedback for actions
 
 ### 🚀 Performance
@@ -53,7 +54,7 @@ Online Tools Collection is a single-page web application that provides a suite o
 
 ## 🛠️ Available Tools
 
-> **23 professional tools** for developers, content creators, and security specialists
+> **27 tools** for developers, content creators, and everyday operational work
 
 ### 📝 Text Processing (6 tools)
 
@@ -64,10 +65,11 @@ Online Tools Collection is a single-page web application that provides a suite o
 - **📏 Remove Line Breaks** - Joins text into a single line
 - **🚫 Remove Lines Containing** - Filters lines by specific words
 
-### 🎲 Generators (2 tools)
+### 🎲 Generators (3 tools)
 
 - **🔑 Password Generator** - Generates secure passwords with the crypto API (8-50 characters)
 - **👤 Username Generator** - Creates unique usernames (Random, Tech, Fantasy, Cool)
+- **🔢 PIN Generator** - Generates multiple numeric PINs with configurable length and duplicate avoidance
 
 ### 🔍 Extraction (2 tools)
 
@@ -78,11 +80,8 @@ Online Tools Collection is a single-page web application that provides a suite o
 
 - **🔢 Count Duplicates** - Analyzes occurrences and frequencies with percentages
 
-### 🔐 Security (6 tools)
+### 🔐 Security (3 tools)
 
-- **🧪 Curl to Burp Converter** - Converts curl commands for Burp Suite
-- **🛡️ IoC Escape Tool** - Escape/unescape Indicators of Compromise
-- **🔑 JWT Decoder/Inspector** - Decodes JWT tokens and checks time-based claims without verifying the signature
 - **📜 PEM Certificate Inspector** - Validates PEM input and computes local SHA-256 fingerprints
 - **🔒 Password Strength Checker** - Analyzes password strength with 0-8 scoring
 - **📱 QR Code Generator/Reader** - Generates QR codes through an external provider and attempts to read images with the browser native APIs
@@ -100,10 +99,12 @@ Online Tools Collection is a single-page web application that provides a suite o
 - **🔤 Regex Tester** - Tests regex with flags and capture groups
 - **📋 XML Beautifier** - Formats and validates XML with indentation
 
-### ⚙️ Utilities (3 tools)
+### ⚙️ Utilities (5 tools)
 
 - **🎨 Color Picker/Converter** - Converts HEX, RGB, RGBA, HSL with preview
 - **🕐 Timestamp Converter** - Converts Unix timestamps and date formats
+- **⏱️ TimeConvert** - Converts durations between milliseconds, seconds, minutes, hours, days, and `HH:MM:SS`
+- **🧩 Reg2GPO** - Converts Windows `.reg` exports into Group Policy Preferences XML
 - **🔏 Hash Generator** - Generates SHA-1, SHA-256, SHA-512 hashes
 
 
@@ -117,7 +118,7 @@ Online Tools Collection is a single-page web application that provides a suite o
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/gioxx/tools-collection.git
 cd tools-collection
 ```
 
@@ -189,7 +190,7 @@ chmod 644 data/logo.png
 ### Advanced Features
 
 #### 🔍 Tool Search
-- Use the search bar in the sidebar to quickly find tools
+- Use the search bar in the home catalog or the sidebar to quickly find tools
 - The search filters in real time while you type
 
 #### 🌓 Theme Switching
@@ -205,10 +206,14 @@ chmod 644 data/logo.png
 ```
 tools-collection/
 │
-├── index.html          # Main HTML file with structure and tools
+├── index.html          # Main HTML file with catalog home, sidebar, and tools
 ├── style.css           # CSS styles with theme support
 ├── app.js              # JavaScript logic for all tools
-└── README.md           # Project documentation
+├── locales/            # EN/IT translations
+├── compose.yaml        # Container startup with Docker Compose
+├── CHANGELOG.md        # Project change history
+├── README-it.md        # Italian documentation
+└── README.md           # English documentation
 ```
 
 ### File Details
@@ -343,7 +348,7 @@ Contributions are welcome! Here is how you can help:
 ### 1. Fork & Clone
 ```bash
 # Fork on GitHub, then:
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/gioxx/tools-collection.git
 cd tools-collection
 git checkout -b feature/new-tool
 ```
@@ -374,10 +379,10 @@ git push origin feature/new-tool
 ## 🗺️ Roadmap
 
 ### ✅ Completed
-- [X] **23 Base Tools** - Text processing, generators, security, converters
+- [X] **27 Available Tools** - Text processing, generators, extraction, development, and utilities
 - [X] **Responsive Design** - Mobile-optimized with hamburger menu
-- [X] **Theme System** - Dark/light mode with automatic preference detection
-- [X] **Advanced Security** - JWT, certificates, password checker, QR codes
+- [X] **Theme and Language System** - Dark/light mode and EN/IT interface with persisted preferences
+- [X] **Catalog Home and Direct Links** - Initial catalog view and dedicated URLs for tools
 
 ### 🔧 In Development
 - [ ] API Response Formatter - Formats API responses
@@ -438,8 +443,8 @@ in the Software without restriction...
 <div align="center">
     <p>Made with ❤️ by AI for developers</p>
     <p>
-        <a href="https://github.com/amargiovanni/tools-collection/issues">Report a Bug</a>
+        <a href="https://github.com/gioxx/tools-collection/issues">Report a Bug</a>
         ·
-        <a href="https://github.com/amargiovanni/tools-collection/issues">Request a Feature</a>
+        <a href="https://github.com/gioxx/tools-collection/issues">Request a Feature</a>
     </p>
 </div>
