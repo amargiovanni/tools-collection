@@ -226,6 +226,7 @@ const categoryAccents: Record<string, string> = {
     }
 
     let pref = getStoredPreference()
+    applyTheme(pref)
     updateIcon(pref)
 
     btn.addEventListener('click', () => {
