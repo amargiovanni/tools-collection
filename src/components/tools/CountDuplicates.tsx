@@ -5,7 +5,7 @@ import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
 import { countDuplicates } from '../../tools/count-duplicates'
 import type { DuplicateEntry } from '../../tools/count-duplicates'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -29,11 +29,7 @@ export default function CountDuplicates(props: Props) {
       setEntries(result.value)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${result.error.code}` as any
-        try { return t(props.lang, key) } catch { return result.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, result.error))
       setEntries([])
     }
   }

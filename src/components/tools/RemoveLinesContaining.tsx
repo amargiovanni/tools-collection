@@ -7,7 +7,7 @@ import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { Badge } from '../ui/Badge'
 import { removeLinesContaining } from '../../tools/remove-lines-containing'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -40,11 +40,7 @@ export default function RemoveLinesContaining(props: Props) {
       setKept(result.value.kept)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${result.error.code}` as any
-        try { return t(props.lang, key) } catch { return result.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, result.error))
       setOutput('')
       setRemoved(0)
       setKept(0)

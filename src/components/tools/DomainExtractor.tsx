@@ -5,7 +5,7 @@ import { Button } from '../ui/Button'
 import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { extractDomains } from '../../tools/domain-extractor'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -24,11 +24,7 @@ export default function DomainExtractor(props: Props) {
       setOutput(result.value.join('\n'))
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${result.error.code}` as any
-        try { return t(props.lang, key) } catch { return result.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, result.error))
       setOutput('')
     }
   }

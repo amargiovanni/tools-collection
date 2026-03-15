@@ -5,7 +5,7 @@ import { CopyButton } from '../ui/CopyButton'
 import { StatusMessage } from '../ui/StatusMessage'
 import { convertTimestamp, currentTimestamp } from '../../tools/timestamp-converter'
 import type { TimestampResult } from '../../tools/timestamp-converter'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -30,11 +30,7 @@ export default function TimestampConverter(props: Props) {
       setResult(converted.value)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${converted.error.code}` as any
-        try { return t(props.lang, key) } catch { return converted.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, converted.error))
       setResult(null)
     }
   }

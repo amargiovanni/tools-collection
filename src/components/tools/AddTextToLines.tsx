@@ -6,7 +6,7 @@ import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { addTextToLines } from '../../tools/add-text-to-lines'
 import type { Position } from '../../tools/add-text-to-lines'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -31,11 +31,7 @@ export default function AddTextToLines(props: Props) {
       setOutput(result.value)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${result.error.code}` as any
-        try { return t(props.lang, key) } catch { return result.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, result.error))
       setOutput('')
     }
   }

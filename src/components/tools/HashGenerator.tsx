@@ -5,7 +5,7 @@ import { CopyButton } from '../ui/CopyButton'
 import { StatusMessage } from '../ui/StatusMessage'
 import { generateHashes } from '../../tools/hash-generator'
 import type { HashResult } from '../../tools/hash-generator'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -33,11 +33,7 @@ export default function HashGenerator(props: Props) {
       setResult(hashed.value)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${hashed.error.code}` as any
-        try { return t(props.lang, key) } catch { return hashed.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, hashed.error))
       setResult(null)
     }
 

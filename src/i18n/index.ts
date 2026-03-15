@@ -45,6 +45,18 @@ const categoryKeyMap: Record<string, MessageKey> = {
   'utilities': 'categories_utilities',
 }
 
+/**
+ * Translate an error code to a localized message, falling back to the raw message.
+ * Avoids the `as any` + try/catch pattern in every tool component.
+ */
+export function translateError(lang: Language, error: { code: string; message: string }): string {
+  const key = `errors_${error.code}`
+  if (key in messages[lang]) {
+    return messages[lang][key as MessageKey]
+  }
+  return error.message
+}
+
 export function getCategoryName(lang: Language, categoryId: string): string {
   const key = categoryKeyMap[categoryId]
   if (!key) return categoryId

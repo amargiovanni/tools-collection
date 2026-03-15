@@ -9,7 +9,7 @@ import { Badge } from '../ui/Badge'
 import { StatusMessage } from '../ui/StatusMessage'
 import { convertRegToGpo } from '../../tools/reg2gpo'
 import type { GpoResult } from '../../tools/reg2gpo'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -37,11 +37,7 @@ export default function Reg2Gpo(props: Props) {
       setResult(converted.value)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${converted.error.code}` as any
-        try { return t(props.lang, key) } catch { return converted.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, converted.error))
       setResult(null)
     }
   }

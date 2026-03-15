@@ -5,7 +5,7 @@ import { Button } from '../ui/Button'
 import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { removeDuplicateLines } from '../../tools/remove-duplicate-lines'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -28,11 +28,7 @@ export default function RemoveDuplicateLines(props: Props) {
       setOutput(result.value)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${result.error.code}` as any
-        try { return t(props.lang, key) } catch { return result.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, result.error))
       setOutput('')
     }
   }

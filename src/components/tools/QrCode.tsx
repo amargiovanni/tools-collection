@@ -6,7 +6,7 @@ import { FileInput } from '../ui/FileInput'
 import { DownloadButton } from '../ui/DownloadButton'
 import { StatusMessage } from '../ui/StatusMessage'
 import { OutputPanel } from '../ui/OutputPanel'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 type QrSize = 200 | 300 | 400
@@ -65,7 +65,7 @@ export default function QrCode(props: Props) {
 
     try {
       const bitmap = await createImageBitmap(file)
-      const detector = new (globalThis as any).BarcodeDetector({ formats: ['qr_code'] })
+      const detector = new (globalThis as unknown as { BarcodeDetector: new (opts: { formats: string[] }) => { detect(source: ImageBitmapSource): Promise<{ rawValue: string }[]> } }).BarcodeDetector({ formats: ['qr_code'] })
       const barcodes = await detector.detect(bitmap)
 
       if (barcodes.length === 0) {

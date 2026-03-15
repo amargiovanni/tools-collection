@@ -4,7 +4,7 @@ import { Button } from '../ui/Button'
 import { CopyButton } from '../ui/CopyButton'
 import { StatusMessage } from '../ui/StatusMessage'
 import { parseColor } from '../../tools/color-picker'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -38,11 +38,7 @@ export default function ColorPicker(props: Props) {
       setPickerValue(hex)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${parsed.error.code}` as any
-        try { return t(props.lang, key) } catch { return parsed.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, parsed.error))
       setResult(null)
     }
   }

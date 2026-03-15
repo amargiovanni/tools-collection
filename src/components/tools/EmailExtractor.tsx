@@ -6,7 +6,7 @@ import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { Badge } from '../ui/Badge'
 import { extractEmails } from '../../tools/email-extractor'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -27,11 +27,7 @@ export default function EmailExtractor(props: Props) {
       setCount(result.value.length)
       setError(null)
     } else {
-      const errorMsg = (() => {
-        const key = `errors_${result.error.code}` as any
-        try { return t(props.lang, key) } catch { return result.error.message }
-      })()
-      setError(errorMsg)
+      setError(translateError(props.lang, result.error))
       setOutput('')
       setCount(0)
     }
