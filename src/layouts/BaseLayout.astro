@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions'
 import '../styles/global.css'
 import { getAlternateLanguage } from '../i18n'
 import type { Language } from '../i18n'
+import CommandPalette from '../islands/CommandPalette'
 
 interface Props {
   title: string
@@ -72,5 +73,6 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
       Skip to content
     </a>
     <slot />
+    <CommandPalette client:only="solid-js" lang={lang} />
   </body>
 </html>
