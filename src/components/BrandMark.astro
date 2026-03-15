@@ -11,7 +11,7 @@ const { wrapperClass = '', imageClass = '', fallbackClass = '' } = Astro.props
 <span class={wrapperClass} data-brand-container>
   <img
     alt=""
-    loading="lazy"
+    loading="eager"
     decoding="async"
     class={`hidden ${imageClass}`.trim()}
     data-brand-logo
