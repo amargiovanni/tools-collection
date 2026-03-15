@@ -148,6 +148,34 @@ php -S localhost:8000
 4. **Access the application**
    - Open the browser at `http://localhost:8000`
 
+### Docker Compose
+
+You can also run the project with Docker Compose:
+
+```bash
+docker compose up --build -d
+```
+
+The application will be available at `http://localhost:8080`.
+
+### Custom logo on the home page
+
+The home page can display a custom logo on the right side of the hero if the file `data/logo.png` is available.
+
+- Expected path in the repository: `./data/logo.png`
+- Path served inside the container: `/usr/share/nginx/html/data/logo.png`
+- If the file does not exist, nothing is shown
+
+#### File permissions
+
+The file must be readable by the web server. In practice, avoid restrictive permissions such as `600`.
+
+Recommended setting:
+
+```bash
+chmod 644 data/logo.png
+```
+
 ## 📖 Usage
 
 ### Basic Navigation
