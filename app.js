@@ -1,6 +1,7 @@
 // App initialization and management
 class OnlineToolsApp {
     constructor() {
+        this.assetVersion = '0.4.3';
         this.currentTool = null;
         this.currentView = 'home';
         this.supportedLanguages = ['en', 'it'];
@@ -59,7 +60,7 @@ class OnlineToolsApp {
         };
 
         const loadLocale = (code) => {
-            fetch(`locales/${code}.json`)
+            fetch(`locales/${code}.json?v=${this.assetVersion}`)
                 .then(res => res.json())
                 .then(data => {
                     this.currentLanguage = code;
@@ -948,9 +949,11 @@ class OnlineToolsApp {
                 resultsHeader.style.display = passwords.length > 0 ? 'flex' : 'none';
             }
 
-            copyAllBtn?.onclick = () => {
-                this.copyToClipboard(passwords.join('\n'));
-            };
+            if (copyAllBtn) {
+                copyAllBtn.onclick = () => {
+                    this.copyToClipboard(passwords.join('\n'));
+                };
+            }
         });
     }
 
@@ -1006,9 +1009,11 @@ class OnlineToolsApp {
                 resultsHeader.style.display = generatedUsernames.length > 0 ? 'flex' : 'none';
             }
 
-            copyAllBtn?.onclick = () => {
-                this.copyToClipboard(generatedUsernames.join('\n'));
-            };
+            if (copyAllBtn) {
+                copyAllBtn.onclick = () => {
+                    this.copyToClipboard(generatedUsernames.join('\n'));
+                };
+            }
         });
     }
 
