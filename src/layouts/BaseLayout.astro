@@ -31,7 +31,7 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={lang} href={canonicalUrl} />
     <link rel="alternate" hreflang={altLang} href={altUrl} />
-    <script src="/default-language.js"></script>
+    <script is:inline src="/default-language.js"></script>
     <ClientRouter />
     <!-- Theme: apply before paint to avoid flash -->
     <script is:inline>
