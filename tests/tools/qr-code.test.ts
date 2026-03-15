@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isBarcodeDetectorAvailable } from '../../src/tools/qr-code'
+import { generateQrUrl, isBarcodeDetectorAvailable } from '../../src/tools/qr-code'
 
 describe('qr-code', () => {
   it('isBarcodeDetectorAvailable returns boolean', () => {
@@ -7,6 +7,19 @@ describe('qr-code', () => {
     expect(typeof result).toBe('boolean')
   })
 
-  // Note: generateQrDataUrl requires the 'qrcode' package which is installed in Task 5.3.
-  // Full integration tests will be added then.
+  it('generateQrUrl returns error for empty input', () => {
+    const result = generateQrUrl({ text: '', size: 200 })
+    expect(result.ok).toBe(false)
+    if (!result.ok) expect(result.error.code).toBe('EMPTY_INPUT')
+  })
+
+  it('generateQrUrl returns valid URL for text input', () => {
+    const result = generateQrUrl({ text: 'https://example.com', size: 300 })
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('api.qrserver.com')
+      expect(result.value).toContain('300x300')
+      expect(result.value).toContain('example.com')
+    }
+  })
 })
