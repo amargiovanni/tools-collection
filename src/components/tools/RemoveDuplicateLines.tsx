@@ -1,0 +1,67 @@
+import { createSignal } from 'solid-js'
+import { TextArea } from '../ui/TextArea'
+import { Checkbox } from '../ui/Checkbox'
+import { Button } from '../ui/Button'
+import { OutputPanel } from '../ui/OutputPanel'
+import { StatusMessage } from '../ui/StatusMessage'
+import { removeDuplicateLines } from '../../tools/remove-duplicate-lines'
+import { t } from '../../i18n'
+import type { Language } from '../../i18n'
+
+interface Props {
+  lang: Language
+}
+
+export default function RemoveDuplicateLines(props: Props) {
+  const [input, setInput] = createSignal('')
+  const [caseSensitive, setCaseSensitive] = createSignal(true)
+  const [preserveOrder, setPreserveOrder] = createSignal(true)
+  const [output, setOutput] = createSignal('')
+  const [error, setError] = createSignal<string | null>(null)
+
+  const handleRemove = () => {
+    const result = removeDuplicateLines(input(), {
+      caseSensitive: caseSensitive(),
+      preserveOrder: preserveOrder(),
+    })
+    if (result.ok) {
+      setOutput(result.value)
+      setError(null)
+    } else {
+      const errorMsg = (() => {
+        const key = `errors_${result.error.code}` as any
+        try { return t(props.lang, key) } catch { return result.error.message }
+      })()
+      setError(errorMsg)
+      setOutput('')
+    }
+  }
+
+  return (
+    <div class="flex flex-col gap-4">
+      <TextArea
+        label={t(props.lang, 'common_inputText')}
+        placeholder={t(props.lang, 'tools_removeDuplicateLines_placeholder')}
+        value={input()}
+        onInput={(e) => setInput(e.currentTarget.value)}
+      />
+      <div class="flex flex-wrap gap-4">
+        <Checkbox
+          label={t(props.lang, 'common_caseSensitive')}
+          checked={caseSensitive()}
+          onChange={(e) => setCaseSensitive(e.currentTarget.checked)}
+        />
+        <Checkbox
+          label={t(props.lang, 'tools_removeDuplicateLines_preserveOrder')}
+          checked={preserveOrder()}
+          onChange={(e) => setPreserveOrder(e.currentTarget.checked)}
+        />
+      </div>
+      <Button variant="primary" onClick={handleRemove}>
+        {t(props.lang, 'tools_removeDuplicateLines_action')}
+      </Button>
+      {error() && <StatusMessage type="error" message={error()!} />}
+      <OutputPanel value={output()} label={t(props.lang, 'common_result')} />
+    </div>
+  )
+}
