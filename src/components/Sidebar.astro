@@ -21,7 +21,7 @@ const { lang, currentPath } = Astro.props
         </h3>
         <ul class="flex flex-col gap-0.5">
           {tools.map((tool) => {
-            const href = `/${lang}/tools/${tool.id}`
+            const href = `/${lang}/tools/${tool.id}/`
             const isActive = currentPath === href
             const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
             return (

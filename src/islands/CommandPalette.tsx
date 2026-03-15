@@ -29,7 +29,7 @@ function buildSearchItems(lang: Language): SearchItem[] {
       description: t(lang, descKey),
       category: getCategoryName(lang, tool.category),
       icon: tool.icon,
-      path: `/${lang}/tools/${tool.id}`,
+      path: `/${lang}/tools/${tool.id}/`,
       keywords: tool.keywords,
     }
   })
