@@ -9,7 +9,7 @@ A modular, type-safe collection of 27 browser-based developer tools. Built with 
 
 ## What it does
 
-27 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Two languages (EN/IT), automatic dark mode via system preference, and a command palette (`Ctrl/Cmd+K`) for instant navigation.
+27 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Two languages (EN/IT), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
 ## Tools
 
@@ -30,7 +30,7 @@ A modular, type-safe collection of 27 browser-based developer tools. Built with 
 |---|---|
 | Meta-framework | [Astro](https://astro.build/) 6 — static site generation, per-page code splitting |
 | UI framework | [Solid.js](https://www.solidjs.com/) — fine-grained reactivity, zero virtual DOM |
-| Styling | [Tailwind CSS](https://tailwindcss.com/) 4 — `@theme` design tokens, `prefers-color-scheme` |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) 4 — `@theme` design tokens, theme switcher (light/dark/system) |
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
 | i18n | Type-safe JSON messages, compile-time key validation |
 | Search | [Fuse.js](https://www.fusejs.io/) — fuzzy search in command palette |
@@ -160,7 +160,7 @@ The tool automatically gets a page at `/{lang}/tools/my-tool` and appears in the
 
 ### Design Tokens
 
-Colors are defined as CSS custom properties in `src/styles/global.css` via Tailwind 4's `@theme` directive. Dark mode uses `@media (prefers-color-scheme: dark)` — no toggle, no JS, follows the device setting.
+Colors are defined as CSS custom properties in `src/styles/global.css` via Tailwind 4's `@theme` directive. Dark mode is controlled via a `data-theme` attribute on `<html>`. Users can switch between light, dark, and system (follows device setting) via the theme toggle button. The preference is persisted in `localStorage`.
 
 ## Privacy
 

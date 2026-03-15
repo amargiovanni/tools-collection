@@ -6,6 +6,10 @@
   "app_searchPlaceholder": "Search tools...",
   "app_switchLanguageAria": "Switch language",
   "app_backHomeAria": "Back to home",
+  "app_themeLight": "Light",
+  "app_themeDark": "Dark",
+  "app_themeSystem": "System",
+  "app_themeToggleAria": "Toggle theme",
 
   "home_eyebrow": "Collection",
   "home_title": "Online Tools for Daily Work",
