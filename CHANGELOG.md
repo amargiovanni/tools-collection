@@ -4,7 +4,7 @@ All notable changes to this project are documented in this file.
 
 This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
 
-## Upcoming release (`1.1.0`)
+## Upcoming release (`1.1.1`)
 
 ### Added
 - Added `.dockerignore` exclusions for `Dockerfile` and `compose.yaml` so they are not copied into the final production image.
@@ -12,10 +12,12 @@ This changelog currently tracks the recent evolution of the project by published
 - Added a reusable brand mark component with support for a custom `/data/logo.png` image across the home page and tool sidebar.
 
 ### Changed
-- Bumped the product version to `1.1.0`.
+- Bumped the product version to `1.1.1`.
 - Updated the production Docker image build to use a multi-stage Astro static build before serving the compiled `dist/` output with `nginx:alpine`.
 - Restored visible version badges in the home header, home footer, tool header, and tool footer using `package.json` as the shared source of truth.
 - Restored support for a custom `/data/logo.png` brand image on the home page and next to the app title inside the tool sidebar.
+- Made custom logo loading more robust by assigning the image source only after the browser listeners are attached.
+- Restored the full search trigger in tool pages so the search field remains visible alongside the `Ctrl/Cmd+K` hint.
 - Updated `.github/workflows/dockerbuild.yml` to publish the `tools-collection` image only to GitHub Container Registry (`ghcr.io`).
 - Removed Docker Hub-specific authentication and metadata publishing from the image build workflow.
 

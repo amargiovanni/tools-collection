@@ -98,6 +98,8 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
             fallback.classList.remove('hidden')
           })
 
+          image.setAttribute('src', customLogoPath)
+
           if (image.complete) {
             if (image.naturalWidth > 0) {
               fallback.classList.add('hidden')
@@ -106,8 +108,6 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
               image.classList.add('hidden')
               fallback.classList.remove('hidden')
             }
-          } else if (image.getAttribute('src') !== customLogoPath) {
-            image.src = customLogoPath
           }
         })
       }

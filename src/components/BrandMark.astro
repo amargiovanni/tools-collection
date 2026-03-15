@@ -1,6 +1,4 @@
 ---
-import { customLogoPath } from '../config/site'
-
 interface Props {
   wrapperClass?: string
   imageClass?: string
@@ -12,7 +10,6 @@ const { wrapperClass = '', imageClass = '', fallbackClass = '' } = Astro.props
 
 <span class={wrapperClass} data-brand-container>
   <img
-    src={customLogoPath}
     alt=""
     loading="lazy"
     decoding="async"
