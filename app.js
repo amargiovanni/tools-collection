@@ -2134,13 +2134,15 @@ class OnlineToolsApp {
     }
 }
 
-// Initialize the app when DOM is loaded
-// document.addEventListener('DOMContentLoaded', () => {
-//     console.log('DOM loaded, initializing app');
-//     window.toolsApp = new OnlineToolsApp();
-// });
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing app');
-    const app = new OnlineToolsApp();
-    window.toolsApp = app;
-});
+function bootstrapOnlineToolsApp() {
+    if (window.toolsApp) return;
+
+    console.log('Initializing app bootstrap');
+    window.toolsApp = new OnlineToolsApp();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapOnlineToolsApp, { once: true });
+} else {
+    bootstrapOnlineToolsApp();
+}
