@@ -1,7 +1,7 @@
 // App initialization and management
 class OnlineToolsApp {
     constructor() {
-        this.assetVersion = '0.4.5';
+        this.assetVersion = '0.4.6';
         this.currentTool = null;
         this.currentView = 'home';
         this.currentSearchTerm = '';

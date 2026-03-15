@@ -11,6 +11,7 @@ This changelog currently tracks the recent evolution of the project by published
 - Added `.github/dependabot.yml` to keep GitHub Actions and Docker base image dependencies updated automatically.
 
 ### Changed
+- Bumped the frontend asset version to `v0.4.6` so the latest JavaScript and styles are not hidden behind stale browser cache.
 - Updated `.github/workflows/dockerbuild.yml` to publish the `tools-collection` image only to GitHub Container Registry (`ghcr.io`).
 - Removed Docker Hub-specific authentication and metadata publishing from the image build workflow.
 - Moved the visible UI version badge and footer version text to JavaScript so both are sourced from `this.assetVersion`.
