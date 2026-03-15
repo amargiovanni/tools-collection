@@ -6,6 +6,8 @@ services:
     container_name: tools-collection
     ports:
       - "8080:80"
+    environment:
+      DEFAULT_LANGUAGE: ${DEFAULT_LANGUAGE:-en}
     volumes:
       - ./data:/usr/share/nginx/html/data:ro
     restart: unless-stopped
