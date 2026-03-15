@@ -4,18 +4,34 @@ All notable changes to this project are documented in this file.
 
 This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
 
-## Upcoming release
+## Upcoming release (`1.1.0`)
 
 ### Added
 - Added `.dockerignore` exclusions for `Dockerfile` and `compose.yaml` so they are not copied into the final production image.
 - Added `.github/dependabot.yml` to keep GitHub Actions and Docker base image dependencies updated automatically.
+- Added a reusable brand mark component with support for a custom `/data/logo.png` image across the home page and tool sidebar.
 
 ### Changed
-- Bumped the frontend asset version to `v0.4.6` so the latest JavaScript and styles are not hidden behind stale browser cache.
+- Bumped the product version to `1.1.0`.
+- Updated the production Docker image build to use a multi-stage Astro static build before serving the compiled `dist/` output with `nginx:alpine`.
+- Restored visible version badges in the home header, home footer, tool header, and tool footer using `package.json` as the shared source of truth.
+- Restored support for a custom `/data/logo.png` brand image on the home page and next to the app title inside the tool sidebar.
 - Updated `.github/workflows/dockerbuild.yml` to publish the `tools-collection` image only to GitHub Container Registry (`ghcr.io`).
 - Removed Docker Hub-specific authentication and metadata publishing from the image build workflow.
-- Moved the visible UI version badge and footer version text to JavaScript so both are sourced from `this.assetVersion`.
-- Removed the inline home logo `onerror` handler and now manage logo fallback behavior from `app.js`.
+
+## Published: `b56cdbb` (`v1.0.0`)
+
+### Added
+- Rebuilt the project as a static Astro application with Solid.js islands and strict TypeScript.
+- Added dedicated per-language pages and per-tool routes for all 27 tools.
+- Added a command palette with fuzzy search and keyboard shortcut support.
+- Added a GitHub Actions CI workflow for test, build, and source-quality checks.
+- Added project governance files including `LICENSE` and `CONTRIBUTING.md`.
+
+### Changed
+- Migrated the UI architecture from the legacy monolithic vanilla-JavaScript SPA to modular Astro layouts and Solid components.
+- Reworked the homepage and tool layouts with the new design system, localized routing, and shared i18n message catalog.
+- Switched the default theme handling to CSS-token based styling aligned with the Astro frontend architecture.
 
 ## Published: `05aba28`
 
