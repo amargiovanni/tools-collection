@@ -62,6 +62,9 @@ const currentPath = Astro.url.pathname
         </div>
 
         <div class="ml-auto flex items-center gap-2">
+          <span class="hidden h-9 items-center rounded-lg border border-accent/30 bg-accent/10 px-3 text-sm font-semibold tracking-wide text-accent sm:inline-flex">
+            v{appVersion}
+          </span>
           <button
             type="button"
             id="tool-search-trigger"
@@ -75,9 +78,6 @@ const currentPath = Astro.url.pathname
               <span>⌘</span>K
             </kbd>
           </button>
-          <span class="hidden h-9 items-center rounded-lg border border-accent/30 bg-accent/10 px-3 text-sm font-semibold tracking-wide text-accent sm:inline-flex">
-            v{appVersion}
-          </span>
           <!-- Theme toggle -->
           <button
             type="button"
