@@ -104,9 +104,6 @@ class OnlineToolsApp {
             { selector: '[data-tool="domain-extractor"]', key: 'nav.domainExtractor' },
             { selector: '[data-tool="email-extractor"]', key: 'nav.emailExtractor' },
             { selector: '[data-tool="count-duplicates"]', key: 'nav.countDuplicates' },
-            { selector: '[data-tool="curl-burp-converter"]', key: 'nav.curlBurpConverter' },
-            { selector: '[data-tool="ioc-escape"]', key: 'nav.iocEscape' },
-            { selector: '[data-tool="jwt-decoder"]', key: 'nav.jwtDecoder' },
             { selector: '[data-tool="cert-extractor"]', key: 'nav.certExtractor' },
             { selector: '[data-tool="password-checker"]', key: 'nav.passwordChecker' },
             { selector: '[data-tool="qr-generator"]', key: 'nav.qrGenerator' },
@@ -135,12 +132,14 @@ class OnlineToolsApp {
             { selector: '#password-generator .tool-header h2', key: 'passwordGenerator.title' },
             { selector: '#password-generator .tool-header p', key: 'passwordGenerator.description' },
             { selector: '#password-generator .setting-item:nth-of-type(1) .form-label', key: 'passwordGenerator.lengthLabel', type: 'textNode', trailingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(2) label', key: 'passwordGenerator.includeUppercase', type: 'textNode', leadingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(3) label', key: 'passwordGenerator.includeLowercase', type: 'textNode', leadingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(4) label', key: 'passwordGenerator.includeNumbers', type: 'textNode', leadingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(5) label', key: 'passwordGenerator.includeSymbols', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(2) .form-label', key: 'passwordGenerator.countLabel' },
+            { selector: '#password-generator .setting-item:nth-of-type(3) label', key: 'passwordGenerator.includeUppercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(4) label', key: 'passwordGenerator.includeLowercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(5) label', key: 'passwordGenerator.includeNumbers', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(6) label', key: 'passwordGenerator.includeSymbols', type: 'textNode', leadingSpace: true },
             { selector: '#generatePassword', key: 'passwordGenerator.generate' },
-            { selector: '#generatedPassword', key: 'passwordGenerator.placeholder', attr: 'placeholder' },
+            { selector: '#passwordResultsHeader .form-label', key: 'passwordGenerator.outputLabel' },
+            { selector: '#copyAllPasswords', key: 'passwordGenerator.copyAll' },
 
             { selector: '#username-generator .tool-header h2', key: 'username.title' },
             { selector: '#username-generator .tool-header p', key: 'username.description' },
@@ -151,6 +150,8 @@ class OnlineToolsApp {
             { selector: '#usernameStyle option[value="cool"]', key: 'username.styleCool' },
             { selector: '#username-generator .setting-item:nth-of-type(2) .form-label', key: 'username.count' },
             { selector: '#generateUsernames', key: 'username.generate' },
+            { selector: '#usernameResultsHeader .form-label', key: 'username.outputLabel' },
+            { selector: '#copyAllUsernames', key: 'username.copyAll' },
 
             { selector: '#add-text-lines .tool-header h2', key: 'addText.title' },
             { selector: '#add-text-lines .tool-header p', key: 'addText.description' },
@@ -227,21 +228,6 @@ class OnlineToolsApp {
             { selector: '#email-extractor .options-section label', key: 'email.removeDuplicates', type: 'textNode', leadingSpace: true },
             { selector: '#extractEmailsBtn', key: 'email.extract' },
             { selector: '#email-extractor .output-section .form-label', key: 'email.outputLabel' },
-
-            { selector: '#curl-burp-converter .tool-header h2', key: 'curl.title' },
-            { selector: '#curl-burp-converter .tool-header p', key: 'curl.description' },
-            { selector: '#curl-burp-converter .input-section .form-label', key: 'curl.inputLabel' },
-            { selector: '#curlInput', key: 'curl.placeholder', attr: 'placeholder' },
-            { selector: '#convertCurlBtn', key: 'curl.convert' },
-            { selector: '#curl-burp-converter .output-section .form-label', key: 'curl.outputLabel' },
-
-            { selector: '#ioc-escape .tool-header h2', key: 'ioc.title' },
-            { selector: '#ioc-escape .tool-header p', key: 'ioc.description' },
-            { selector: '#ioc-escape .input-section .form-label', key: 'common.inputText' },
-            { selector: '#iocInput', key: 'ioc.placeholder', attr: 'placeholder' },
-            { selector: '#escapeIocBtn', key: 'ioc.escape' },
-            { selector: '#unescapeIocBtn', key: 'ioc.unescape' },
-            { selector: '#ioc-escape .output-section .form-label', key: 'common.result' },
 
             { selector: '#emoji-converter .tool-header h2', key: 'emoji.title' },
             { selector: '#emoji-converter .tool-header p', key: 'emoji.description' },
@@ -339,15 +325,6 @@ class OnlineToolsApp {
             { selector: '#xml-beautifier .setting-item label:nth-of-type(3)', key: 'json.indentTab', type: 'textNode', leadingSpace: true },
             { selector: '#formatXmlBtn', key: 'xml.format' },
             { selector: '#xml-beautifier .output-section .form-label', key: 'xml.outputLabel' },
-
-            { selector: '#jwt-decoder .tool-header h2', key: 'jwt.title' },
-            { selector: '#jwt-decoder .tool-header p', key: 'jwt.description' },
-            { selector: '#jwt-decoder .input-section .form-label', key: 'jwt.inputLabel' },
-            { selector: '#jwtInput', key: 'jwt.placeholder', attr: 'placeholder' },
-            { selector: '#decodeJwtBtn', key: 'jwt.decode' },
-            { selector: '#jwt-decoder .output-section:nth-of-type(1) .form-label', key: 'jwt.header' },
-            { selector: '#jwt-decoder .output-section:nth-of-type(2) .form-label', key: 'jwt.payload' },
-            { selector: '#jwt-decoder .output-section:nth-of-type(3) .form-label', key: 'jwt.signature' },
 
             { selector: '#cert-extractor .tool-header h2', key: 'cert.title' },
             { selector: '#cert-extractor .tool-header p', key: 'cert.description' },
@@ -632,8 +609,6 @@ class OnlineToolsApp {
         this.initRemoveLineBreaks();
         this.initRemoveLinesContaining();
         this.initEmailExtractor();
-        this.initCurlBurpConverter();
-        this.initIocEscape();
         this.initEmojiConverter();
         this.initBase64Converter();
         this.initUrlEncoder();
@@ -644,7 +619,6 @@ class OnlineToolsApp {
         this.initTimestampConverter();
         this.initHashGenerator();
         this.initXmlBeautifier();
-        this.initJwtDecoder();
         this.initCertExtractor();
         this.initPasswordChecker();
         this.initQrGenerator();
@@ -765,11 +739,13 @@ class OnlineToolsApp {
 
         const lengthSlider = container.querySelector('#passwordLength');
         const lengthValue = container.querySelector('#lengthValue');
+        const countInput = container.querySelector('#passwordCount');
         const generateBtn = container.querySelector('#generatePassword');
-        const passwordOutput = container.querySelector('#generatedPassword');
-        const copyBtn = container.querySelector('#copyPassword');
+        const resultsHeader = container.querySelector('#passwordResultsHeader');
+        const resultsContainer = container.querySelector('#passwordResults');
+        const copyAllBtn = container.querySelector('#copyAllPasswords');
 
-        if (!lengthSlider || !generateBtn || !passwordOutput || !copyBtn) return;
+        if (!lengthSlider || !generateBtn || !resultsContainer) return;
 
         lengthSlider.addEventListener('input', () => {
             if (lengthValue) lengthValue.textContent = lengthSlider.value;
@@ -777,6 +753,7 @@ class OnlineToolsApp {
 
         generateBtn.addEventListener('click', () => {
             const length = parseInt(lengthSlider.value);
+            const count = Math.max(1, Math.min(20, parseInt(countInput?.value || '5')));
             const includeUpper = container.querySelector('#includeUppercase')?.checked || false;
             const includeLower = container.querySelector('#includeLowercase')?.checked || true;
             const includeNumbers = container.querySelector('#includeNumbers')?.checked || false;
@@ -800,21 +777,45 @@ class OnlineToolsApp {
                 return values[0] % max;
             };
 
-            const passwordChars = selectedCharsets.map(set => set.charAt(getRandomIndex(set.length)));
-            while (passwordChars.length < length) {
-                passwordChars.push(charset.charAt(getRandomIndex(charset.length)));
+            const generatePasswordValue = () => {
+                const passwordChars = selectedCharsets.map(set => set.charAt(getRandomIndex(set.length)));
+                while (passwordChars.length < length) {
+                    passwordChars.push(charset.charAt(getRandomIndex(charset.length)));
+                }
+
+                for (let i = passwordChars.length - 1; i > 0; i--) {
+                    const j = getRandomIndex(i + 1);
+                    [passwordChars[i], passwordChars[j]] = [passwordChars[j], passwordChars[i]];
+                }
+
+                return passwordChars.join('');
+            };
+
+            const passwords = Array.from({ length: count }, generatePasswordValue);
+            resultsContainer.innerHTML = '';
+
+            passwords.forEach(password => {
+                const passwordItem = document.createElement('div');
+                passwordItem.className = 'username-item';
+                passwordItem.innerHTML = `
+                    <span class="username-text">${password}</span>
+                    <button class="btn btn--sm copy-password-item">${this.t('common.copy', 'Copy')}</button>
+                `;
+
+                passwordItem.querySelector('.copy-password-item').addEventListener('click', () => {
+                    this.copyToClipboard(password);
+                });
+
+                resultsContainer.appendChild(passwordItem);
+            });
+
+            if (resultsHeader) {
+                resultsHeader.style.display = passwords.length > 0 ? 'flex' : 'none';
             }
 
-            for (let i = passwordChars.length - 1; i > 0; i--) {
-                const j = getRandomIndex(i + 1);
-                [passwordChars[i], passwordChars[j]] = [passwordChars[j], passwordChars[i]];
-            }
-
-            passwordOutput.value = passwordChars.join('');
-        });
-
-        copyBtn.addEventListener('click', () => {
-            this.copyToClipboard(passwordOutput.value);
+            copyAllBtn?.onclick = () => {
+                this.copyToClipboard(passwords.join('\n'));
+            };
         });
     }
 
@@ -825,6 +826,8 @@ class OnlineToolsApp {
 
         const generateBtn = container.querySelector('#generateUsernames');
         const resultsContainer = container.querySelector('#usernameResults');
+        const resultsHeader = container.querySelector('#usernameResultsHeader');
+        const copyAllBtn = container.querySelector('#copyAllUsernames');
         
         if (!generateBtn || !resultsContainer) return;
 
@@ -839,6 +842,7 @@ class OnlineToolsApp {
             const style = container.querySelector('#usernameStyle')?.value || 'random';
             const count = parseInt(container.querySelector('#usernameCount')?.value || 5);
             const words = wordLists[style];
+            const generatedUsernames = [];
             
             resultsContainer.innerHTML = '';
             
@@ -847,6 +851,7 @@ class OnlineToolsApp {
                 const word2 = words[Math.floor(Math.random() * words.length)];
                 const number = Math.floor(Math.random() * 1000);
                 const username = `${word1}${word2}${number}`;
+                generatedUsernames.push(username);
                 
                 const usernameItem = document.createElement('div');
                 usernameItem.className = 'username-item';
@@ -861,6 +866,14 @@ class OnlineToolsApp {
                 
                 resultsContainer.appendChild(usernameItem);
             }
+
+            if (resultsHeader) {
+                resultsHeader.style.display = generatedUsernames.length > 0 ? 'flex' : 'none';
+            }
+
+            copyAllBtn?.onclick = () => {
+                this.copyToClipboard(generatedUsernames.join('\n'));
+            };
         });
     }
 
@@ -1167,93 +1180,6 @@ class OnlineToolsApp {
 
             output.value = emails.join('\n');
             this.setStatus(stats, `${this.t('email.found', 'Emails found')}: ${emails.length}`, emails.length > 0 ? 'success' : 'info');
-        });
-
-        copyBtn?.addEventListener('click', () => {
-            this.copyToClipboard(output.value);
-        });
-    }
-
-    initCurlBurpConverter() {
-        const container = document.getElementById('curl-burp-converter');
-        if (!container) return;
-
-        const input = container.querySelector('#curlInput');
-        const output = container.querySelector('#curlOutput');
-        const convertBtn = container.querySelector('#convertCurlBtn');
-        const copyBtn = container.querySelector('#copyCurlResult');
-
-        const unquote = (value) => value.replace(/^['"]|['"]$/g, '');
-
-        convertBtn?.addEventListener('click', () => {
-            const curl = input.value.trim();
-            if (!curl) {
-                output.value = '';
-                return;
-            }
-
-            const urlMatch = curl.match(/https?:\/\/[^\s'"\\]+|['"]https?:\/\/[^'"]+['"]/i);
-            if (!urlMatch) {
-                output.value = this.t('curl.invalidUrl', 'Error: could not find a valid URL in the curl command.');
-                return;
-            }
-
-            try {
-                const url = new URL(unquote(urlMatch[0]));
-                const method = (curl.match(/(?:^|\s)-X\s+([A-Z]+)/i)?.[1] || (curl.includes(' --data') || curl.includes(' -d ') ? 'POST' : 'GET')).toUpperCase();
-                const headers = [...curl.matchAll(/(?:^|\s)-H\s+(['"])(.*?)\1/g)].map(match => match[2]);
-                const bodyMatch = curl.match(/(?:^|\s)(?:--data(?:-raw)?|-d)\s+(['"])([\s\S]*?)\1/i);
-                const body = bodyMatch ? bodyMatch[2] : '';
-
-                const requestLines = [
-                    `${method} ${url.pathname || '/'}${url.search} HTTP/1.1`,
-                    `Host: ${url.host}`,
-                    ...headers
-                ];
-
-                if (body && !headers.some(header => header.toLowerCase().startsWith('content-length:'))) {
-                    requestLines.push(`Content-Length: ${new TextEncoder().encode(body).length}`);
-                }
-
-                output.value = `${requestLines.join('\r\n')}\r\n\r\n${body}`;
-            } catch (e) {
-                output.value = `${this.t('common.error', 'Error')}: ${e.message}`;
-            }
-        });
-
-        copyBtn?.addEventListener('click', () => {
-            this.copyToClipboard(output.value);
-        });
-    }
-
-    initIocEscape() {
-        const container = document.getElementById('ioc-escape');
-        if (!container) return;
-
-        const input = container.querySelector('#iocInput');
-        const output = container.querySelector('#iocOutput');
-        const escapeBtn = container.querySelector('#escapeIocBtn');
-        const unescapeBtn = container.querySelector('#unescapeIocBtn');
-        const copyBtn = container.querySelector('#copyIocResult');
-
-        const escapeIocs = (text) => text
-            .replace(/https/gi, 'hxxps')
-            .replace(/http/gi, 'hxxp')
-            .replace(/\./g, '[.]')
-            .replace(/@/g, '[@]');
-
-        const unescapeIocs = (text) => text
-            .replace(/\[\.\]/g, '.')
-            .replace(/\[@\]/g, '@')
-            .replace(/hxxps/gi, 'https')
-            .replace(/hxxp/gi, 'http');
-
-        escapeBtn?.addEventListener('click', () => {
-            output.value = escapeIocs(input.value);
-        });
-
-        unescapeBtn?.addEventListener('click', () => {
-            output.value = unescapeIocs(input.value);
         });
 
         copyBtn?.addEventListener('click', () => {
@@ -1864,91 +1790,6 @@ class OnlineToolsApp {
 
         copyBtn?.addEventListener('click', () => {
             this.copyToClipboard(output.value);
-        });
-    }
-
-    // JWT Decoder/Inspector
-    initJwtDecoder() {
-        const container = document.getElementById('jwt-decoder');
-        if (!container) return;
-
-        const input = container.querySelector('#jwtInput');
-        const decodeBtn = container.querySelector('#decodeJwtBtn');
-        const validation = container.querySelector('#jwtValidation');
-        const headerOutput = container.querySelector('#jwtHeader');
-        const payloadOutput = container.querySelector('#jwtPayload');
-        const signatureOutput = container.querySelector('#jwtSignature');
-
-        const base64UrlDecode = (str) => {
-            const padding = (4 - (str.length % 4)) % 4;
-            const normalized = `${str}${'='.repeat(padding)}`.replace(/\-/g, '+').replace(/_/g, '/');
-            return atob(normalized);
-        };
-
-        decodeBtn?.addEventListener('click', () => {
-            const jwt = input.value.trim();
-            if (!jwt) return;
-
-            try {
-                const parts = jwt.split('.');
-                if (parts.length !== 3) {
-                    throw new Error(this.t('jwt.invalidParts', 'JWT must have 3 parts separated by dots'));
-                }
-
-                // Decode header
-                const header = JSON.parse(base64UrlDecode(parts[0]));
-                headerOutput.value = JSON.stringify(header, null, 2);
-
-                // Decode payload
-                const payload = JSON.parse(base64UrlDecode(parts[1]));
-                payloadOutput.value = JSON.stringify(payload, null, 2);
-
-                // Show signature as hex (can't verify without secret)
-                const signatureBytes = base64UrlDecode(parts[2]);
-                const signatureHex = Array.from(signatureBytes, byte => 
-                    ('0' + (byte & 0xFF).toString(16)).slice(-2)
-                ).join('');
-                signatureOutput.value = signatureHex;
-
-                const validationLines = [
-                    this.t('jwt.decoded', 'JWT decoded successfully'),
-                    this.t('jwt.signatureNotVerified', 'Signature not verified in this version')
-                ];
-                
-                if (payload.exp) {
-                    const expDate = new Date(payload.exp * 1000);
-                    const now = new Date();
-                    if (expDate < now) {
-                        validationLines.push(`${this.t('jwt.expiredOn', 'Token expired on')} ${expDate.toLocaleString()}`);
-                    } else {
-                        validationLines.push(`${this.t('jwt.validUntil', 'Token valid until')} ${expDate.toLocaleString()}`);
-                    }
-                }
-
-                if (payload.iat) {
-                    const iatDate = new Date(payload.iat * 1000);
-                    validationLines.push(`${this.t('jwt.issuedAt', 'Issued at')} ${iatDate.toLocaleString()}`);
-                }
-
-                this.setStatus(validation, validationLines.join('\n'), 'success');
-            } catch (e) {
-                this.setStatus(validation, `${this.t('common.error', 'Error')}: ${e.message}`, 'error');
-                
-                headerOutput.value = '';
-                payloadOutput.value = '';
-                signatureOutput.value = '';
-            }
-        });
-
-        // Copy buttons
-        container.querySelector('#copyJwtHeader')?.addEventListener('click', () => {
-            this.copyToClipboard(headerOutput.value);
-        });
-        container.querySelector('#copyJwtPayload')?.addEventListener('click', () => {
-            this.copyToClipboard(payloadOutput.value);
-        });
-        container.querySelector('#copyJwtSignature')?.addEventListener('click', () => {
-            this.copyToClipboard(signatureOutput.value);
         });
     }
 

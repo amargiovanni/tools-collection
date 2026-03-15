@@ -68,9 +68,6 @@
                 <div class="tool-category">
                     <h3>Sicurezza</h3>
                     <ul>
-                        <li><a href="#" data-tool="curl-burp-converter" class="tool-link">🧪 Curl to Burp Converter</a></li>
-                        <li><a href="#" data-tool="ioc-escape" class="tool-link">🛡️ IoC Escape Tool</a></li>
-                        <li><a href="#" data-tool="jwt-decoder" class="tool-link">🔑 JWT Decoder/Inspector</a></li>
                         <li><a href="#" data-tool="cert-extractor" class="tool-link">📜 PEM Certificate Inspector</a></li>
                         <li><a href="#" data-tool="password-checker" class="tool-link">🔒 Password Strength Checker</a></li>
                         <li><a href="#" data-tool="qr-generator" class="tool-link">📱 QR Code Generator/Reader</a></li>
@@ -146,30 +143,35 @@
                     <p>Genera password forti e casuali</p>
                 </div>
                 <div class="tool-content">
-                    <div class="settings-grid">
-                        <div class="setting-item">
+                    <div class="password-settings-grid">
+                        <div class="setting-item password-length-setting">
                             <label class="form-label">Lunghezza: <span id="lengthValue">16</span></label>
                             <input type="range" id="passwordLength" min="8" max="50" value="16" class="slider">
                         </div>
                         <div class="setting-item">
+                            <label class="form-label">Numero di password:</label>
+                            <input type="number" id="passwordCount" class="form-control" value="5" min="1" max="20">
+                        </div>
+                        <div class="setting-item password-option-item">
                             <label><input type="checkbox" id="includeUppercase" checked> Maiuscole (A-Z)</label>
                         </div>
-                        <div class="setting-item">
+                        <div class="setting-item password-option-item">
                             <label><input type="checkbox" id="includeLowercase" checked> Minuscole (a-z)</label>
                         </div>
-                        <div class="setting-item">
+                        <div class="setting-item password-option-item">
                             <label><input type="checkbox" id="includeNumbers" checked> Numeri (0-9)</label>
                         </div>
-                        <div class="setting-item">
+                        <div class="setting-item password-option-item">
                             <label><input type="checkbox" id="includeSymbols"> Simboli (!@#$%)</label>
                         </div>
                     </div>
                     <div class="generate-section">
                         <button class="btn btn--primary" id="generatePassword">Genera Password</button>
-                        <div class="password-result">
-                            <input type="text" id="generatedPassword" class="form-control" readonly placeholder="La password apparirà qui...">
-                            <button class="btn btn--secondary" id="copyPassword">Copia</button>
+                        <div class="output-header password-results-header" id="passwordResultsHeader" style="display: none;">
+                            <label class="form-label">Generated Passwords:</label>
+                            <button class="btn btn--sm" id="copyAllPasswords">Copy All</button>
                         </div>
+                        <div class="password-results" id="passwordResults"></div>
                     </div>
                 </div>
             </div>
@@ -198,6 +200,10 @@
                     </div>
                     <div class="generate-section">
                         <button class="btn btn--primary" id="generateUsernames">Genera Username</button>
+                        <div class="output-header username-results-header" id="usernameResultsHeader" style="display: none;">
+                            <label class="form-label">Generated Usernames:</label>
+                            <button class="btn btn--sm" id="copyAllUsernames">Copy All</button>
+                        </div>
                         <div class="username-results" id="usernameResults"></div>
                     </div>
                 </div>
@@ -431,57 +437,6 @@ https://subdomain.example.org/page
                                 <button class="btn btn--sm" id="copyEmailsResult">Copia</button>
                             </div>
                             <textarea id="emailsOutput" class="form-control" rows="8" readonly></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Curl to Burp Converter Tool -->
-            <div id="curl-burp-converter" class="tool-container">
-                <div class="tool-header">
-                    <h2>🧪 Curl to Burp Converter</h2>
-                    <p>Converti comandi curl in formato HTTP di Burp Suite</p>
-                </div>
-                <div class="tool-content">
-                    <div class="input-section">
-                        <label class="form-label">Comando Curl:</label>
-                        <textarea id="curlInput" class="form-control" rows="6" placeholder="curl -X POST 'https://example.com/api' -H 'Content-Type: application/json' -d '{\"key\":\"value\"}'"></textarea>
-                    </div>
-                    <div class="convert-section">
-                        <button class="btn btn--primary" id="convertCurlBtn">Converti</button>
-                        <div class="output-section">
-                            <div class="output-header">
-                                <label class="form-label">Request HTTP per Burp:</label>
-                                <button class="btn btn--sm" id="copyCurlResult">Copia</button>
-                            </div>
-                            <textarea id="curlOutput" class="form-control" rows="12" readonly></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- IoC Escape Tool -->
-            <div id="ioc-escape" class="tool-container">
-                <div class="tool-header">
-                    <h2>🛡️ IoC Escape Tool</h2>
-                    <p>Escape o unescape IoC nel tuo testo</p>
-                </div>
-                <div class="tool-content">
-                    <div class="input-section">
-                        <label class="form-label">Testo di Input:</label>
-                        <textarea id="iocInput" class="form-control" rows="8" placeholder="Inserisci IP, domini, URL, hash..."></textarea>
-                    </div>
-                    <div class="escape-section">
-                        <div class="escape-buttons">
-                            <button class="btn btn--primary" id="escapeIocBtn">Escape IoCs</button>
-                            <button class="btn btn--secondary" id="unescapeIocBtn">Unescape IoCs</button>
-                        </div>
-                        <div class="output-section">
-                            <div class="output-header">
-                                <label class="form-label">Risultato:</label>
-                                <button class="btn btn--sm" id="copyIocResult">Copia</button>
-                            </div>
-                            <textarea id="iocOutput" class="form-control" rows="8" readonly></textarea>
                         </div>
                     </div>
                 </div>
@@ -879,45 +834,6 @@ https://subdomain.example.org/page
                             <button class="btn btn--sm" id="copyXmlResult">Copia</button>
                         </div>
                         <textarea id="xmlOutput" class="form-control" rows="10" readonly></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- JWT Decoder/Inspector Tool -->
-            <div id="jwt-decoder" class="tool-container">
-                <div class="tool-header">
-                    <h2>🔑 JWT Decoder/Inspector</h2>
-                    <p>Decodifica token JWT e controlla claim temporali. La firma non viene verificata.</p>
-                </div>
-                <div class="tool-content">
-                    <div class="input-section">
-                        <label class="form-label">JWT Token:</label>
-                        <textarea id="jwtInput" class="form-control" rows="4" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
-                    </div>
-                    <div class="process-section">
-                        <button class="btn btn--primary btn--full-width" id="decodeJwtBtn">Decodifica JWT</button>
-                        <div id="jwtValidation" class="stats" style="display: none;"></div>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <label class="form-label">Header:</label>
-                            <button class="btn btn--sm" id="copyJwtHeader">Copia</button>
-                        </div>
-                        <textarea id="jwtHeader" class="form-control" rows="4" readonly></textarea>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <label class="form-label">Payload:</label>
-                            <button class="btn btn--sm" id="copyJwtPayload">Copia</button>
-                        </div>
-                        <textarea id="jwtPayload" class="form-control" rows="6" readonly></textarea>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <label class="form-label">Signature (Hex):</label>
-                            <button class="btn btn--sm" id="copyJwtSignature">Copia</button>
-                        </div>
-                        <textarea id="jwtSignature" class="form-control" rows="2" readonly></textarea>
                     </div>
                 </div>
             </div>
