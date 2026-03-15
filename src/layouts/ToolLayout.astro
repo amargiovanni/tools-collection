@@ -1,9 +1,11 @@
 ---
 import BaseLayout from './BaseLayout.astro'
 import Sidebar from '../components/Sidebar.astro'
+import BrandMark from '../components/BrandMark.astro'
 import { t, getAlternateLanguage } from '../i18n'
 import type { Language, MessageKey } from '../i18n'
 import type { ToolMeta } from '../config/tools'
+import { appVersion, upstreamRepositoryUrl } from '../config/site'
 
 interface Props {
   tool: ToolMeta
@@ -24,8 +26,13 @@ const currentPath = Astro.url.pathname
     <!-- Sidebar (desktop) -->
     <aside class="hidden lg:flex w-72 shrink-0 flex-col border-r border-border bg-surface overflow-y-auto h-screen sticky top-0">
       <div class="flex items-center gap-2 border-b border-border px-4 py-3">
-        <a href={`/${lang}/`} class="text-sm font-semibold text-text-primary hover:text-accent transition-colors" title={t(lang, 'app_backHomeAria')}>
-          {t(lang, 'app_title')}
+        <a href={`/${lang}/`} class="flex items-center gap-2 text-sm font-semibold text-text-primary hover:text-accent transition-colors" title={t(lang, 'app_backHomeAria')}>
+          <BrandMark
+            wrapperClass="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-sm shadow-teal-500/20"
+            imageClass="h-full w-full object-contain bg-surface-raised"
+            fallbackClass="inline-flex h-full w-full items-center justify-center p-1.5"
+          />
+          <span>{t(lang, 'app_title')}</span>
         </a>
       </div>
       <Sidebar lang={lang} currentPath={currentPath} />
@@ -59,6 +66,9 @@ const currentPath = Astro.url.pathname
           <kbd class="hidden sm:inline-flex items-center gap-1 rounded border border-border bg-surface px-2 py-0.5 text-xs text-text-muted">
             <span>⌘</span>K
           </kbd>
+          <span class="hidden rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-xs font-semibold tracking-wide text-accent sm:inline-flex">
+            v{appVersion}
+          </span>
           <!-- Theme toggle -->
           <button
             type="button"
@@ -93,8 +103,13 @@ const currentPath = Astro.url.pathname
         <div class="absolute inset-0 bg-black/50" id="mobile-overlay-backdrop"></div>
         <aside class="absolute left-0 top-0 h-full w-72 overflow-y-auto bg-surface border-r border-border">
           <div class="flex items-center justify-between border-b border-border px-4 py-3">
-            <a href={`/${lang}/`} class="text-sm font-semibold text-text-primary">
-              {t(lang, 'app_title')}
+            <a href={`/${lang}/`} class="flex items-center gap-2 text-sm font-semibold text-text-primary">
+              <BrandMark
+                wrapperClass="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-sm shadow-teal-500/20"
+                imageClass="h-full w-full object-contain bg-surface-raised"
+                fallbackClass="inline-flex h-full w-full items-center justify-center p-1.5"
+              />
+              <span>{t(lang, 'app_title')}</span>
             </a>
             <button type="button" id="mobile-menu-close" class="text-text-secondary hover:text-text-primary cursor-pointer" aria-label="Close menu">
               ✕
@@ -109,6 +124,19 @@ const currentPath = Astro.url.pathname
         <p class="mb-6 text-sm text-text-secondary">{toolDesc}</p>
         <slot />
       </main>
+
+      <footer class="border-t border-border px-4 py-4 text-sm text-text-muted lg:px-8">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span>{t(lang, 'home_footerName')}</span>
+            <span>&middot;</span>
+            <span class="font-medium text-text-secondary">v{appVersion}</span>
+          </div>
+          <a href={upstreamRepositoryUrl} class="text-text-secondary transition-colors hover:text-accent">
+            {t(lang, 'home_footerGithub')}
+          </a>
+        </div>
+      </footer>
     </div>
   </div>
 

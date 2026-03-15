@@ -1,0 +1,28 @@
+---
+import { customLogoPath } from '../config/site'
+
+interface Props {
+  wrapperClass?: string
+  imageClass?: string
+  fallbackClass?: string
+}
+
+const { wrapperClass = '', imageClass = '', fallbackClass = '' } = Astro.props
+---
+
+<span class={wrapperClass} data-brand-container>
+  <img
+    src={customLogoPath}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    class={`hidden ${imageClass}`.trim()}
+    data-brand-logo
+  />
+  <span class={fallbackClass} data-brand-fallback aria-hidden="true">
+    <svg class="h-full w-full" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <polyline points="4,17 10,11 4,5" stroke-linecap="round" stroke-linejoin="round" />
+      <line x1="12" y1="19" x2="20" y2="19" stroke-linecap="round" />
+    </svg>
+  </span>
+</span>

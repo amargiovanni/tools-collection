@@ -4,6 +4,7 @@ import '../styles/global.css'
 import { getAlternateLanguage } from '../i18n'
 import type { Language } from '../i18n'
 import CommandPalette from '../islands/CommandPalette'
+import { customLogoPath } from '../config/site'
 
 interface Props {
   title: string
@@ -77,5 +78,42 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
     </a>
     <slot />
     <CommandPalette client:only="solid-js" lang={lang} />
+    <script define:vars={{ customLogoPath }} is:inline>
+      function initCustomLogos() {
+        document.querySelectorAll('[data-brand-container]').forEach(function (container) {
+          if (container.dataset.logoResolved === 'true') return
+          container.dataset.logoResolved = 'true'
+
+          var image = container.querySelector('[data-brand-logo]')
+          var fallback = container.querySelector('[data-brand-fallback]')
+          if (!image || !fallback) return
+
+          image.addEventListener('load', function () {
+            fallback.classList.add('hidden')
+            image.classList.remove('hidden')
+          })
+
+          image.addEventListener('error', function () {
+            image.classList.add('hidden')
+            fallback.classList.remove('hidden')
+          })
+
+          if (image.complete) {
+            if (image.naturalWidth > 0) {
+              fallback.classList.add('hidden')
+              image.classList.remove('hidden')
+            } else {
+              image.classList.add('hidden')
+              fallback.classList.remove('hidden')
+            }
+          } else if (image.getAttribute('src') !== customLogoPath) {
+            image.src = customLogoPath
+          }
+        })
+      }
+
+      initCustomLogos()
+      document.addEventListener('astro:page-load', initCustomLogos)
+    </script>
   </body>
 </html>

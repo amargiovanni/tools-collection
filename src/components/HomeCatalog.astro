@@ -2,6 +2,8 @@
 import { categories, getToolsByCategory } from '../config/tools'
 import { t, getCategoryName, getAlternateLanguage } from '../i18n'
 import type { Language, MessageKey } from '../i18n'
+import BrandMark from './BrandMark.astro'
+import { appVersion, upstreamRepositoryUrl } from '../config/site'
 
 interface Props {
   lang: Language
@@ -37,8 +39,18 @@ const categoryAccents: Record<string, string> = {
 <div class="min-h-screen">
   <!-- Sticky top bar -->
   <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border/50 bg-surface/80 px-4 py-2.5 backdrop-blur-lg sm:px-6">
-    <span class="text-sm font-semibold text-text-primary">{t(lang, 'app_title')}</span>
+    <span class="flex items-center gap-2 text-sm font-semibold text-text-primary">
+      <BrandMark
+        wrapperClass="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-sm shadow-teal-500/20"
+        imageClass="h-full w-full object-contain bg-surface-raised"
+        fallbackClass="inline-flex h-full w-full items-center justify-center p-1.5"
+      />
+      <span>{t(lang, 'app_title')}</span>
+    </span>
     <div class="flex items-center gap-2">
+      <span class="hidden rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-xs font-semibold tracking-wide text-accent sm:inline-flex">
+        v{appVersion}
+      </span>
       <button
         type="button"
         id="home-search-trigger"
@@ -92,12 +104,11 @@ const categoryAccents: Record<string, string> = {
 
     <div class="relative mx-auto max-w-4xl px-4 pb-12 pt-16 text-center sm:pt-20">
       <!-- Logo mark -->
-      <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-indigo-500 shadow-lg shadow-teal-500/25">
-        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <polyline points="4,17 10,11 4,5" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="12" y1="19" x2="20" y2="19" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <BrandMark
+        wrapperClass="mx-auto mb-6 flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-lg shadow-teal-500/25"
+        imageClass="h-full w-full object-contain bg-surface-raised"
+        fallbackClass="inline-flex h-full w-full items-center justify-center p-4"
+      />
 
       <h1 class="mb-3 text-4xl font-extrabold tracking-tight text-text-primary sm:text-5xl">
         {t(lang, 'home_title')}
@@ -172,10 +183,10 @@ const categoryAccents: Record<string, string> = {
   <!-- Footer -->
   <footer class="border-t border-border px-4 py-6 text-center text-sm text-text-muted">
     {t(lang, 'home_footerName')} &middot;
-    <a href="https://github.com/amargiovanni/tools-collection" class="text-text-secondary hover:text-accent transition-colors">
+    <a href={upstreamRepositoryUrl} class="text-text-secondary hover:text-accent transition-colors">
       {t(lang, 'home_footerGithub')}
     </a>
-    &middot; <span class="text-text-muted">v1.0.0</span>
+    &middot; <span class="text-text-muted">v{appVersion}</span>
   </footer>
 </div>
 
