@@ -6,8 +6,12 @@ This changelog currently tracks the recent evolution of the project by published
 
 ## Unreleased
 
+### Added
+- Added a new `Reg2GPO` utility to convert Windows `.reg` exports into Group Policy Preferences XML with paste, upload, copy, and download flows.
+
 ### Changed
 - Aligned [README.md](README.md) to [README-it.md](README-it.md) as a faithful English translation of the Italian source document.
+- Bumped the frontend asset version to `v0.4.5` for the new tool rollout.
 
 ## Published: `f3d17f2`
 

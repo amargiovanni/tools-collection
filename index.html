@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔧 Tools Collection</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.4.4">
-    <link rel="stylesheet" href="style.css?v=0.4.4">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.4.5">
+    <link rel="stylesheet" href="style.css?v=0.4.5">
 </head>
 <body data-view="home">
     <!-- Mobile Menu Toggle -->
@@ -15,7 +15,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="app-controls">
-        <span class="version-badge" id="versionBadge">v0.4.4</span>
+        <span class="version-badge" id="versionBadge">v0.4.5</span>
         <button class="home-toggle" id="homeToggle" type="button" aria-label="Back to home">⌂</button>
         <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">EN</button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
@@ -104,6 +104,7 @@
                         <li><a href="#" data-tool="color-picker" class="tool-link">🎨 Color Picker/Converter</a></li>
                         <li><a href="#" data-tool="timestamp-converter" class="tool-link">🕐 Timestamp Converter</a></li>
                         <li><a href="#" data-tool="time-convert" class="tool-link">⏱️ TimeConvert</a></li>
+                        <li><a href="#" data-tool="reg2gpo" class="tool-link">🧩 Reg2GPO</a></li>
                         <li><a href="#" data-tool="hash-generator" class="tool-link">🔏 Hash Generator</a></li>
                     </ul>
                 </div>
@@ -136,7 +137,7 @@
                 <footer class="home-footer">
                     <span class="home-footer-name">Tools Collection</span>
                     <span class="home-footer-separator">•</span>
-                    <span class="home-footer-version">v0.4.4</span>
+                    <span class="home-footer-version">v0.4.5</span>
                     <span class="home-footer-separator">•</span>
                     <a class="home-footer-link" href="https://github.com/gioxx/tools-collection" target="_blank" rel="noreferrer">GitHub</a>
                 </footer>
@@ -893,6 +894,44 @@ https://subdomain.example.org/page
                 </div>
             </div>
 
+            <!-- Reg2GPO Tool -->
+            <div id="reg2gpo" class="tool-container">
+                <div class="tool-header">
+                    <h2>🧩 Reg2GPO</h2>
+                    <p>Convert Windows Registry exports into Group Policy Preferences XML</p>
+                </div>
+                <div class="tool-content">
+                    <div class="input-section">
+                        <label class="form-label">Registry export (.reg):</label>
+                        <textarea id="reg2gpoInput" class="form-control form-control--mono" rows="12" placeholder="Windows Registry Editor Version 5.00&#10;&#10;[HKEY_LOCAL_MACHINE\\Software\\Example]&#10;&quot;Enabled&quot;=dword:00000001&#10;&quot;Path&quot;=&quot;C:\\Program Files\\Example&quot;"></textarea>
+                        <div class="reg2gpo-upload-row">
+                            <label class="form-label" for="reg2gpoFile">Upload file:</label>
+                            <input type="file" id="reg2gpoFile" class="form-control" accept=".reg,text/plain">
+                        </div>
+                    </div>
+                    <div class="settings-grid reg2gpo-settings-grid">
+                        <div class="setting-item">
+                            <label class="form-label" for="reg2gpoCollection">Collection name:</label>
+                            <input type="text" id="reg2gpoCollection" class="form-control" value="Imported_REG" placeholder="Imported_REG">
+                        </div>
+                    </div>
+                    <div class="process-section">
+                        <button class="btn btn--primary btn--full-width" id="generateReg2GpoBtn">Generate GPO XML</button>
+                        <div id="reg2gpoStats" class="stats" style="display: none;"></div>
+                    </div>
+                    <div class="output-section">
+                        <div class="output-header">
+                            <label class="form-label">Generated XML:</label>
+                            <div class="output-header-actions">
+                                <button class="btn btn--sm" id="copyReg2GpoOutput">Copy</button>
+                                <button class="btn btn--sm btn--secondary" id="downloadReg2GpoOutput">Download XML</button>
+                            </div>
+                        </div>
+                        <textarea id="reg2gpoOutput" class="form-control form-control--mono" rows="14" readonly placeholder="&lt;Collection&gt;...&lt;/Collection&gt;"></textarea>
+                    </div>
+                </div>
+            </div>
+
             <!-- Hash Generator Tool -->
             <div id="hash-generator" class="tool-container">
                 <div class="tool-header">
@@ -1134,6 +1173,6 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
         </main>
     </div>
 
-    <script src="app.js?v=0.4.4"></script>
+    <script src="app.js?v=0.4.5"></script>
 </body>
 </html>

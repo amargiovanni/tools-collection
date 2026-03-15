@@ -1,7 +1,7 @@
 // App initialization and management
 class OnlineToolsApp {
     constructor() {
-        this.assetVersion = '0.4.4';
+        this.assetVersion = '0.4.5';
         this.currentTool = null;
         this.currentView = 'home';
         this.currentSearchTerm = '';
@@ -13,7 +13,6 @@ class OnlineToolsApp {
     }
 
     init() {
-        console.log('Initializing Online Tools App');
         this.initLanguage();
         this.initTheme();
         this.initNavigation();
@@ -139,6 +138,7 @@ class OnlineToolsApp {
             { selector: '[data-tool="color-picker"]', key: 'nav.colorPicker' },
             { selector: '[data-tool="timestamp-converter"]', key: 'nav.timestampConverter' },
             { selector: '[data-tool="time-convert"]', key: 'nav.timeConvert' },
+            { selector: '[data-tool="reg2gpo"]', key: 'nav.reg2gpo' },
             { selector: '[data-tool="hash-generator"]', key: 'nav.hashGenerator' },
 
             { selector: '#list-generator .tool-header h2', key: 'list.title' },
@@ -359,6 +359,19 @@ class OnlineToolsApp {
             { selector: '#time-convert .result-item:nth-of-type(4) span:first-child', key: 'timeConvert.hours' },
             { selector: '#time-convert .result-item:nth-of-type(5) span:first-child', key: 'timeConvert.days' },
             { selector: '#time-convert .result-item:nth-of-type(6) span:first-child', key: 'timeConvert.formatted' },
+
+            { selector: '#reg2gpo .tool-header h2', key: 'reg2gpo.title' },
+            { selector: '#reg2gpo .tool-header p', key: 'reg2gpo.description' },
+            { selector: '#reg2gpo .input-section > .form-label', key: 'reg2gpo.inputLabel' },
+            { selector: '#reg2gpoInput', key: 'reg2gpo.placeholder', attr: 'placeholder' },
+            { selector: '#reg2gpo .reg2gpo-upload-row .form-label', key: 'reg2gpo.uploadLabel' },
+            { selector: '#reg2gpoCollection', key: 'reg2gpo.collectionPlaceholder', attr: 'placeholder' },
+            { selector: '#reg2gpo .settings-grid .form-label', key: 'reg2gpo.collectionLabel' },
+            { selector: '#generateReg2GpoBtn', key: 'reg2gpo.generate' },
+            { selector: '#reg2gpo .output-header .form-label', key: 'reg2gpo.outputLabel' },
+            { selector: '#copyReg2GpoOutput', key: 'reg2gpo.copy' },
+            { selector: '#downloadReg2GpoOutput', key: 'reg2gpo.download' },
+            { selector: '#reg2gpoOutput', key: 'reg2gpo.outputPlaceholder', attr: 'placeholder' },
 
             { selector: '#hash-generator .tool-header h2', key: 'hash.title' },
             { selector: '#hash-generator .tool-header p', key: 'hash.description' },
@@ -797,7 +810,6 @@ class OnlineToolsApp {
 
     // Initialize all tools
     initTools() {
-        console.log('Initializing tools');
         this.initListGenerator();
         this.initPasswordGenerator();
         this.initUsernameGenerator();
@@ -819,6 +831,7 @@ class OnlineToolsApp {
         this.initColorPicker();
         this.initTimestampConverter();
         this.initTimeConvert();
+        this.initReg2Gpo();
         this.initHashGenerator();
         this.initXmlBeautifier();
         this.initCertExtractor();
@@ -2014,6 +2027,328 @@ class OnlineToolsApp {
                 const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
+        });
+    }
+
+    initReg2Gpo() {
+        const container = document.getElementById('reg2gpo');
+        if (!container) return;
+
+        const input = container.querySelector('#reg2gpoInput');
+        const fileInput = container.querySelector('#reg2gpoFile');
+        const collectionInput = container.querySelector('#reg2gpoCollection');
+        const output = container.querySelector('#reg2gpoOutput');
+        const stats = container.querySelector('#reg2gpoStats');
+        const generateBtn = container.querySelector('#generateReg2GpoBtn');
+        const copyBtn = container.querySelector('#copyReg2GpoOutput');
+        const downloadBtn = container.querySelector('#downloadReg2GpoOutput');
+
+        const hiveMap = {
+            HKEY_LOCAL_MACHINE: 'HKLM',
+            HKLM: 'HKLM',
+            HKEY_CURRENT_USER: 'HKCU',
+            HKCU: 'HKCU',
+            HKEY_CLASSES_ROOT: 'HKCR',
+            HKCR: 'HKCR',
+            HKEY_USERS: 'HKU',
+            HKU: 'HKU',
+            HKEY_CURRENT_CONFIG: 'HKCC',
+            HKCC: 'HKCC'
+        };
+
+        const escapeXml = (value) => String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+
+        const normalizeCollectionName = (value) => {
+            const trimmed = (value || '').trim();
+            return trimmed || 'Imported_REG';
+        };
+
+        const splitKeyPath = (fullPath) => {
+            const parts = fullPath.split('\\');
+            const rawHive = parts.shift();
+            const hive = hiveMap[rawHive] || rawHive;
+            return {
+                hive,
+                key: parts.join('\\')
+            };
+        };
+
+        const decodeHexBytes = (payload) => payload
+            .split(',')
+            .map(part => part.trim())
+            .filter(Boolean)
+            .map(part => Number.parseInt(part, 16))
+            .filter(value => Number.isFinite(value));
+
+        const decodeUtf16Le = (bytes) => {
+            if (!bytes.length) return '';
+            const evenLengthBytes = bytes.length % 2 === 0 ? bytes : bytes.slice(0, -1);
+            try {
+                const decoded = new TextDecoder('utf-16le').decode(new Uint8Array(evenLengthBytes));
+                return decoded.replace(/\u0000+$/g, '');
+            } catch (error) {
+                return '';
+            }
+        };
+
+        const parseHexValue = (typeCode, payload) => {
+            const bytes = decodeHexBytes(payload);
+            const joined = bytes.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+            if (typeCode === '2') {
+                return {
+                    type: 'REG_EXPAND_SZ',
+                    value: decodeUtf16Le(bytes) || joined
+                };
+            }
+
+            if (typeCode === '7') {
+                const decoded = decodeUtf16Le(bytes);
+                return {
+                    type: 'REG_MULTI_SZ',
+                    value: decoded ? decoded.split('\u0000').filter(Boolean).join('; ') : joined
+                };
+            }
+
+            if (typeCode === 'b') {
+                const buffer = bytes.slice(0, 8).reduce((acc, byte, index) => acc + (BigInt(byte) << (BigInt(index) * 8n)), 0n);
+                return {
+                    type: 'REG_QWORD',
+                    value: buffer.toString()
+                };
+            }
+
+            return {
+                type: 'REG_BINARY',
+                value: joined
+            };
+        };
+
+        const parseValueLine = (line) => {
+            const separatorIndex = line.indexOf('=');
+            if (separatorIndex === -1) return null;
+
+            const rawName = line.slice(0, separatorIndex).trim();
+            const rawValue = line.slice(separatorIndex + 1).trim();
+
+            if (rawValue === '-') {
+                return { skipped: true };
+            }
+
+            let name = '';
+            if (rawName === '@') {
+                name = this.t('reg2gpo.defaultValue', '(Default)');
+            } else if (rawName.startsWith('"') && rawName.endsWith('"')) {
+                name = rawName.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+            } else {
+                return null;
+            }
+
+            if (rawValue.startsWith('"') && rawValue.endsWith('"')) {
+                return {
+                    name,
+                    type: 'REG_SZ',
+                    value: rawValue.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\')
+                };
+            }
+
+            if (/^dword:/i.test(rawValue)) {
+                const hex = rawValue.slice(6).trim();
+                const parsed = Number.parseInt(hex, 16);
+                return {
+                    name,
+                    type: 'REG_DWORD',
+                    value: Number.isFinite(parsed) ? parsed.toString() : hex
+                };
+            }
+
+            const hexMatch = rawValue.match(/^hex(?:\(([0-9a-fA-F]+)\))?:(.*)$/i);
+            if (hexMatch) {
+                const [, typeCode = '', payload] = hexMatch;
+                return {
+                    name,
+                    ...parseHexValue(typeCode.toLowerCase(), payload)
+                };
+            }
+
+            return {
+                name,
+                type: 'REG_UNKNOWN',
+                value: rawValue
+            };
+        };
+
+        const joinContinuationLines = (text) => {
+            const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+            const merged = [];
+
+            lines.forEach((line) => {
+                if (merged.length > 0 && /\\\s*$/.test(merged[merged.length - 1])) {
+                    merged[merged.length - 1] = merged[merged.length - 1].replace(/\\\s*$/, '') + line.trim();
+                } else {
+                    merged.push(line);
+                }
+            });
+
+            return merged;
+        };
+
+        const parseRegistry = (text) => {
+            const lines = joinContinuationLines(text);
+            const entries = [];
+            let currentKey = null;
+            let skippedLines = 0;
+
+            lines.forEach((rawLine) => {
+                const line = rawLine.trim();
+                if (!line || line.startsWith(';') || line.startsWith('#') || /^Windows Registry Editor/i.test(line) || /^REGEDIT4$/i.test(line)) {
+                    return;
+                }
+
+                const keyMatch = line.match(/^\[(.+)\]$/);
+                if (keyMatch) {
+                    currentKey = keyMatch[1];
+                    if (currentKey.startsWith('-')) {
+                        currentKey = null;
+                        skippedLines += 1;
+                    }
+                    return;
+                }
+
+                if (!currentKey) {
+                    skippedLines += 1;
+                    return;
+                }
+
+                const parsedValue = parseValueLine(line);
+                if (!parsedValue || parsedValue.skipped) {
+                    skippedLines += 1;
+                    return;
+                }
+
+                const { hive, key } = splitKeyPath(currentKey);
+                if (!hive || !key) {
+                    skippedLines += 1;
+                    return;
+                }
+
+                entries.push({
+                    hive,
+                    key,
+                    ...parsedValue
+                });
+            });
+
+            return { entries, skippedLines };
+        };
+
+        const buildCollectionTree = (collectionName, entries) => {
+            const root = {
+                name: collectionName,
+                collections: new Map(),
+                entries: []
+            };
+
+            entries.forEach((entry) => {
+                const pathSegments = [entry.hive, ...entry.key.split('\\').filter(Boolean)];
+                let node = root;
+
+                pathSegments.forEach((segment) => {
+                    if (!node.collections.has(segment)) {
+                        node.collections.set(segment, {
+                            name: segment,
+                            collections: new Map(),
+                            entries: []
+                        });
+                    }
+                    node = node.collections.get(segment);
+                });
+
+                node.entries.push(entry);
+            });
+
+            return root;
+        };
+
+        const renderCollectionTree = (node, indentLevel = 0) => {
+            const indent = '  '.repeat(indentLevel);
+            const childIndent = '  '.repeat(indentLevel + 1);
+            const lines = [`${indent}<Collection name="${escapeXml(node.name)}">`];
+
+            node.entries.forEach((entry) => {
+                lines.push(
+                    `${childIndent}<Registry clsid="{9CD4B2F4-923D-47F5-A062-E897DD1DAD50}" name="${escapeXml(entry.name)}">`,
+                    `${childIndent}  <Properties action="U" hive="${escapeXml(entry.hive)}" key="${escapeXml(entry.key)}" name="${escapeXml(entry.name)}" type="${escapeXml(entry.type)}" value="${escapeXml(entry.value)}" />`,
+                    `${childIndent}</Registry>`
+                );
+            });
+
+            [...node.collections.values()].forEach((childNode) => {
+                lines.push(renderCollectionTree(childNode, indentLevel + 1));
+            });
+
+            lines.push(`${indent}</Collection>`);
+            return lines.join('\n');
+        };
+
+        const updateStats = (entryCount, skippedLines) => {
+            stats.textContent = `${this.t('reg2gpo.generated', 'Generated XML entries')}: ${entryCount}\n${this.t('reg2gpo.skipped', 'Skipped lines')}: ${skippedLines}`;
+            stats.style.display = 'block';
+        };
+
+        fileInput?.addEventListener('change', async (event) => {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            input.value = await file.text();
+        });
+
+        generateBtn?.addEventListener('click', () => {
+            const source = input.value.trim();
+            if (!source) {
+                alert(this.t('reg2gpo.empty', 'Paste a .reg export or upload a file first.'));
+                return;
+            }
+
+            const { entries, skippedLines } = parseRegistry(source);
+            if (entries.length === 0) {
+                alert(this.t('reg2gpo.invalid', 'No valid registry keys were found in the provided input.'));
+                return;
+            }
+
+            const collectionName = normalizeCollectionName(collectionInput.value);
+            const tree = buildCollectionTree(collectionName, entries);
+            const xml = `<?xml version="1.0" encoding="utf-8"?>\n${renderCollectionTree(tree)}`;
+
+            output.value = xml;
+            updateStats(entries.length, skippedLines);
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            if (!output.value.trim()) return;
+            this.copyToClipboard(output.value);
+        });
+
+        downloadBtn?.addEventListener('click', () => {
+            if (!output.value.trim()) {
+                alert(this.t('reg2gpo.downloadError', 'Generate the XML output before downloading it.'));
+                return;
+            }
+
+            const blob = new Blob([output.value], { type: 'application/xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = this.t('reg2gpo.downloadFilename', 'reg2gpo.xml');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
         });
     }
 
