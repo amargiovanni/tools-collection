@@ -9,70 +9,164 @@ interface Props {
 
 const { lang } = Astro.props
 const altLang = getAlternateLanguage(lang)
+const totalTools = 27
+
+const categoryColors: Record<string, string> = {
+  'text-processing': 'from-teal-500/10 to-cyan-500/10 border-teal-500/20 hover:border-teal-400',
+  'generators': 'from-violet-500/10 to-purple-500/10 border-violet-500/20 hover:border-violet-400',
+  'extraction': 'from-blue-500/10 to-indigo-500/10 border-blue-500/20 hover:border-blue-400',
+  'analysis': 'from-amber-500/10 to-orange-500/10 border-amber-500/20 hover:border-amber-400',
+  'security': 'from-rose-500/10 to-pink-500/10 border-rose-500/20 hover:border-rose-400',
+  'converters': 'from-emerald-500/10 to-green-500/10 border-emerald-500/20 hover:border-emerald-400',
+  'development': 'from-sky-500/10 to-blue-500/10 border-sky-500/20 hover:border-sky-400',
+  'utilities': 'from-fuchsia-500/10 to-pink-500/10 border-fuchsia-500/20 hover:border-fuchsia-400',
+}
+
+const categoryAccents: Record<string, string> = {
+  'text-processing': 'text-teal-600 dark:text-teal-400',
+  'generators': 'text-violet-600 dark:text-violet-400',
+  'extraction': 'text-blue-600 dark:text-blue-400',
+  'analysis': 'text-amber-600 dark:text-amber-400',
+  'security': 'text-rose-600 dark:text-rose-400',
+  'converters': 'text-emerald-600 dark:text-emerald-400',
+  'development': 'text-sky-600 dark:text-sky-400',
+  'utilities': 'text-fuchsia-600 dark:text-fuchsia-400',
+}
 ---
 
-<!-- Top bar -->
-<header class="flex items-center justify-end gap-2 px-4 py-3 sm:px-6">
-  <kbd class="hidden sm:inline-flex items-center gap-1 rounded border border-border bg-surface-raised px-2 py-0.5 text-xs text-text-muted">
-    <span>⌘</span>K
-  </kbd>
-  <a
-    href={`/${altLang}/`}
-    class="rounded-lg px-2 py-1 text-sm font-medium text-text-secondary hover:bg-surface-raised hover:text-accent transition-colors"
-    title={t(lang, 'app_switchLanguageAria')}
-  >
-    {altLang.toUpperCase()}
-  </a>
-</header>
+<div class="min-h-screen">
+  <!-- Sticky top bar -->
+  <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border/50 bg-surface/80 px-4 py-2.5 backdrop-blur-lg sm:px-6">
+    <span class="text-sm font-semibold text-text-primary">{t(lang, 'app_title')}</span>
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        id="home-search-trigger"
+        class="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-raised px-3 py-1.5 text-sm text-text-muted transition-colors hover:border-accent hover:text-text-secondary cursor-pointer"
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <span class="hidden sm:inline">{t(lang, 'app_searchPlaceholder')}</span>
+        <kbd class="hidden sm:inline-flex items-center gap-0.5 rounded border border-border px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
+          <span>⌘</span>K
+        </kbd>
+      </button>
+      <a
+        href={`/${altLang}/`}
+        class="rounded-lg border border-border px-2.5 py-1.5 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent"
+        title={t(lang, 'app_switchLanguageAria')}
+      >
+        {altLang.toUpperCase()}
+      </a>
+    </div>
+  </header>
 
-<!-- Hero -->
-<div class="mx-auto max-w-4xl text-center py-12 px-4">
-  <img
-    src="/data/logo.svg"
-    alt="Tools Collection"
-    class="mx-auto mb-8 h-28 w-auto"
-  />
-  <p class="text-sm font-medium uppercase tracking-wider text-accent mb-2">
-    {t(lang, 'home_eyebrow')}
-  </p>
-  <h1 class="text-3xl font-bold text-text-primary sm:text-4xl mb-4">
-    {t(lang, 'home_title')}
-  </h1>
-  <p class="text-text-secondary max-w-2xl mx-auto">
-    {t(lang, 'home_description')}
-  </p>
+  <!-- Hero -->
+  <div class="relative overflow-hidden">
+    <!-- Gradient background blobs -->
+    <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2">
+      <div class="h-80 w-[40rem] rounded-full bg-gradient-to-r from-teal-400/20 via-indigo-400/20 to-pink-400/20 blur-3xl"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-4xl px-4 pb-12 pt-16 text-center sm:pt-20">
+      <!-- Logo mark -->
+      <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-indigo-500 shadow-lg shadow-teal-500/25">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polyline points="4,17 10,11 4,5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="12" y1="19" x2="20" y2="19" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <h1 class="mb-3 text-4xl font-extrabold tracking-tight text-text-primary sm:text-5xl">
+        {t(lang, 'home_title')}
+      </h1>
+      <p class="mx-auto mb-8 max-w-xl text-lg text-text-secondary">
+        {t(lang, 'home_description')}
+      </p>
+
+      <!-- Stats pills -->
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          {totalTools} tools
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-surface-raised px-3 py-1 text-sm text-text-secondary">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          EN / IT
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-surface-raised px-3 py-1 text-sm text-text-secondary">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          100% client-side
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tool catalog -->
+  <div class="mx-auto max-w-6xl px-4 pb-20">
+    {categories.map((cat) => {
+      const tools = getToolsByCategory(cat)
+      const colorClass = categoryColors[cat] ?? ''
+      const accentClass = categoryAccents[cat] ?? 'text-accent'
+      return (
+        <section class="mb-12">
+          <div class="mb-5 flex items-center gap-3">
+            <h2 class={`text-sm font-bold uppercase tracking-widest ${accentClass}`}>
+              {getCategoryName(lang, cat)}
+            </h2>
+            <div class="h-px flex-1 bg-border"></div>
+            <span class="text-xs text-text-muted">{tools.length}</span>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {tools.map((tool) => {
+              const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
+              const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
+              return (
+                <a
+                  href={`/${lang}/tools/${tool.id}`}
+                  class={`group relative flex items-start gap-3.5 rounded-xl border bg-gradient-to-br p-4 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${colorClass}`}
+                >
+                  <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm" role="img" aria-hidden="true">
+                    {tool.icon}
+                  </span>
+                  <div class="min-w-0">
+                    <h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">
+                      {t(lang, nameKey)}
+                    </h3>
+                    <p class="mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2">{t(lang, descKey)}</p>
+                  </div>
+                  <svg class="absolute right-3 top-4 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              )
+            })}
+          </div>
+        </section>
+      )
+    })}
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-border px-4 py-6 text-center text-sm text-text-muted">
+    {t(lang, 'home_footerName')} &middot;
+    <a href="https://github.com/amargiovanni/tools-collection" class="text-text-secondary hover:text-accent transition-colors">
+      {t(lang, 'home_footerGithub')}
+    </a>
+  </footer>
 </div>
 
-<!-- Tool catalog by category -->
-<div class="mx-auto max-w-6xl px-4 pb-16">
-  {categories.map((cat) => {
-    const tools = getToolsByCategory(cat)
-    return (
-      <section class="mb-10">
-        <h2 class="mb-4 text-lg font-semibold text-text-primary">
-          {getCategoryName(lang, cat)}
-        </h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tools.map((tool) => {
-            const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-            const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
-            return (
-              <a
-                href={`/${lang}/tools/${tool.id}`}
-                class="group flex flex-col gap-2 rounded-xl border border-border bg-surface-raised p-4 transition-all hover:border-accent hover:shadow-md"
-              >
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl" role="img" aria-hidden="true">{tool.icon}</span>
-                  <h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">
-                    {t(lang, nameKey)}
-                  </h3>
-                </div>
-                <p class="text-sm text-text-secondary line-clamp-2">{t(lang, descKey)}</p>
-              </a>
-            )
-          })}
-        </div>
-      </section>
-    )
-  })}
-</div>
+<!-- Trigger command palette from search button -->
+<script>
+  function initHomeSearch() {
+    const btn = document.getElementById('home-search-trigger')
+    if (btn) {
+      btn.addEventListener('click', () => {
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
+      })
+    }
+  }
+  initHomeSearch()
+  document.addEventListener('astro:page-load', initHomeSearch)
+</script>
