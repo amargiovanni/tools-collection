@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔧 Online Tools - Strumenti Online</title>
-    <link rel="stylesheet" href="style.css">
+    <title>🔧 Tools Collection</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.4.5">
+    <link rel="stylesheet" href="style.css?v=0.4.5">
 </head>
-<body>
+<body data-view="home">
     <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">☰</button>
     
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="app-controls">
+        <span class="version-badge" id="versionBadge">v0.4.5</span>
+        <button class="home-toggle" id="homeToggle" type="button" aria-label="Back to home">⌂</button>
+        <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">EN</button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
+    </div>
     
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h1>🔧 Online Tools</h1>
-                <p>Collezione di utilità online</p>
-                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <h1 data-i18n="title">🔧 Online Tools</h1>
+                <p data-i18n="description">A set of useful online tools</p>
             </div>
             
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Cerca strumenti..." class="form-control">
+                <input type="text" id="searchInput" placeholder="Search tools..." data-i18n-placeholder="searchPlaceholder" class="form-control">
             </div>
 
             <nav class="tool-nav">
@@ -44,6 +51,7 @@
                     <ul>
                         <li><a href="#" data-tool="password-generator" class="tool-link">🔑 Password Generator</a></li>
                         <li><a href="#" data-tool="username-generator" class="tool-link">👤 Username Generator</a></li>
+                        <li><a href="#" data-tool="pin-generator" class="tool-link">🔢 PIN Generator</a></li>
                     </ul>
                 </div>
 
@@ -65,10 +73,7 @@
                 <div class="tool-category">
                     <h3>Sicurezza</h3>
                     <ul>
-                        <li><a href="#" data-tool="curl-burp-converter" class="tool-link">🧪 Curl to Burp Converter</a></li>
-                        <li><a href="#" data-tool="ioc-escape" class="tool-link">🛡️ IoC Escape Tool</a></li>
-                        <li><a href="#" data-tool="jwt-decoder" class="tool-link">🔑 JWT Decoder/Validator</a></li>
-                        <li><a href="#" data-tool="cert-extractor" class="tool-link">📜 Certificate Info Extractor</a></li>
+                        <li><a href="#" data-tool="cert-extractor" class="tool-link">📜 PEM Certificate Inspector</a></li>
                         <li><a href="#" data-tool="password-checker" class="tool-link">🔒 Password Strength Checker</a></li>
                         <li><a href="#" data-tool="qr-generator" class="tool-link">📱 QR Code Generator/Reader</a></li>
                     </ul>
@@ -98,6 +103,8 @@
                     <ul>
                         <li><a href="#" data-tool="color-picker" class="tool-link">🎨 Color Picker/Converter</a></li>
                         <li><a href="#" data-tool="timestamp-converter" class="tool-link">🕐 Timestamp Converter</a></li>
+                        <li><a href="#" data-tool="time-convert" class="tool-link">⏱️ TimeConvert</a></li>
+                        <li><a href="#" data-tool="reg2gpo" class="tool-link">🧩 Reg2GPO</a></li>
                         <li><a href="#" data-tool="hash-generator" class="tool-link">🔏 Hash Generator</a></li>
                     </ul>
                 </div>
@@ -106,8 +113,38 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <section class="home-view active" id="homeView">
+                <div class="home-hero">
+                    <div class="home-hero-layout">
+                        <div class="home-hero-copy">
+                            <span class="home-eyebrow">Collection</span>
+                            <h1>Online Tools for Daily Work</h1>
+                            <p>Pick a tool from the catalog below. When you open one, the full tools list moves into the sidebar for faster navigation.</p>
+                        </div>
+                        <img
+                            class="home-hero-logo"
+                            src="data/logo.png"
+                            alt=""
+                            loading="lazy"
+                            onerror="this.remove()"
+                        >
+                    </div>
+                </div>
+                <div class="home-search">
+                    <input type="text" id="homeSearchInput" class="form-control" placeholder="Search tools...">
+                </div>
+                <div class="home-catalog" id="homeCatalog"></div>
+                <footer class="home-footer">
+                    <span class="home-footer-name">Tools Collection</span>
+                    <span class="home-footer-separator">•</span>
+                    <span class="home-footer-version">v0.4.5</span>
+                    <span class="home-footer-separator">•</span>
+                    <a class="home-footer-link" href="https://github.com/amargiovanni/tools-collection" target="_blank" rel="noreferrer">GitHub</a>
+                </footer>
+            </section>
+
             <!-- List Generator Tool -->
-            <div id="list-generator" class="tool-container active">
+            <div id="list-generator" class="tool-container">
                 <div class="tool-header">
                     <h2>📋 List Generator</h2>
                     <p>Converti il testo in diversi formati di lista</p>
@@ -143,30 +180,37 @@
                     <p>Genera password forti e casuali</p>
                 </div>
                 <div class="tool-content">
-                    <div class="settings-grid">
-                        <div class="setting-item">
+                    <div class="password-settings-grid">
+                        <div class="setting-item password-length-setting">
                             <label class="form-label">Lunghezza: <span id="lengthValue">16</span></label>
                             <input type="range" id="passwordLength" min="8" max="50" value="16" class="slider">
                         </div>
                         <div class="setting-item">
-                            <label><input type="checkbox" id="includeUppercase" checked> Maiuscole (A-Z)</label>
+                            <label class="form-label">Numero di password:</label>
+                            <input type="number" id="passwordCount" class="form-control" value="5" min="1" max="20">
                         </div>
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="includeLowercase" checked> Minuscole (a-z)</label>
-                        </div>
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="includeNumbers" checked> Numeri (0-9)</label>
-                        </div>
-                        <div class="setting-item">
-                            <label><input type="checkbox" id="includeSymbols"> Simboli (!@#$%)</label>
+                        <div class="password-options-grid">
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeUppercase" checked> Maiuscole (A-Z)</label>
+                            </div>
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeLowercase" checked> Minuscole (a-z)</label>
+                            </div>
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeNumbers" checked> Numeri (0-9)</label>
+                            </div>
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeSymbols"> Simboli (!@#$%)</label>
+                            </div>
                         </div>
                     </div>
                     <div class="generate-section">
                         <button class="btn btn--primary" id="generatePassword">Genera Password</button>
-                        <div class="password-result">
-                            <input type="text" id="generatedPassword" class="form-control" readonly placeholder="La password apparirà qui...">
-                            <button class="btn btn--secondary" id="copyPassword">Copia</button>
+                        <div class="output-header password-results-header" id="passwordResultsHeader" style="display: none;">
+                            <label class="form-label">Generated Passwords:</label>
+                            <button class="btn btn--sm" id="copyAllPasswords">Copy All</button>
                         </div>
+                        <div class="password-results" id="passwordResults"></div>
                     </div>
                 </div>
             </div>
@@ -195,7 +239,42 @@
                     </div>
                     <div class="generate-section">
                         <button class="btn btn--primary" id="generateUsernames">Genera Username</button>
+                        <div class="output-header username-results-header" id="usernameResultsHeader" style="display: none;">
+                            <label class="form-label">Generated Usernames:</label>
+                            <button class="btn btn--sm" id="copyAllUsernames">Copy All</button>
+                        </div>
                         <div class="username-results" id="usernameResults"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIN Generator Tool -->
+            <div id="pin-generator" class="tool-container">
+                <div class="tool-header">
+                    <h2>🔢 PIN Generator</h2>
+                    <p>Generate numeric PIN codes with configurable length and quantity</p>
+                </div>
+                <div class="tool-content">
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label class="form-label">PIN length:</label>
+                            <input type="number" id="pinLength" class="form-control" value="6" min="3" max="12">
+                        </div>
+                        <div class="setting-item">
+                            <label class="form-label">Number of PINs:</label>
+                            <input type="number" id="pinCount" class="form-control" value="10" min="1" max="50">
+                        </div>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="pinUnique" checked> Avoid duplicates</label>
+                        </div>
+                    </div>
+                    <div class="generate-section">
+                        <button class="btn btn--primary" id="generatePins">Generate PINs</button>
+                        <div class="output-header username-results-header" id="pinResultsHeader" style="display: none;">
+                            <label class="form-label">Generated PINs:</label>
+                            <button class="btn btn--sm" id="copyAllPins">Copy All</button>
+                        </div>
+                        <div class="username-results" id="pinResults"></div>
                     </div>
                 </div>
             </div>
@@ -293,7 +372,7 @@
                 <div class="tool-content">
                     <div class="input-section">
                         <label class="form-label">URL (uno per riga):</label>
-                        <textarea id="urlInput" class="form-control" rows="8" placeholder="https://example.com/path
+                        <textarea id="domainInput" class="form-control" rows="8" placeholder="https://example.com/path
 https://subdomain.example.org/page
 ..."></textarea>
                     </div>
@@ -428,57 +507,6 @@ https://subdomain.example.org/page
                                 <button class="btn btn--sm" id="copyEmailsResult">Copia</button>
                             </div>
                             <textarea id="emailsOutput" class="form-control" rows="8" readonly></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Curl to Burp Converter Tool -->
-            <div id="curl-burp-converter" class="tool-container">
-                <div class="tool-header">
-                    <h2>🧪 Curl to Burp Converter</h2>
-                    <p>Converti comandi curl in formato HTTP di Burp Suite</p>
-                </div>
-                <div class="tool-content">
-                    <div class="input-section">
-                        <label class="form-label">Comando Curl:</label>
-                        <textarea id="curlInput" class="form-control" rows="6" placeholder="curl -X POST 'https://example.com/api' -H 'Content-Type: application/json' -d '{\"key\":\"value\"}'"></textarea>
-                    </div>
-                    <div class="convert-section">
-                        <button class="btn btn--primary" id="convertCurlBtn">Converti</button>
-                        <div class="output-section">
-                            <div class="output-header">
-                                <label class="form-label">Request HTTP per Burp:</label>
-                                <button class="btn btn--sm" id="copyCurlResult">Copia</button>
-                            </div>
-                            <textarea id="curlOutput" class="form-control" rows="12" readonly></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- IoC Escape Tool -->
-            <div id="ioc-escape" class="tool-container">
-                <div class="tool-header">
-                    <h2>🛡️ IoC Escape Tool</h2>
-                    <p>Escape o unescape IoC nel tuo testo</p>
-                </div>
-                <div class="tool-content">
-                    <div class="input-section">
-                        <label class="form-label">Testo di Input:</label>
-                        <textarea id="iocInput" class="form-control" rows="8" placeholder="Inserisci IP, domini, URL, hash..."></textarea>
-                    </div>
-                    <div class="escape-section">
-                        <div class="escape-buttons">
-                            <button class="btn btn--primary" id="escapeIocBtn">Escape IoCs</button>
-                            <button class="btn btn--secondary" id="unescapeIocBtn">Unescape IoCs</button>
-                        </div>
-                        <div class="output-section">
-                            <div class="output-header">
-                                <label class="form-label">Risultato:</label>
-                                <button class="btn btn--sm" id="copyIocResult">Copia</button>
-                            </div>
-                            <textarea id="iocOutput" class="form-control" rows="8" readonly></textarea>
                         </div>
                     </div>
                 </div>
@@ -798,6 +826,112 @@ https://subdomain.example.org/page
                 </div>
             </div>
 
+            <!-- TimeConvert Tool -->
+            <div id="time-convert" class="tool-container">
+                <div class="tool-header">
+                    <h2>⏱️ TimeConvert</h2>
+                    <p>Convert durations between common time units and formatted output</p>
+                </div>
+                <div class="tool-content">
+                    <div class="input-section">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-16);">
+                            <div>
+                                <label class="form-label">Time value:</label>
+                                <input type="number" id="timeConvertInput" class="form-control" placeholder="3600" min="0" step="any">
+                            </div>
+                            <div>
+                                <label class="form-label">Unit:</label>
+                                <select id="timeConvertUnit" class="form-control">
+                                    <option value="milliseconds">Milliseconds</option>
+                                    <option value="seconds" selected>Seconds</option>
+                                    <option value="minutes">Minutes</option>
+                                    <option value="hours">Hours</option>
+                                    <option value="days">Days</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-section">
+                        <button class="btn btn--primary btn--full-width" id="convertTimeValueBtn">Convert Time</button>
+                    </div>
+                    <div class="output-section">
+                        <div class="output-header">
+                            <label class="form-label">Results:</label>
+                        </div>
+                        <div class="results-container">
+                            <div class="result-item">
+                                <span>Milliseconds:</span>
+                                <span id="timeMilliseconds" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeMilliseconds">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Seconds:</span>
+                                <span id="timeSeconds" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeSeconds">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Minutes:</span>
+                                <span id="timeMinutes" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeMinutes">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Hours:</span>
+                                <span id="timeHours" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeHours">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Days:</span>
+                                <span id="timeDays" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeDays">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>HH:MM:SS:</span>
+                                <span id="timeFormatted" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeFormatted">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reg2GPO Tool -->
+            <div id="reg2gpo" class="tool-container">
+                <div class="tool-header">
+                    <h2>🧩 Reg2GPO</h2>
+                    <p>Convert Windows Registry exports into Group Policy Preferences XML</p>
+                </div>
+                <div class="tool-content">
+                    <div class="input-section">
+                        <label class="form-label">Registry export (.reg):</label>
+                        <textarea id="reg2gpoInput" class="form-control form-control--mono" rows="12" placeholder="Windows Registry Editor Version 5.00&#10;&#10;[HKEY_LOCAL_MACHINE\\Software\\Example]&#10;&quot;Enabled&quot;=dword:00000001&#10;&quot;Path&quot;=&quot;C:\\Program Files\\Example&quot;"></textarea>
+                        <div class="reg2gpo-upload-row">
+                            <label class="form-label" for="reg2gpoFile">Upload file:</label>
+                            <input type="file" id="reg2gpoFile" class="form-control" accept=".reg,text/plain">
+                        </div>
+                    </div>
+                    <div class="settings-grid reg2gpo-settings-grid">
+                        <div class="setting-item">
+                            <label class="form-label" for="reg2gpoCollection">Collection name:</label>
+                            <input type="text" id="reg2gpoCollection" class="form-control" value="Imported_REG" placeholder="Imported_REG">
+                        </div>
+                    </div>
+                    <div class="process-section">
+                        <button class="btn btn--primary btn--full-width" id="generateReg2GpoBtn">Generate GPO XML</button>
+                        <div id="reg2gpoStats" class="stats" style="display: none;"></div>
+                    </div>
+                    <div class="output-section">
+                        <div class="output-header">
+                            <label class="form-label">Generated XML:</label>
+                            <div class="output-header-actions">
+                                <button class="btn btn--sm" id="copyReg2GpoOutput">Copy</button>
+                                <button class="btn btn--sm btn--secondary" id="downloadReg2GpoOutput">Download XML</button>
+                            </div>
+                        </div>
+                        <textarea id="reg2gpoOutput" class="form-control form-control--mono" rows="14" readonly placeholder="&lt;Collection&gt;...&lt;/Collection&gt;"></textarea>
+                    </div>
+                </div>
+            </div>
+
             <!-- Hash Generator Tool -->
             <div id="hash-generator" class="tool-container">
                 <div class="tool-header">
@@ -880,50 +1014,11 @@ https://subdomain.example.org/page
                 </div>
             </div>
 
-            <!-- JWT Decoder/Validator Tool -->
-            <div id="jwt-decoder" class="tool-container">
-                <div class="tool-header">
-                    <h2>🔑 JWT Decoder/Validator</h2>
-                    <p>Decodifica e valida token JWT (JSON Web Token)</p>
-                </div>
-                <div class="tool-content">
-                    <div class="input-section">
-                        <label class="form-label">JWT Token:</label>
-                        <textarea id="jwtInput" class="form-control" rows="4" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
-                    </div>
-                    <div class="process-section">
-                        <button class="btn btn--primary btn--full-width" id="decodeJwtBtn">Decodifica JWT</button>
-                        <div id="jwtValidation" class="stats" style="display: none;"></div>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <label class="form-label">Header:</label>
-                            <button class="btn btn--sm" id="copyJwtHeader">Copia</button>
-                        </div>
-                        <textarea id="jwtHeader" class="form-control" rows="4" readonly></textarea>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <label class="form-label">Payload:</label>
-                            <button class="btn btn--sm" id="copyJwtPayload">Copia</button>
-                        </div>
-                        <textarea id="jwtPayload" class="form-control" rows="6" readonly></textarea>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <label class="form-label">Signature (Hex):</label>
-                            <button class="btn btn--sm" id="copyJwtSignature">Copia</button>
-                        </div>
-                        <textarea id="jwtSignature" class="form-control" rows="2" readonly></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Certificate Info Extractor Tool -->
+            <!-- PEM Certificate Inspector Tool -->
             <div id="cert-extractor" class="tool-container">
                 <div class="tool-header">
-                    <h2>📜 Certificate Info Extractor</h2>
-                    <p>Estrae informazioni da certificati SSL/TLS in formato PEM</p>
+                    <h2>📜 PEM Certificate Inspector</h2>
+                    <p>Valida il PEM e calcola fingerprint locali. Subject e issuer completi richiedono un parser ASN.1 dedicato.</p>
                 </div>
                 <div class="tool-content">
                     <div class="input-section">
@@ -1000,7 +1095,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
                         <div class="results-container">
                             <div class="result-item">
                                 <span>Lunghezza:</span>
-                                <span id="passwordLength" class="result-text"></span>
+                                <span id="passwordCheckLength" class="result-text"></span>
                             </div>
                             <div class="result-item">
                                 <span>Maiuscole:</span>
@@ -1032,7 +1127,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
             <div id="qr-generator" class="tool-container">
                 <div class="tool-header">
                     <h2>📱 QR Code Generator/Reader</h2>
-                    <p>Genera codici QR da testo o leggi codici QR esistenti</p>
+                    <p>Genera QR tramite un servizio esterno e prova a leggere immagini QR con le API native del browser.</p>
                 </div>
                 <div class="tool-content">
                     <div class="input-section">
@@ -1078,6 +1173,6 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
         </main>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=0.4.5"></script>
 </body>
 </html>

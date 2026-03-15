@@ -1,20 +1,473 @@
 // App initialization and management
 class OnlineToolsApp {
     constructor() {
-        this.currentTool = 'list-generator';
+        this.assetVersion = '0.4.5';
+        this.currentTool = null;
+        this.currentView = 'home';
+        this.currentSearchTerm = '';
+        this.supportedLanguages = ['en', 'it'];
+        this.defaultLanguage = 'en';
+        this.currentLanguage = this.defaultLanguage;
+        this.messages = {};
         this.init();
     }
 
     init() {
-        console.log('Initializing Online Tools App');
+        this.initLanguage();
         this.initTheme();
         this.initNavigation();
         this.initMobileMenu();
         this.initSearch();
         this.initTools();
-        
-        // Set initial tool
-        this.switchTool(this.currentTool);
+        this.initRouting();
+        this.initHomeButton();
+        this.renderHomeCatalog();
+
+        const initialTool = this.getInitialTool();
+        if (initialTool) {
+            this.switchTool(initialTool, { updateHash: false });
+        } else {
+            this.showHome({ updateHash: false });
+        }
+    }
+
+    // Language Management
+    initLanguage() {
+        const langToggle = document.getElementById('langToggle');
+        const savedLang = localStorage.getItem('language');
+        const browserLang = (navigator.language.split('-')[0] || this.defaultLanguage).toLowerCase();
+        const initialLang = this.supportedLanguages.includes(savedLang)
+            ? savedLang
+            : (this.supportedLanguages.includes(browserLang) ? browserLang : this.defaultLanguage);
+
+        const applyTranslations = (messages) => {
+            this.messages = messages;
+            this.applySelectorTranslations();
+            this.renderHomeCatalog();
+
+            document.documentElement.lang = this.currentLanguage;
+            document.title = this.t('app.documentTitle', 'Tools Collection');
+            const homeToggle = document.getElementById('homeToggle');
+            if (langToggle) {
+                langToggle.textContent = this.currentLanguage.toUpperCase();
+                langToggle.setAttribute('aria-label', this.t('app.switchLanguageAria', 'Switch language'));
+                langToggle.title = this.t('app.switchLanguageTitle', 'Switch language');
+            }
+            if (homeToggle) {
+                homeToggle.setAttribute('aria-label', this.t('app.backHomeAria', 'Back to home'));
+                homeToggle.title = this.t('app.backHomeTitle', 'Back to home');
+            }
+        };
+
+        const loadLocale = (code) => {
+            fetch(`locales/${code}.json?v=${this.assetVersion}`)
+                .then(res => res.json())
+                .then(data => {
+                    this.currentLanguage = code;
+                    applyTranslations(data);
+                })
+                .catch(err => {
+                    if (code !== this.defaultLanguage) {
+                        console.log(`Falling back to ${this.defaultLanguage}`);
+                        loadLocale(this.defaultLanguage);
+                    } else {
+                        console.error('Failed to load translations', err);
+                    }
+                });
+        };
+
+        if (langToggle) {
+            langToggle.addEventListener('click', () => {
+                const nextLang = this.currentLanguage === 'en' ? 'it' : 'en';
+                localStorage.setItem('language', nextLang);
+                loadLocale(nextLang);
+            });
+        }
+
+        loadLocale(initialLang);
+    }
+
+    t(key, fallback = '') {
+        return this.messages[key] || fallback;
+    }
+
+    getTranslationBindings() {
+        return [
+            { selector: '.mobile-menu-toggle', key: 'app.mobileMenuAria', attr: 'aria-label' },
+            { selector: '.sidebar-header h1', key: 'app.title' },
+            { selector: '.sidebar-header p', key: 'app.description' },
+            { selector: '#searchInput', key: 'app.searchPlaceholder', attr: 'placeholder' },
+            { selector: '#homeSearchInput', key: 'app.searchPlaceholder', attr: 'placeholder' },
+            { selector: '#homeView .home-eyebrow', key: 'home.eyebrow' },
+            { selector: '#homeView .home-hero h1', key: 'home.title' },
+            { selector: '#homeView .home-hero p', key: 'home.description' },
+            { selector: '.home-footer-name', key: 'home.footerName' },
+            { selector: '.home-footer-link', key: 'home.footerGithub' },
+
+            { selector: '.tool-category:nth-of-type(1) h3', key: 'sidebar.textProcessing' },
+            { selector: '.tool-category:nth-of-type(2) h3', key: 'sidebar.generators' },
+            { selector: '.tool-category:nth-of-type(3) h3', key: 'sidebar.extraction' },
+            { selector: '.tool-category:nth-of-type(4) h3', key: 'sidebar.analysis' },
+            { selector: '.tool-category:nth-of-type(5) h3', key: 'sidebar.security' },
+            { selector: '.tool-category:nth-of-type(6) h3', key: 'sidebar.converters' },
+            { selector: '.tool-category:nth-of-type(7) h3', key: 'sidebar.development' },
+            { selector: '.tool-category:nth-of-type(8) h3', key: 'sidebar.utilities' },
+
+            { selector: '[data-tool="list-generator"]', key: 'nav.listGenerator' },
+            { selector: '[data-tool="add-text-lines"]', key: 'nav.addTextLines' },
+            { selector: '[data-tool="convert-case"]', key: 'nav.convertCase' },
+            { selector: '[data-tool="remove-duplicates"]', key: 'nav.removeDuplicates' },
+            { selector: '[data-tool="remove-line-breaks"]', key: 'nav.removeLineBreaks' },
+            { selector: '[data-tool="remove-lines-containing"]', key: 'nav.removeLinesContaining' },
+            { selector: '[data-tool="password-generator"]', key: 'nav.passwordGenerator' },
+            { selector: '[data-tool="username-generator"]', key: 'nav.usernameGenerator' },
+            { selector: '[data-tool="pin-generator"]', key: 'nav.pinGenerator' },
+            { selector: '[data-tool="domain-extractor"]', key: 'nav.domainExtractor' },
+            { selector: '[data-tool="email-extractor"]', key: 'nav.emailExtractor' },
+            { selector: '[data-tool="count-duplicates"]', key: 'nav.countDuplicates' },
+            { selector: '[data-tool="cert-extractor"]', key: 'nav.certExtractor' },
+            { selector: '[data-tool="password-checker"]', key: 'nav.passwordChecker' },
+            { selector: '[data-tool="qr-generator"]', key: 'nav.qrGenerator' },
+            { selector: '[data-tool="emoji-converter"]', key: 'nav.emojiConverter' },
+            { selector: '[data-tool="base64-converter"]', key: 'nav.base64Converter' },
+            { selector: '[data-tool="url-encoder"]', key: 'nav.urlEncoder' },
+            { selector: '[data-tool="json-formatter"]', key: 'nav.jsonFormatter' },
+            { selector: '[data-tool="diff-checker"]', key: 'nav.diffChecker' },
+            { selector: '[data-tool="regex-tester"]', key: 'nav.regexTester' },
+            { selector: '[data-tool="xml-beautifier"]', key: 'nav.xmlBeautifier' },
+            { selector: '[data-tool="color-picker"]', key: 'nav.colorPicker' },
+            { selector: '[data-tool="timestamp-converter"]', key: 'nav.timestampConverter' },
+            { selector: '[data-tool="time-convert"]', key: 'nav.timeConvert' },
+            { selector: '[data-tool="reg2gpo"]', key: 'nav.reg2gpo' },
+            { selector: '[data-tool="hash-generator"]', key: 'nav.hashGenerator' },
+
+            { selector: '#list-generator .tool-header h2', key: 'list.title' },
+            { selector: '#list-generator .tool-header p', key: 'list.description' },
+            { selector: '#list-generator .input-section .form-label', key: 'common.inputText' },
+            { selector: '#listInput', key: 'list.placeholder', attr: 'placeholder' },
+            { selector: '#list-generator .options-section h4', key: 'list.outputFormat' },
+            { selector: '#list-generator [data-format="numbered"]', key: 'list.formatNumbered' },
+            { selector: '#list-generator [data-format="bulleted"]', key: 'list.formatBulleted' },
+            { selector: '#list-generator [data-format="comma"]', key: 'list.formatComma' },
+            { selector: '#list-generator [data-format="pipe"]', key: 'list.formatPipe' },
+            { selector: '#list-generator .output-section .form-label', key: 'common.result' },
+
+            { selector: '#password-generator .tool-header h2', key: 'passwordGenerator.title' },
+            { selector: '#password-generator .tool-header p', key: 'passwordGenerator.description' },
+            { selector: '#password-generator .setting-item:nth-of-type(1) .form-label', key: 'passwordGenerator.lengthLabel', type: 'textNode', trailingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(2) .form-label', key: 'passwordGenerator.countLabel' },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(1) label', key: 'passwordGenerator.includeUppercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(2) label', key: 'passwordGenerator.includeLowercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(3) label', key: 'passwordGenerator.includeNumbers', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(4) label', key: 'passwordGenerator.includeSymbols', type: 'textNode', leadingSpace: true },
+            { selector: '#generatePassword', key: 'passwordGenerator.generate' },
+            { selector: '#passwordResultsHeader .form-label', key: 'passwordGenerator.outputLabel' },
+            { selector: '#copyAllPasswords', key: 'passwordGenerator.copyAll' },
+
+            { selector: '#username-generator .tool-header h2', key: 'username.title' },
+            { selector: '#username-generator .tool-header p', key: 'username.description' },
+            { selector: '#username-generator .setting-item:nth-of-type(1) .form-label', key: 'username.style' },
+            { selector: '#usernameStyle option[value="random"]', key: 'username.styleRandom' },
+            { selector: '#usernameStyle option[value="tech"]', key: 'username.styleTech' },
+            { selector: '#usernameStyle option[value="fantasy"]', key: 'username.styleFantasy' },
+            { selector: '#usernameStyle option[value="cool"]', key: 'username.styleCool' },
+            { selector: '#username-generator .setting-item:nth-of-type(2) .form-label', key: 'username.count' },
+            { selector: '#generateUsernames', key: 'username.generate' },
+            { selector: '#usernameResultsHeader .form-label', key: 'username.outputLabel' },
+            { selector: '#copyAllUsernames', key: 'username.copyAll' },
+
+            { selector: '#pin-generator .tool-header h2', key: 'pin.title' },
+            { selector: '#pin-generator .tool-header p', key: 'pin.description' },
+            { selector: '#pin-generator .setting-item:nth-of-type(1) .form-label', key: 'pin.lengthLabel' },
+            { selector: '#pin-generator .setting-item:nth-of-type(2) .form-label', key: 'pin.countLabel' },
+            { selector: '#pin-generator .setting-item:nth-of-type(3) label', key: 'pin.unique', type: 'textNode', leadingSpace: true },
+            { selector: '#generatePins', key: 'pin.generate' },
+            { selector: '#pinResultsHeader .form-label', key: 'pin.outputLabel' },
+            { selector: '#copyAllPins', key: 'pin.copyAll' },
+
+            { selector: '#add-text-lines .tool-header h2', key: 'addText.title' },
+            { selector: '#add-text-lines .tool-header p', key: 'addText.description' },
+            { selector: '#add-text-lines .input-section .form-label', key: 'addText.originalText' },
+            { selector: '#originalText', key: 'common.inputPlaceholder', attr: 'placeholder' },
+            { selector: '#add-text-lines .setting-item:nth-of-type(1) .form-label', key: 'addText.textToAdd' },
+            { selector: '#textToAdd', key: 'addText.additionPlaceholder', attr: 'placeholder' },
+            { selector: '#add-text-lines .setting-item:nth-of-type(2) label:nth-of-type(1)', key: 'addText.positionStart', type: 'textNode', leadingSpace: true },
+            { selector: '#add-text-lines .setting-item:nth-of-type(2) label:nth-of-type(2)', key: 'addText.positionEnd', type: 'textNode', leadingSpace: true },
+            { selector: '#add-text-lines .output-section .form-label', key: 'common.result' },
+
+            { selector: '#convert-case .tool-header h2', key: 'case.title' },
+            { selector: '#convert-case .tool-header p', key: 'case.description' },
+            { selector: '#convert-case .input-section .form-label', key: 'common.inputText' },
+            { selector: '#caseInput', key: 'common.inputPlaceholder', attr: 'placeholder' },
+            { selector: '#convert-case [data-case="upper"]', key: 'case.upper' },
+            { selector: '#convert-case [data-case="lower"]', key: 'case.lower' },
+            { selector: '#convert-case [data-case="title"]', key: 'case.titleCase' },
+            { selector: '#convert-case [data-case="camel"]', key: 'case.camel' },
+            { selector: '#convert-case [data-case="snake"]', key: 'case.snake' },
+            { selector: '#convert-case [data-case="constant"]', key: 'case.constant' },
+            { selector: '#convert-case .output-section .form-label', key: 'common.result' },
+
+            { selector: '#count-duplicates .tool-header h2', key: 'duplicates.title' },
+            { selector: '#count-duplicates .tool-header p', key: 'duplicates.description' },
+            { selector: '#count-duplicates .input-section .form-label', key: 'duplicates.inputLabel' },
+            { selector: '#duplicateInput', key: 'duplicates.placeholder', attr: 'placeholder' },
+            { selector: '#count-duplicates .options-section label:nth-of-type(1)', key: 'duplicates.sortByCount', type: 'textNode', leadingSpace: true },
+            { selector: '#count-duplicates .options-section label:nth-of-type(2)', key: 'common.caseSensitive', type: 'textNode', leadingSpace: true },
+            { selector: '#analyzeDuplicates', key: 'duplicates.analyze' },
+
+            { selector: '#domain-extractor .tool-header h2', key: 'domain.title' },
+            { selector: '#domain-extractor .tool-header p', key: 'domain.description' },
+            { selector: '#domain-extractor .input-section .form-label', key: 'domain.inputLabel' },
+            { selector: '#domainInput', key: 'domain.placeholder', attr: 'placeholder' },
+            { selector: '#domain-extractor .options-section label', key: 'domain.includeSubdomains', type: 'textNode', leadingSpace: true },
+            { selector: '#extractDomains', key: 'domain.extract' },
+            { selector: '#domain-extractor .output-section .form-label', key: 'domain.outputLabel' },
+
+            { selector: '#remove-duplicates .tool-header h2', key: 'removeDuplicates.title' },
+            { selector: '#remove-duplicates .tool-header p', key: 'removeDuplicates.description' },
+            { selector: '#remove-duplicates .input-section .form-label', key: 'common.inputText' },
+            { selector: '#removeDuplicatesInput', key: 'removeDuplicates.placeholder', attr: 'placeholder' },
+            { selector: '#remove-duplicates .options-section label:nth-of-type(1)', key: 'removeDuplicates.preserveOrder', type: 'textNode', leadingSpace: true },
+            { selector: '#remove-duplicates .options-section label:nth-of-type(2)', key: 'common.caseSensitive', type: 'textNode', leadingSpace: true },
+            { selector: '#removeDuplicatesBtn', key: 'removeDuplicates.action' },
+            { selector: '#remove-duplicates .output-section .form-label', key: 'common.result' },
+
+            { selector: '#remove-line-breaks .tool-header h2', key: 'lineBreaks.title' },
+            { selector: '#remove-line-breaks .tool-header p', key: 'lineBreaks.description' },
+            { selector: '#remove-line-breaks .input-section .form-label', key: 'common.inputText' },
+            { selector: '#lineBreaksInput', key: 'lineBreaks.placeholder', attr: 'placeholder' },
+            { selector: '#remove-line-breaks .options-section h4', key: 'lineBreaks.replaceWith' },
+            { selector: '#remove-line-breaks .replacement-options label:nth-of-type(1)', key: 'lineBreaks.space', type: 'textNode', leadingSpace: true },
+            { selector: '#remove-line-breaks .replacement-options label:nth-of-type(2)', key: 'lineBreaks.nothing', type: 'textNode', leadingSpace: true },
+            { selector: '#remove-line-breaks .replacement-options label:nth-of-type(3)', key: 'lineBreaks.custom', type: 'textNode', leadingSpace: true },
+            { selector: '#removeLineBreaksBtn', key: 'lineBreaks.action' },
+            { selector: '#remove-line-breaks .output-section .form-label', key: 'common.result' },
+
+            { selector: '#remove-lines-containing .tool-header h2', key: 'removeContaining.title' },
+            { selector: '#remove-lines-containing .tool-header p', key: 'removeContaining.description' },
+            { selector: '#remove-lines-containing .input-section .form-label', key: 'common.inputText' },
+            { selector: '#removeContainingInput', key: 'common.inputPlaceholder', attr: 'placeholder' },
+            { selector: '#remove-lines-containing .setting-item .form-label', key: 'removeContaining.termsLabel' },
+            { selector: '#wordsToRemove', key: 'removeContaining.termsPlaceholder', attr: 'placeholder' },
+            { selector: '#remove-lines-containing .options-section > label', key: 'common.caseSensitive', type: 'textNode', leadingSpace: true },
+            { selector: '#removeContainingBtn', key: 'removeContaining.action' },
+            { selector: '#remove-lines-containing .output-section .form-label', key: 'common.result' },
+
+            { selector: '#email-extractor .tool-header h2', key: 'email.title' },
+            { selector: '#email-extractor .tool-header p', key: 'email.description' },
+            { selector: '#email-extractor .input-section .form-label', key: 'common.inputText' },
+            { selector: '#emailInput', key: 'email.placeholder', attr: 'placeholder' },
+            { selector: '#email-extractor .options-section label', key: 'email.removeDuplicates', type: 'textNode', leadingSpace: true },
+            { selector: '#extractEmailsBtn', key: 'email.extract' },
+            { selector: '#email-extractor .output-section .form-label', key: 'email.outputLabel' },
+
+            { selector: '#emoji-converter .tool-header h2', key: 'emoji.title' },
+            { selector: '#emoji-converter .tool-header p', key: 'emoji.description' },
+            { selector: '#emoji-converter .input-section .form-label', key: 'common.inputText' },
+            { selector: '#emojiInput', key: 'emoji.placeholder', attr: 'placeholder' },
+            { selector: '#convertToEmojiBtn', key: 'emoji.toEmoji' },
+            { selector: '#convertToShortcodeBtn', key: 'emoji.toShortcode' },
+            { selector: '#emoji-converter .emoji-reference h4', key: 'emoji.referenceTitle' },
+            { selector: '#emoji-converter .output-section .form-label', key: 'common.result' },
+
+            { selector: '#base64-converter .tool-header h2', key: 'base64.title' },
+            { selector: '#base64-converter .tool-header p', key: 'base64.description' },
+            { selector: '#base64-converter .input-section .form-label', key: 'common.inputText' },
+            { selector: '#base64Input', key: 'base64.placeholder', attr: 'placeholder' },
+            { selector: '#base64EncodeBtn', key: 'base64.encode' },
+            { selector: '#base64DecodeBtn', key: 'base64.decode' },
+            { selector: '#base64-converter .output-section .form-label', key: 'common.result' },
+
+            { selector: '#url-encoder .tool-header h2', key: 'url.title' },
+            { selector: '#url-encoder .tool-header p', key: 'url.description' },
+            { selector: '#url-encoder .input-section .form-label', key: 'common.inputText' },
+            { selector: '#urlInput', key: 'url.placeholder', attr: 'placeholder' },
+            { selector: '#urlEncodeBtn', key: 'url.encode' },
+            { selector: '#urlDecodeBtn', key: 'url.decode' },
+            { selector: '#urlEncodeComponentBtn', key: 'url.encodeComponent' },
+            { selector: '#url-encoder .output-section .form-label', key: 'common.result' },
+
+            { selector: '#json-formatter .tool-header h2', key: 'json.title' },
+            { selector: '#json-formatter .tool-header p', key: 'json.description' },
+            { selector: '#json-formatter .input-section .form-label', key: 'json.inputLabel' },
+            { selector: '#jsonInput', key: 'json.placeholder', attr: 'placeholder' },
+            { selector: '#json-formatter .setting-item label:nth-of-type(1)', key: 'json.indent2', type: 'textNode', leadingSpace: true },
+            { selector: '#json-formatter .setting-item label:nth-of-type(2)', key: 'json.indent4', type: 'textNode', leadingSpace: true },
+            { selector: '#json-formatter .setting-item label:nth-of-type(3)', key: 'json.indentTab', type: 'textNode', leadingSpace: true },
+            { selector: '#json-formatter .setting-item label:nth-of-type(4)', key: 'json.indentCompact', type: 'textNode', leadingSpace: true },
+            { selector: '#formatJsonBtn', key: 'json.format' },
+            { selector: '#json-formatter .output-section .form-label', key: 'json.outputLabel' },
+
+            { selector: '#diff-checker .tool-header h2', key: 'diff.title' },
+            { selector: '#diff-checker .tool-header p', key: 'diff.description' },
+            { selector: '#diff-checker .input-section > div > div:nth-of-type(1) .form-label', key: 'diff.originalText' },
+            { selector: '#diffText1', key: 'diff.originalPlaceholder', attr: 'placeholder' },
+            { selector: '#diff-checker .input-section > div > div:nth-of-type(2) .form-label', key: 'diff.modifiedText' },
+            { selector: '#diffText2', key: 'diff.modifiedPlaceholder', attr: 'placeholder' },
+            { selector: '#diff-checker .options-section label:nth-of-type(1)', key: 'diff.ignoreCase', type: 'textNode', leadingSpace: true },
+            { selector: '#diff-checker .options-section label:nth-of-type(2)', key: 'diff.ignoreWhitespace', type: 'textNode', leadingSpace: true },
+            { selector: '#compareDiffBtn', key: 'diff.compare' },
+            { selector: '#diff-checker .output-header .form-label', key: 'diff.outputLabel' },
+
+            { selector: '#regex-tester .tool-header h2', key: 'regex.title' },
+            { selector: '#regex-tester .tool-header p', key: 'regex.description' },
+            { selector: '#regex-tester .input-section:nth-of-type(1) .form-label', key: 'regex.patternLabel' },
+            { selector: '#regexPattern', key: 'regex.patternPlaceholder', attr: 'placeholder' },
+            { selector: '#regex-tester .input-section:nth-of-type(1) label:nth-of-type(1)', key: 'regex.global', type: 'textNode', leadingSpace: true },
+            { selector: '#regex-tester .input-section:nth-of-type(1) label:nth-of-type(2)', key: 'regex.ignoreCase', type: 'textNode', leadingSpace: true },
+            { selector: '#regex-tester .input-section:nth-of-type(1) label:nth-of-type(3)', key: 'regex.multiline', type: 'textNode', leadingSpace: true },
+            { selector: '#regex-tester .input-section:nth-of-type(2) .form-label', key: 'regex.testTextLabel' },
+            { selector: '#regexInput', key: 'regex.testTextPlaceholder', attr: 'placeholder' },
+            { selector: '#testRegexBtn', key: 'regex.test' },
+            { selector: '#regex-tester .output-header .form-label', key: 'regex.outputLabel' },
+
+            { selector: '#color-picker .tool-header h2', key: 'color.title' },
+            { selector: '#color-picker .tool-header p', key: 'color.description' },
+            { selector: '#color-picker .input-section .form-label', key: 'color.inputLabel' },
+            { selector: '#colorTextInput', key: 'color.placeholder', attr: 'placeholder' },
+            { selector: '#convertColorBtn', key: 'color.convert' },
+            { selector: '#color-picker .output-header .form-label', key: 'color.outputLabel' },
+            { selector: '#color-picker .result-item:nth-of-type(5) span:first-child', key: 'color.preview' },
+
+            { selector: '#timestamp-converter .tool-header h2', key: 'timestamp.title' },
+            { selector: '#timestamp-converter .tool-header p', key: 'timestamp.description' },
+            { selector: '#timestamp-converter .input-section:nth-of-type(1) .form-label', key: 'timestamp.inputLabel' },
+            { selector: '#timestampInput', key: 'timestamp.placeholder', attr: 'placeholder' },
+            { selector: '#currentTimestampBtn', key: 'timestamp.useCurrent' },
+            { selector: '#timestamp-converter .input-section:nth-of-type(2) .form-label', key: 'timestamp.dateLabel' },
+            { selector: '#convertTimestampBtn', key: 'common.convert' },
+            { selector: '#timestamp-converter .output-header .form-label', key: 'timestamp.outputLabel' },
+            { selector: '#timestamp-converter .result-item:nth-of-type(1) span:first-child', key: 'timestamp.unixSeconds' },
+            { selector: '#timestamp-converter .result-item:nth-of-type(2) span:first-child', key: 'timestamp.unixMilliseconds' },
+            { selector: '#timestamp-converter .result-item:nth-of-type(5) span:first-child', key: 'timestamp.locale' },
+
+            { selector: '#time-convert .tool-header h2', key: 'timeConvert.title' },
+            { selector: '#time-convert .tool-header p', key: 'timeConvert.description' },
+            { selector: '#time-convert .input-section > div > div:nth-of-type(1) .form-label', key: 'timeConvert.inputLabel' },
+            { selector: '#timeConvertInput', key: 'timeConvert.placeholder', attr: 'placeholder' },
+            { selector: '#time-convert .input-section > div > div:nth-of-type(2) .form-label', key: 'timeConvert.unitLabel' },
+            { selector: '#timeConvertUnit option[value="milliseconds"]', key: 'timeConvert.unitMilliseconds' },
+            { selector: '#timeConvertUnit option[value="seconds"]', key: 'timeConvert.unitSeconds' },
+            { selector: '#timeConvertUnit option[value="minutes"]', key: 'timeConvert.unitMinutes' },
+            { selector: '#timeConvertUnit option[value="hours"]', key: 'timeConvert.unitHours' },
+            { selector: '#timeConvertUnit option[value="days"]', key: 'timeConvert.unitDays' },
+            { selector: '#convertTimeValueBtn', key: 'timeConvert.convert' },
+            { selector: '#time-convert .output-header .form-label', key: 'timeConvert.outputLabel' },
+            { selector: '#time-convert .result-item:nth-of-type(1) span:first-child', key: 'timeConvert.milliseconds' },
+            { selector: '#time-convert .result-item:nth-of-type(2) span:first-child', key: 'timeConvert.seconds' },
+            { selector: '#time-convert .result-item:nth-of-type(3) span:first-child', key: 'timeConvert.minutes' },
+            { selector: '#time-convert .result-item:nth-of-type(4) span:first-child', key: 'timeConvert.hours' },
+            { selector: '#time-convert .result-item:nth-of-type(5) span:first-child', key: 'timeConvert.days' },
+            { selector: '#time-convert .result-item:nth-of-type(6) span:first-child', key: 'timeConvert.formatted' },
+
+            { selector: '#reg2gpo .tool-header h2', key: 'reg2gpo.title' },
+            { selector: '#reg2gpo .tool-header p', key: 'reg2gpo.description' },
+            { selector: '#reg2gpo .input-section > .form-label', key: 'reg2gpo.inputLabel' },
+            { selector: '#reg2gpoInput', key: 'reg2gpo.placeholder', attr: 'placeholder' },
+            { selector: '#reg2gpo .reg2gpo-upload-row .form-label', key: 'reg2gpo.uploadLabel' },
+            { selector: '#reg2gpoCollection', key: 'reg2gpo.collectionPlaceholder', attr: 'placeholder' },
+            { selector: '#reg2gpo .settings-grid .form-label', key: 'reg2gpo.collectionLabel' },
+            { selector: '#generateReg2GpoBtn', key: 'reg2gpo.generate' },
+            { selector: '#reg2gpo .output-header .form-label', key: 'reg2gpo.outputLabel' },
+            { selector: '#copyReg2GpoOutput', key: 'reg2gpo.copy' },
+            { selector: '#downloadReg2GpoOutput', key: 'reg2gpo.download' },
+            { selector: '#reg2gpoOutput', key: 'reg2gpo.outputPlaceholder', attr: 'placeholder' },
+
+            { selector: '#hash-generator .tool-header h2', key: 'hash.title' },
+            { selector: '#hash-generator .tool-header p', key: 'hash.description' },
+            { selector: '#hash-generator .input-section .form-label', key: 'hash.inputLabel' },
+            { selector: '#hashInput', key: 'hash.placeholder', attr: 'placeholder' },
+            { selector: '#generateHashBtn', key: 'hash.generate' },
+            { selector: '#hash-generator .output-header .form-label', key: 'hash.outputLabel' },
+
+            { selector: '#xml-beautifier .tool-header h2', key: 'xml.title' },
+            { selector: '#xml-beautifier .tool-header p', key: 'xml.description' },
+            { selector: '#xml-beautifier .input-section .form-label', key: 'xml.inputLabel' },
+            { selector: '#xmlInput', key: 'xml.placeholder', attr: 'placeholder' },
+            { selector: '#xml-beautifier .setting-item label:nth-of-type(1)', key: 'json.indent2', type: 'textNode', leadingSpace: true },
+            { selector: '#xml-beautifier .setting-item label:nth-of-type(2)', key: 'json.indent4', type: 'textNode', leadingSpace: true },
+            { selector: '#xml-beautifier .setting-item label:nth-of-type(3)', key: 'json.indentTab', type: 'textNode', leadingSpace: true },
+            { selector: '#formatXmlBtn', key: 'xml.format' },
+            { selector: '#xml-beautifier .output-section .form-label', key: 'xml.outputLabel' },
+
+            { selector: '#cert-extractor .tool-header h2', key: 'cert.title' },
+            { selector: '#cert-extractor .tool-header p', key: 'cert.description' },
+            { selector: '#cert-extractor .input-section .form-label', key: 'cert.inputLabel' },
+            { selector: '#certInput', key: 'cert.placeholder', attr: 'placeholder' },
+            { selector: '#extractCertBtn', key: 'cert.extract' },
+            { selector: '#cert-extractor .output-header .form-label', key: 'cert.outputLabel' },
+            { selector: '#cert-extractor .result-item:nth-of-type(1) span:first-child', key: 'cert.subject' },
+            { selector: '#cert-extractor .result-item:nth-of-type(2) span:first-child', key: 'cert.issuer' },
+            { selector: '#cert-extractor .result-item:nth-of-type(3) span:first-child', key: 'cert.serial' },
+            { selector: '#cert-extractor .result-item:nth-of-type(4) span:first-child', key: 'cert.validFrom' },
+            { selector: '#cert-extractor .result-item:nth-of-type(5) span:first-child', key: 'cert.validTo' },
+            { selector: '#cert-extractor .result-item:nth-of-type(6) span:first-child', key: 'cert.algorithm' },
+
+            { selector: '#password-checker .tool-header h2', key: 'passwordCheck.title' },
+            { selector: '#password-checker .tool-header p', key: 'passwordCheck.description' },
+            { selector: '#password-checker .input-section .form-label', key: 'passwordCheck.inputLabel' },
+            { selector: '#passwordInput', key: 'passwordCheck.placeholder', attr: 'placeholder' },
+            { selector: '#password-checker .input-section > label', key: 'passwordCheck.showPassword', type: 'textNode', leadingSpace: true },
+            { selector: '#checkPasswordBtn', key: 'passwordCheck.action' },
+            { selector: '#password-checker .output-header .form-label', key: 'passwordCheck.outputLabel' },
+            { selector: '#password-checker .result-item:nth-of-type(1) span:first-child', key: 'passwordCheck.length' },
+            { selector: '#password-checker .result-item:nth-of-type(2) span:first-child', key: 'passwordCheck.uppercase' },
+            { selector: '#password-checker .result-item:nth-of-type(3) span:first-child', key: 'passwordCheck.lowercase' },
+            { selector: '#password-checker .result-item:nth-of-type(4) span:first-child', key: 'passwordCheck.numbers' },
+            { selector: '#password-checker .result-item:nth-of-type(5) span:first-child', key: 'passwordCheck.symbols' },
+            { selector: '#password-checker .result-item:nth-of-type(6) span:first-child', key: 'passwordCheck.score' },
+
+            { selector: '#qr-generator .tool-header h2', key: 'qr.title' },
+            { selector: '#qr-generator .tool-header p', key: 'qr.description' },
+            { selector: '#qr-generator .input-section:nth-of-type(1) .form-label', key: 'qr.inputLabel' },
+            { selector: '#qrTextInput', key: 'qr.placeholder', attr: 'placeholder' },
+            { selector: '#qr-generator .options-section .setting-item label', key: 'qr.sizeLabel' },
+            { selector: '#generateQrBtn', key: 'qr.generate' },
+            { selector: '#qr-generator .output-section:nth-of-type(1) .form-label', key: 'qr.outputLabel' },
+            { selector: '#downloadQrBtn', key: 'qr.download' },
+            { selector: '#qrOutput span', key: 'qr.outputPlaceholder' },
+            { selector: '#qr-generator .input-section:nth-of-type(2) .form-label', key: 'qr.uploadLabel' },
+            { selector: '#qr-generator .output-section:nth-of-type(2) .form-label', key: 'qr.decodedLabel' },
+            { selector: '#qrDecodedText', key: 'qr.decodedPlaceholder', attr: 'placeholder' },
+
+            { selector: 'button[id^="copy"], .result-item .btn--sm', key: 'common.copy', all: true }
+        ];
+    }
+
+    applySelectorTranslations() {
+        this.getTranslationBindings().forEach(binding => {
+            const elements = binding.all
+                ? document.querySelectorAll(binding.selector)
+                : [document.querySelector(binding.selector)].filter(Boolean);
+            const message = this.t(binding.key);
+            if (!message) return;
+
+            elements.forEach(element => {
+                if (binding.attr) {
+                    element.setAttribute(binding.attr, message);
+                    return;
+                }
+
+                if (binding.type === 'textNode') {
+                    this.setElementTextNode(element, message, binding);
+                    return;
+                }
+
+                element.textContent = message;
+            });
+        });
+    }
+
+    setElementTextNode(element, text, options = {}) {
+        const { leadingSpace = false, trailingSpace = false } = options;
+        const targetNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== '');
+        const value = `${leadingSpace ? ' ' : ''}${text}${trailingSpace ? ' ' : ''}`;
+
+        if (targetNode) {
+            targetNode.nodeValue = value;
+        } else {
+            element.appendChild(document.createTextNode(value));
+        }
     }
 
     // Theme Management
@@ -44,12 +497,14 @@ class OnlineToolsApp {
         setTheme(currentTheme, false);
         
         // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            // Only update if user hasn't manually set a preference
-            if (!localStorage.getItem('theme')) {
-                setTheme(e.matches ? 'dark' : 'light', false);
-            }
-        });
+        const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        if (typeof colorSchemeQuery.addEventListener === 'function') {
+            colorSchemeQuery.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    setTheme(e.matches ? 'dark' : 'light', false);
+                }
+            });
+        }
         
         themeToggle.addEventListener('click', () => {
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -65,6 +520,7 @@ class OnlineToolsApp {
 
         toolLinks.forEach((link, index) => {
             const toolId = link.getAttribute('data-tool');
+            link.setAttribute('href', `#${toolId}`);
             console.log(`Tool link ${index}: ${toolId}`);
             
             link.addEventListener('click', (e) => {
@@ -72,6 +528,37 @@ class OnlineToolsApp {
                 console.log(`Clicked tool: ${toolId}`);
                 this.switchTool(toolId);
             });
+        });
+    }
+
+    initRouting() {
+        window.addEventListener('hashchange', () => {
+            const hashToolId = this.getToolIdFromHash();
+            if (hashToolId) {
+                this.switchTool(hashToolId, { updateHash: false });
+            } else {
+                this.showHome({ updateHash: false });
+            }
+        });
+    }
+
+    getToolIdFromHash() {
+        const hash = window.location.hash.replace(/^#/, '').trim();
+        if (!hash || hash === 'home') return null;
+
+        return document.getElementById(hash) ? hash : null;
+    }
+
+    getInitialTool() {
+        return this.getToolIdFromHash();
+    }
+
+    initHomeButton() {
+        const homeToggle = document.getElementById('homeToggle');
+        if (!homeToggle) return;
+
+        homeToggle.addEventListener('click', () => {
+            this.showHome();
         });
     }
 
@@ -105,8 +592,20 @@ class OnlineToolsApp {
         });
     }
 
-    switchTool(toolId) {
+    switchTool(toolId, options = {}) {
+        const { updateHash = true } = options;
+
+        if (!document.getElementById(toolId)) {
+            console.error(`Tool container not found: ${toolId}`);
+            return;
+        }
+
         console.log(`Switching to tool: ${toolId}`);
+        const homeView = document.getElementById('homeView');
+        if (homeView) {
+            homeView.classList.remove('active');
+        }
+        document.body.dataset.view = 'tool';
         
         // Hide all tool containers
         const allContainers = document.querySelectorAll('.tool-container');
@@ -118,12 +617,8 @@ class OnlineToolsApp {
 
         // Show selected tool
         const selectedTool = document.getElementById(toolId);
-        if (selectedTool) {
-            selectedTool.classList.add('active');
-            console.log(`Activated tool: ${toolId}`);
-        } else {
-            console.error(`Tool container not found: ${toolId}`);
-        }
+        selectedTool.classList.add('active');
+        console.log(`Activated tool: ${toolId}`);
 
         // Update navigation active state
         document.querySelectorAll('.tool-link').forEach(link => {
@@ -137,20 +632,142 @@ class OnlineToolsApp {
         }
 
         this.currentTool = toolId;
+        this.currentView = 'tool';
+        this.syncHomeToggleState();
+
+        if (updateHash && window.location.hash !== `#${toolId}`) {
+            window.location.hash = toolId;
+        }
+    }
+
+    showHome(options = {}) {
+        const { updateHash = true } = options;
+        const homeView = document.getElementById('homeView');
+
+        document.body.dataset.view = 'home';
+
+        document.querySelectorAll('.tool-container').forEach(container => {
+            container.classList.remove('active');
+        });
+
+        document.querySelectorAll('.tool-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        if (homeView) {
+            homeView.classList.add('active');
+        }
+
+        this.currentTool = null;
+        this.currentView = 'home';
+        this.syncHomeToggleState();
+
+        if (updateHash && window.location.hash !== '#home') {
+            window.location.hash = 'home';
+        }
+    }
+
+    syncHomeToggleState() {
+        const homeToggle = document.getElementById('homeToggle');
+        if (!homeToggle) return;
+
+        const isHome = this.currentView === 'home';
+        homeToggle.classList.toggle('active', isHome);
+        homeToggle.setAttribute('aria-pressed', isHome ? 'true' : 'false');
+    }
+
+    renderHomeCatalog() {
+        const catalog = document.getElementById('homeCatalog');
+        if (!catalog) return;
+
+        const categories = [...document.querySelectorAll('.tool-category')];
+        catalog.innerHTML = '';
+
+        categories.forEach((category, index) => {
+            const categoryTitle = category.querySelector('h3')?.textContent?.trim();
+            const links = [...category.querySelectorAll('.tool-link')];
+            if (!categoryTitle || links.length === 0) return;
+
+            const section = document.createElement('section');
+            section.className = 'home-category';
+            section.style.setProperty('--home-category-accent', `var(--color-bg-${(index % 8) + 1})`);
+
+            const header = document.createElement('div');
+            header.className = 'home-category-header';
+
+            const title = document.createElement('h2');
+            title.textContent = categoryTitle;
+
+            const count = document.createElement('span');
+            count.className = 'home-category-count';
+            count.textContent = `${links.length}`;
+
+            header.append(title, count);
+
+            const grid = document.createElement('div');
+            grid.className = 'home-card-grid';
+
+            links.forEach(link => {
+                const toolId = link.getAttribute('data-tool');
+                const toolContainer = document.getElementById(toolId);
+                if (!toolId || !toolContainer) return;
+
+                const card = document.createElement('a');
+                card.className = 'home-tool-card';
+                card.href = `#${toolId}`;
+                card.dataset.tool = toolId;
+
+                const cardTitle = document.createElement('h3');
+                cardTitle.textContent = link.textContent.trim();
+
+                const cardDescription = document.createElement('p');
+                cardDescription.textContent = toolContainer.querySelector('.tool-header p')?.textContent?.trim() || '';
+
+                const cardCta = document.createElement('span');
+                cardCta.className = 'home-tool-card-cta';
+                cardCta.textContent = this.t('home.openTool', 'Open tool');
+
+                card.append(cardTitle, cardDescription, cardCta);
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchTool(toolId);
+                });
+
+                grid.appendChild(card);
+            });
+
+            section.append(header, grid);
+            catalog.appendChild(section);
+        });
+
+        this.filterTools(this.currentSearchTerm);
     }
 
     // Search Management
     initSearch() {
-        const searchInput = document.getElementById('searchInput');
-        if (!searchInput) return;
+        const searchInputs = [
+            document.getElementById('searchInput'),
+            document.getElementById('homeSearchInput')
+        ].filter(Boolean);
 
-        searchInput.addEventListener('input', (e) => {
-            this.filterTools(e.target.value);
+        if (searchInputs.length === 0) return;
+
+        searchInputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                searchInputs.forEach(otherInput => {
+                    if (otherInput !== e.target) {
+                        otherInput.value = value;
+                    }
+                });
+                this.filterTools(value);
+            });
         });
     }
 
     filterTools(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
+        this.currentSearchTerm = term;
         
         document.querySelectorAll('.tool-link').forEach(link => {
             const toolName = link.textContent.toLowerCase();
@@ -174,14 +791,29 @@ class OnlineToolsApp {
                 category.style.display = '';
             }
         });
+
+        document.querySelectorAll('.home-tool-card').forEach(card => {
+            const cardText = card.textContent.toLowerCase();
+            const isVisible = !term || cardText.includes(term);
+            card.style.display = isVisible ? '' : 'none';
+        });
+
+        document.querySelectorAll('.home-category').forEach(category => {
+            const visibleCards = [...category.querySelectorAll('.home-tool-card')].filter(card => card.style.display !== 'none');
+            if (visibleCards.length === 0 && term) {
+                category.style.display = 'none';
+            } else {
+                category.style.display = '';
+            }
+        });
     }
 
     // Initialize all tools
     initTools() {
-        console.log('Initializing tools');
         this.initListGenerator();
         this.initPasswordGenerator();
         this.initUsernameGenerator();
+        this.initPinGenerator();
         this.initAddTextToLines();
         this.initConvertCase();
         this.initCountDuplicates();
@@ -190,8 +822,6 @@ class OnlineToolsApp {
         this.initRemoveLineBreaks();
         this.initRemoveLinesContaining();
         this.initEmailExtractor();
-        this.initCurlBurpConverter();
-        this.initIocEscape();
         this.initEmojiConverter();
         this.initBase64Converter();
         this.initUrlEncoder();
@@ -200,9 +830,10 @@ class OnlineToolsApp {
         this.initRegexTester();
         this.initColorPicker();
         this.initTimestampConverter();
+        this.initTimeConvert();
+        this.initReg2Gpo();
         this.initHashGenerator();
         this.initXmlBeautifier();
-        this.initJwtDecoder();
         this.initCertExtractor();
         this.initPasswordChecker();
         this.initQrGenerator();
@@ -212,7 +843,7 @@ class OnlineToolsApp {
     copyToClipboard(text) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
-                this.showMessage('Copiato negli appunti!', 'success');
+                this.showMessage(this.t('messages.copied', 'Copied to clipboard!'), 'success');
             }).catch(() => {
                 this.fallbackCopy(text);
             });
@@ -230,9 +861,9 @@ class OnlineToolsApp {
         textArea.select();
         try {
             document.execCommand('copy');
-            this.showMessage('Copiato negli appunti!', 'success');
+            this.showMessage(this.t('messages.copied', 'Copied to clipboard!'), 'success');
         } catch (err) {
-            this.showMessage('Errore durante la copia', 'error');
+            this.showMessage(this.t('messages.copyError', 'Copy failed'), 'error');
         }
         document.body.removeChild(textArea);
     }
@@ -255,6 +886,23 @@ class OnlineToolsApp {
                 }
             }, 3000);
         }
+    }
+
+    setStatus(element, message, type = 'info') {
+        if (!element) return;
+
+        element.style.display = 'block';
+        element.className = 'stats';
+        if (type === 'success') element.classList.add('success-message');
+        if (type === 'error') element.classList.add('error-message');
+        element.textContent = message;
+    }
+
+    clearStatus(element) {
+        if (!element) return;
+        element.style.display = 'none';
+        element.className = 'stats';
+        element.textContent = '';
     }
 
     // 1. List Generator
@@ -306,11 +954,13 @@ class OnlineToolsApp {
 
         const lengthSlider = container.querySelector('#passwordLength');
         const lengthValue = container.querySelector('#lengthValue');
+        const countInput = container.querySelector('#passwordCount');
         const generateBtn = container.querySelector('#generatePassword');
-        const passwordOutput = container.querySelector('#generatedPassword');
-        const copyBtn = container.querySelector('#copyPassword');
+        const resultsHeader = container.querySelector('#passwordResultsHeader');
+        const resultsContainer = container.querySelector('#passwordResults');
+        const copyAllBtn = container.querySelector('#copyAllPasswords');
 
-        if (!lengthSlider || !generateBtn || !passwordOutput || !copyBtn) return;
+        if (!lengthSlider || !generateBtn || !resultsContainer) return;
 
         lengthSlider.addEventListener('input', () => {
             if (lengthValue) lengthValue.textContent = lengthSlider.value;
@@ -318,32 +968,71 @@ class OnlineToolsApp {
 
         generateBtn.addEventListener('click', () => {
             const length = parseInt(lengthSlider.value);
+            const count = Math.max(1, Math.min(20, parseInt(countInput?.value || '5')));
             const includeUpper = container.querySelector('#includeUppercase')?.checked || false;
             const includeLower = container.querySelector('#includeLowercase')?.checked || true;
             const includeNumbers = container.querySelector('#includeNumbers')?.checked || false;
             const includeSymbols = container.querySelector('#includeSymbols')?.checked || false;
 
-            let charset = '';
-            if (includeUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (includeLower) charset += 'abcdefghijklmnopqrstuvwxyz';
-            if (includeNumbers) charset += '0123456789';
-            if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            const selectedCharsets = [];
+            if (includeUpper) selectedCharsets.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            if (includeLower) selectedCharsets.push('abcdefghijklmnopqrstuvwxyz');
+            if (includeNumbers) selectedCharsets.push('0123456789');
+            if (includeSymbols) selectedCharsets.push('!@#$%^&*()_+-=[]{}|;:,.<>?');
 
-            if (!charset) {
-                this.showMessage('Seleziona almeno un tipo di carattere!', 'error');
+            if (selectedCharsets.length === 0) {
+                this.showMessage(this.t('passwordGenerator.selectOneCharset', 'Select at least one character set!'), 'error');
                 return;
             }
 
-            let password = '';
-            for (let i = 0; i < length; i++) {
-                password += charset.charAt(Math.floor(Math.random() * charset.length));
+            const charset = selectedCharsets.join('');
+            const getRandomIndex = (max) => {
+                const values = new Uint32Array(1);
+                crypto.getRandomValues(values);
+                return values[0] % max;
+            };
+
+            const generatePasswordValue = () => {
+                const passwordChars = selectedCharsets.map(set => set.charAt(getRandomIndex(set.length)));
+                while (passwordChars.length < length) {
+                    passwordChars.push(charset.charAt(getRandomIndex(charset.length)));
+                }
+
+                for (let i = passwordChars.length - 1; i > 0; i--) {
+                    const j = getRandomIndex(i + 1);
+                    [passwordChars[i], passwordChars[j]] = [passwordChars[j], passwordChars[i]];
+                }
+
+                return passwordChars.join('');
+            };
+
+            const passwords = Array.from({ length: count }, generatePasswordValue);
+            resultsContainer.innerHTML = '';
+
+            passwords.forEach(password => {
+                const passwordItem = document.createElement('div');
+                passwordItem.className = 'username-item';
+                passwordItem.innerHTML = `
+                    <span class="username-text">${password}</span>
+                    <button class="btn btn--sm copy-password-item">${this.t('common.copy', 'Copy')}</button>
+                `;
+
+                passwordItem.querySelector('.copy-password-item').addEventListener('click', () => {
+                    this.copyToClipboard(password);
+                });
+
+                resultsContainer.appendChild(passwordItem);
+            });
+
+            if (resultsHeader) {
+                resultsHeader.style.display = passwords.length > 0 ? 'flex' : 'none';
             }
 
-            passwordOutput.value = password;
-        });
-
-        copyBtn.addEventListener('click', () => {
-            this.copyToClipboard(passwordOutput.value);
+            if (copyAllBtn) {
+                copyAllBtn.onclick = () => {
+                    this.copyToClipboard(passwords.join('\n'));
+                };
+            }
         });
     }
 
@@ -354,6 +1043,8 @@ class OnlineToolsApp {
 
         const generateBtn = container.querySelector('#generateUsernames');
         const resultsContainer = container.querySelector('#usernameResults');
+        const resultsHeader = container.querySelector('#usernameResultsHeader');
+        const copyAllBtn = container.querySelector('#copyAllUsernames');
         
         if (!generateBtn || !resultsContainer) return;
 
@@ -368,6 +1059,7 @@ class OnlineToolsApp {
             const style = container.querySelector('#usernameStyle')?.value || 'random';
             const count = parseInt(container.querySelector('#usernameCount')?.value || 5);
             const words = wordLists[style];
+            const generatedUsernames = [];
             
             resultsContainer.innerHTML = '';
             
@@ -376,12 +1068,13 @@ class OnlineToolsApp {
                 const word2 = words[Math.floor(Math.random() * words.length)];
                 const number = Math.floor(Math.random() * 1000);
                 const username = `${word1}${word2}${number}`;
+                generatedUsernames.push(username);
                 
                 const usernameItem = document.createElement('div');
                 usernameItem.className = 'username-item';
                 usernameItem.innerHTML = `
                     <span class="username-text">${username}</span>
-                    <button class="btn btn--sm copy-username">Copia</button>
+                    <button class="btn btn--sm copy-username">${this.t('common.copy', 'Copy')}</button>
                 `;
                 
                 usernameItem.querySelector('.copy-username').addEventListener('click', () => {
@@ -390,10 +1083,93 @@ class OnlineToolsApp {
                 
                 resultsContainer.appendChild(usernameItem);
             }
+
+            if (resultsHeader) {
+                resultsHeader.style.display = generatedUsernames.length > 0 ? 'flex' : 'none';
+            }
+
+            if (copyAllBtn) {
+                copyAllBtn.onclick = () => {
+                    this.copyToClipboard(generatedUsernames.join('\n'));
+                };
+            }
         });
     }
 
-    // 4. Add Text to Lines
+    // 4. PIN Generator
+    initPinGenerator() {
+        const container = document.getElementById('pin-generator');
+        if (!container) return;
+
+        const generateBtn = container.querySelector('#generatePins');
+        const resultsContainer = container.querySelector('#pinResults');
+        const resultsHeader = container.querySelector('#pinResultsHeader');
+        const copyAllBtn = container.querySelector('#copyAllPins');
+        const lengthInput = container.querySelector('#pinLength');
+        const countInput = container.querySelector('#pinCount');
+        const uniqueInput = container.querySelector('#pinUnique');
+
+        if (!generateBtn || !resultsContainer || !lengthInput || !countInput) return;
+
+        const randomDigit = () => {
+            const values = new Uint32Array(1);
+            crypto.getRandomValues(values);
+            return (values[0] % 10).toString();
+        };
+
+        const generatePinValue = (length) => Array.from({ length }, randomDigit).join('');
+
+        generateBtn.addEventListener('click', () => {
+            const length = Math.max(3, Math.min(12, parseInt(lengthInput.value || '6', 10)));
+            const count = Math.max(1, Math.min(50, parseInt(countInput.value || '10', 10)));
+            const avoidDuplicates = uniqueInput?.checked ?? true;
+            const pins = [];
+            const generated = new Set();
+            const maxAttempts = count * 20;
+            let attempts = 0;
+
+            resultsContainer.innerHTML = '';
+
+            while (pins.length < count && attempts < maxAttempts) {
+                const pin = generatePinValue(length);
+                attempts++;
+
+                if (avoidDuplicates && generated.has(pin)) {
+                    continue;
+                }
+
+                generated.add(pin);
+                pins.push(pin);
+            }
+
+            pins.forEach(pin => {
+                const pinItem = document.createElement('div');
+                pinItem.className = 'username-item';
+                pinItem.innerHTML = `
+                    <span class="username-text">${pin}</span>
+                    <button class="btn btn--sm copy-pin-item">${this.t('common.copy', 'Copy')}</button>
+                `;
+
+                pinItem.querySelector('.copy-pin-item').addEventListener('click', () => {
+                    this.copyToClipboard(pin);
+                });
+
+                resultsContainer.appendChild(pinItem);
+            });
+
+            if (resultsHeader) {
+                resultsHeader.style.display = pins.length > 0 ? 'flex' : 'none';
+            }
+
+            if (copyAllBtn) {
+                copyAllBtn.onclick = () => {
+                    this.copyToClipboard(pins.join('\n'));
+                };
+            }
+        });
+    }
+
+    // 5. Add Text to Lines
     initAddTextToLines() {
         const container = document.getElementById('add-text-lines');
         if (!container) return;
@@ -431,7 +1207,7 @@ class OnlineToolsApp {
         });
     }
 
-    // 5. Convert Case
+    // 6. Convert Case
     initConvertCase() {
         const container = document.getElementById('convert-case');
         if (!container) return;
@@ -480,59 +1256,269 @@ class OnlineToolsApp {
         });
     }
 
-    // Additional tool implementations (simplified for space)
     initCountDuplicates() {
         const container = document.getElementById('count-duplicates');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#duplicateInput');
+        const analyzeBtn = container.querySelector('#analyzeDuplicates');
+        const resultsContainer = container.querySelector('#duplicateResults');
+
+        analyzeBtn?.addEventListener('click', () => {
+            const lines = input.value.split('\n').map(line => line.trim()).filter(Boolean);
+            const caseSensitive = container.querySelector('#caseSensitiveDuplicates')?.checked || false;
+            const sortByCount = container.querySelector('#sortByCount')?.checked || false;
+
+            if (lines.length === 0) {
+                resultsContainer.textContent = this.t('duplicates.noEntries', 'Enter at least one item.');
+                return;
+            }
+
+            const counts = new Map();
+            const originals = new Map();
+            lines.forEach(line => {
+                const key = caseSensitive ? line : line.toLowerCase();
+                counts.set(key, (counts.get(key) || 0) + 1);
+                if (!originals.has(key)) originals.set(key, line);
+            });
+
+            const entries = [...counts.entries()].map(([key, count]) => ({
+                value: originals.get(key),
+                count,
+                percentage: ((count / lines.length) * 100).toFixed(1)
+            }));
+
+            entries.sort(sortByCount
+                ? (a, b) => b.count - a.count || a.value.localeCompare(b.value)
+                : (a, b) => a.value.localeCompare(b.value));
+
+            resultsContainer.innerHTML = '';
+            entries.forEach(entry => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `<span class="result-text">${this.escapeHtml(entry.value)}</span><span>${entry.count} (${entry.percentage}%)</span>`;
+                resultsContainer.appendChild(item);
+            });
+        });
     }
 
     initDomainExtractor() {
         const container = document.getElementById('domain-extractor');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#domainInput');
+        const output = container.querySelector('#domainsOutput');
+        const extractBtn = container.querySelector('#extractDomains');
+        const copyBtn = container.querySelector('#copyDomainsResult');
+
+        const normalizeDomain = (hostname, includeSubdomains) => {
+            if (includeSubdomains) return hostname;
+            const parts = hostname.split('.').filter(Boolean);
+            return parts.length <= 2 ? hostname : parts.slice(-2).join('.');
+        };
+
+        extractBtn?.addEventListener('click', () => {
+            const lines = input.value.split('\n').map(line => line.trim()).filter(Boolean);
+            const includeSubdomains = container.querySelector('#includeSubdomains')?.checked || false;
+            const domains = [];
+
+            lines.forEach(line => {
+                try {
+                    const normalized = /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(line) ? line : `https://${line}`;
+                    const hostname = new URL(normalized).hostname;
+                    if (hostname) domains.push(normalizeDomain(hostname, includeSubdomains));
+                } catch (e) {
+                    // Ignore malformed lines
+                }
+            });
+
+            output.value = [...new Set(domains)].join('\n');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initRemoveDuplicates() {
         const container = document.getElementById('remove-duplicates');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#removeDuplicatesInput');
+        const output = container.querySelector('#removeDuplicatesOutput');
+        const processBtn = container.querySelector('#removeDuplicatesBtn');
+        const copyBtn = container.querySelector('#copyRemoveDuplicatesResult');
+
+        processBtn?.addEventListener('click', () => {
+            const lines = input.value.split('\n');
+            const preserveOrder = container.querySelector('#preserveOrder')?.checked || false;
+            const caseSensitive = container.querySelector('#caseSensitiveRemove')?.checked || false;
+            const seen = new Set();
+            const result = [];
+
+            const pushLine = (line) => {
+                const key = caseSensitive ? line : line.toLowerCase();
+                if (seen.has(key)) return;
+                seen.add(key);
+                result.push(line);
+            };
+
+            if (preserveOrder) {
+                lines.forEach(pushLine);
+            } else {
+                [...lines].sort((a, b) => a.localeCompare(b)).forEach(pushLine);
+            }
+
+            output.value = result.join('\n');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initRemoveLineBreaks() {
         const container = document.getElementById('remove-line-breaks');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#lineBreaksInput');
+        const output = container.querySelector('#lineBreaksOutput');
+        const processBtn = container.querySelector('#removeLineBreaksBtn');
+        const copyBtn = container.querySelector('#copyLineBreaksResult');
+
+        processBtn?.addEventListener('click', () => {
+            const replacementMode = container.querySelector('input[name="replacement"]:checked')?.value || 'space';
+            const customReplacement = container.querySelector('#customReplacement')?.value || '';
+            const replacement = replacementMode === 'space'
+                ? ' '
+                : replacementMode === 'custom'
+                    ? customReplacement
+                    : '';
+
+            output.value = input.value.replace(/\r?\n+/g, replacement);
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initRemoveLinesContaining() {
         const container = document.getElementById('remove-lines-containing');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#removeContainingInput');
+        const output = container.querySelector('#removeContainingOutput');
+        const processBtn = container.querySelector('#removeContainingBtn');
+        const stats = container.querySelector('#removeStats');
+        const copyBtn = container.querySelector('#copyRemoveContainingResult');
+
+        processBtn?.addEventListener('click', () => {
+            const terms = container.querySelector('#wordsToRemove').value
+                .split(',')
+                .map(term => term.trim())
+                .filter(Boolean);
+
+            if (terms.length === 0) {
+                output.value = input.value;
+                this.setStatus(stats, this.t('removeContaining.noTerms', 'No words or phrases configured.'), 'info');
+                return;
+            }
+
+            const caseSensitive = container.querySelector('#caseSensitiveContaining')?.checked || false;
+            const haystackTerms = caseSensitive ? terms : terms.map(term => term.toLowerCase());
+            const lines = input.value.split('\n');
+            const kept = [];
+            let removed = 0;
+
+            lines.forEach(line => {
+                const candidate = caseSensitive ? line : line.toLowerCase();
+                const shouldRemove = haystackTerms.some(term => candidate.includes(term));
+                if (shouldRemove) {
+                    removed += 1;
+                } else {
+                    kept.push(line);
+                }
+            });
+
+            output.value = kept.join('\n');
+            this.setStatus(
+                stats,
+                `${this.t('removeContaining.removedLines', 'Removed lines')}: ${removed}\n${this.t('removeContaining.keptLines', 'Kept lines')}: ${kept.length}`,
+                removed > 0 ? 'success' : 'info'
+            );
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initEmailExtractor() {
         const container = document.getElementById('email-extractor');
         if (!container) return;
-        // Implementation here
-    }
 
-    initCurlBurpConverter() {
-        const container = document.getElementById('curl-burp-converter');
-        if (!container) return;
-        // Implementation here
-    }
+        const input = container.querySelector('#emailInput');
+        const output = container.querySelector('#emailsOutput');
+        const extractBtn = container.querySelector('#extractEmailsBtn');
+        const stats = container.querySelector('#emailStats');
+        const copyBtn = container.querySelector('#copyEmailsResult');
 
-    initIocEscape() {
-        const container = document.getElementById('ioc-escape');
-        if (!container) return;
-        // Implementation here
+        extractBtn?.addEventListener('click', () => {
+            const matches = input.value.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) || [];
+            const emails = container.querySelector('#removeDuplicateEmails')?.checked
+                ? [...new Set(matches.map(email => email.toLowerCase()))]
+                : matches;
+
+            output.value = emails.join('\n');
+            this.setStatus(stats, `${this.t('email.found', 'Emails found')}: ${emails.length}`, emails.length > 0 ? 'success' : 'info');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initEmojiConverter() {
         const container = document.getElementById('emoji-converter');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#emojiInput');
+        const output = container.querySelector('#emojiOutput');
+        const toEmojiBtn = container.querySelector('#convertToEmojiBtn');
+        const toShortcodeBtn = container.querySelector('#convertToShortcodeBtn');
+        const copyBtn = container.querySelector('#copyEmojiResult');
+
+        const emojiMap = {
+            ':smile:': '😄',
+            ':heart:': '❤️',
+            ':thumbsup:': '👍',
+            ':wave:': '👋',
+            ':fire:': '🔥',
+            ':rocket:': '🚀'
+        };
+
+        const shortcodeMap = Object.fromEntries(Object.entries(emojiMap).map(([shortcode, emoji]) => [emoji, shortcode]));
+
+        toEmojiBtn?.addEventListener('click', () => {
+            let result = input.value;
+            Object.entries(emojiMap).forEach(([shortcode, emoji]) => {
+                result = result.split(shortcode).join(emoji);
+            });
+            output.value = result;
+        });
+
+        toShortcodeBtn?.addEventListener('click', () => {
+            let result = input.value;
+            Object.entries(shortcodeMap).forEach(([emoji, shortcode]) => {
+                result = result.split(emoji).join(shortcode);
+            });
+            output.value = result;
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     // Base64 Encoder/Decoder
@@ -540,11 +1526,26 @@ class OnlineToolsApp {
         const container = document.getElementById('base64-converter');
         if (!container) return;
 
-        const input = document.getElementById('base64Input');
-        const output = document.getElementById('base64Output');
-        const encodeBtn = document.getElementById('base64EncodeBtn');
-        const decodeBtn = document.getElementById('base64DecodeBtn');
-        const copyBtn = document.getElementById('copyBase64Result');
+        const input = container.querySelector('#base64Input');
+        const output = container.querySelector('#base64Output');
+        const encodeBtn = container.querySelector('#base64EncodeBtn');
+        const decodeBtn = container.querySelector('#base64DecodeBtn');
+        const copyBtn = container.querySelector('#copyBase64Result');
+
+        const toBase64 = (text) => {
+            const bytes = new TextEncoder().encode(text);
+            let binary = '';
+            bytes.forEach(byte => {
+                binary += String.fromCharCode(byte);
+            });
+            return btoa(binary);
+        };
+
+        const fromBase64 = (text) => {
+            const binary = atob(text);
+            const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+            return new TextDecoder().decode(bytes);
+        };
 
         encodeBtn?.addEventListener('click', () => {
             const text = input.value.trim();
@@ -553,9 +1554,9 @@ class OnlineToolsApp {
                 return;
             }
             try {
-                output.value = btoa(unescape(encodeURIComponent(text)));
+                output.value = toBase64(text);
             } catch (e) {
-                output.value = 'Errore: impossibile codificare il testo';
+                output.value = this.t('base64.encodeError', 'Error: unable to encode the text');
             }
         });
 
@@ -566,9 +1567,9 @@ class OnlineToolsApp {
                 return;
             }
             try {
-                output.value = decodeURIComponent(escape(atob(text)));
+                output.value = fromBase64(text);
             } catch (e) {
-                output.value = 'Errore: input non valido Base64';
+                output.value = this.t('base64.decodeError', 'Error: invalid Base64 input');
             }
         });
 
@@ -582,12 +1583,12 @@ class OnlineToolsApp {
         const container = document.getElementById('url-encoder');
         if (!container) return;
 
-        const input = document.getElementById('urlInput');
-        const output = document.getElementById('urlOutput');
-        const encodeBtn = document.getElementById('urlEncodeBtn');
-        const decodeBtn = document.getElementById('urlDecodeBtn');
-        const encodeComponentBtn = document.getElementById('urlEncodeComponentBtn');
-        const copyBtn = document.getElementById('copyUrlResult');
+        const input = container.querySelector('#urlInput');
+        const output = container.querySelector('#urlOutput');
+        const encodeBtn = container.querySelector('#urlEncodeBtn');
+        const decodeBtn = container.querySelector('#urlDecodeBtn');
+        const encodeComponentBtn = container.querySelector('#urlEncodeComponentBtn');
+        const copyBtn = container.querySelector('#copyUrlResult');
 
         encodeBtn?.addEventListener('click', () => {
             const text = input.value.trim();
@@ -607,7 +1608,7 @@ class OnlineToolsApp {
             try {
                 output.value = decodeURI(text);
             } catch (e) {
-                output.value = 'Errore: URL non valido';
+                output.value = this.t('url.decodeError', 'Error: invalid URL');
             }
         });
 
@@ -630,23 +1631,23 @@ class OnlineToolsApp {
         const container = document.getElementById('json-formatter');
         if (!container) return;
 
-        const input = document.getElementById('jsonInput');
-        const output = document.getElementById('jsonOutput');
-        const formatBtn = document.getElementById('formatJsonBtn');
-        const copyBtn = document.getElementById('copyJsonResult');
-        const validation = document.getElementById('jsonValidation');
+        const input = container.querySelector('#jsonInput');
+        const output = container.querySelector('#jsonOutput');
+        const formatBtn = container.querySelector('#formatJsonBtn');
+        const copyBtn = container.querySelector('#copyJsonResult');
+        const validation = container.querySelector('#jsonValidation');
 
         formatBtn?.addEventListener('click', () => {
             const text = input.value.trim();
             if (!text) {
                 output.value = '';
-                validation.style.display = 'none';
+                this.clearStatus(validation);
                 return;
             }
 
             try {
                 const json = JSON.parse(text);
-                const indentValue = document.querySelector('input[name="jsonIndent"]:checked')?.value || '2';
+                const indentValue = container.querySelector('input[name="jsonIndent"]:checked')?.value || '2';
                 
                 let indent;
                 if (indentValue === 'tab') {
@@ -658,15 +1659,10 @@ class OnlineToolsApp {
                 }
 
                 output.value = indent === '' ? JSON.stringify(json) : JSON.stringify(json, null, indent);
-                
-                validation.style.display = 'block';
-                validation.innerHTML = '<span style="color: var(--color-success);">✓ JSON valido</span>';
-                validation.className = 'stats success-message';
+                this.setStatus(validation, this.t('json.valid', 'Valid JSON'), 'success');
             } catch (e) {
                 output.value = '';
-                validation.style.display = 'block';
-                validation.innerHTML = `<span style="color: var(--color-error);">✗ Errore: ${e.message}</span>`;
-                validation.className = 'stats error-message';
+                this.setStatus(validation, `${this.t('common.error', 'Error')}: ${e.message}`, 'error');
             }
         });
 
@@ -680,21 +1676,21 @@ class OnlineToolsApp {
         const container = document.getElementById('diff-checker');
         if (!container) return;
 
-        const text1 = document.getElementById('diffText1');
-        const text2 = document.getElementById('diffText2');
-        const compareBtn = document.getElementById('compareDiffBtn');
-        const output = document.getElementById('diffOutput');
-        const stats = document.getElementById('diffStats');
-        const ignoreCaseCheck = document.getElementById('diffIgnoreCase');
-        const ignoreWhitespaceCheck = document.getElementById('diffIgnoreWhitespace');
+        const text1 = container.querySelector('#diffText1');
+        const text2 = container.querySelector('#diffText2');
+        const compareBtn = container.querySelector('#compareDiffBtn');
+        const output = container.querySelector('#diffOutput');
+        const stats = container.querySelector('#diffStats');
+        const ignoreCaseCheck = container.querySelector('#diffIgnoreCase');
+        const ignoreWhitespaceCheck = container.querySelector('#diffIgnoreWhitespace');
 
         compareBtn?.addEventListener('click', () => {
             let content1 = text1.value;
             let content2 = text2.value;
 
             if (!content1 && !content2) {
-                output.innerHTML = 'Inserisci testo in entrambi i campi';
-                stats.style.display = 'none';
+                output.textContent = this.t('diff.enterBoth', 'Enter text in both fields');
+                this.clearStatus(stats);
                 return;
             }
 
@@ -740,10 +1736,12 @@ class OnlineToolsApp {
                 }
             }
 
-            output.innerHTML = diffHtml || 'Nessuna differenza trovata';
-            
-            stats.style.display = 'block';
-            stats.innerHTML = `Aggiunte: ${additions} | Rimosse: ${deletions} | Invariate: ${unchanged}`;
+            output.innerHTML = diffHtml || this.escapeHtml(this.t('diff.noDifferences', 'No differences found'));
+            this.setStatus(
+                stats,
+                `${this.t('diff.additions', 'Additions')}: ${additions} | ${this.t('diff.deletions', 'Deletions')}: ${deletions} | ${this.t('diff.unchanged', 'Unchanged')}: ${unchanged}`,
+                'info'
+            );
         });
     }
 
@@ -759,22 +1757,22 @@ class OnlineToolsApp {
         const container = document.getElementById('regex-tester');
         if (!container) return;
 
-        const patternInput = document.getElementById('regexPattern');
-        const textInput = document.getElementById('regexInput');
-        const globalCheck = document.getElementById('regexGlobal');
-        const ignoreCaseCheck = document.getElementById('regexIgnoreCase');
-        const multilineCheck = document.getElementById('regexMultiline');
-        const testBtn = document.getElementById('testRegexBtn');
-        const output = document.getElementById('regexOutput');
-        const stats = document.getElementById('regexStats');
+        const patternInput = container.querySelector('#regexPattern');
+        const textInput = container.querySelector('#regexInput');
+        const globalCheck = container.querySelector('#regexGlobal');
+        const ignoreCaseCheck = container.querySelector('#regexIgnoreCase');
+        const multilineCheck = container.querySelector('#regexMultiline');
+        const testBtn = container.querySelector('#testRegexBtn');
+        const output = container.querySelector('#regexOutput');
+        const stats = container.querySelector('#regexStats');
 
         testBtn?.addEventListener('click', () => {
             const pattern = patternInput.value.trim();
             const text = textInput.value;
 
             if (!pattern || !text) {
-                output.textContent = 'Inserisci sia il pattern che il testo';
-                stats.style.display = 'none';
+                output.textContent = this.t('regex.enterPatternAndText', 'Enter both the pattern and the text');
+                this.clearStatus(stats);
                 return;
             }
 
@@ -796,11 +1794,12 @@ class OnlineToolsApp {
                 }
 
                 const regex = new RegExp(regexPattern, flags);
-                const matches = [...text.matchAll(regex)];
+                const matchRegex = regex.global ? regex : new RegExp(regex.source, `${regex.flags}g`);
+                const matches = [...text.matchAll(matchRegex)];
 
                 if (matches.length === 0) {
-                    output.textContent = 'Nessuna corrispondenza trovata';
-                    stats.style.display = 'none';
+                    output.textContent = this.t('regex.noMatches', 'No matches found');
+                    this.clearStatus(stats);
                 } else {
                     let resultHtml = '';
                     matches.forEach((match, index) => {
@@ -818,13 +1817,11 @@ class OnlineToolsApp {
                         resultHtml += `</div>`;
                     });
                     output.innerHTML = resultHtml;
-                    
-                    stats.style.display = 'block';
-                    stats.textContent = `Trovate ${matches.length} corrispondenze`;
+                    this.setStatus(stats, `${this.t('regex.foundMatches', 'Matches found')}: ${matches.length}`, 'success');
                 }
             } catch (e) {
-                output.textContent = `Errore regex: ${e.message}`;
-                stats.style.display = 'none';
+                output.textContent = `${this.t('regex.error', 'Regex error')}: ${e.message}`;
+                this.clearStatus(stats);
             }
         });
     }
@@ -834,10 +1831,10 @@ class OnlineToolsApp {
         const container = document.getElementById('color-picker');
         if (!container) return;
 
-        const colorInput = document.getElementById('colorInput');
-        const textInput = document.getElementById('colorTextInput');
-        const convertBtn = document.getElementById('convertColorBtn');
-        const preview = document.getElementById('colorPreview');
+        const colorInput = container.querySelector('#colorInput');
+        const textInput = container.querySelector('#colorTextInput');
+        const convertBtn = container.querySelector('#convertColorBtn');
+        const preview = container.querySelector('#colorPreview');
         
         // Sync color input with text input
         colorInput?.addEventListener('change', () => {
@@ -903,10 +1900,10 @@ class OnlineToolsApp {
                 const hex = '#' + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
                 const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
-                document.getElementById('colorHex').textContent = hex.toUpperCase();
-                document.getElementById('colorRgb').textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-                document.getElementById('colorRgba').textContent = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
-                document.getElementById('colorHsl').textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+                container.querySelector('#colorHex').textContent = hex.toUpperCase();
+                container.querySelector('#colorRgb').textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                container.querySelector('#colorRgba').textContent = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
+                container.querySelector('#colorHsl').textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
                 preview.style.backgroundColor = hex;
                 colorInput.value = hex;
             }
@@ -916,7 +1913,7 @@ class OnlineToolsApp {
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
         });
@@ -927,10 +1924,10 @@ class OnlineToolsApp {
         const container = document.getElementById('timestamp-converter');
         if (!container) return;
 
-        const timestampInput = document.getElementById('timestampInput');
-        const dateInput = document.getElementById('dateInput');
-        const currentBtn = document.getElementById('currentTimestampBtn');
-        const convertBtn = document.getElementById('convertTimestampBtn');
+        const timestampInput = container.querySelector('#timestampInput');
+        const dateInput = container.querySelector('#dateInput');
+        const currentBtn = container.querySelector('#currentTimestampBtn');
+        const convertBtn = container.querySelector('#convertTimestampBtn');
 
         currentBtn?.addEventListener('click', () => {
             const now = Date.now();
@@ -952,24 +1949,406 @@ class OnlineToolsApp {
             }
 
             if (isNaN(date.getTime())) {
-                alert('Data non valida');
+                alert(this.t('timestamp.invalidDate', 'Invalid date'));
                 return;
             }
 
-            document.getElementById('unixSeconds').textContent = Math.floor(date.getTime() / 1000);
-            document.getElementById('unixMilliseconds').textContent = date.getTime();
-            document.getElementById('iso8601').textContent = date.toISOString();
-            document.getElementById('utcString').textContent = date.toUTCString();
-            document.getElementById('localeString').textContent = date.toLocaleString();
+            container.querySelector('#unixSeconds').textContent = Math.floor(date.getTime() / 1000);
+            container.querySelector('#unixMilliseconds').textContent = date.getTime();
+            container.querySelector('#iso8601').textContent = date.toISOString();
+            container.querySelector('#utcString').textContent = date.toUTCString();
+            container.querySelector('#localeString').textContent = date.toLocaleString();
         });
 
         // Add copy functionality
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
+        });
+    }
+
+    // TimeConvert
+    initTimeConvert() {
+        const container = document.getElementById('time-convert');
+        if (!container) return;
+
+        const input = container.querySelector('#timeConvertInput');
+        const unit = container.querySelector('#timeConvertUnit');
+        const convertBtn = container.querySelector('#convertTimeValueBtn');
+
+        const formatNumber = (value) => {
+            if (!Number.isFinite(value)) return '';
+            return Number.isInteger(value) ? `${value}` : value.toFixed(6).replace(/\.?0+$/, '');
+        };
+
+        const formatDuration = (totalSeconds) => {
+            const seconds = Math.max(0, Math.floor(totalSeconds));
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            const hhmmss = [hours, minutes, secs].map(value => String(value).padStart(2, '0')).join(':');
+            return days > 0 ? `${days}d ${hhmmss}` : hhmmss;
+        };
+
+        convertBtn?.addEventListener('click', () => {
+            const rawValue = parseFloat(input.value);
+            if (!Number.isFinite(rawValue) || rawValue < 0) {
+                alert(this.t('timeConvert.invalid', 'Enter a valid non-negative time value'));
+                return;
+            }
+
+            const unitValue = unit.value;
+            const milliseconds = unitValue === 'milliseconds' ? rawValue :
+                unitValue === 'seconds' ? rawValue * 1000 :
+                unitValue === 'minutes' ? rawValue * 60 * 1000 :
+                unitValue === 'hours' ? rawValue * 60 * 60 * 1000 :
+                rawValue * 24 * 60 * 60 * 1000;
+
+            const seconds = milliseconds / 1000;
+            const minutes = seconds / 60;
+            const hours = minutes / 60;
+            const days = hours / 24;
+
+            container.querySelector('#timeMilliseconds').textContent = formatNumber(milliseconds);
+            container.querySelector('#timeSeconds').textContent = formatNumber(seconds);
+            container.querySelector('#timeMinutes').textContent = formatNumber(minutes);
+            container.querySelector('#timeHours').textContent = formatNumber(hours);
+            container.querySelector('#timeDays').textContent = formatNumber(days);
+            container.querySelector('#timeFormatted').textContent = formatDuration(seconds);
+        });
+
+        container.querySelectorAll('button[data-copy]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const elementId = btn.getAttribute('data-copy');
+                const text = container.querySelector(`#${elementId}`)?.textContent;
+                if (text) this.copyToClipboard(text);
+            });
+        });
+    }
+
+    initReg2Gpo() {
+        const container = document.getElementById('reg2gpo');
+        if (!container) return;
+
+        const input = container.querySelector('#reg2gpoInput');
+        const fileInput = container.querySelector('#reg2gpoFile');
+        const collectionInput = container.querySelector('#reg2gpoCollection');
+        const output = container.querySelector('#reg2gpoOutput');
+        const stats = container.querySelector('#reg2gpoStats');
+        const generateBtn = container.querySelector('#generateReg2GpoBtn');
+        const copyBtn = container.querySelector('#copyReg2GpoOutput');
+        const downloadBtn = container.querySelector('#downloadReg2GpoOutput');
+
+        const hiveMap = {
+            HKEY_LOCAL_MACHINE: 'HKLM',
+            HKLM: 'HKLM',
+            HKEY_CURRENT_USER: 'HKCU',
+            HKCU: 'HKCU',
+            HKEY_CLASSES_ROOT: 'HKCR',
+            HKCR: 'HKCR',
+            HKEY_USERS: 'HKU',
+            HKU: 'HKU',
+            HKEY_CURRENT_CONFIG: 'HKCC',
+            HKCC: 'HKCC'
+        };
+
+        const escapeXml = (value) => String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+
+        const normalizeCollectionName = (value) => {
+            const trimmed = (value || '').trim();
+            return trimmed || 'Imported_REG';
+        };
+
+        const splitKeyPath = (fullPath) => {
+            const parts = fullPath.split('\\');
+            const rawHive = parts.shift();
+            const hive = hiveMap[rawHive] || rawHive;
+            return {
+                hive,
+                key: parts.join('\\')
+            };
+        };
+
+        const decodeHexBytes = (payload) => payload
+            .split(',')
+            .map(part => part.trim())
+            .filter(Boolean)
+            .map(part => Number.parseInt(part, 16))
+            .filter(value => Number.isFinite(value));
+
+        const decodeUtf16Le = (bytes) => {
+            if (!bytes.length) return '';
+            const evenLengthBytes = bytes.length % 2 === 0 ? bytes : bytes.slice(0, -1);
+            try {
+                const decoded = new TextDecoder('utf-16le').decode(new Uint8Array(evenLengthBytes));
+                return decoded.replace(/\u0000+$/g, '');
+            } catch (error) {
+                return '';
+            }
+        };
+
+        const parseHexValue = (typeCode, payload) => {
+            const bytes = decodeHexBytes(payload);
+            const joined = bytes.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+            if (typeCode === '2') {
+                return {
+                    type: 'REG_EXPAND_SZ',
+                    value: decodeUtf16Le(bytes) || joined
+                };
+            }
+
+            if (typeCode === '7') {
+                const decoded = decodeUtf16Le(bytes);
+                return {
+                    type: 'REG_MULTI_SZ',
+                    value: decoded ? decoded.split('\u0000').filter(Boolean).join('; ') : joined
+                };
+            }
+
+            if (typeCode === 'b') {
+                const buffer = bytes.slice(0, 8).reduce((acc, byte, index) => acc + (BigInt(byte) << (BigInt(index) * 8n)), 0n);
+                return {
+                    type: 'REG_QWORD',
+                    value: buffer.toString()
+                };
+            }
+
+            return {
+                type: 'REG_BINARY',
+                value: joined
+            };
+        };
+
+        const parseValueLine = (line) => {
+            const separatorIndex = line.indexOf('=');
+            if (separatorIndex === -1) return null;
+
+            const rawName = line.slice(0, separatorIndex).trim();
+            const rawValue = line.slice(separatorIndex + 1).trim();
+
+            if (rawValue === '-') {
+                return { skipped: true };
+            }
+
+            let name = '';
+            if (rawName === '@') {
+                name = this.t('reg2gpo.defaultValue', '(Default)');
+            } else if (rawName.startsWith('"') && rawName.endsWith('"')) {
+                name = rawName.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+            } else {
+                return null;
+            }
+
+            if (rawValue.startsWith('"') && rawValue.endsWith('"')) {
+                return {
+                    name,
+                    type: 'REG_SZ',
+                    value: rawValue.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\')
+                };
+            }
+
+            if (/^dword:/i.test(rawValue)) {
+                const hex = rawValue.slice(6).trim();
+                const parsed = Number.parseInt(hex, 16);
+                return {
+                    name,
+                    type: 'REG_DWORD',
+                    value: Number.isFinite(parsed) ? parsed.toString() : hex
+                };
+            }
+
+            const hexMatch = rawValue.match(/^hex(?:\(([0-9a-fA-F]+)\))?:(.*)$/i);
+            if (hexMatch) {
+                const [, typeCode = '', payload] = hexMatch;
+                return {
+                    name,
+                    ...parseHexValue(typeCode.toLowerCase(), payload)
+                };
+            }
+
+            return {
+                name,
+                type: 'REG_UNKNOWN',
+                value: rawValue
+            };
+        };
+
+        const joinContinuationLines = (text) => {
+            const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+            const merged = [];
+
+            lines.forEach((line) => {
+                if (merged.length > 0 && /\\\s*$/.test(merged[merged.length - 1])) {
+                    merged[merged.length - 1] = merged[merged.length - 1].replace(/\\\s*$/, '') + line.trim();
+                } else {
+                    merged.push(line);
+                }
+            });
+
+            return merged;
+        };
+
+        const parseRegistry = (text) => {
+            const lines = joinContinuationLines(text);
+            const entries = [];
+            let currentKey = null;
+            let skippedLines = 0;
+
+            lines.forEach((rawLine) => {
+                const line = rawLine.trim();
+                if (!line || line.startsWith(';') || line.startsWith('#') || /^Windows Registry Editor/i.test(line) || /^REGEDIT4$/i.test(line)) {
+                    return;
+                }
+
+                const keyMatch = line.match(/^\[(.+)\]$/);
+                if (keyMatch) {
+                    currentKey = keyMatch[1];
+                    if (currentKey.startsWith('-')) {
+                        currentKey = null;
+                        skippedLines += 1;
+                    }
+                    return;
+                }
+
+                if (!currentKey) {
+                    skippedLines += 1;
+                    return;
+                }
+
+                const parsedValue = parseValueLine(line);
+                if (!parsedValue || parsedValue.skipped) {
+                    skippedLines += 1;
+                    return;
+                }
+
+                const { hive, key } = splitKeyPath(currentKey);
+                if (!hive || !key) {
+                    skippedLines += 1;
+                    return;
+                }
+
+                entries.push({
+                    hive,
+                    key,
+                    ...parsedValue
+                });
+            });
+
+            return { entries, skippedLines };
+        };
+
+        const buildCollectionTree = (collectionName, entries) => {
+            const root = {
+                name: collectionName,
+                collections: new Map(),
+                entries: []
+            };
+
+            entries.forEach((entry) => {
+                const pathSegments = [entry.hive, ...entry.key.split('\\').filter(Boolean)];
+                let node = root;
+
+                pathSegments.forEach((segment) => {
+                    if (!node.collections.has(segment)) {
+                        node.collections.set(segment, {
+                            name: segment,
+                            collections: new Map(),
+                            entries: []
+                        });
+                    }
+                    node = node.collections.get(segment);
+                });
+
+                node.entries.push(entry);
+            });
+
+            return root;
+        };
+
+        const renderCollectionTree = (node, indentLevel = 0) => {
+            const indent = '  '.repeat(indentLevel);
+            const childIndent = '  '.repeat(indentLevel + 1);
+            const lines = [`${indent}<Collection name="${escapeXml(node.name)}">`];
+
+            node.entries.forEach((entry) => {
+                lines.push(
+                    `${childIndent}<Registry clsid="{9CD4B2F4-923D-47F5-A062-E897DD1DAD50}" name="${escapeXml(entry.name)}">`,
+                    `${childIndent}  <Properties action="U" hive="${escapeXml(entry.hive)}" key="${escapeXml(entry.key)}" name="${escapeXml(entry.name)}" type="${escapeXml(entry.type)}" value="${escapeXml(entry.value)}" />`,
+                    `${childIndent}</Registry>`
+                );
+            });
+
+            [...node.collections.values()].forEach((childNode) => {
+                lines.push(renderCollectionTree(childNode, indentLevel + 1));
+            });
+
+            lines.push(`${indent}</Collection>`);
+            return lines.join('\n');
+        };
+
+        const updateStats = (entryCount, skippedLines) => {
+            stats.textContent = `${this.t('reg2gpo.generated', 'Generated XML entries')}: ${entryCount}\n${this.t('reg2gpo.skipped', 'Skipped lines')}: ${skippedLines}`;
+            stats.style.display = 'block';
+        };
+
+        fileInput?.addEventListener('change', async (event) => {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            input.value = await file.text();
+        });
+
+        generateBtn?.addEventListener('click', () => {
+            const source = input.value.trim();
+            if (!source) {
+                alert(this.t('reg2gpo.empty', 'Paste a .reg export or upload a file first.'));
+                return;
+            }
+
+            const { entries, skippedLines } = parseRegistry(source);
+            if (entries.length === 0) {
+                alert(this.t('reg2gpo.invalid', 'No valid registry keys were found in the provided input.'));
+                return;
+            }
+
+            const collectionName = normalizeCollectionName(collectionInput.value);
+            const tree = buildCollectionTree(collectionName, entries);
+            const xml = `<?xml version="1.0" encoding="utf-8"?>\n${renderCollectionTree(tree)}`;
+
+            output.value = xml;
+            updateStats(entries.length, skippedLines);
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            if (!output.value.trim()) return;
+            this.copyToClipboard(output.value);
+        });
+
+        downloadBtn?.addEventListener('click', () => {
+            if (!output.value.trim()) {
+                alert(this.t('reg2gpo.downloadError', 'Generate the XML output before downloading it.'));
+                return;
+            }
+
+            const blob = new Blob([output.value], { type: 'application/xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = this.t('reg2gpo.downloadFilename', 'reg2gpo.xml');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
         });
     }
 
@@ -978,8 +2357,8 @@ class OnlineToolsApp {
         const container = document.getElementById('hash-generator');
         if (!container) return;
 
-        const input = document.getElementById('hashInput');
-        const generateBtn = document.getElementById('generateHashBtn');
+        const input = container.querySelector('#hashInput');
+        const generateBtn = container.querySelector('#generateHashBtn');
 
         // Simple hash functions (for demonstration - in production use crypto libraries)
         const simpleHash = async (text, algorithm) => {
@@ -995,12 +2374,12 @@ class OnlineToolsApp {
 
             try {
                 // Note: MD5 is not available in Web Crypto API, showing placeholder
-                document.getElementById('md5Hash').textContent = 'MD5 non supportato nel browser';
-                document.getElementById('sha1Hash').textContent = await simpleHash(text, 'SHA-1');
-                document.getElementById('sha256Hash').textContent = await simpleHash(text, 'SHA-256');
-                document.getElementById('sha512Hash').textContent = await simpleHash(text, 'SHA-512');
+                container.querySelector('#md5Hash').textContent = this.t('hash.md5Unsupported', 'MD5 not supported in the browser');
+                container.querySelector('#sha1Hash').textContent = await simpleHash(text, 'SHA-1');
+                container.querySelector('#sha256Hash').textContent = await simpleHash(text, 'SHA-256');
+                container.querySelector('#sha512Hash').textContent = await simpleHash(text, 'SHA-512');
             } catch (e) {
-                alert('Errore nella generazione hash: ' + e.message);
+                alert(`${this.t('hash.error', 'Hash generation error')}: ${e.message}`);
             }
         });
 
@@ -1008,8 +2387,8 @@ class OnlineToolsApp {
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
-                if (text && text !== 'MD5 non supportato nel browser') this.copyToClipboard(text);
+                const text = container.querySelector(`#${elementId}`)?.textContent;
+                if (text && text !== this.t('hash.md5Unsupported', 'MD5 not supported in the browser')) this.copyToClipboard(text);
             });
         });
     }
@@ -1019,11 +2398,11 @@ class OnlineToolsApp {
         const container = document.getElementById('xml-beautifier');
         if (!container) return;
 
-        const input = document.getElementById('xmlInput');
-        const output = document.getElementById('xmlOutput');
-        const formatBtn = document.getElementById('formatXmlBtn');
-        const copyBtn = document.getElementById('copyXmlResult');
-        const validation = document.getElementById('xmlValidation');
+        const input = container.querySelector('#xmlInput');
+        const output = container.querySelector('#xmlOutput');
+        const formatBtn = container.querySelector('#formatXmlBtn');
+        const copyBtn = container.querySelector('#copyXmlResult');
+        const validation = container.querySelector('#xmlValidation');
 
         const formatXml = (xml, indent) => {
             const PADDING = indent === '\t' ? '\t' : ' '.repeat(parseInt(indent) || 2);
@@ -1057,7 +2436,7 @@ class OnlineToolsApp {
             const xml = input.value.trim();
             if (!xml) {
                 output.value = '';
-                validation.style.display = 'none';
+                this.clearStatus(validation);
                 return;
             }
 
@@ -1069,24 +2448,17 @@ class OnlineToolsApp {
 
                 if (parseError) {
                     output.value = '';
-                    validation.style.display = 'block';
-                    validation.innerHTML = `<span style="color: var(--color-error);">✗ XML non valido: ${parseError.textContent}</span>`;
-                    validation.className = 'stats error-message';
+                    this.setStatus(validation, `${this.t('xml.invalid', 'Invalid XML')}: ${parseError.textContent}`, 'error');
                 } else {
-                    const indentValue = document.querySelector('input[name="xmlIndent"]:checked')?.value || '2';
+                    const indentValue = container.querySelector('input[name="xmlIndent"]:checked')?.value || '2';
                     const indent = indentValue === 'tab' ? '\t' : indentValue;
                     
                     output.value = formatXml(xml, indent);
-                    
-                    validation.style.display = 'block';
-                    validation.innerHTML = '<span style="color: var(--color-success);">✓ XML valido</span>';
-                    validation.className = 'stats success-message';
+                    this.setStatus(validation, this.t('xml.valid', 'Valid XML'), 'success');
                 }
             } catch (e) {
                 output.value = '';
-                validation.style.display = 'block';
-                validation.innerHTML = `<span style="color: var(--color-error);">✗ Errore: ${e.message}</span>`;
-                validation.className = 'stats error-message';
+                this.setStatus(validation, `${this.t('common.error', 'Error')}: ${e.message}`, 'error');
             }
         });
 
@@ -1095,144 +2467,47 @@ class OnlineToolsApp {
         });
     }
 
-    // JWT Decoder/Validator
-    initJwtDecoder() {
-        const container = document.getElementById('jwt-decoder');
-        if (!container) return;
-
-        const input = document.getElementById('jwtInput');
-        const decodeBtn = document.getElementById('decodeJwtBtn');
-        const validation = document.getElementById('jwtValidation');
-        const headerOutput = document.getElementById('jwtHeader');
-        const payloadOutput = document.getElementById('jwtPayload');
-        const signatureOutput = document.getElementById('jwtSignature');
-
-        const base64UrlDecode = (str) => {
-            // Add padding if needed
-            str += new Array(5 - str.length % 4).join('=');
-            return atob(str.replace(/\-/g, '+').replace(/_/g, '/'));
-        };
-
-        decodeBtn?.addEventListener('click', () => {
-            const jwt = input.value.trim();
-            if (!jwt) return;
-
-            try {
-                const parts = jwt.split('.');
-                if (parts.length !== 3) {
-                    throw new Error('JWT deve avere 3 parti separate da punti');
-                }
-
-                // Decode header
-                const header = JSON.parse(base64UrlDecode(parts[0]));
-                headerOutput.value = JSON.stringify(header, null, 2);
-
-                // Decode payload
-                const payload = JSON.parse(base64UrlDecode(parts[1]));
-                payloadOutput.value = JSON.stringify(payload, null, 2);
-
-                // Show signature as hex (can't verify without secret)
-                const signatureBytes = atob(parts[2].replace(/\-/g, '+').replace(/_/g, '/'));
-                const signatureHex = Array.from(signatureBytes, byte => 
-                    ('0' + (byte & 0xFF).toString(16)).slice(-2)
-                ).join('');
-                signatureOutput.value = signatureHex;
-
-                // Basic validation
-                validation.style.display = 'block';
-                validation.className = 'stats success-message';
-                
-                let validationMsg = '✓ JWT decodificato con successo';
-                
-                // Check expiration
-                if (payload.exp) {
-                    const expDate = new Date(payload.exp * 1000);
-                    const now = new Date();
-                    if (expDate < now) {
-                        validationMsg += '<br>⚠️ Token scaduto il ' + expDate.toLocaleString();
-                    } else {
-                        validationMsg += '<br>✓ Token valido fino al ' + expDate.toLocaleString();
-                    }
-                }
-
-                // Check issued at
-                if (payload.iat) {
-                    const iatDate = new Date(payload.iat * 1000);
-                    validationMsg += '<br>📅 Emesso il ' + iatDate.toLocaleString();
-                }
-
-                validation.innerHTML = validationMsg;
-
-            } catch (e) {
-                validation.style.display = 'block';
-                validation.className = 'stats error-message';
-                validation.innerHTML = '✗ Errore: ' + e.message;
-                
-                headerOutput.value = '';
-                payloadOutput.value = '';
-                signatureOutput.value = '';
-            }
-        });
-
-        // Copy buttons
-        document.getElementById('copyJwtHeader')?.addEventListener('click', () => {
-            this.copyToClipboard(headerOutput.value);
-        });
-        document.getElementById('copyJwtPayload')?.addEventListener('click', () => {
-            this.copyToClipboard(payloadOutput.value);
-        });
-        document.getElementById('copyJwtSignature')?.addEventListener('click', () => {
-            this.copyToClipboard(signatureOutput.value);
-        });
-    }
-
-    // Certificate Info Extractor
+    // PEM Certificate Inspector
     initCertExtractor() {
         const container = document.getElementById('cert-extractor');
         if (!container) return;
 
-        const input = document.getElementById('certInput');
-        const extractBtn = document.getElementById('extractCertBtn');
+        const input = container.querySelector('#certInput');
+        const extractBtn = container.querySelector('#extractCertBtn');
 
-        const parseCertificate = (pemString) => {
-            // Remove PEM headers/footers and whitespace
+        const pemToDer = (pemString) => {
             const base64 = pemString
                 .replace(/-----BEGIN CERTIFICATE-----/, '')
                 .replace(/-----END CERTIFICATE-----/, '')
                 .replace(/\s/g, '');
-                
-            // This is a simplified parser - in real applications you'd use a proper ASN.1 parser
-            // For demonstration, we'll show placeholder data
-            return {
-                subject: 'Parsing certificati richiede librerie ASN.1 specializzate',
-                issuer: 'Questa è una versione semplificata per demo',
-                serialNumber: 'N/A - Parsing ASN.1 non implementato',
-                validFrom: 'Non disponibile',
-                validTo: 'Non disponibile',
-                algorithm: 'Non disponibile'
-            };
+
+            const binary = atob(base64);
+            return Uint8Array.from(binary, char => char.charCodeAt(0));
         };
 
-        extractBtn?.addEventListener('click', () => {
+        const bytesToHex = (bytes) => Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join(':').toUpperCase();
+
+        extractBtn?.addEventListener('click', async () => {
             const cert = input.value.trim();
             if (!cert) return;
 
-            if (cert.includes('-----BEGIN CERTIFICATE-----')) {
-                try {
-                    const certInfo = parseCertificate(cert);
-                    
-                    document.getElementById('certSubject').textContent = certInfo.subject;
-                    document.getElementById('certIssuer').textContent = certInfo.issuer;
-                    document.getElementById('certSerial').textContent = certInfo.serialNumber;
-                    document.getElementById('certValidFrom').textContent = certInfo.validFrom;
-                    document.getElementById('certValidTo').textContent = certInfo.validTo;
-                    document.getElementById('certAlgorithm').textContent = certInfo.algorithm;
-                    
-                } catch (e) {
-                    alert('Errore nel parsing del certificato: ' + e.message);
-                }
-            } else {
-                alert('Formato certificato non valido. Inserisci un certificato PEM.');
+            if (!cert.includes('-----BEGIN CERTIFICATE-----')) {
+                alert(this.t('cert.invalidFormat', 'Invalid certificate format. Please enter a PEM certificate.'));
+                return;
+            }
+
+            try {
+                const der = pemToDer(cert);
+                const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', der));
+
+                container.querySelector('#certSubject').textContent = this.t('cert.browserOnly', 'Not available in browser-only mode');
+                container.querySelector('#certIssuer').textContent = this.t('cert.browserOnly', 'Not available in browser-only mode');
+                container.querySelector('#certSerial').textContent = bytesToHex(digest);
+                container.querySelector('#certValidFrom').textContent = `${this.t('cert.derSize', 'DER size')}: ${der.length} bytes`;
+                container.querySelector('#certValidTo').textContent = this.t('cert.requiresAsn1', 'Requires a complete ASN.1 parser');
+                container.querySelector('#certAlgorithm').textContent = this.t('cert.fingerprint', 'SHA-256 fingerprint');
+            } catch (e) {
+                alert(`${this.t('cert.parseError', 'Certificate parsing error')}: ${e.message}`);
             }
         });
 
@@ -1240,7 +2515,7 @@ class OnlineToolsApp {
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
         });
@@ -1251,9 +2526,9 @@ class OnlineToolsApp {
         const container = document.getElementById('password-checker');
         if (!container) return;
 
-        const input = document.getElementById('passwordInput');
-        const showPasswordCheck = document.getElementById('showPassword');
-        const checkBtn = document.getElementById('checkPasswordBtn');
+        const input = container.querySelector('#passwordInput');
+        const showPasswordCheck = container.querySelector('#showPassword');
+        const checkBtn = container.querySelector('#checkPasswordBtn');
 
         showPasswordCheck?.addEventListener('change', () => {
             input.type = showPasswordCheck.checked ? 'text' : 'password';
@@ -1293,49 +2568,49 @@ class OnlineToolsApp {
             const { score, checks } = result;
 
             // Update UI
-            document.getElementById('passwordLength').textContent = password.length;
-            document.getElementById('passwordUppercase').textContent = checks.uppercase ? '✓' : '✗';
-            document.getElementById('passwordLowercase').textContent = checks.lowercase ? '✓' : '✗';
-            document.getElementById('passwordNumbers').textContent = checks.numbers ? '✓' : '✗';
-            document.getElementById('passwordSymbols').textContent = checks.symbols ? '✓' : '✗';
-            document.getElementById('passwordScore').textContent = `${score}/8`;
+            container.querySelector('#passwordCheckLength').textContent = password.length;
+            container.querySelector('#passwordUppercase').textContent = checks.uppercase ? '✓' : '✗';
+            container.querySelector('#passwordLowercase').textContent = checks.lowercase ? '✓' : '✗';
+            container.querySelector('#passwordNumbers').textContent = checks.numbers ? '✓' : '✗';
+            container.querySelector('#passwordSymbols').textContent = checks.symbols ? '✓' : '✗';
+            container.querySelector('#passwordScore').textContent = `${score}/8`;
 
             // Strength indicator
-            const strengthElement = document.getElementById('passwordStrength');
+            const strengthElement = container.querySelector('#passwordStrength');
             let strengthText, strengthColor, strengthBg;
 
             if (score <= 3) {
-                strengthText = 'Debole';
+                strengthText = this.t('passwordCheck.weak', 'Weak');
                 strengthColor = 'var(--color-error)';
                 strengthBg = 'rgba(var(--color-error-rgb), 0.1)';
             } else if (score <= 5) {
-                strengthText = 'Media';
+                strengthText = this.t('passwordCheck.medium', 'Medium');
                 strengthColor = 'var(--color-warning)';
                 strengthBg = 'rgba(var(--color-warning-rgb), 0.1)';
             } else {
-                strengthText = 'Forte';
+                strengthText = this.t('passwordCheck.strong', 'Strong');
                 strengthColor = 'var(--color-success)';
                 strengthBg = 'rgba(var(--color-success-rgb), 0.1)';
             }
 
             strengthElement.innerHTML = `
                 <div style="padding: var(--space-8); background: ${strengthBg}; color: ${strengthColor}; border-radius: var(--radius-base); text-align: center; font-weight: var(--font-weight-semibold);">
-                    Password: ${strengthText} (${score}/8)
+                    ${this.t('passwordCheck.passwordStrength', 'Password')}: ${strengthText} (${score}/8)
                 </div>
             `;
 
             // Suggestions
             const suggestions = [];
-            if (!checks.length) suggestions.push('• Usa almeno 8 caratteri');
-            if (!checks.uppercase) suggestions.push('• Aggiungi lettere maiuscole');
-            if (!checks.lowercase) suggestions.push('• Aggiungi lettere minuscole');
-            if (!checks.numbers) suggestions.push('• Aggiungi numeri');
-            if (!checks.symbols) suggestions.push('• Aggiungi simboli speciali');
-            if (password.length < 12) suggestions.push('• Considera di usare almeno 12 caratteri');
+            if (!checks.length) suggestions.push(`• ${this.t('passwordCheck.suggestionLength', 'Use at least 8 characters')}`);
+            if (!checks.uppercase) suggestions.push(`• ${this.t('passwordCheck.suggestionUppercase', 'Add uppercase letters')}`);
+            if (!checks.lowercase) suggestions.push(`• ${this.t('passwordCheck.suggestionLowercase', 'Add lowercase letters')}`);
+            if (!checks.numbers) suggestions.push(`• ${this.t('passwordCheck.suggestionNumbers', 'Add numbers')}`);
+            if (!checks.symbols) suggestions.push(`• ${this.t('passwordCheck.suggestionSymbols', 'Add special symbols')}`);
+            if (password.length < 12) suggestions.push(`• ${this.t('passwordCheck.suggestionLonger', 'Consider using at least 12 characters')}`);
 
-            document.getElementById('passwordSuggestions').innerHTML = suggestions.length > 0 
-                ? `<strong>Suggerimenti:</strong><br>${suggestions.join('<br>')}`
-                : '<strong>✓ Password robusta!</strong>';
+            container.querySelector('#passwordSuggestions').innerHTML = suggestions.length > 0 
+                ? `<strong>${this.t('passwordCheck.suggestions', 'Suggestions')}:</strong><br>${suggestions.join('<br>')}`
+                : `<strong>${this.t('passwordCheck.goodPassword', '✓ Strong password!')}</strong>`;
         });
     }
 
@@ -1344,26 +2619,25 @@ class OnlineToolsApp {
         const container = document.getElementById('qr-generator');
         if (!container) return;
 
-        const textInput = document.getElementById('qrTextInput');
-        const sizeSelect = document.getElementById('qrSize');
-        const generateBtn = document.getElementById('generateQrBtn');
-        const qrOutput = document.getElementById('qrOutput');
-        const downloadBtn = document.getElementById('downloadQrBtn');
-        const fileInput = document.getElementById('qrFileInput');
-        const decodedText = document.getElementById('qrDecodedText');
-        const copyBtn = document.getElementById('copyQrText');
+        const textInput = container.querySelector('#qrTextInput');
+        const sizeSelect = container.querySelector('#qrSize');
+        const generateBtn = container.querySelector('#generateQrBtn');
+        const qrOutput = container.querySelector('#qrOutput');
+        const downloadBtn = container.querySelector('#downloadQrBtn');
+        const fileInput = container.querySelector('#qrFileInput');
+        const decodedText = container.querySelector('#qrDecodedText');
+        const copyBtn = container.querySelector('#copyQrText');
 
-        // Simple QR code generation using QR Server API
         generateBtn?.addEventListener('click', () => {
             const text = textInput.value.trim();
             const size = sizeSelect.value;
             
             if (!text) return;
 
-            // Use QR Server API for generation (free service)
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
             
             qrOutput.innerHTML = `<img src="${qrUrl}" alt="QR Code" style="max-width: 100%; height: auto; border-radius: var(--radius-base);">`;
+            this.showMessage(this.t('qr.generatedExternal', 'QR generated through an external service.'), 'success');
             
             downloadBtn.style.display = 'inline-block';
             downloadBtn.onclick = () => {
@@ -1374,14 +2648,23 @@ class OnlineToolsApp {
             };
         });
 
-        // File reading for QR code decoding
-        fileInput?.addEventListener('change', (e) => {
+        fileInput?.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Note: QR code reading from image requires a specialized library like jsQR
-            // For this demo, we'll show a placeholder message
-            decodedText.value = 'La lettura di QR code da immagine richiede librerie specializzate come jsQR. Questa funzionalità non è implementata in questa versione demo.';
+            if (!('BarcodeDetector' in window)) {
+                decodedText.value = this.t('qr.barcodeUnsupported', 'This browser does not support BarcodeDetector for local QR reading.');
+                return;
+            }
+
+            try {
+                const detector = new window.BarcodeDetector({ formats: ['qr_code'] });
+                const imageBitmap = await createImageBitmap(file);
+                const barcodes = await detector.detect(imageBitmap);
+                decodedText.value = barcodes[0]?.rawValue || this.t('qr.noQrFound', 'No QR code detected in the image.');
+            } catch (error) {
+                decodedText.value = `${this.t('qr.readError', 'QR read error')}: ${error.message}`;
+            }
         });
 
         copyBtn?.addEventListener('click', () => {
@@ -1390,8 +2673,15 @@ class OnlineToolsApp {
     }
 }
 
-// Initialize the app when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing app');
+function bootstrapOnlineToolsApp() {
+    if (window.toolsApp) return;
+
+    console.log('Initializing app bootstrap');
     window.toolsApp = new OnlineToolsApp();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapOnlineToolsApp, { once: true });
+} else {
+    bootstrapOnlineToolsApp();
+}

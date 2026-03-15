@@ -1,226 +1,259 @@
 # 🔧 Online Tools Collection
 
-Una collezione completa di strumenti online COPIATA PARI PARI da Andrea Draghetti per l'elaborazione di testo, generazione di contenuti, estrazione dati e sicurezza informatica. Applicazione web moderna costruita con HTML5, CSS3 e JavaScript vanilla.
+A complete collection of online tools COPIED EXACTLY from Andrea Draghetti for text processing, content generation, data extraction, and cybersecurity tasks. Modern web application built with HTML5, CSS3, and vanilla JavaScript.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 
-## 📋 Indice
+## 📋 Table of Contents
 
-- [Panoramica](#panoramica)
-- [Caratteristiche](#caratteristiche)
-- [Strumenti Disponibili](#strumenti-disponibili)
-- [Installazione](#installazione)
-- [Utilizzo](#utilizzo)
-- [Struttura del Progetto](#struttura-del-progetto)
-- [Architettura](#architettura)
-- [Personalizzazione](#personalizzazione)
-- [Contribuire](#contribuire)
+- [Overview](#overview)
+- [Features](#features)
+- [Available Tools](#available-tools)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Architecture](#architecture)
+- [Customization](#customization)
+- [Contributing](#contributing)
 - [Roadmap](#roadmap)
-- [Licenza](#licenza)
-- [Autori](#autori)
+- [License](#license)
+- [Authors](#authors)
 
-## 🎯 Panoramica
+## 🎯 Overview
 
-Online Tools Collection è un'applicazione web single-page che fornisce una suite di strumenti utili per sviluppatori, content creator e professionisti della sicurezza. L'interfaccia è intuitiva, responsiva e supporta sia la modalità chiara che quella scura.
+Online Tools Collection is a single-page web application that provides a suite of useful tools for developers, content creators, and security professionals. The interface is intuitive, responsive, and supports both light and dark mode.
 
-### Perché questo progetto?
+### Why this project?
 
-- **Nessuna dipendenza esterna**: Costruito con JavaScript vanilla per prestazioni ottimali
-- **Privacy-first**: Tutti gli strumenti funzionano localmente nel browser, nessun dato viene inviato a server esterni
-- **Interfaccia moderna**: Design pulito e moderno con supporto per tema scuro
-- **Completamente responsive**: Funziona perfettamente su desktop, tablet e dispositivi mobili
-- **Open source**: Liberamente modificabile e personalizzabile
+- **Vanilla JavaScript**: No application framework, lightweight bundle, and easy to maintain
+- **Privacy-aware**: Most tools work locally; the QR generator uses an external service
+- **Modern interface**: Catalog-style home, light/dark theme, and direct tool navigation
+- **Fully responsive**: Works perfectly on desktop, tablet, and mobile devices
+- **Open source**: Freely modifiable and customizable
 
-## ✨ Caratteristiche
+## ✨ Features
 
-### 🎨 Design e UX
-- **Tema Dinamico**: Switch immediato tra modalità chiara e scura
-- **Interfaccia Intuitiva**: Sidebar organizzata per categorie con ricerca integrata
-- **Design Responsivo**: Layout adattivo per tutti i dispositivi
-- **Feedback Visivo**: Animazioni fluide e feedback immediato alle azioni
+### 🎨 Design and UX
+- **Theme and Language**: Instant switch between light/dark mode and EN/IT interface
+- **Intuitive Interface**: Catalog home, category-based sidebar, and integrated search
+- **Responsive Design**: Adaptive layout for all devices
+- **Direct Links**: Each tool has a dedicated URL via hash routing
+- **Visual Feedback**: Smooth animations and immediate feedback for actions
 
 ### 🚀 Performance
-- **Caricamento Veloce**: Nessuna libreria esterna da caricare
-- **Elaborazione Client-Side**: Tutti i calcoli avvengono nel browser
-- **Ottimizzazione Memoria**: Gestione efficiente delle risorse
+- **Fast Loading**: No external library to load
+- **Client-Side Processing**: All calculations happen in the browser
+- **Memory Optimization**: Efficient resource handling
 
-### 🔒 Privacy e Sicurezza
-- **Zero Tracking**: Nessun analytics o tracking dell'utente
-- **Dati Locali**: Nessun dato lascia il tuo browser
-- **Codice Aperto**: Completamente ispezionabile e verificabile
+### 🔒 Privacy and Security
+- **Zero Tracking**: No analytics or user tracking
+- **Local Data**: Tools work mainly in the browser; the QR generator sends text to a remote provider
+- **Open Code**: Completely inspectable and verifiable
 
-## 🛠️ Strumenti Disponibili
+## 🛠️ Available Tools
 
-> **23 strumenti** professionali per sviluppatori, content creator e security specialist
+> **27 tools** for developers, content creators, and everyday operational work
 
-### 📝 Elaborazione Testo (6 strumenti)
+### 📝 Text Processing (6 tools)
 
-- **📋 List Generator** - Converte testo in liste formattate (numerata, puntata, virgole, pipe)
-- **✏️ Aggiungi Testo alle Righe** - Aggiunge prefissi/suffissi a ogni riga
-- **🔠 Converti Maiuscole/Minuscole** - Trasforma in UPPER, lower, Title, camelCase, snake_case
-- **❌ Rimuovi Righe Duplicate** - Elimina duplicati con opzioni case-sensitive
-- **📏 Rimuovi Interruzioni di Riga** - Unisce testo su singola riga
-- **🚫 Rimuovi Righe che Contengono** - Filtra righe per parole specifiche
+- **📋 List Generator** - Converts text into formatted lists (numbered, bulleted, comma-separated, pipe-separated)
+- **✏️ Add Text to Lines** - Adds prefixes/suffixes to each line
+- **🔠 Convert Case** - Transforms text into UPPER, lower, Title, camelCase, snake_case
+- **❌ Remove Duplicate Lines** - Removes duplicates with case-sensitive options
+- **📏 Remove Line Breaks** - Joins text into a single line
+- **🚫 Remove Lines Containing** - Filters lines by specific words
 
-### 🎲 Generatori (2 strumenti)
+### 🎲 Generators (3 tools)
 
-- **🔑 Password Generator** - Genera password sicure con crypto API (8-50 caratteri)
-- **👤 Username Generator** - Crea username unici (Random, Tech, Fantasy, Cool)
+- **🔑 Password Generator** - Generates secure passwords with the crypto API (8-50 characters)
+- **👤 Username Generator** - Creates unique usernames (Random, Tech, Fantasy, Cool)
+- **🔢 PIN Generator** - Generates multiple numeric PINs with configurable length and duplicate avoidance
 
-### 🔍 Estrazione (2 strumenti)
+### 🔍 Extraction (2 tools)
 
-- **🌐 Estrattore Domini** - Estrae domini da URL con gestione sottodomini
-- **📧 Estrattore Email** - Trova email con pattern avanzati
+- **🌐 Domain Extractor** - Extracts domains from URLs with subdomain handling
+- **📧 Email Extractor** - Finds email addresses with advanced patterns
 
-### 📊 Analisi (1 strumento)
+### 📊 Analysis (1 tool)
 
-- **🔢 Conta Duplicati** - Analizza occorrenze e frequenze con percentuali
+- **🔢 Count Duplicates** - Analyzes occurrences and frequencies with percentages
 
-### 🔐 Sicurezza (6 strumenti)
+### 🔐 Security (3 tools)
 
-- **🧪 Curl to Burp Converter** - Converte comandi curl per Burp Suite
-- **🛡️ IoC Escape Tool** - Escape/unescape Indicatori di Compromissione
-- **🔑 JWT Decoder/Validator** - Decodifica token JWT con validazione exp/iat
-- **📜 Certificate Info Extractor** - Estrae info da certificati SSL/TLS PEM
-- **🔒 Password Strength Checker** - Analizza robustezza con scoring 0-8
-- **📱 QR Code Generator/Reader** - Genera QR con download PNG
+- **📜 PEM Certificate Inspector** - Validates PEM input and computes local SHA-256 fingerprints
+- **🔒 Password Strength Checker** - Analyzes password strength with 0-8 scoring
+- **📱 QR Code Generator/Reader** - Generates QR codes through an external provider and attempts to read images with the browser native APIs
 
-### 🔄 Convertitori (3 strumenti)
+### 🔄 Converters (3 tools)
 
-- **😎 Emoji Shortcode Converter** - Converte tra emoji e shortcode
-- **🔐 Base64 Encoder/Decoder** - Codifica/decodifica Base64 con UTF-8
-- **🔗 URL Encoder/Decoder** - Encode/decode URL completi o componenti
+- **😎 Emoji Shortcode Converter** - Converts between emoji and shortcode
+- **🔐 Base64 Encoder/Decoder** - Base64 encode/decode with UTF-8 support
+- **🔗 URL Encoder/Decoder** - Encode/decode full URLs or components
 
-### 💻 Sviluppo (4 strumenti)
+### 💻 Development (4 tools)
 
-- **📄 JSON Formatter/Validator** - Formatta JSON con indentazione personalizzabile
-- **🔍 Diff Checker** - Confronta testi con opzioni ignore case/whitespace
-- **🔤 Regex Tester** - Testa regex con flags e gruppi di cattura
-- **📋 XML Beautifier** - Formatta e valida XML con indentazione
+- **📄 JSON Formatter/Validator** - Formats JSON with customizable indentation
+- **🔍 Diff Checker** - Compares texts with ignore case/whitespace options
+- **🔤 Regex Tester** - Tests regex with flags and capture groups
+- **📋 XML Beautifier** - Formats and validates XML with indentation
 
-### ⚙️ Utilità (3 strumenti)
+### ⚙️ Utilities (5 tools)
 
-- **🎨 Color Picker/Converter** - Converte HEX, RGB, RGBA, HSL con preview
-- **🕐 Timestamp Converter** - Converte timestamp Unix e formati data
-- **🔏 Hash Generator** - Genera hash SHA-1, SHA-256, SHA-512
+- **🎨 Color Picker/Converter** - Converts HEX, RGB, RGBA, HSL with preview
+- **🕐 Timestamp Converter** - Converts Unix timestamps and date formats
+- **⏱️ TimeConvert** - Converts durations between milliseconds, seconds, minutes, hours, days, and `HH:MM:SS`
+- **🧩 Reg2GPO** - Converts Windows `.reg` exports into Group Policy Preferences XML
+- **🔏 Hash Generator** - Generates SHA-1, SHA-256, SHA-512 hashes
 
 
-## 💻 Installazione
+## 💻 Installation
 
-### Prerequisiti
-- Un web server locale (opzionale per sviluppo)
-- Un browser moderno (Chrome, Firefox, Safari, Edge)
+### Prerequisites
+- A local web server (optional for development)
+- A modern browser (Chrome, Firefox, Safari, Edge)
 
-### Installazione Locale
+### Local Installation
 
-1. **Clona il repository**
+1. **Clone the repository**
 ```bash
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/gioxx/tools-collection.git
 cd tools-collection
 ```
 
-2. **Apri direttamente nel browser**
+2. **Open directly in the browser**
 ```bash
-# Su macOS
+# On macOS
 open index.html
 
-# Su Linux
+# On Linux
 xdg-open index.html
 
-# Su Windows
+# On Windows
 start index.html
 ```
 
-3. **Oppure usa un server locale** (consigliato per sviluppo)
+3. **Or use a local server** (recommended for development)
 ```bash
-# Con Python 3
+# With Python 3
 python -m http.server 8000
 
-# Con Node.js
+# With Node.js
 npx serve
 
-# Con PHP
+# With PHP
 php -S localhost:8000
 ```
 
-4. **Accedi all'applicazione**
-   - Apri il browser su `http://localhost:8000`
+4. **Access the application**
+   - Open the browser at `http://localhost:8000`
 
-## 📖 Utilizzo
+### Docker Compose
 
-### Navigazione Base
+You can also run the project with Docker Compose:
 
-1. **Seleziona uno strumento** dalla sidebar a sinistra
-2. **Inserisci il testo** nell'area di input
-3. **Configura le opzioni** se disponibili
-4. **Clicca sul pulsante** per elaborare
-5. **Copia il risultato** con il pulsante "Copia"
+```bash
+docker compose up --build -d
+```
 
-### Funzionalità Avanzate
+The application will be available at `http://localhost:8080`.
 
-#### 🔍 Ricerca Strumenti
-- Usa la barra di ricerca nella sidebar per trovare rapidamente gli strumenti
-- La ricerca filtra in tempo reale mentre digiti
+### Custom logo on the home page
 
-#### 🌓 Cambio Tema
-- Clicca sull'icona luna/sole per alternare tra tema chiaro e scuro
-- La preferenza viene salvata localmente
+The home page can display a custom logo on the right side of the hero if the file `data/logo.png` is available.
 
-#### ⌨️ Scorciatoie Tastiera
-- `Ctrl/Cmd + K`: Focus sulla ricerca
-- `Esc`: Chiudi dialoghi o resetta ricerca
+- Expected path in the repository: `./data/logo.png`
+- Path served inside the container: `/usr/share/nginx/html/data/logo.png`
+- If the file does not exist, nothing is shown
 
-## 📁 Struttura del Progetto
+#### File permissions
+
+The file must be readable by the web server. In practice, avoid restrictive permissions such as `600`.
+
+Recommended setting:
+
+```bash
+chmod 644 data/logo.png
+```
+
+## 📖 Usage
+
+### Basic Navigation
+
+1. **Select a tool** from the sidebar on the left
+2. **Enter the text** in the input area
+3. **Configure the options** if available
+4. **Click the button** to process
+5. **Copy the result** with the "Copy" button
+
+### Advanced Features
+
+#### 🔍 Tool Search
+- Use the search bar in the home catalog or the sidebar to quickly find tools
+- The search filters in real time while you type
+
+#### 🌓 Theme Switching
+- Click the moon/sun icon to switch between light and dark theme
+- The preference is saved locally
+
+#### ⌨️ Keyboard Shortcuts
+- `Ctrl/Cmd + K`: Focus on search
+- `Esc`: Close dialogs or reset search
+
+## 📁 Project Structure
 
 ```
 tools-collection/
 │
-├── index.html          # File HTML principale con struttura e strumenti
-├── style.css          # Stili CSS con supporto per temi
-├── app.js             # Logica JavaScript per tutti gli strumenti
-└── README.md          # Documentazione del progetto
+├── index.html          # Main HTML file with catalog home, sidebar, and tools
+├── style.css           # CSS styles with theme support
+├── app.js              # JavaScript logic for all tools
+├── locales/            # EN/IT translations
+├── compose.yaml        # Container startup with Docker Compose
+├── CHANGELOG.md        # Project change history
+├── README-it.md        # Italian documentation
+└── README.md           # English documentation
 ```
 
-### Dettaglio File
+### File Details
 
 #### `index.html`
-- Struttura semantica HTML5
-- Container per ogni strumento
-- Sidebar di navigazione
-- Meta tag per SEO e responsive
+- Semantic HTML5 structure
+- Container for each tool
+- Navigation sidebar
+- Meta tags for SEO and responsive behavior
 
 #### `style.css`
-- Variabili CSS per temi
-- Layout responsive con flexbox/grid
-- Animazioni e transizioni
-- Stili componenti riutilizzabili
+- CSS variables for themes
+- Responsive layout with flexbox/grid
+- Animations and transitions
+- Reusable component styles
 
 #### `app.js`
-- Classe principale `OnlineToolsApp`
-- Moduli per ogni strumento
-- Gestione eventi e DOM
-- Utility functions condivise
+- Main `OnlineToolsApp` class
+- Modules for each tool
+- Event and DOM management
+- Shared utility functions
 
-## 🏗️ Architettura
+## 🏗️ Architecture
 
 ### Design Pattern
-L'applicazione utilizza un pattern MVC leggero:
+The application uses a lightweight MVC pattern:
 
 ```javascript
-// Model - Dati e logica business
+// Model - Data and business logic
 class ToolModel {
     processData(input, options) { }
 }
 
-// View - Interfaccia utente
+// View - User interface
 class ToolView {
     render(data) { }
     bindEvents(handler) { }
 }
 
-// Controller - Coordinamento
+// Controller - Coordination
 class ToolController {
     constructor(model, view) {
         this.model = model;
@@ -229,77 +262,77 @@ class ToolController {
 }
 ```
 
-### Flusso Dati
-1. **Input utente** → Event Handler
-2. **Validazione** → Controllo parametri
-3. **Elaborazione** → Logica strumento
-4. **Output** → Aggiornamento DOM
-5. **Feedback** → Notifiche utente
+### Data Flow
+1. **User input** → Event Handler
+2. **Validation** → Parameter checks
+3. **Processing** → Tool logic
+4. **Output** → DOM update
+5. **Feedback** → User notifications
 
-### Gestione Stato
-- Stato locale per ogni strumento
-- Nessuno stato globale condiviso
+### State Management
+- Local state for each tool
+- No shared global state
 - Event-driven updates
 
-## 🎨 Personalizzazione
+## 🎨 Customization
 
-### Aggiungere un Nuovo Strumento
+### Adding a New Tool
 
-1. **Aggiungi HTML** in `index.html`:
+1. **Add HTML** in `index.html`:
 ```html
-<div id="nuovo-strumento" class="tool-container">
+<div id="new-tool" class="tool-container">
     <div class="tool-header">
-        <h2>🆕 Nuovo Strumento</h2>
-        <p>Descrizione strumento</p>
+        <h2>🆕 New Tool</h2>
+        <p>Tool description</p>
     </div>
     <div class="tool-content">
-        <!-- Contenuto strumento -->
+        <!-- Tool content -->
     </div>
 </div>
 ```
 
-2. **Aggiungi link** nella sidebar:
+2. **Add link** in the sidebar:
 ```html
 <li>
-    <a href="#" data-tool="nuovo-strumento" class="tool-link">
-        🆕 Nuovo Strumento
+    <a href="#" data-tool="new-tool" class="tool-link">
+        🆕 New Tool
     </a>
 </li>
 ```
 
-3. **Implementa logica** in `app.js`:
+3. **Implement logic** in `app.js`:
 ```javascript
-initNuovoStrumento() {
-    const btn = document.getElementById('nuovoStrumentoBtn');
+initNewTool() {
+    const btn = document.getElementById('newToolBtn');
     btn?.addEventListener('click', () => {
-        // Logica strumento
+        // Tool logic
     });
 }
 ```
 
-### Personalizzare i Temi
+### Customizing Themes
 
-Modifica le variabili CSS in `style.css`:
+Edit the CSS variables in `style.css`:
 
 ```css
 :root {
-    /* Colori tema chiaro */
+    /* Light theme colors */
     --bg-primary: #ffffff;
     --text-primary: #1a1a1a;
     --accent: #007bff;
 }
 
 [data-color-scheme="dark"] {
-    /* Colori tema scuro */
+    /* Dark theme colors */
     --bg-primary: #1a1a1a;
     --text-primary: #ffffff;
     --accent: #4dabf7;
 }
 ```
 
-### Modificare Layout
+### Modifying Layout
 
-Il layout utilizza CSS Grid e Flexbox:
+The layout uses CSS Grid and Flexbox:
 
 ```css
 .app-container {
@@ -308,81 +341,81 @@ Il layout utilizza CSS Grid e Flexbox:
 }
 ```
 
-## 🤝 Contribuire
+## 🤝 Contributing
 
-Contribuzioni sono benvenute! Ecco come puoi aiutare:
+Contributions are welcome! Here is how you can help:
 
 ### 1. Fork & Clone
 ```bash
-# Fork su GitHub, poi:
-git clone https://github.com/amargiovanni/tools-collection.git
+# Fork on GitHub, then:
+git clone https://github.com/gioxx/tools-collection.git
 cd tools-collection
-git checkout -b feature/nuovo-strumento
+git checkout -b feature/new-tool
 ```
 
-### 2. Sviluppa
-- Segui lo stile di codice esistente
-- Testa su diversi browser
-- Assicurati che sia responsive
+### 2. Develop
+- Follow the existing code style
+- Test on different browsers
+- Make sure it is responsive
 
 ### 3. Commit
 ```bash
 git add .
-git commit -m "feat: aggiunto nuovo strumento X"
+git commit -m "feat: add new tool X"
 ```
 
 ### 4. Push & PR
 ```bash
-git push origin feature/nuovo-strumento
-# Crea Pull Request su GitHub
+git push origin feature/new-tool
+# Create Pull Request on GitHub
 ```
 
-### Linee Guida
-- **Codice pulito**: Commenti dove necessario
-- **Nomi descrittivi**: Variabili e funzioni autoesplicative
-- **Test manuale**: Verifica tutti i casi d'uso
-- **Documentazione**: Aggiorna README se necessario
+### Guidelines
+- **Clean code**: Comments where needed
+- **Descriptive names**: Self-explanatory variables and functions
+- **Manual testing**: Check all use cases
+- **Documentation**: Update the README if needed
 
 ## 🗺️ Roadmap
 
-### ✅ Completato
-- [X] **23 Strumenti Base** - Elaborazione testo, generatori, sicurezza, convertitori
-- [X] **Design Responsive** - Ottimizzato per mobile con menu hamburger
-- [X] **Sistema Temi** - Dark/light mode con rilevamento automatico preferenze
-- [X] **Sicurezza Avanzata** - JWT, certificati, password checker, QR codes
+### ✅ Completed
+- [X] **27 Available Tools** - Text processing, generators, extraction, development, and utilities
+- [X] **Responsive Design** - Mobile-optimized with hamburger menu
+- [X] **Theme and Language System** - Dark/light mode and EN/IT interface with persisted preferences
+- [X] **Catalog Home and Direct Links** - Initial catalog view and dedicated URLs for tools
 
-### 🔧 Sviluppo
-- [ ] API Response Formatter - Formatta risposte API
-- [ ] CRON Expression Builder - Costruisce espressioni cron
-- [ ] Lorem Ipsum Generator - Genera testo placeholder
-- [ ] Favicon Generator - Crea favicon da immagini
+### 🔧 In Development
+- [ ] API Response Formatter - Formats API responses
+- [ ] CRON Expression Builder - Builds cron expressions
+- [ ] Lorem Ipsum Generator - Generates placeholder text
+- [ ] Favicon Generator - Creates favicons from images
 
 ### 🎨 Design & Media 
-- [ ] Image Base64 Converter - Converte immagini in Base64
-- [ ] CSS Minifier/Beautifier - Minifica o formatta CSS
-- [ ] SVG Optimizer - Ottimizza codice SVG
-- [ ] Color Palette Generator - Genera palette colori
+- [ ] Image Base64 Converter - Converts images to Base64
+- [ ] CSS Minifier/Beautifier - Minifies or formats CSS
+- [ ] SVG Optimizer - Optimizes SVG code
+- [ ] Color Palette Generator - Generates color palettes
 
 ### 📱 Mobile & Responsive
-- [ ] Device Mockup Generator - Preview responsive design
-- [ ] Viewport Size Reference - Dimensioni comuni dispositivi
-- [ ] Touch Target Checker - Verifica dimensioni touch
+- [ ] Device Mockup Generator - Responsive design preview
+- [ ] Viewport Size Reference - Common device dimensions
+- [ ] Touch Target Checker - Verifies touch dimensions
 
-### ⚡ Utilità Varie
-- [ ] Text Statistics - Conta parole, caratteri, paragrafi
-- [ ] Random Data Generator - Genera dati casuali (nomi, email, etc.)
-- [ ] Unit Converter - Converte unità di misura
-- [ ] Whitespace Visualizer - Mostra spazi invisibili
+### ⚡ Miscellaneous Utilities
+- [ ] Text Statistics - Counts words, characters, paragraphs
+- [ ] Random Data Generator - Generates random data (names, emails, etc.)
+- [ ] Unit Converter - Converts measurement units
+- [ ] Whitespace Visualizer - Shows invisible spaces
 
-### 🚀 Funzionalità Avanzate
-- [ ] PWA Support - Installazione come app
-- [ ] Offline functionality - Funzionamento offline
-- [ ] Import/Export settings - Salvataggio configurazioni
-- [ ] Keyboard shortcuts - Scorciatoie da tastiera
+### 🚀 Advanced Features
+- [ ] PWA Support - Installable as an app
+- [ ] Offline functionality - Works offline
+- [ ] Import/Export settings - Save configurations
+- [ ] Keyboard shortcuts - Keyboard shortcuts
 
-## 📄 Licenza
+## 📄 License
 
-Questo progetto è rilasciato sotto licenza MIT. Vedi il file [LICENSE](LICENSE) per i dettagli.
+This project is released under the MIT license. See the [LICENSE](LICENSE) file for details.
 
 ```
 MIT License
@@ -394,23 +427,24 @@ of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction...
 ```
 
-## 👥 Autori
+## 👥 Authors
 
-- **Andrea Margiovanni** - *Sviluppatore principale* - [@amargiovanni](https://github.com/amargiovanni)
+- **Andrea Margiovanni** - *Lead developer* - [@amargiovanni](https://github.com/amargiovanni)
+- **Giovanni "Gioxx" Solone** - *Maintenance, bug fixes, Docker, and UX/UI improvements* - [@gioxx](https://github.com/gioxx)
 
-### Ringraziamenti
+### Acknowledgements
 
-- Icone emoji native per un'interfaccia amichevole
-- Andrea Draghetti da cui ho copiato tutto
-- Tutti i contributori e tester (no, dai, ha fatto tutto Perplexity)
+- Native emoji icons for a friendly interface
+- Andrea Draghetti, from whom I copied everything
+- All contributors and testers (no, come on, Perplexity did everything)
 
 ---
 
 <div align="center">
-    <p>Fatto con ❤️ dalla AI per gli sviluppatori</p>
+    <p>Made with ❤️ by AI for developers</p>
     <p>
-        <a href="https://github.com/amargiovanni/tools-collection/issues">Segnala un Bug</a>
+        <a href="https://github.com/gioxx/tools-collection/issues">Report a Bug</a>
         ·
-        <a href="https://github.com/amargiovanni/tools-collection/issues">Richiedi una Feature</a>
+        <a href="https://github.com/gioxx/tools-collection/issues">Request a Feature</a>
     </p>
 </div>
