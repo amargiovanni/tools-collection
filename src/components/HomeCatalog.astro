@@ -1,6 +1,6 @@
 ---
 import { categories, getToolsByCategory } from '../config/tools'
-import { t, getCategoryName } from '../i18n'
+import { t, getCategoryName, getAlternateLanguage } from '../i18n'
 import type { Language, MessageKey } from '../i18n'
 
 interface Props {
@@ -8,7 +8,22 @@ interface Props {
 }
 
 const { lang } = Astro.props
+const altLang = getAlternateLanguage(lang)
 ---
+
+<!-- Top bar -->
+<header class="flex items-center justify-end gap-2 px-4 py-3 sm:px-6">
+  <kbd class="hidden sm:inline-flex items-center gap-1 rounded border border-border bg-surface-raised px-2 py-0.5 text-xs text-text-muted">
+    <span>⌘</span>K
+  </kbd>
+  <a
+    href={`/${altLang}/`}
+    class="rounded-lg px-2 py-1 text-sm font-medium text-text-secondary hover:bg-surface-raised hover:text-accent transition-colors"
+    title={t(lang, 'app_switchLanguageAria')}
+  >
+    {altLang.toUpperCase()}
+  </a>
+</header>
 
 <!-- Hero -->
 <div class="mx-auto max-w-4xl text-center py-12 px-4">
