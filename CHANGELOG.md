@@ -24,6 +24,9 @@ This changelog currently tracks the recent evolution of the project by published
 - Removed Docker Hub-specific authentication and metadata publishing from the image build workflow.
 - Realigned `README.md` and `README-it.md` so both documents describe the current Astro-based project and custom logo setup consistently.
 
+### Fixed
+- Added trailing slashes to generated tool URLs to avoid incorrect Nginx redirects that could drop non-default ports such as `:8080` in container deployments.
+
 ## Published: `b56cdbb` (`v1.0.0`)
 
 ### Added

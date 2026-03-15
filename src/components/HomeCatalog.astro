@@ -156,7 +156,7 @@ const categoryAccents: Record<string, string> = {
               const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
               return (
                 <a
-                  href={`/${lang}/tools/${tool.id}`}
+                  href={`/${lang}/tools/${tool.id}/`}
                   class={`group relative flex items-start gap-3.5 rounded-xl border bg-gradient-to-br p-4 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${colorClass}`}
                 >
                   <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm" role="img" aria-hidden="true">

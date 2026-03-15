@@ -69,7 +69,7 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
           stored === 'it' || stored === 'en'
             ? stored
             : configuredDefault
-        location.replace('/' + lang + '/tools/' + slug)
+        location.replace('/' + lang + '/tools/' + slug + '/')
       })()
     </script>
   </head>
