@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop, 'feature/**']
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npx vitest run
+
+      - name: Run tests with coverage
+        run: npx vitest run --coverage
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+
+      - name: Build
+        run: npx astro build
+
+      - name: Check for console.log in source
+        run: |
+          if grep -rn 'console\.log' src/ --include='*.ts' --include='*.tsx'; then
+            echo "::error::console.log found in source code"
+            exit 1
+          fi
+
+      - name: Verify page count
+        run: |
+          count=$(find dist -name '*.html' | wc -l)
+          echo "Generated $count HTML pages"
+          if [ "$count" -lt 57 ]; then
+            echo "::error::Expected at least 57 pages, got $count"
+            exit 1
+          fi
