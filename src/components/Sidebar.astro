@@ -1,0 +1,49 @@
+---
+import { categories, getToolsByCategory } from '../config/tools'
+import { t, getCategoryName } from '../i18n'
+import type { Language, MessageKey } from '../i18n'
+
+interface Props {
+  lang: Language
+  currentPath?: string
+}
+
+const { lang, currentPath } = Astro.props
+---
+
+<nav class="flex flex-col gap-4 py-4" aria-label="Tool navigation">
+  {categories.map((cat) => {
+    const tools = getToolsByCategory(cat)
+    return (
+      <div>
+        <h3 class="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          {getCategoryName(lang, cat)}
+        </h3>
+        <ul class="flex flex-col gap-0.5">
+          {tools.map((tool) => {
+            const href = `/${lang}/tools/${tool.id}`
+            const isActive = currentPath === href
+            const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
+            return (
+              <li>
+                <a
+                  href={href}
+                  class:list={[
+                    'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors',
+                    isActive
+                      ? 'bg-accent-light text-accent font-medium'
+                      : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary',
+                  ]}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <span class="text-base" aria-hidden="true">{tool.icon}</span>
+                  {t(lang, nameKey)}
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  })}
+</nav>

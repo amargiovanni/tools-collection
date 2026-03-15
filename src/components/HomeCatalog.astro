@@ -1,0 +1,64 @@
+---
+import { categories, getToolsByCategory } from '../config/tools'
+import { t, getCategoryName } from '../i18n'
+import type { Language, MessageKey } from '../i18n'
+
+interface Props {
+  lang: Language
+}
+
+const { lang } = Astro.props
+---
+
+<!-- Hero -->
+<div class="mx-auto max-w-4xl text-center py-12 px-4">
+  <img
+    src="/data/logo.png"
+    alt=""
+    class="mx-auto mb-6 h-20 w-20"
+    onerror="this.style.display='none'"
+  />
+  <p class="text-sm font-medium uppercase tracking-wider text-accent mb-2">
+    {t(lang, 'home_eyebrow')}
+  </p>
+  <h1 class="text-3xl font-bold text-text-primary sm:text-4xl mb-4">
+    {t(lang, 'home_title')}
+  </h1>
+  <p class="text-text-secondary max-w-2xl mx-auto">
+    {t(lang, 'home_description')}
+  </p>
+</div>
+
+<!-- Tool catalog by category -->
+<div class="mx-auto max-w-6xl px-4 pb-16">
+  {categories.map((cat) => {
+    const tools = getToolsByCategory(cat)
+    return (
+      <section class="mb-10">
+        <h2 class="mb-4 text-lg font-semibold text-text-primary">
+          {getCategoryName(lang, cat)}
+        </h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {tools.map((tool) => {
+            const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
+            const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
+            return (
+              <a
+                href={`/${lang}/tools/${tool.id}`}
+                class="group flex flex-col gap-2 rounded-xl border border-border bg-surface-raised p-4 transition-all hover:border-accent hover:shadow-md"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="text-2xl" role="img" aria-hidden="true">{tool.icon}</span>
+                  <h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">
+                    {t(lang, nameKey)}
+                  </h3>
+                </div>
+                <p class="text-sm text-text-secondary line-clamp-2">{t(lang, descKey)}</p>
+              </a>
+            )
+          })}
+        </div>
+      </section>
+    )
+  })}
+</div>

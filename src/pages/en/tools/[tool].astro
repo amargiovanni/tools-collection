@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from 'astro'
+import ToolLayout from '../../../layouts/ToolLayout.astro'
+import { toolRegistry } from '../../../config/tools'
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return toolRegistry.map((tool) => ({
+    params: { tool: tool.id },
+    props: { tool },
+  }))
+}
+
+const { tool } = Astro.props
+const lang = 'en' as const
+
+// Dynamic component loading via import.meta.glob
+const components = import.meta.glob<{ default: any }>('../../../components/tools/*.tsx', { eager: true })
+
+// Find the matching component by converting tool ID to PascalCase filename
+function toPascalCase(str: string): string {
+  return str.split('-').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join('')
+}
+
+const componentKey = Object.keys(components).find((key) =>
+  key.endsWith(`/${toPascalCase(tool.id)}.tsx`)
+)
+const ToolComponent = componentKey ? components[componentKey]?.default : null
+---
+
+<ToolLayout tool={tool} lang={lang}>
+  {ToolComponent ? <ToolComponent client:load lang={lang} /> : <div class="rounded-lg border border-border bg-surface-raised p-8 text-center text-text-muted">Coming soon</div>}
+</ToolLayout>
