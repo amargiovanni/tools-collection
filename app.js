@@ -2142,6 +2142,5 @@ class OnlineToolsApp {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing app');
     const app = new OnlineToolsApp();
-    console.log('Sbrigasigapone, la saponetta');
     window.toolsApp = app;
 });
