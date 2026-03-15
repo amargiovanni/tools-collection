@@ -27,8 +27,8 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 ### Perché questo progetto?
 
-- **Nessuna dipendenza esterna**: Costruito con JavaScript vanilla per prestazioni ottimali
-- **Privacy-first**: Tutti gli strumenti funzionano localmente nel browser, nessun dato viene inviato a server esterni
+- **JavaScript vanilla**: Nessun framework applicativo, bundle leggero e semplice da manutenere
+- **Privacy-aware**: La maggior parte degli strumenti funziona localmente; il generatore QR usa un servizio esterno
 - **Interfaccia moderna**: Design pulito e moderno con supporto per tema scuro
 - **Completamente responsive**: Funziona perfettamente su desktop, tablet e dispositivi mobili
 - **Open source**: Liberamente modificabile e personalizzabile
@@ -48,7 +48,7 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 ### 🔒 Privacy e Sicurezza
 - **Zero Tracking**: Nessun analytics o tracking dell'utente
-- **Dati Locali**: Nessun dato lascia il tuo browser
+- **Dati Locali**: I tool lavorano principalmente nel browser; il QR generator invia il testo al provider remoto
 - **Codice Aperto**: Completamente ispezionabile e verificabile
 
 ## 🛠️ Strumenti Disponibili
@@ -82,10 +82,10 @@ Online Tools Collection è un'applicazione web single-page che fornisce una suit
 
 - **🧪 Curl to Burp Converter** - Converte comandi curl per Burp Suite
 - **🛡️ IoC Escape Tool** - Escape/unescape Indicatori di Compromissione
-- **🔑 JWT Decoder/Validator** - Decodifica token JWT con validazione exp/iat
-- **📜 Certificate Info Extractor** - Estrae info da certificati SSL/TLS PEM
+- **🔑 JWT Decoder/Inspector** - Decodifica token JWT e controlla claim temporali senza verificare la firma
+- **📜 PEM Certificate Inspector** - Valida PEM e calcola fingerprint SHA-256 locali
 - **🔒 Password Strength Checker** - Analizza robustezza con scoring 0-8
-- **📱 QR Code Generator/Reader** - Genera QR con download PNG
+- **📱 QR Code Generator/Reader** - Genera QR tramite provider esterno e prova a leggere immagini con le API native del browser
 
 ### 🔄 Convertitori (3 strumenti)
 

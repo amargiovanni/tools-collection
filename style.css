@@ -80,8 +80,8 @@
   --color-info-rgb: 98, 108, 113;
 
   /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-base: "Geist", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
   --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
     Monaco, Consolas, monospace;
   --font-size-xs: 11px;
@@ -731,12 +731,6 @@ select.form-control {
   border: 1px solid var(--color-border-secondary);
 }
 
-@font-face {
-  font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
-    format('woff2');
-}
-
 /* END PERPLEXITY DESIGN SYSTEM */
 /* App Layout */
 .app-container {
@@ -756,15 +750,14 @@ select.form-control {
 .sidebar-header {
   padding: var(--space-24);
   border-bottom: 1px solid var(--color-border);
-  position: relative;
 }
 
 .sidebar-controls {
-  position: absolute;
-  top: var(--space-16);
-  right: var(--space-16);
   display: flex;
   gap: var(--space-8);
+  margin-top: var(--space-16);
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .sidebar-header h1 {
@@ -1078,6 +1071,7 @@ select.form-control {
   border-radius: var(--radius-base);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  white-space: pre-wrap;
 }
 
 /* Emoji Reference */

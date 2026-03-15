@@ -113,12 +113,14 @@ class OnlineToolsApp {
         setTheme(currentTheme, false);
         
         // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            // Only update if user hasn't manually set a preference
-            if (!localStorage.getItem('theme')) {
-                setTheme(e.matches ? 'dark' : 'light', false);
-            }
-        });
+        const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        if (typeof colorSchemeQuery.addEventListener === 'function') {
+            colorSchemeQuery.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    setTheme(e.matches ? 'dark' : 'light', false);
+                }
+            });
+        }
         
         themeToggle.addEventListener('click', () => {
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -354,6 +356,23 @@ class OnlineToolsApp {
         }
     }
 
+    setStatus(element, message, type = 'info') {
+        if (!element) return;
+
+        element.style.display = 'block';
+        element.className = 'stats';
+        if (type === 'success') element.classList.add('success-message');
+        if (type === 'error') element.classList.add('error-message');
+        element.textContent = message;
+    }
+
+    clearStatus(element) {
+        if (!element) return;
+        element.style.display = 'none';
+        element.className = 'stats';
+        element.textContent = '';
+    }
+
     // 1. List Generator
     initListGenerator() {
         const container = document.getElementById('list-generator');
@@ -420,23 +439,35 @@ class OnlineToolsApp {
             const includeNumbers = container.querySelector('#includeNumbers')?.checked || false;
             const includeSymbols = container.querySelector('#includeSymbols')?.checked || false;
 
-            let charset = '';
-            if (includeUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (includeLower) charset += 'abcdefghijklmnopqrstuvwxyz';
-            if (includeNumbers) charset += '0123456789';
-            if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            const selectedCharsets = [];
+            if (includeUpper) selectedCharsets.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            if (includeLower) selectedCharsets.push('abcdefghijklmnopqrstuvwxyz');
+            if (includeNumbers) selectedCharsets.push('0123456789');
+            if (includeSymbols) selectedCharsets.push('!@#$%^&*()_+-=[]{}|;:,.<>?');
 
-            if (!charset) {
+            if (selectedCharsets.length === 0) {
                 this.showMessage('Seleziona almeno un tipo di carattere!', 'error');
                 return;
             }
 
-            let password = '';
-            for (let i = 0; i < length; i++) {
-                password += charset.charAt(Math.floor(Math.random() * charset.length));
+            const charset = selectedCharsets.join('');
+            const getRandomIndex = (max) => {
+                const values = new Uint32Array(1);
+                crypto.getRandomValues(values);
+                return values[0] % max;
+            };
+
+            const passwordChars = selectedCharsets.map(set => set.charAt(getRandomIndex(set.length)));
+            while (passwordChars.length < length) {
+                passwordChars.push(charset.charAt(getRandomIndex(charset.length)));
             }
 
-            passwordOutput.value = password;
+            for (let i = passwordChars.length - 1; i > 0; i--) {
+                const j = getRandomIndex(i + 1);
+                [passwordChars[i], passwordChars[j]] = [passwordChars[j], passwordChars[i]];
+            }
+
+            passwordOutput.value = passwordChars.join('');
         });
 
         copyBtn.addEventListener('click', () => {
@@ -577,59 +608,352 @@ class OnlineToolsApp {
         });
     }
 
-    // Additional tool implementations (simplified for space)
     initCountDuplicates() {
         const container = document.getElementById('count-duplicates');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#duplicateInput');
+        const analyzeBtn = container.querySelector('#analyzeDuplicates');
+        const resultsContainer = container.querySelector('#duplicateResults');
+
+        analyzeBtn?.addEventListener('click', () => {
+            const lines = input.value.split('\n').map(line => line.trim()).filter(Boolean);
+            const caseSensitive = container.querySelector('#caseSensitiveDuplicates')?.checked || false;
+            const sortByCount = container.querySelector('#sortByCount')?.checked || false;
+
+            if (lines.length === 0) {
+                resultsContainer.textContent = 'Inserisci almeno una voce.';
+                return;
+            }
+
+            const counts = new Map();
+            const originals = new Map();
+            lines.forEach(line => {
+                const key = caseSensitive ? line : line.toLowerCase();
+                counts.set(key, (counts.get(key) || 0) + 1);
+                if (!originals.has(key)) originals.set(key, line);
+            });
+
+            const entries = [...counts.entries()].map(([key, count]) => ({
+                value: originals.get(key),
+                count,
+                percentage: ((count / lines.length) * 100).toFixed(1)
+            }));
+
+            entries.sort(sortByCount
+                ? (a, b) => b.count - a.count || a.value.localeCompare(b.value)
+                : (a, b) => a.value.localeCompare(b.value));
+
+            resultsContainer.innerHTML = '';
+            entries.forEach(entry => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `<span class="result-text">${this.escapeHtml(entry.value)}</span><span>${entry.count} (${entry.percentage}%)</span>`;
+                resultsContainer.appendChild(item);
+            });
+        });
     }
 
     initDomainExtractor() {
         const container = document.getElementById('domain-extractor');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#domainInput');
+        const output = container.querySelector('#domainsOutput');
+        const extractBtn = container.querySelector('#extractDomains');
+        const copyBtn = container.querySelector('#copyDomainsResult');
+
+        const normalizeDomain = (hostname, includeSubdomains) => {
+            if (includeSubdomains) return hostname;
+            const parts = hostname.split('.').filter(Boolean);
+            return parts.length <= 2 ? hostname : parts.slice(-2).join('.');
+        };
+
+        extractBtn?.addEventListener('click', () => {
+            const lines = input.value.split('\n').map(line => line.trim()).filter(Boolean);
+            const includeSubdomains = container.querySelector('#includeSubdomains')?.checked || false;
+            const domains = [];
+
+            lines.forEach(line => {
+                try {
+                    const normalized = /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(line) ? line : `https://${line}`;
+                    const hostname = new URL(normalized).hostname;
+                    if (hostname) domains.push(normalizeDomain(hostname, includeSubdomains));
+                } catch (e) {
+                    // Ignore malformed lines
+                }
+            });
+
+            output.value = [...new Set(domains)].join('\n');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initRemoveDuplicates() {
         const container = document.getElementById('remove-duplicates');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#removeDuplicatesInput');
+        const output = container.querySelector('#removeDuplicatesOutput');
+        const processBtn = container.querySelector('#removeDuplicatesBtn');
+        const copyBtn = container.querySelector('#copyRemoveDuplicatesResult');
+
+        processBtn?.addEventListener('click', () => {
+            const lines = input.value.split('\n');
+            const preserveOrder = container.querySelector('#preserveOrder')?.checked || false;
+            const caseSensitive = container.querySelector('#caseSensitiveRemove')?.checked || false;
+            const seen = new Set();
+            const result = [];
+
+            const pushLine = (line) => {
+                const key = caseSensitive ? line : line.toLowerCase();
+                if (seen.has(key)) return;
+                seen.add(key);
+                result.push(line);
+            };
+
+            if (preserveOrder) {
+                lines.forEach(pushLine);
+            } else {
+                [...lines].sort((a, b) => a.localeCompare(b)).forEach(pushLine);
+            }
+
+            output.value = result.join('\n');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initRemoveLineBreaks() {
         const container = document.getElementById('remove-line-breaks');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#lineBreaksInput');
+        const output = container.querySelector('#lineBreaksOutput');
+        const processBtn = container.querySelector('#removeLineBreaksBtn');
+        const copyBtn = container.querySelector('#copyLineBreaksResult');
+
+        processBtn?.addEventListener('click', () => {
+            const replacementMode = container.querySelector('input[name="replacement"]:checked')?.value || 'space';
+            const customReplacement = container.querySelector('#customReplacement')?.value || '';
+            const replacement = replacementMode === 'space'
+                ? ' '
+                : replacementMode === 'custom'
+                    ? customReplacement
+                    : '';
+
+            output.value = input.value.replace(/\r?\n+/g, replacement);
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initRemoveLinesContaining() {
         const container = document.getElementById('remove-lines-containing');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#removeContainingInput');
+        const output = container.querySelector('#removeContainingOutput');
+        const processBtn = container.querySelector('#removeContainingBtn');
+        const stats = container.querySelector('#removeStats');
+        const copyBtn = container.querySelector('#copyRemoveContainingResult');
+
+        processBtn?.addEventListener('click', () => {
+            const terms = container.querySelector('#wordsToRemove').value
+                .split(',')
+                .map(term => term.trim())
+                .filter(Boolean);
+
+            if (terms.length === 0) {
+                output.value = input.value;
+                this.setStatus(stats, 'Nessuna parola/frase configurata.', 'info');
+                return;
+            }
+
+            const caseSensitive = container.querySelector('#caseSensitiveContaining')?.checked || false;
+            const haystackTerms = caseSensitive ? terms : terms.map(term => term.toLowerCase());
+            const lines = input.value.split('\n');
+            const kept = [];
+            let removed = 0;
+
+            lines.forEach(line => {
+                const candidate = caseSensitive ? line : line.toLowerCase();
+                const shouldRemove = haystackTerms.some(term => candidate.includes(term));
+                if (shouldRemove) {
+                    removed += 1;
+                } else {
+                    kept.push(line);
+                }
+            });
+
+            output.value = kept.join('\n');
+            this.setStatus(stats, `Righe rimosse: ${removed}\nRighe mantenute: ${kept.length}`, removed > 0 ? 'success' : 'info');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initEmailExtractor() {
         const container = document.getElementById('email-extractor');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#emailInput');
+        const output = container.querySelector('#emailsOutput');
+        const extractBtn = container.querySelector('#extractEmailsBtn');
+        const stats = container.querySelector('#emailStats');
+        const copyBtn = container.querySelector('#copyEmailsResult');
+
+        extractBtn?.addEventListener('click', () => {
+            const matches = input.value.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) || [];
+            const emails = container.querySelector('#removeDuplicateEmails')?.checked
+                ? [...new Set(matches.map(email => email.toLowerCase()))]
+                : matches;
+
+            output.value = emails.join('\n');
+            this.setStatus(stats, `Email trovate: ${emails.length}`, emails.length > 0 ? 'success' : 'info');
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initCurlBurpConverter() {
         const container = document.getElementById('curl-burp-converter');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#curlInput');
+        const output = container.querySelector('#curlOutput');
+        const convertBtn = container.querySelector('#convertCurlBtn');
+        const copyBtn = container.querySelector('#copyCurlResult');
+
+        const unquote = (value) => value.replace(/^['"]|['"]$/g, '');
+
+        convertBtn?.addEventListener('click', () => {
+            const curl = input.value.trim();
+            if (!curl) {
+                output.value = '';
+                return;
+            }
+
+            const urlMatch = curl.match(/https?:\/\/[^\s'"\\]+|['"]https?:\/\/[^'"]+['"]/i);
+            if (!urlMatch) {
+                output.value = 'Errore: impossibile trovare un URL valido nel comando curl.';
+                return;
+            }
+
+            try {
+                const url = new URL(unquote(urlMatch[0]));
+                const method = (curl.match(/(?:^|\s)-X\s+([A-Z]+)/i)?.[1] || (curl.includes(' --data') || curl.includes(' -d ') ? 'POST' : 'GET')).toUpperCase();
+                const headers = [...curl.matchAll(/(?:^|\s)-H\s+(['"])(.*?)\1/g)].map(match => match[2]);
+                const bodyMatch = curl.match(/(?:^|\s)(?:--data(?:-raw)?|-d)\s+(['"])([\s\S]*?)\1/i);
+                const body = bodyMatch ? bodyMatch[2] : '';
+
+                const requestLines = [
+                    `${method} ${url.pathname || '/'}${url.search} HTTP/1.1`,
+                    `Host: ${url.host}`,
+                    ...headers
+                ];
+
+                if (body && !headers.some(header => header.toLowerCase().startsWith('content-length:'))) {
+                    requestLines.push(`Content-Length: ${new TextEncoder().encode(body).length}`);
+                }
+
+                output.value = `${requestLines.join('\r\n')}\r\n\r\n${body}`;
+            } catch (e) {
+                output.value = `Errore: ${e.message}`;
+            }
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initIocEscape() {
         const container = document.getElementById('ioc-escape');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#iocInput');
+        const output = container.querySelector('#iocOutput');
+        const escapeBtn = container.querySelector('#escapeIocBtn');
+        const unescapeBtn = container.querySelector('#unescapeIocBtn');
+        const copyBtn = container.querySelector('#copyIocResult');
+
+        const escapeIocs = (text) => text
+            .replace(/https/gi, 'hxxps')
+            .replace(/http/gi, 'hxxp')
+            .replace(/\./g, '[.]')
+            .replace(/@/g, '[@]');
+
+        const unescapeIocs = (text) => text
+            .replace(/\[\.\]/g, '.')
+            .replace(/\[@\]/g, '@')
+            .replace(/hxxps/gi, 'https')
+            .replace(/hxxp/gi, 'http');
+
+        escapeBtn?.addEventListener('click', () => {
+            output.value = escapeIocs(input.value);
+        });
+
+        unescapeBtn?.addEventListener('click', () => {
+            output.value = unescapeIocs(input.value);
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     initEmojiConverter() {
         const container = document.getElementById('emoji-converter');
         if (!container) return;
-        // Implementation here
+
+        const input = container.querySelector('#emojiInput');
+        const output = container.querySelector('#emojiOutput');
+        const toEmojiBtn = container.querySelector('#convertToEmojiBtn');
+        const toShortcodeBtn = container.querySelector('#convertToShortcodeBtn');
+        const copyBtn = container.querySelector('#copyEmojiResult');
+
+        const emojiMap = {
+            ':smile:': '😄',
+            ':heart:': '❤️',
+            ':thumbsup:': '👍',
+            ':wave:': '👋',
+            ':fire:': '🔥',
+            ':rocket:': '🚀'
+        };
+
+        const shortcodeMap = Object.fromEntries(Object.entries(emojiMap).map(([shortcode, emoji]) => [emoji, shortcode]));
+
+        toEmojiBtn?.addEventListener('click', () => {
+            let result = input.value;
+            Object.entries(emojiMap).forEach(([shortcode, emoji]) => {
+                result = result.split(shortcode).join(emoji);
+            });
+            output.value = result;
+        });
+
+        toShortcodeBtn?.addEventListener('click', () => {
+            let result = input.value;
+            Object.entries(shortcodeMap).forEach(([emoji, shortcode]) => {
+                result = result.split(emoji).join(shortcode);
+            });
+            output.value = result;
+        });
+
+        copyBtn?.addEventListener('click', () => {
+            this.copyToClipboard(output.value);
+        });
     }
 
     // Base64 Encoder/Decoder
@@ -637,11 +961,26 @@ class OnlineToolsApp {
         const container = document.getElementById('base64-converter');
         if (!container) return;
 
-        const input = document.getElementById('base64Input');
-        const output = document.getElementById('base64Output');
-        const encodeBtn = document.getElementById('base64EncodeBtn');
-        const decodeBtn = document.getElementById('base64DecodeBtn');
-        const copyBtn = document.getElementById('copyBase64Result');
+        const input = container.querySelector('#base64Input');
+        const output = container.querySelector('#base64Output');
+        const encodeBtn = container.querySelector('#base64EncodeBtn');
+        const decodeBtn = container.querySelector('#base64DecodeBtn');
+        const copyBtn = container.querySelector('#copyBase64Result');
+
+        const toBase64 = (text) => {
+            const bytes = new TextEncoder().encode(text);
+            let binary = '';
+            bytes.forEach(byte => {
+                binary += String.fromCharCode(byte);
+            });
+            return btoa(binary);
+        };
+
+        const fromBase64 = (text) => {
+            const binary = atob(text);
+            const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+            return new TextDecoder().decode(bytes);
+        };
 
         encodeBtn?.addEventListener('click', () => {
             const text = input.value.trim();
@@ -650,7 +989,7 @@ class OnlineToolsApp {
                 return;
             }
             try {
-                output.value = btoa(unescape(encodeURIComponent(text)));
+                output.value = toBase64(text);
             } catch (e) {
                 output.value = 'Errore: impossibile codificare il testo';
             }
@@ -663,7 +1002,7 @@ class OnlineToolsApp {
                 return;
             }
             try {
-                output.value = decodeURIComponent(escape(atob(text)));
+                output.value = fromBase64(text);
             } catch (e) {
                 output.value = 'Errore: input non valido Base64';
             }
@@ -679,12 +1018,12 @@ class OnlineToolsApp {
         const container = document.getElementById('url-encoder');
         if (!container) return;
 
-        const input = document.getElementById('urlInput');
-        const output = document.getElementById('urlOutput');
-        const encodeBtn = document.getElementById('urlEncodeBtn');
-        const decodeBtn = document.getElementById('urlDecodeBtn');
-        const encodeComponentBtn = document.getElementById('urlEncodeComponentBtn');
-        const copyBtn = document.getElementById('copyUrlResult');
+        const input = container.querySelector('#urlInput');
+        const output = container.querySelector('#urlOutput');
+        const encodeBtn = container.querySelector('#urlEncodeBtn');
+        const decodeBtn = container.querySelector('#urlDecodeBtn');
+        const encodeComponentBtn = container.querySelector('#urlEncodeComponentBtn');
+        const copyBtn = container.querySelector('#copyUrlResult');
 
         encodeBtn?.addEventListener('click', () => {
             const text = input.value.trim();
@@ -727,23 +1066,23 @@ class OnlineToolsApp {
         const container = document.getElementById('json-formatter');
         if (!container) return;
 
-        const input = document.getElementById('jsonInput');
-        const output = document.getElementById('jsonOutput');
-        const formatBtn = document.getElementById('formatJsonBtn');
-        const copyBtn = document.getElementById('copyJsonResult');
-        const validation = document.getElementById('jsonValidation');
+        const input = container.querySelector('#jsonInput');
+        const output = container.querySelector('#jsonOutput');
+        const formatBtn = container.querySelector('#formatJsonBtn');
+        const copyBtn = container.querySelector('#copyJsonResult');
+        const validation = container.querySelector('#jsonValidation');
 
         formatBtn?.addEventListener('click', () => {
             const text = input.value.trim();
             if (!text) {
                 output.value = '';
-                validation.style.display = 'none';
+                this.clearStatus(validation);
                 return;
             }
 
             try {
                 const json = JSON.parse(text);
-                const indentValue = document.querySelector('input[name="jsonIndent"]:checked')?.value || '2';
+                const indentValue = container.querySelector('input[name="jsonIndent"]:checked')?.value || '2';
                 
                 let indent;
                 if (indentValue === 'tab') {
@@ -755,15 +1094,10 @@ class OnlineToolsApp {
                 }
 
                 output.value = indent === '' ? JSON.stringify(json) : JSON.stringify(json, null, indent);
-                
-                validation.style.display = 'block';
-                validation.innerHTML = '<span style="color: var(--color-success);">✓ JSON valido</span>';
-                validation.className = 'stats success-message';
+                this.setStatus(validation, 'JSON valido', 'success');
             } catch (e) {
                 output.value = '';
-                validation.style.display = 'block';
-                validation.innerHTML = `<span style="color: var(--color-error);">✗ Errore: ${e.message}</span>`;
-                validation.className = 'stats error-message';
+                this.setStatus(validation, `Errore: ${e.message}`, 'error');
             }
         });
 
@@ -777,21 +1111,21 @@ class OnlineToolsApp {
         const container = document.getElementById('diff-checker');
         if (!container) return;
 
-        const text1 = document.getElementById('diffText1');
-        const text2 = document.getElementById('diffText2');
-        const compareBtn = document.getElementById('compareDiffBtn');
-        const output = document.getElementById('diffOutput');
-        const stats = document.getElementById('diffStats');
-        const ignoreCaseCheck = document.getElementById('diffIgnoreCase');
-        const ignoreWhitespaceCheck = document.getElementById('diffIgnoreWhitespace');
+        const text1 = container.querySelector('#diffText1');
+        const text2 = container.querySelector('#diffText2');
+        const compareBtn = container.querySelector('#compareDiffBtn');
+        const output = container.querySelector('#diffOutput');
+        const stats = container.querySelector('#diffStats');
+        const ignoreCaseCheck = container.querySelector('#diffIgnoreCase');
+        const ignoreWhitespaceCheck = container.querySelector('#diffIgnoreWhitespace');
 
         compareBtn?.addEventListener('click', () => {
             let content1 = text1.value;
             let content2 = text2.value;
 
             if (!content1 && !content2) {
-                output.innerHTML = 'Inserisci testo in entrambi i campi';
-                stats.style.display = 'none';
+                output.textContent = 'Inserisci testo in entrambi i campi';
+                this.clearStatus(stats);
                 return;
             }
 
@@ -837,10 +1171,8 @@ class OnlineToolsApp {
                 }
             }
 
-            output.innerHTML = diffHtml || 'Nessuna differenza trovata';
-            
-            stats.style.display = 'block';
-            stats.innerHTML = `Aggiunte: ${additions} | Rimosse: ${deletions} | Invariate: ${unchanged}`;
+            output.innerHTML = diffHtml || this.escapeHtml('Nessuna differenza trovata');
+            this.setStatus(stats, `Aggiunte: ${additions} | Rimosse: ${deletions} | Invariate: ${unchanged}`, 'info');
         });
     }
 
@@ -856,14 +1188,14 @@ class OnlineToolsApp {
         const container = document.getElementById('regex-tester');
         if (!container) return;
 
-        const patternInput = document.getElementById('regexPattern');
-        const textInput = document.getElementById('regexInput');
-        const globalCheck = document.getElementById('regexGlobal');
-        const ignoreCaseCheck = document.getElementById('regexIgnoreCase');
-        const multilineCheck = document.getElementById('regexMultiline');
-        const testBtn = document.getElementById('testRegexBtn');
-        const output = document.getElementById('regexOutput');
-        const stats = document.getElementById('regexStats');
+        const patternInput = container.querySelector('#regexPattern');
+        const textInput = container.querySelector('#regexInput');
+        const globalCheck = container.querySelector('#regexGlobal');
+        const ignoreCaseCheck = container.querySelector('#regexIgnoreCase');
+        const multilineCheck = container.querySelector('#regexMultiline');
+        const testBtn = container.querySelector('#testRegexBtn');
+        const output = container.querySelector('#regexOutput');
+        const stats = container.querySelector('#regexStats');
 
         testBtn?.addEventListener('click', () => {
             const pattern = patternInput.value.trim();
@@ -871,7 +1203,7 @@ class OnlineToolsApp {
 
             if (!pattern || !text) {
                 output.textContent = 'Inserisci sia il pattern che il testo';
-                stats.style.display = 'none';
+                this.clearStatus(stats);
                 return;
             }
 
@@ -893,11 +1225,12 @@ class OnlineToolsApp {
                 }
 
                 const regex = new RegExp(regexPattern, flags);
-                const matches = [...text.matchAll(regex)];
+                const matchRegex = regex.global ? regex : new RegExp(regex.source, `${regex.flags}g`);
+                const matches = [...text.matchAll(matchRegex)];
 
                 if (matches.length === 0) {
                     output.textContent = 'Nessuna corrispondenza trovata';
-                    stats.style.display = 'none';
+                    this.clearStatus(stats);
                 } else {
                     let resultHtml = '';
                     matches.forEach((match, index) => {
@@ -915,13 +1248,11 @@ class OnlineToolsApp {
                         resultHtml += `</div>`;
                     });
                     output.innerHTML = resultHtml;
-                    
-                    stats.style.display = 'block';
-                    stats.textContent = `Trovate ${matches.length} corrispondenze`;
+                    this.setStatus(stats, `Trovate ${matches.length} corrispondenze`, 'success');
                 }
             } catch (e) {
                 output.textContent = `Errore regex: ${e.message}`;
-                stats.style.display = 'none';
+                this.clearStatus(stats);
             }
         });
     }
@@ -931,10 +1262,10 @@ class OnlineToolsApp {
         const container = document.getElementById('color-picker');
         if (!container) return;
 
-        const colorInput = document.getElementById('colorInput');
-        const textInput = document.getElementById('colorTextInput');
-        const convertBtn = document.getElementById('convertColorBtn');
-        const preview = document.getElementById('colorPreview');
+        const colorInput = container.querySelector('#colorInput');
+        const textInput = container.querySelector('#colorTextInput');
+        const convertBtn = container.querySelector('#convertColorBtn');
+        const preview = container.querySelector('#colorPreview');
         
         // Sync color input with text input
         colorInput?.addEventListener('change', () => {
@@ -1000,10 +1331,10 @@ class OnlineToolsApp {
                 const hex = '#' + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
                 const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
-                document.getElementById('colorHex').textContent = hex.toUpperCase();
-                document.getElementById('colorRgb').textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-                document.getElementById('colorRgba').textContent = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
-                document.getElementById('colorHsl').textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+                container.querySelector('#colorHex').textContent = hex.toUpperCase();
+                container.querySelector('#colorRgb').textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                container.querySelector('#colorRgba').textContent = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
+                container.querySelector('#colorHsl').textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
                 preview.style.backgroundColor = hex;
                 colorInput.value = hex;
             }
@@ -1013,7 +1344,7 @@ class OnlineToolsApp {
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
         });
@@ -1024,10 +1355,10 @@ class OnlineToolsApp {
         const container = document.getElementById('timestamp-converter');
         if (!container) return;
 
-        const timestampInput = document.getElementById('timestampInput');
-        const dateInput = document.getElementById('dateInput');
-        const currentBtn = document.getElementById('currentTimestampBtn');
-        const convertBtn = document.getElementById('convertTimestampBtn');
+        const timestampInput = container.querySelector('#timestampInput');
+        const dateInput = container.querySelector('#dateInput');
+        const currentBtn = container.querySelector('#currentTimestampBtn');
+        const convertBtn = container.querySelector('#convertTimestampBtn');
 
         currentBtn?.addEventListener('click', () => {
             const now = Date.now();
@@ -1053,18 +1384,18 @@ class OnlineToolsApp {
                 return;
             }
 
-            document.getElementById('unixSeconds').textContent = Math.floor(date.getTime() / 1000);
-            document.getElementById('unixMilliseconds').textContent = date.getTime();
-            document.getElementById('iso8601').textContent = date.toISOString();
-            document.getElementById('utcString').textContent = date.toUTCString();
-            document.getElementById('localeString').textContent = date.toLocaleString();
+            container.querySelector('#unixSeconds').textContent = Math.floor(date.getTime() / 1000);
+            container.querySelector('#unixMilliseconds').textContent = date.getTime();
+            container.querySelector('#iso8601').textContent = date.toISOString();
+            container.querySelector('#utcString').textContent = date.toUTCString();
+            container.querySelector('#localeString').textContent = date.toLocaleString();
         });
 
         // Add copy functionality
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
         });
@@ -1075,8 +1406,8 @@ class OnlineToolsApp {
         const container = document.getElementById('hash-generator');
         if (!container) return;
 
-        const input = document.getElementById('hashInput');
-        const generateBtn = document.getElementById('generateHashBtn');
+        const input = container.querySelector('#hashInput');
+        const generateBtn = container.querySelector('#generateHashBtn');
 
         // Simple hash functions (for demonstration - in production use crypto libraries)
         const simpleHash = async (text, algorithm) => {
@@ -1092,10 +1423,10 @@ class OnlineToolsApp {
 
             try {
                 // Note: MD5 is not available in Web Crypto API, showing placeholder
-                document.getElementById('md5Hash').textContent = 'MD5 non supportato nel browser';
-                document.getElementById('sha1Hash').textContent = await simpleHash(text, 'SHA-1');
-                document.getElementById('sha256Hash').textContent = await simpleHash(text, 'SHA-256');
-                document.getElementById('sha512Hash').textContent = await simpleHash(text, 'SHA-512');
+                container.querySelector('#md5Hash').textContent = 'MD5 non supportato nel browser';
+                container.querySelector('#sha1Hash').textContent = await simpleHash(text, 'SHA-1');
+                container.querySelector('#sha256Hash').textContent = await simpleHash(text, 'SHA-256');
+                container.querySelector('#sha512Hash').textContent = await simpleHash(text, 'SHA-512');
             } catch (e) {
                 alert('Errore nella generazione hash: ' + e.message);
             }
@@ -1105,7 +1436,7 @@ class OnlineToolsApp {
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text && text !== 'MD5 non supportato nel browser') this.copyToClipboard(text);
             });
         });
@@ -1116,11 +1447,11 @@ class OnlineToolsApp {
         const container = document.getElementById('xml-beautifier');
         if (!container) return;
 
-        const input = document.getElementById('xmlInput');
-        const output = document.getElementById('xmlOutput');
-        const formatBtn = document.getElementById('formatXmlBtn');
-        const copyBtn = document.getElementById('copyXmlResult');
-        const validation = document.getElementById('xmlValidation');
+        const input = container.querySelector('#xmlInput');
+        const output = container.querySelector('#xmlOutput');
+        const formatBtn = container.querySelector('#formatXmlBtn');
+        const copyBtn = container.querySelector('#copyXmlResult');
+        const validation = container.querySelector('#xmlValidation');
 
         const formatXml = (xml, indent) => {
             const PADDING = indent === '\t' ? '\t' : ' '.repeat(parseInt(indent) || 2);
@@ -1154,7 +1485,7 @@ class OnlineToolsApp {
             const xml = input.value.trim();
             if (!xml) {
                 output.value = '';
-                validation.style.display = 'none';
+                this.clearStatus(validation);
                 return;
             }
 
@@ -1166,24 +1497,17 @@ class OnlineToolsApp {
 
                 if (parseError) {
                     output.value = '';
-                    validation.style.display = 'block';
-                    validation.innerHTML = `<span style="color: var(--color-error);">✗ XML non valido: ${parseError.textContent}</span>`;
-                    validation.className = 'stats error-message';
+                    this.setStatus(validation, `XML non valido: ${parseError.textContent}`, 'error');
                 } else {
-                    const indentValue = document.querySelector('input[name="xmlIndent"]:checked')?.value || '2';
+                    const indentValue = container.querySelector('input[name="xmlIndent"]:checked')?.value || '2';
                     const indent = indentValue === 'tab' ? '\t' : indentValue;
                     
                     output.value = formatXml(xml, indent);
-                    
-                    validation.style.display = 'block';
-                    validation.innerHTML = '<span style="color: var(--color-success);">✓ XML valido</span>';
-                    validation.className = 'stats success-message';
+                    this.setStatus(validation, 'XML valido', 'success');
                 }
             } catch (e) {
                 output.value = '';
-                validation.style.display = 'block';
-                validation.innerHTML = `<span style="color: var(--color-error);">✗ Errore: ${e.message}</span>`;
-                validation.className = 'stats error-message';
+                this.setStatus(validation, `Errore: ${e.message}`, 'error');
             }
         });
 
@@ -1192,22 +1516,22 @@ class OnlineToolsApp {
         });
     }
 
-    // JWT Decoder/Validator
+    // JWT Decoder/Inspector
     initJwtDecoder() {
         const container = document.getElementById('jwt-decoder');
         if (!container) return;
 
-        const input = document.getElementById('jwtInput');
-        const decodeBtn = document.getElementById('decodeJwtBtn');
-        const validation = document.getElementById('jwtValidation');
-        const headerOutput = document.getElementById('jwtHeader');
-        const payloadOutput = document.getElementById('jwtPayload');
-        const signatureOutput = document.getElementById('jwtSignature');
+        const input = container.querySelector('#jwtInput');
+        const decodeBtn = container.querySelector('#decodeJwtBtn');
+        const validation = container.querySelector('#jwtValidation');
+        const headerOutput = container.querySelector('#jwtHeader');
+        const payloadOutput = container.querySelector('#jwtPayload');
+        const signatureOutput = container.querySelector('#jwtSignature');
 
         const base64UrlDecode = (str) => {
-            // Add padding if needed
-            str += new Array(5 - str.length % 4).join('=');
-            return atob(str.replace(/\-/g, '+').replace(/_/g, '/'));
+            const padding = (4 - (str.length % 4)) % 4;
+            const normalized = `${str}${'='.repeat(padding)}`.replace(/\-/g, '+').replace(/_/g, '/');
+            return atob(normalized);
         };
 
         decodeBtn?.addEventListener('click', () => {
@@ -1229,41 +1553,32 @@ class OnlineToolsApp {
                 payloadOutput.value = JSON.stringify(payload, null, 2);
 
                 // Show signature as hex (can't verify without secret)
-                const signatureBytes = atob(parts[2].replace(/\-/g, '+').replace(/_/g, '/'));
+                const signatureBytes = base64UrlDecode(parts[2]);
                 const signatureHex = Array.from(signatureBytes, byte => 
                     ('0' + (byte & 0xFF).toString(16)).slice(-2)
                 ).join('');
                 signatureOutput.value = signatureHex;
 
-                // Basic validation
-                validation.style.display = 'block';
-                validation.className = 'stats success-message';
+                const validationLines = ['JWT decodificato con successo', 'Firma non verificata in questa versione'];
                 
-                let validationMsg = '✓ JWT decodificato con successo';
-                
-                // Check expiration
                 if (payload.exp) {
                     const expDate = new Date(payload.exp * 1000);
                     const now = new Date();
                     if (expDate < now) {
-                        validationMsg += '<br>⚠️ Token scaduto il ' + expDate.toLocaleString();
+                        validationLines.push(`Token scaduto il ${expDate.toLocaleString()}`);
                     } else {
-                        validationMsg += '<br>✓ Token valido fino al ' + expDate.toLocaleString();
+                        validationLines.push(`Token valido fino al ${expDate.toLocaleString()}`);
                     }
                 }
 
-                // Check issued at
                 if (payload.iat) {
                     const iatDate = new Date(payload.iat * 1000);
-                    validationMsg += '<br>📅 Emesso il ' + iatDate.toLocaleString();
+                    validationLines.push(`Emesso il ${iatDate.toLocaleString()}`);
                 }
 
-                validation.innerHTML = validationMsg;
-
+                this.setStatus(validation, validationLines.join('\n'), 'success');
             } catch (e) {
-                validation.style.display = 'block';
-                validation.className = 'stats error-message';
-                validation.innerHTML = '✗ Errore: ' + e.message;
+                this.setStatus(validation, `Errore: ${e.message}`, 'error');
                 
                 headerOutput.value = '';
                 payloadOutput.value = '';
@@ -1272,64 +1587,58 @@ class OnlineToolsApp {
         });
 
         // Copy buttons
-        document.getElementById('copyJwtHeader')?.addEventListener('click', () => {
+        container.querySelector('#copyJwtHeader')?.addEventListener('click', () => {
             this.copyToClipboard(headerOutput.value);
         });
-        document.getElementById('copyJwtPayload')?.addEventListener('click', () => {
+        container.querySelector('#copyJwtPayload')?.addEventListener('click', () => {
             this.copyToClipboard(payloadOutput.value);
         });
-        document.getElementById('copyJwtSignature')?.addEventListener('click', () => {
+        container.querySelector('#copyJwtSignature')?.addEventListener('click', () => {
             this.copyToClipboard(signatureOutput.value);
         });
     }
 
-    // Certificate Info Extractor
+    // PEM Certificate Inspector
     initCertExtractor() {
         const container = document.getElementById('cert-extractor');
         if (!container) return;
 
-        const input = document.getElementById('certInput');
-        const extractBtn = document.getElementById('extractCertBtn');
+        const input = container.querySelector('#certInput');
+        const extractBtn = container.querySelector('#extractCertBtn');
 
-        const parseCertificate = (pemString) => {
-            // Remove PEM headers/footers and whitespace
+        const pemToDer = (pemString) => {
             const base64 = pemString
                 .replace(/-----BEGIN CERTIFICATE-----/, '')
                 .replace(/-----END CERTIFICATE-----/, '')
                 .replace(/\s/g, '');
-                
-            // This is a simplified parser - in real applications you'd use a proper ASN.1 parser
-            // For demonstration, we'll show placeholder data
-            return {
-                subject: 'Parsing certificati richiede librerie ASN.1 specializzate',
-                issuer: 'Questa è una versione semplificata per demo',
-                serialNumber: 'N/A - Parsing ASN.1 non implementato',
-                validFrom: 'Non disponibile',
-                validTo: 'Non disponibile',
-                algorithm: 'Non disponibile'
-            };
+
+            const binary = atob(base64);
+            return Uint8Array.from(binary, char => char.charCodeAt(0));
         };
 
-        extractBtn?.addEventListener('click', () => {
+        const bytesToHex = (bytes) => Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join(':').toUpperCase();
+
+        extractBtn?.addEventListener('click', async () => {
             const cert = input.value.trim();
             if (!cert) return;
 
-            if (cert.includes('-----BEGIN CERTIFICATE-----')) {
-                try {
-                    const certInfo = parseCertificate(cert);
-                    
-                    document.getElementById('certSubject').textContent = certInfo.subject;
-                    document.getElementById('certIssuer').textContent = certInfo.issuer;
-                    document.getElementById('certSerial').textContent = certInfo.serialNumber;
-                    document.getElementById('certValidFrom').textContent = certInfo.validFrom;
-                    document.getElementById('certValidTo').textContent = certInfo.validTo;
-                    document.getElementById('certAlgorithm').textContent = certInfo.algorithm;
-                    
-                } catch (e) {
-                    alert('Errore nel parsing del certificato: ' + e.message);
-                }
-            } else {
+            if (!cert.includes('-----BEGIN CERTIFICATE-----')) {
                 alert('Formato certificato non valido. Inserisci un certificato PEM.');
+                return;
+            }
+
+            try {
+                const der = pemToDer(cert);
+                const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', der));
+
+                container.querySelector('#certSubject').textContent = 'Non disponibile in modalità browser-only';
+                container.querySelector('#certIssuer').textContent = 'Non disponibile in modalità browser-only';
+                container.querySelector('#certSerial').textContent = bytesToHex(digest);
+                container.querySelector('#certValidFrom').textContent = `DER size: ${der.length} bytes`;
+                container.querySelector('#certValidTo').textContent = 'Richiede parser ASN.1 completo';
+                container.querySelector('#certAlgorithm').textContent = 'Fingerprint SHA-256';
+            } catch (e) {
+                alert('Errore nel parsing del certificato: ' + e.message);
             }
         });
 
@@ -1337,7 +1646,7 @@ class OnlineToolsApp {
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
-                const text = document.getElementById(elementId)?.textContent;
+                const text = container.querySelector(`#${elementId}`)?.textContent;
                 if (text) this.copyToClipboard(text);
             });
         });
@@ -1348,9 +1657,9 @@ class OnlineToolsApp {
         const container = document.getElementById('password-checker');
         if (!container) return;
 
-        const input = document.getElementById('passwordInput');
-        const showPasswordCheck = document.getElementById('showPassword');
-        const checkBtn = document.getElementById('checkPasswordBtn');
+        const input = container.querySelector('#passwordInput');
+        const showPasswordCheck = container.querySelector('#showPassword');
+        const checkBtn = container.querySelector('#checkPasswordBtn');
 
         showPasswordCheck?.addEventListener('change', () => {
             input.type = showPasswordCheck.checked ? 'text' : 'password';
@@ -1390,15 +1699,15 @@ class OnlineToolsApp {
             const { score, checks } = result;
 
             // Update UI
-            document.getElementById('passwordLength').textContent = password.length;
-            document.getElementById('passwordUppercase').textContent = checks.uppercase ? '✓' : '✗';
-            document.getElementById('passwordLowercase').textContent = checks.lowercase ? '✓' : '✗';
-            document.getElementById('passwordNumbers').textContent = checks.numbers ? '✓' : '✗';
-            document.getElementById('passwordSymbols').textContent = checks.symbols ? '✓' : '✗';
-            document.getElementById('passwordScore').textContent = `${score}/8`;
+            container.querySelector('#passwordCheckLength').textContent = password.length;
+            container.querySelector('#passwordUppercase').textContent = checks.uppercase ? '✓' : '✗';
+            container.querySelector('#passwordLowercase').textContent = checks.lowercase ? '✓' : '✗';
+            container.querySelector('#passwordNumbers').textContent = checks.numbers ? '✓' : '✗';
+            container.querySelector('#passwordSymbols').textContent = checks.symbols ? '✓' : '✗';
+            container.querySelector('#passwordScore').textContent = `${score}/8`;
 
             // Strength indicator
-            const strengthElement = document.getElementById('passwordStrength');
+            const strengthElement = container.querySelector('#passwordStrength');
             let strengthText, strengthColor, strengthBg;
 
             if (score <= 3) {
@@ -1430,7 +1739,7 @@ class OnlineToolsApp {
             if (!checks.symbols) suggestions.push('• Aggiungi simboli speciali');
             if (password.length < 12) suggestions.push('• Considera di usare almeno 12 caratteri');
 
-            document.getElementById('passwordSuggestions').innerHTML = suggestions.length > 0 
+            container.querySelector('#passwordSuggestions').innerHTML = suggestions.length > 0 
                 ? `<strong>Suggerimenti:</strong><br>${suggestions.join('<br>')}`
                 : '<strong>✓ Password robusta!</strong>';
         });
@@ -1441,26 +1750,25 @@ class OnlineToolsApp {
         const container = document.getElementById('qr-generator');
         if (!container) return;
 
-        const textInput = document.getElementById('qrTextInput');
-        const sizeSelect = document.getElementById('qrSize');
-        const generateBtn = document.getElementById('generateQrBtn');
-        const qrOutput = document.getElementById('qrOutput');
-        const downloadBtn = document.getElementById('downloadQrBtn');
-        const fileInput = document.getElementById('qrFileInput');
-        const decodedText = document.getElementById('qrDecodedText');
-        const copyBtn = document.getElementById('copyQrText');
+        const textInput = container.querySelector('#qrTextInput');
+        const sizeSelect = container.querySelector('#qrSize');
+        const generateBtn = container.querySelector('#generateQrBtn');
+        const qrOutput = container.querySelector('#qrOutput');
+        const downloadBtn = container.querySelector('#downloadQrBtn');
+        const fileInput = container.querySelector('#qrFileInput');
+        const decodedText = container.querySelector('#qrDecodedText');
+        const copyBtn = container.querySelector('#copyQrText');
 
-        // Simple QR code generation using QR Server API
         generateBtn?.addEventListener('click', () => {
             const text = textInput.value.trim();
             const size = sizeSelect.value;
             
             if (!text) return;
 
-            // Use QR Server API for generation (free service)
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
             
             qrOutput.innerHTML = `<img src="${qrUrl}" alt="QR Code" style="max-width: 100%; height: auto; border-radius: var(--radius-base);">`;
+            this.showMessage('QR generato tramite un servizio esterno.', 'success');
             
             downloadBtn.style.display = 'inline-block';
             downloadBtn.onclick = () => {
@@ -1471,14 +1779,23 @@ class OnlineToolsApp {
             };
         });
 
-        // File reading for QR code decoding
-        fileInput?.addEventListener('change', (e) => {
+        fileInput?.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Note: QR code reading from image requires a specialized library like jsQR
-            // For this demo, we'll show a placeholder message
-            decodedText.value = 'La lettura di QR code da immagine richiede librerie specializzate come jsQR. Questa funzionalità non è implementata in questa versione demo.';
+            if (!('BarcodeDetector' in window)) {
+                decodedText.value = 'Questo browser non supporta BarcodeDetector per la lettura locale dei QR.';
+                return;
+            }
+
+            try {
+                const detector = new window.BarcodeDetector({ formats: ['qr_code'] });
+                const imageBitmap = await createImageBitmap(file);
+                const barcodes = await detector.detect(imageBitmap);
+                decodedText.value = barcodes[0]?.rawValue || 'Nessun QR code rilevato nell’immagine.';
+            } catch (error) {
+                decodedText.value = `Errore nella lettura del QR: ${error.message}`;
+            }
         });
 
         copyBtn?.addEventListener('click', () => {

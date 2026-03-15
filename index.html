@@ -70,8 +70,8 @@
                     <ul>
                         <li><a href="#" data-tool="curl-burp-converter" class="tool-link">🧪 Curl to Burp Converter</a></li>
                         <li><a href="#" data-tool="ioc-escape" class="tool-link">🛡️ IoC Escape Tool</a></li>
-                        <li><a href="#" data-tool="jwt-decoder" class="tool-link">🔑 JWT Decoder/Validator</a></li>
-                        <li><a href="#" data-tool="cert-extractor" class="tool-link">📜 Certificate Info Extractor</a></li>
+                        <li><a href="#" data-tool="jwt-decoder" class="tool-link">🔑 JWT Decoder/Inspector</a></li>
+                        <li><a href="#" data-tool="cert-extractor" class="tool-link">📜 PEM Certificate Inspector</a></li>
                         <li><a href="#" data-tool="password-checker" class="tool-link">🔒 Password Strength Checker</a></li>
                         <li><a href="#" data-tool="qr-generator" class="tool-link">📱 QR Code Generator/Reader</a></li>
                     </ul>
@@ -296,7 +296,7 @@
                 <div class="tool-content">
                     <div class="input-section">
                         <label class="form-label">URL (uno per riga):</label>
-                        <textarea id="urlInput" class="form-control" rows="8" placeholder="https://example.com/path
+                        <textarea id="domainInput" class="form-control" rows="8" placeholder="https://example.com/path
 https://subdomain.example.org/page
 ..."></textarea>
                     </div>
@@ -883,11 +883,11 @@ https://subdomain.example.org/page
                 </div>
             </div>
 
-            <!-- JWT Decoder/Validator Tool -->
+            <!-- JWT Decoder/Inspector Tool -->
             <div id="jwt-decoder" class="tool-container">
                 <div class="tool-header">
-                    <h2>🔑 JWT Decoder/Validator</h2>
-                    <p>Decodifica e valida token JWT (JSON Web Token)</p>
+                    <h2>🔑 JWT Decoder/Inspector</h2>
+                    <p>Decodifica token JWT e controlla claim temporali. La firma non viene verificata.</p>
                 </div>
                 <div class="tool-content">
                     <div class="input-section">
@@ -922,11 +922,11 @@ https://subdomain.example.org/page
                 </div>
             </div>
 
-            <!-- Certificate Info Extractor Tool -->
+            <!-- PEM Certificate Inspector Tool -->
             <div id="cert-extractor" class="tool-container">
                 <div class="tool-header">
-                    <h2>📜 Certificate Info Extractor</h2>
-                    <p>Estrae informazioni da certificati SSL/TLS in formato PEM</p>
+                    <h2>📜 PEM Certificate Inspector</h2>
+                    <p>Valida il PEM e calcola fingerprint locali. Subject e issuer completi richiedono un parser ASN.1 dedicato.</p>
                 </div>
                 <div class="tool-content">
                     <div class="input-section">
@@ -1003,7 +1003,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
                         <div class="results-container">
                             <div class="result-item">
                                 <span>Lunghezza:</span>
-                                <span id="passwordLength" class="result-text"></span>
+                                <span id="passwordCheckLength" class="result-text"></span>
                             </div>
                             <div class="result-item">
                                 <span>Maiuscole:</span>
@@ -1035,7 +1035,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
             <div id="qr-generator" class="tool-container">
                 <div class="tool-header">
                     <h2>📱 QR Code Generator/Reader</h2>
-                    <p>Genera codici QR da testo o leggi codici QR esistenti</p>
+                    <p>Genera QR tramite un servizio esterno e prova a leggere immagini QR con le API native del browser.</p>
                 </div>
                 <div class="tool-content">
                     <div class="input-section">
