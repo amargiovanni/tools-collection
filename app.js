@@ -5,6 +5,7 @@ class OnlineToolsApp {
         this.supportedLanguages = ['en', 'it'];
         this.defaultLanguage = 'en';
         this.currentLanguage = this.defaultLanguage;
+        this.messages = {};
         this.init();
     }
 
@@ -32,29 +33,15 @@ class OnlineToolsApp {
             : (this.supportedLanguages.includes(browserLang) ? browserLang : this.defaultLanguage);
 
         const applyTranslations = (messages) => {
-            const elements = document.querySelectorAll('[data-i18n]');
-            console.log(`[i18n] Applying translations to ${elements.length} elements`);
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (messages[key]) {
-                    el.textContent = messages[key];
-                } else {
-                    console.warn(`[i18n] Missing translation for key: ${key}`);
-                }
-            });
-
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (messages[key]) {
-                    el.setAttribute('placeholder', messages[key]);
-                }
-            });
+            this.messages = messages;
+            this.applySelectorTranslations();
 
             document.documentElement.lang = this.currentLanguage;
+            document.title = this.t('app.documentTitle', 'Tools Collection');
             if (langToggle) {
                 langToggle.textContent = this.currentLanguage.toUpperCase();
-                langToggle.setAttribute('aria-label', `Switch language. Current language: ${this.currentLanguage.toUpperCase()}`);
-                langToggle.title = `Language: ${this.currentLanguage.toUpperCase()}`;
+                langToggle.setAttribute('aria-label', this.t('app.switchLanguageAria', 'Switch language'));
+                langToggle.title = this.t('app.switchLanguageTitle', 'Switch language');
             }
         };
 
@@ -84,6 +71,362 @@ class OnlineToolsApp {
         }
 
         loadLocale(initialLang);
+    }
+
+    t(key, fallback = '') {
+        return this.messages[key] || fallback;
+    }
+
+    getTranslationBindings() {
+        return [
+            { selector: '.mobile-menu-toggle', key: 'app.mobileMenuAria', attr: 'aria-label' },
+            { selector: '.sidebar-header h1', key: 'app.title' },
+            { selector: '.sidebar-header p', key: 'app.description' },
+            { selector: '#searchInput', key: 'app.searchPlaceholder', attr: 'placeholder' },
+
+            { selector: '.tool-category:nth-of-type(1) h3', key: 'sidebar.textProcessing' },
+            { selector: '.tool-category:nth-of-type(2) h3', key: 'sidebar.generators' },
+            { selector: '.tool-category:nth-of-type(3) h3', key: 'sidebar.extraction' },
+            { selector: '.tool-category:nth-of-type(4) h3', key: 'sidebar.analysis' },
+            { selector: '.tool-category:nth-of-type(5) h3', key: 'sidebar.security' },
+            { selector: '.tool-category:nth-of-type(6) h3', key: 'sidebar.converters' },
+            { selector: '.tool-category:nth-of-type(7) h3', key: 'sidebar.development' },
+            { selector: '.tool-category:nth-of-type(8) h3', key: 'sidebar.utilities' },
+
+            { selector: '[data-tool="list-generator"]', key: 'nav.listGenerator' },
+            { selector: '[data-tool="add-text-lines"]', key: 'nav.addTextLines' },
+            { selector: '[data-tool="convert-case"]', key: 'nav.convertCase' },
+            { selector: '[data-tool="remove-duplicates"]', key: 'nav.removeDuplicates' },
+            { selector: '[data-tool="remove-line-breaks"]', key: 'nav.removeLineBreaks' },
+            { selector: '[data-tool="remove-lines-containing"]', key: 'nav.removeLinesContaining' },
+            { selector: '[data-tool="password-generator"]', key: 'nav.passwordGenerator' },
+            { selector: '[data-tool="username-generator"]', key: 'nav.usernameGenerator' },
+            { selector: '[data-tool="domain-extractor"]', key: 'nav.domainExtractor' },
+            { selector: '[data-tool="email-extractor"]', key: 'nav.emailExtractor' },
+            { selector: '[data-tool="count-duplicates"]', key: 'nav.countDuplicates' },
+            { selector: '[data-tool="curl-burp-converter"]', key: 'nav.curlBurpConverter' },
+            { selector: '[data-tool="ioc-escape"]', key: 'nav.iocEscape' },
+            { selector: '[data-tool="jwt-decoder"]', key: 'nav.jwtDecoder' },
+            { selector: '[data-tool="cert-extractor"]', key: 'nav.certExtractor' },
+            { selector: '[data-tool="password-checker"]', key: 'nav.passwordChecker' },
+            { selector: '[data-tool="qr-generator"]', key: 'nav.qrGenerator' },
+            { selector: '[data-tool="emoji-converter"]', key: 'nav.emojiConverter' },
+            { selector: '[data-tool="base64-converter"]', key: 'nav.base64Converter' },
+            { selector: '[data-tool="url-encoder"]', key: 'nav.urlEncoder' },
+            { selector: '[data-tool="json-formatter"]', key: 'nav.jsonFormatter' },
+            { selector: '[data-tool="diff-checker"]', key: 'nav.diffChecker' },
+            { selector: '[data-tool="regex-tester"]', key: 'nav.regexTester' },
+            { selector: '[data-tool="xml-beautifier"]', key: 'nav.xmlBeautifier' },
+            { selector: '[data-tool="color-picker"]', key: 'nav.colorPicker' },
+            { selector: '[data-tool="timestamp-converter"]', key: 'nav.timestampConverter' },
+            { selector: '[data-tool="hash-generator"]', key: 'nav.hashGenerator' },
+
+            { selector: '#list-generator .tool-header h2', key: 'list.title' },
+            { selector: '#list-generator .tool-header p', key: 'list.description' },
+            { selector: '#list-generator .input-section .form-label', key: 'common.inputText' },
+            { selector: '#listInput', key: 'list.placeholder', attr: 'placeholder' },
+            { selector: '#list-generator .options-section h4', key: 'list.outputFormat' },
+            { selector: '#list-generator [data-format="numbered"]', key: 'list.formatNumbered' },
+            { selector: '#list-generator [data-format="bulleted"]', key: 'list.formatBulleted' },
+            { selector: '#list-generator [data-format="comma"]', key: 'list.formatComma' },
+            { selector: '#list-generator [data-format="pipe"]', key: 'list.formatPipe' },
+            { selector: '#list-generator .output-section .form-label', key: 'common.result' },
+
+            { selector: '#password-generator .tool-header h2', key: 'passwordGenerator.title' },
+            { selector: '#password-generator .tool-header p', key: 'passwordGenerator.description' },
+            { selector: '#password-generator .setting-item:nth-of-type(1) .form-label', key: 'passwordGenerator.lengthLabel', type: 'textNode', trailingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(2) label', key: 'passwordGenerator.includeUppercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(3) label', key: 'passwordGenerator.includeLowercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(4) label', key: 'passwordGenerator.includeNumbers', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .setting-item:nth-of-type(5) label', key: 'passwordGenerator.includeSymbols', type: 'textNode', leadingSpace: true },
+            { selector: '#generatePassword', key: 'passwordGenerator.generate' },
+            { selector: '#generatedPassword', key: 'passwordGenerator.placeholder', attr: 'placeholder' },
+
+            { selector: '#username-generator .tool-header h2', key: 'username.title' },
+            { selector: '#username-generator .tool-header p', key: 'username.description' },
+            { selector: '#username-generator .setting-item:nth-of-type(1) .form-label', key: 'username.style' },
+            { selector: '#usernameStyle option[value="random"]', key: 'username.styleRandom' },
+            { selector: '#usernameStyle option[value="tech"]', key: 'username.styleTech' },
+            { selector: '#usernameStyle option[value="fantasy"]', key: 'username.styleFantasy' },
+            { selector: '#usernameStyle option[value="cool"]', key: 'username.styleCool' },
+            { selector: '#username-generator .setting-item:nth-of-type(2) .form-label', key: 'username.count' },
+            { selector: '#generateUsernames', key: 'username.generate' },
+
+            { selector: '#add-text-lines .tool-header h2', key: 'addText.title' },
+            { selector: '#add-text-lines .tool-header p', key: 'addText.description' },
+            { selector: '#add-text-lines .input-section .form-label', key: 'addText.originalText' },
+            { selector: '#originalText', key: 'common.inputPlaceholder', attr: 'placeholder' },
+            { selector: '#add-text-lines .setting-item:nth-of-type(1) .form-label', key: 'addText.textToAdd' },
+            { selector: '#textToAdd', key: 'addText.additionPlaceholder', attr: 'placeholder' },
+            { selector: '#add-text-lines .setting-item:nth-of-type(2) label:nth-of-type(1)', key: 'addText.positionStart', type: 'textNode', leadingSpace: true },
+            { selector: '#add-text-lines .setting-item:nth-of-type(2) label:nth-of-type(2)', key: 'addText.positionEnd', type: 'textNode', leadingSpace: true },
+            { selector: '#add-text-lines .output-section .form-label', key: 'common.result' },
+
+            { selector: '#convert-case .tool-header h2', key: 'case.title' },
+            { selector: '#convert-case .tool-header p', key: 'case.description' },
+            { selector: '#convert-case .input-section .form-label', key: 'common.inputText' },
+            { selector: '#caseInput', key: 'common.inputPlaceholder', attr: 'placeholder' },
+            { selector: '#convert-case [data-case="upper"]', key: 'case.upper' },
+            { selector: '#convert-case [data-case="lower"]', key: 'case.lower' },
+            { selector: '#convert-case [data-case="title"]', key: 'case.titleCase' },
+            { selector: '#convert-case [data-case="camel"]', key: 'case.camel' },
+            { selector: '#convert-case [data-case="snake"]', key: 'case.snake' },
+            { selector: '#convert-case [data-case="constant"]', key: 'case.constant' },
+            { selector: '#convert-case .output-section .form-label', key: 'common.result' },
+
+            { selector: '#count-duplicates .tool-header h2', key: 'duplicates.title' },
+            { selector: '#count-duplicates .tool-header p', key: 'duplicates.description' },
+            { selector: '#count-duplicates .input-section .form-label', key: 'duplicates.inputLabel' },
+            { selector: '#duplicateInput', key: 'duplicates.placeholder', attr: 'placeholder' },
+            { selector: '#count-duplicates .options-section label:nth-of-type(1)', key: 'duplicates.sortByCount', type: 'textNode', leadingSpace: true },
+            { selector: '#count-duplicates .options-section label:nth-of-type(2)', key: 'common.caseSensitive', type: 'textNode', leadingSpace: true },
+            { selector: '#analyzeDuplicates', key: 'duplicates.analyze' },
+
+            { selector: '#domain-extractor .tool-header h2', key: 'domain.title' },
+            { selector: '#domain-extractor .tool-header p', key: 'domain.description' },
+            { selector: '#domain-extractor .input-section .form-label', key: 'domain.inputLabel' },
+            { selector: '#domainInput', key: 'domain.placeholder', attr: 'placeholder' },
+            { selector: '#domain-extractor .options-section label', key: 'domain.includeSubdomains', type: 'textNode', leadingSpace: true },
+            { selector: '#extractDomains', key: 'domain.extract' },
+            { selector: '#domain-extractor .output-section .form-label', key: 'domain.outputLabel' },
+
+            { selector: '#remove-duplicates .tool-header h2', key: 'removeDuplicates.title' },
+            { selector: '#remove-duplicates .tool-header p', key: 'removeDuplicates.description' },
+            { selector: '#remove-duplicates .input-section .form-label', key: 'common.inputText' },
+            { selector: '#removeDuplicatesInput', key: 'removeDuplicates.placeholder', attr: 'placeholder' },
+            { selector: '#remove-duplicates .options-section label:nth-of-type(1)', key: 'removeDuplicates.preserveOrder', type: 'textNode', leadingSpace: true },
+            { selector: '#remove-duplicates .options-section label:nth-of-type(2)', key: 'common.caseSensitive', type: 'textNode', leadingSpace: true },
+            { selector: '#removeDuplicatesBtn', key: 'removeDuplicates.action' },
+            { selector: '#remove-duplicates .output-section .form-label', key: 'common.result' },
+
+            { selector: '#remove-line-breaks .tool-header h2', key: 'lineBreaks.title' },
+            { selector: '#remove-line-breaks .tool-header p', key: 'lineBreaks.description' },
+            { selector: '#remove-line-breaks .input-section .form-label', key: 'common.inputText' },
+            { selector: '#lineBreaksInput', key: 'lineBreaks.placeholder', attr: 'placeholder' },
+            { selector: '#remove-line-breaks .options-section h4', key: 'lineBreaks.replaceWith' },
+            { selector: '#remove-line-breaks .replacement-options label:nth-of-type(1)', key: 'lineBreaks.space', type: 'textNode', leadingSpace: true },
+            { selector: '#remove-line-breaks .replacement-options label:nth-of-type(2)', key: 'lineBreaks.nothing', type: 'textNode', leadingSpace: true },
+            { selector: '#remove-line-breaks .replacement-options label:nth-of-type(3)', key: 'lineBreaks.custom', type: 'textNode', leadingSpace: true },
+            { selector: '#removeLineBreaksBtn', key: 'lineBreaks.action' },
+            { selector: '#remove-line-breaks .output-section .form-label', key: 'common.result' },
+
+            { selector: '#remove-lines-containing .tool-header h2', key: 'removeContaining.title' },
+            { selector: '#remove-lines-containing .tool-header p', key: 'removeContaining.description' },
+            { selector: '#remove-lines-containing .input-section .form-label', key: 'common.inputText' },
+            { selector: '#removeContainingInput', key: 'common.inputPlaceholder', attr: 'placeholder' },
+            { selector: '#remove-lines-containing .setting-item .form-label', key: 'removeContaining.termsLabel' },
+            { selector: '#wordsToRemove', key: 'removeContaining.termsPlaceholder', attr: 'placeholder' },
+            { selector: '#remove-lines-containing .options-section > label', key: 'common.caseSensitive', type: 'textNode', leadingSpace: true },
+            { selector: '#removeContainingBtn', key: 'removeContaining.action' },
+            { selector: '#remove-lines-containing .output-section .form-label', key: 'common.result' },
+
+            { selector: '#email-extractor .tool-header h2', key: 'email.title' },
+            { selector: '#email-extractor .tool-header p', key: 'email.description' },
+            { selector: '#email-extractor .input-section .form-label', key: 'common.inputText' },
+            { selector: '#emailInput', key: 'email.placeholder', attr: 'placeholder' },
+            { selector: '#email-extractor .options-section label', key: 'email.removeDuplicates', type: 'textNode', leadingSpace: true },
+            { selector: '#extractEmailsBtn', key: 'email.extract' },
+            { selector: '#email-extractor .output-section .form-label', key: 'email.outputLabel' },
+
+            { selector: '#curl-burp-converter .tool-header h2', key: 'curl.title' },
+            { selector: '#curl-burp-converter .tool-header p', key: 'curl.description' },
+            { selector: '#curl-burp-converter .input-section .form-label', key: 'curl.inputLabel' },
+            { selector: '#curlInput', key: 'curl.placeholder', attr: 'placeholder' },
+            { selector: '#convertCurlBtn', key: 'curl.convert' },
+            { selector: '#curl-burp-converter .output-section .form-label', key: 'curl.outputLabel' },
+
+            { selector: '#ioc-escape .tool-header h2', key: 'ioc.title' },
+            { selector: '#ioc-escape .tool-header p', key: 'ioc.description' },
+            { selector: '#ioc-escape .input-section .form-label', key: 'common.inputText' },
+            { selector: '#iocInput', key: 'ioc.placeholder', attr: 'placeholder' },
+            { selector: '#escapeIocBtn', key: 'ioc.escape' },
+            { selector: '#unescapeIocBtn', key: 'ioc.unescape' },
+            { selector: '#ioc-escape .output-section .form-label', key: 'common.result' },
+
+            { selector: '#emoji-converter .tool-header h2', key: 'emoji.title' },
+            { selector: '#emoji-converter .tool-header p', key: 'emoji.description' },
+            { selector: '#emoji-converter .input-section .form-label', key: 'common.inputText' },
+            { selector: '#emojiInput', key: 'emoji.placeholder', attr: 'placeholder' },
+            { selector: '#convertToEmojiBtn', key: 'emoji.toEmoji' },
+            { selector: '#convertToShortcodeBtn', key: 'emoji.toShortcode' },
+            { selector: '#emoji-converter .emoji-reference h4', key: 'emoji.referenceTitle' },
+            { selector: '#emoji-converter .output-section .form-label', key: 'common.result' },
+
+            { selector: '#base64-converter .tool-header h2', key: 'base64.title' },
+            { selector: '#base64-converter .tool-header p', key: 'base64.description' },
+            { selector: '#base64-converter .input-section .form-label', key: 'common.inputText' },
+            { selector: '#base64Input', key: 'base64.placeholder', attr: 'placeholder' },
+            { selector: '#base64EncodeBtn', key: 'base64.encode' },
+            { selector: '#base64DecodeBtn', key: 'base64.decode' },
+            { selector: '#base64-converter .output-section .form-label', key: 'common.result' },
+
+            { selector: '#url-encoder .tool-header h2', key: 'url.title' },
+            { selector: '#url-encoder .tool-header p', key: 'url.description' },
+            { selector: '#url-encoder .input-section .form-label', key: 'common.inputText' },
+            { selector: '#urlInput', key: 'url.placeholder', attr: 'placeholder' },
+            { selector: '#urlEncodeBtn', key: 'url.encode' },
+            { selector: '#urlDecodeBtn', key: 'url.decode' },
+            { selector: '#urlEncodeComponentBtn', key: 'url.encodeComponent' },
+            { selector: '#url-encoder .output-section .form-label', key: 'common.result' },
+
+            { selector: '#json-formatter .tool-header h2', key: 'json.title' },
+            { selector: '#json-formatter .tool-header p', key: 'json.description' },
+            { selector: '#json-formatter .input-section .form-label', key: 'json.inputLabel' },
+            { selector: '#jsonInput', key: 'json.placeholder', attr: 'placeholder' },
+            { selector: '#json-formatter .setting-item label:nth-of-type(1)', key: 'json.indent2', type: 'textNode', leadingSpace: true },
+            { selector: '#json-formatter .setting-item label:nth-of-type(2)', key: 'json.indent4', type: 'textNode', leadingSpace: true },
+            { selector: '#json-formatter .setting-item label:nth-of-type(3)', key: 'json.indentTab', type: 'textNode', leadingSpace: true },
+            { selector: '#json-formatter .setting-item label:nth-of-type(4)', key: 'json.indentCompact', type: 'textNode', leadingSpace: true },
+            { selector: '#formatJsonBtn', key: 'json.format' },
+            { selector: '#json-formatter .output-section .form-label', key: 'json.outputLabel' },
+
+            { selector: '#diff-checker .tool-header h2', key: 'diff.title' },
+            { selector: '#diff-checker .tool-header p', key: 'diff.description' },
+            { selector: '#diff-checker .input-section > div > div:nth-of-type(1) .form-label', key: 'diff.originalText' },
+            { selector: '#diffText1', key: 'diff.originalPlaceholder', attr: 'placeholder' },
+            { selector: '#diff-checker .input-section > div > div:nth-of-type(2) .form-label', key: 'diff.modifiedText' },
+            { selector: '#diffText2', key: 'diff.modifiedPlaceholder', attr: 'placeholder' },
+            { selector: '#diff-checker .options-section label:nth-of-type(1)', key: 'diff.ignoreCase', type: 'textNode', leadingSpace: true },
+            { selector: '#diff-checker .options-section label:nth-of-type(2)', key: 'diff.ignoreWhitespace', type: 'textNode', leadingSpace: true },
+            { selector: '#compareDiffBtn', key: 'diff.compare' },
+            { selector: '#diff-checker .output-header .form-label', key: 'diff.outputLabel' },
+
+            { selector: '#regex-tester .tool-header h2', key: 'regex.title' },
+            { selector: '#regex-tester .tool-header p', key: 'regex.description' },
+            { selector: '#regex-tester .input-section:nth-of-type(1) .form-label', key: 'regex.patternLabel' },
+            { selector: '#regexPattern', key: 'regex.patternPlaceholder', attr: 'placeholder' },
+            { selector: '#regex-tester .input-section:nth-of-type(1) label:nth-of-type(1)', key: 'regex.global', type: 'textNode', leadingSpace: true },
+            { selector: '#regex-tester .input-section:nth-of-type(1) label:nth-of-type(2)', key: 'regex.ignoreCase', type: 'textNode', leadingSpace: true },
+            { selector: '#regex-tester .input-section:nth-of-type(1) label:nth-of-type(3)', key: 'regex.multiline', type: 'textNode', leadingSpace: true },
+            { selector: '#regex-tester .input-section:nth-of-type(2) .form-label', key: 'regex.testTextLabel' },
+            { selector: '#regexInput', key: 'regex.testTextPlaceholder', attr: 'placeholder' },
+            { selector: '#testRegexBtn', key: 'regex.test' },
+            { selector: '#regex-tester .output-header .form-label', key: 'regex.outputLabel' },
+
+            { selector: '#color-picker .tool-header h2', key: 'color.title' },
+            { selector: '#color-picker .tool-header p', key: 'color.description' },
+            { selector: '#color-picker .input-section .form-label', key: 'color.inputLabel' },
+            { selector: '#colorTextInput', key: 'color.placeholder', attr: 'placeholder' },
+            { selector: '#convertColorBtn', key: 'color.convert' },
+            { selector: '#color-picker .output-header .form-label', key: 'color.outputLabel' },
+            { selector: '#color-picker .result-item:nth-of-type(5) span:first-child', key: 'color.preview' },
+
+            { selector: '#timestamp-converter .tool-header h2', key: 'timestamp.title' },
+            { selector: '#timestamp-converter .tool-header p', key: 'timestamp.description' },
+            { selector: '#timestamp-converter .input-section:nth-of-type(1) .form-label', key: 'timestamp.inputLabel' },
+            { selector: '#timestampInput', key: 'timestamp.placeholder', attr: 'placeholder' },
+            { selector: '#currentTimestampBtn', key: 'timestamp.useCurrent' },
+            { selector: '#timestamp-converter .input-section:nth-of-type(2) .form-label', key: 'timestamp.dateLabel' },
+            { selector: '#convertTimestampBtn', key: 'common.convert' },
+            { selector: '#timestamp-converter .output-header .form-label', key: 'timestamp.outputLabel' },
+            { selector: '#timestamp-converter .result-item:nth-of-type(1) span:first-child', key: 'timestamp.unixSeconds' },
+            { selector: '#timestamp-converter .result-item:nth-of-type(2) span:first-child', key: 'timestamp.unixMilliseconds' },
+            { selector: '#timestamp-converter .result-item:nth-of-type(5) span:first-child', key: 'timestamp.locale' },
+
+            { selector: '#hash-generator .tool-header h2', key: 'hash.title' },
+            { selector: '#hash-generator .tool-header p', key: 'hash.description' },
+            { selector: '#hash-generator .input-section .form-label', key: 'hash.inputLabel' },
+            { selector: '#hashInput', key: 'hash.placeholder', attr: 'placeholder' },
+            { selector: '#generateHashBtn', key: 'hash.generate' },
+            { selector: '#hash-generator .output-header .form-label', key: 'hash.outputLabel' },
+
+            { selector: '#xml-beautifier .tool-header h2', key: 'xml.title' },
+            { selector: '#xml-beautifier .tool-header p', key: 'xml.description' },
+            { selector: '#xml-beautifier .input-section .form-label', key: 'xml.inputLabel' },
+            { selector: '#xmlInput', key: 'xml.placeholder', attr: 'placeholder' },
+            { selector: '#xml-beautifier .setting-item label:nth-of-type(1)', key: 'json.indent2', type: 'textNode', leadingSpace: true },
+            { selector: '#xml-beautifier .setting-item label:nth-of-type(2)', key: 'json.indent4', type: 'textNode', leadingSpace: true },
+            { selector: '#xml-beautifier .setting-item label:nth-of-type(3)', key: 'json.indentTab', type: 'textNode', leadingSpace: true },
+            { selector: '#formatXmlBtn', key: 'xml.format' },
+            { selector: '#xml-beautifier .output-section .form-label', key: 'xml.outputLabel' },
+
+            { selector: '#jwt-decoder .tool-header h2', key: 'jwt.title' },
+            { selector: '#jwt-decoder .tool-header p', key: 'jwt.description' },
+            { selector: '#jwt-decoder .input-section .form-label', key: 'jwt.inputLabel' },
+            { selector: '#jwtInput', key: 'jwt.placeholder', attr: 'placeholder' },
+            { selector: '#decodeJwtBtn', key: 'jwt.decode' },
+            { selector: '#jwt-decoder .output-section:nth-of-type(1) .form-label', key: 'jwt.header' },
+            { selector: '#jwt-decoder .output-section:nth-of-type(2) .form-label', key: 'jwt.payload' },
+            { selector: '#jwt-decoder .output-section:nth-of-type(3) .form-label', key: 'jwt.signature' },
+
+            { selector: '#cert-extractor .tool-header h2', key: 'cert.title' },
+            { selector: '#cert-extractor .tool-header p', key: 'cert.description' },
+            { selector: '#cert-extractor .input-section .form-label', key: 'cert.inputLabel' },
+            { selector: '#certInput', key: 'cert.placeholder', attr: 'placeholder' },
+            { selector: '#extractCertBtn', key: 'cert.extract' },
+            { selector: '#cert-extractor .output-header .form-label', key: 'cert.outputLabel' },
+            { selector: '#cert-extractor .result-item:nth-of-type(1) span:first-child', key: 'cert.subject' },
+            { selector: '#cert-extractor .result-item:nth-of-type(2) span:first-child', key: 'cert.issuer' },
+            { selector: '#cert-extractor .result-item:nth-of-type(3) span:first-child', key: 'cert.serial' },
+            { selector: '#cert-extractor .result-item:nth-of-type(4) span:first-child', key: 'cert.validFrom' },
+            { selector: '#cert-extractor .result-item:nth-of-type(5) span:first-child', key: 'cert.validTo' },
+            { selector: '#cert-extractor .result-item:nth-of-type(6) span:first-child', key: 'cert.algorithm' },
+
+            { selector: '#password-checker .tool-header h2', key: 'passwordCheck.title' },
+            { selector: '#password-checker .tool-header p', key: 'passwordCheck.description' },
+            { selector: '#password-checker .input-section .form-label', key: 'passwordCheck.inputLabel' },
+            { selector: '#passwordInput', key: 'passwordCheck.placeholder', attr: 'placeholder' },
+            { selector: '#password-checker .input-section > label', key: 'passwordCheck.showPassword', type: 'textNode', leadingSpace: true },
+            { selector: '#checkPasswordBtn', key: 'passwordCheck.action' },
+            { selector: '#password-checker .output-header .form-label', key: 'passwordCheck.outputLabel' },
+            { selector: '#password-checker .result-item:nth-of-type(1) span:first-child', key: 'passwordCheck.length' },
+            { selector: '#password-checker .result-item:nth-of-type(2) span:first-child', key: 'passwordCheck.uppercase' },
+            { selector: '#password-checker .result-item:nth-of-type(3) span:first-child', key: 'passwordCheck.lowercase' },
+            { selector: '#password-checker .result-item:nth-of-type(4) span:first-child', key: 'passwordCheck.numbers' },
+            { selector: '#password-checker .result-item:nth-of-type(5) span:first-child', key: 'passwordCheck.symbols' },
+            { selector: '#password-checker .result-item:nth-of-type(6) span:first-child', key: 'passwordCheck.score' },
+
+            { selector: '#qr-generator .tool-header h2', key: 'qr.title' },
+            { selector: '#qr-generator .tool-header p', key: 'qr.description' },
+            { selector: '#qr-generator .input-section:nth-of-type(1) .form-label', key: 'qr.inputLabel' },
+            { selector: '#qrTextInput', key: 'qr.placeholder', attr: 'placeholder' },
+            { selector: '#qr-generator .options-section .setting-item label', key: 'qr.sizeLabel' },
+            { selector: '#generateQrBtn', key: 'qr.generate' },
+            { selector: '#qr-generator .output-section:nth-of-type(1) .form-label', key: 'qr.outputLabel' },
+            { selector: '#downloadQrBtn', key: 'qr.download' },
+            { selector: '#qrOutput span', key: 'qr.outputPlaceholder' },
+            { selector: '#qr-generator .input-section:nth-of-type(2) .form-label', key: 'qr.uploadLabel' },
+            { selector: '#qr-generator .output-section:nth-of-type(2) .form-label', key: 'qr.decodedLabel' },
+            { selector: '#qrDecodedText', key: 'qr.decodedPlaceholder', attr: 'placeholder' },
+
+            { selector: 'button[id^="copy"], .result-item .btn--sm', key: 'common.copy', all: true }
+        ];
+    }
+
+    applySelectorTranslations() {
+        this.getTranslationBindings().forEach(binding => {
+            const elements = binding.all
+                ? document.querySelectorAll(binding.selector)
+                : [document.querySelector(binding.selector)].filter(Boolean);
+            const message = this.t(binding.key);
+            if (!message) return;
+
+            elements.forEach(element => {
+                if (binding.attr) {
+                    element.setAttribute(binding.attr, message);
+                    return;
+                }
+
+                if (binding.type === 'textNode') {
+                    this.setElementTextNode(element, message, binding);
+                    return;
+                }
+
+                element.textContent = message;
+            });
+        });
+    }
+
+    setElementTextNode(element, text, options = {}) {
+        const { leadingSpace = false, trailingSpace = false } = options;
+        const targetNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== '');
+        const value = `${leadingSpace ? ' ' : ''}${text}${trailingSpace ? ' ' : ''}`;
+
+        if (targetNode) {
+            targetNode.nodeValue = value;
+        } else {
+            element.appendChild(document.createTextNode(value));
+        }
     }
 
     // Theme Management
@@ -311,7 +654,7 @@ class OnlineToolsApp {
     copyToClipboard(text) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
-                this.showMessage('Copiato negli appunti!', 'success');
+                this.showMessage(this.t('messages.copied', 'Copied to clipboard!'), 'success');
             }).catch(() => {
                 this.fallbackCopy(text);
             });
@@ -329,9 +672,9 @@ class OnlineToolsApp {
         textArea.select();
         try {
             document.execCommand('copy');
-            this.showMessage('Copiato negli appunti!', 'success');
+            this.showMessage(this.t('messages.copied', 'Copied to clipboard!'), 'success');
         } catch (err) {
-            this.showMessage('Errore durante la copia', 'error');
+            this.showMessage(this.t('messages.copyError', 'Copy failed'), 'error');
         }
         document.body.removeChild(textArea);
     }
@@ -446,7 +789,7 @@ class OnlineToolsApp {
             if (includeSymbols) selectedCharsets.push('!@#$%^&*()_+-=[]{}|;:,.<>?');
 
             if (selectedCharsets.length === 0) {
-                this.showMessage('Seleziona almeno un tipo di carattere!', 'error');
+                this.showMessage(this.t('passwordGenerator.selectOneCharset', 'Select at least one character set!'), 'error');
                 return;
             }
 
@@ -509,7 +852,7 @@ class OnlineToolsApp {
                 usernameItem.className = 'username-item';
                 usernameItem.innerHTML = `
                     <span class="username-text">${username}</span>
-                    <button class="btn btn--sm copy-username">Copia</button>
+                    <button class="btn btn--sm copy-username">${this.t('common.copy', 'Copy')}</button>
                 `;
                 
                 usernameItem.querySelector('.copy-username').addEventListener('click', () => {
@@ -622,7 +965,7 @@ class OnlineToolsApp {
             const sortByCount = container.querySelector('#sortByCount')?.checked || false;
 
             if (lines.length === 0) {
-                resultsContainer.textContent = 'Inserisci almeno una voce.';
+                resultsContainer.textContent = this.t('duplicates.noEntries', 'Enter at least one item.');
                 return;
             }
 
@@ -773,7 +1116,7 @@ class OnlineToolsApp {
 
             if (terms.length === 0) {
                 output.value = input.value;
-                this.setStatus(stats, 'Nessuna parola/frase configurata.', 'info');
+                this.setStatus(stats, this.t('removeContaining.noTerms', 'No words or phrases configured.'), 'info');
                 return;
             }
 
@@ -794,7 +1137,11 @@ class OnlineToolsApp {
             });
 
             output.value = kept.join('\n');
-            this.setStatus(stats, `Righe rimosse: ${removed}\nRighe mantenute: ${kept.length}`, removed > 0 ? 'success' : 'info');
+            this.setStatus(
+                stats,
+                `${this.t('removeContaining.removedLines', 'Removed lines')}: ${removed}\n${this.t('removeContaining.keptLines', 'Kept lines')}: ${kept.length}`,
+                removed > 0 ? 'success' : 'info'
+            );
         });
 
         copyBtn?.addEventListener('click', () => {
@@ -819,7 +1166,7 @@ class OnlineToolsApp {
                 : matches;
 
             output.value = emails.join('\n');
-            this.setStatus(stats, `Email trovate: ${emails.length}`, emails.length > 0 ? 'success' : 'info');
+            this.setStatus(stats, `${this.t('email.found', 'Emails found')}: ${emails.length}`, emails.length > 0 ? 'success' : 'info');
         });
 
         copyBtn?.addEventListener('click', () => {
@@ -847,7 +1194,7 @@ class OnlineToolsApp {
 
             const urlMatch = curl.match(/https?:\/\/[^\s'"\\]+|['"]https?:\/\/[^'"]+['"]/i);
             if (!urlMatch) {
-                output.value = 'Errore: impossibile trovare un URL valido nel comando curl.';
+                output.value = this.t('curl.invalidUrl', 'Error: could not find a valid URL in the curl command.');
                 return;
             }
 
@@ -870,7 +1217,7 @@ class OnlineToolsApp {
 
                 output.value = `${requestLines.join('\r\n')}\r\n\r\n${body}`;
             } catch (e) {
-                output.value = `Errore: ${e.message}`;
+                output.value = `${this.t('common.error', 'Error')}: ${e.message}`;
             }
         });
 
@@ -991,7 +1338,7 @@ class OnlineToolsApp {
             try {
                 output.value = toBase64(text);
             } catch (e) {
-                output.value = 'Errore: impossibile codificare il testo';
+                output.value = this.t('base64.encodeError', 'Error: unable to encode the text');
             }
         });
 
@@ -1004,7 +1351,7 @@ class OnlineToolsApp {
             try {
                 output.value = fromBase64(text);
             } catch (e) {
-                output.value = 'Errore: input non valido Base64';
+                output.value = this.t('base64.decodeError', 'Error: invalid Base64 input');
             }
         });
 
@@ -1043,7 +1390,7 @@ class OnlineToolsApp {
             try {
                 output.value = decodeURI(text);
             } catch (e) {
-                output.value = 'Errore: URL non valido';
+                output.value = this.t('url.decodeError', 'Error: invalid URL');
             }
         });
 
@@ -1094,10 +1441,10 @@ class OnlineToolsApp {
                 }
 
                 output.value = indent === '' ? JSON.stringify(json) : JSON.stringify(json, null, indent);
-                this.setStatus(validation, 'JSON valido', 'success');
+                this.setStatus(validation, this.t('json.valid', 'Valid JSON'), 'success');
             } catch (e) {
                 output.value = '';
-                this.setStatus(validation, `Errore: ${e.message}`, 'error');
+                this.setStatus(validation, `${this.t('common.error', 'Error')}: ${e.message}`, 'error');
             }
         });
 
@@ -1124,7 +1471,7 @@ class OnlineToolsApp {
             let content2 = text2.value;
 
             if (!content1 && !content2) {
-                output.textContent = 'Inserisci testo in entrambi i campi';
+                output.textContent = this.t('diff.enterBoth', 'Enter text in both fields');
                 this.clearStatus(stats);
                 return;
             }
@@ -1171,8 +1518,12 @@ class OnlineToolsApp {
                 }
             }
 
-            output.innerHTML = diffHtml || this.escapeHtml('Nessuna differenza trovata');
-            this.setStatus(stats, `Aggiunte: ${additions} | Rimosse: ${deletions} | Invariate: ${unchanged}`, 'info');
+            output.innerHTML = diffHtml || this.escapeHtml(this.t('diff.noDifferences', 'No differences found'));
+            this.setStatus(
+                stats,
+                `${this.t('diff.additions', 'Additions')}: ${additions} | ${this.t('diff.deletions', 'Deletions')}: ${deletions} | ${this.t('diff.unchanged', 'Unchanged')}: ${unchanged}`,
+                'info'
+            );
         });
     }
 
@@ -1202,7 +1553,7 @@ class OnlineToolsApp {
             const text = textInput.value;
 
             if (!pattern || !text) {
-                output.textContent = 'Inserisci sia il pattern che il testo';
+                output.textContent = this.t('regex.enterPatternAndText', 'Enter both the pattern and the text');
                 this.clearStatus(stats);
                 return;
             }
@@ -1229,7 +1580,7 @@ class OnlineToolsApp {
                 const matches = [...text.matchAll(matchRegex)];
 
                 if (matches.length === 0) {
-                    output.textContent = 'Nessuna corrispondenza trovata';
+                    output.textContent = this.t('regex.noMatches', 'No matches found');
                     this.clearStatus(stats);
                 } else {
                     let resultHtml = '';
@@ -1248,10 +1599,10 @@ class OnlineToolsApp {
                         resultHtml += `</div>`;
                     });
                     output.innerHTML = resultHtml;
-                    this.setStatus(stats, `Trovate ${matches.length} corrispondenze`, 'success');
+                    this.setStatus(stats, `${this.t('regex.foundMatches', 'Matches found')}: ${matches.length}`, 'success');
                 }
             } catch (e) {
-                output.textContent = `Errore regex: ${e.message}`;
+                output.textContent = `${this.t('regex.error', 'Regex error')}: ${e.message}`;
                 this.clearStatus(stats);
             }
         });
@@ -1380,7 +1731,7 @@ class OnlineToolsApp {
             }
 
             if (isNaN(date.getTime())) {
-                alert('Data non valida');
+                alert(this.t('timestamp.invalidDate', 'Invalid date'));
                 return;
             }
 
@@ -1423,12 +1774,12 @@ class OnlineToolsApp {
 
             try {
                 // Note: MD5 is not available in Web Crypto API, showing placeholder
-                container.querySelector('#md5Hash').textContent = 'MD5 non supportato nel browser';
+                container.querySelector('#md5Hash').textContent = this.t('hash.md5Unsupported', 'MD5 not supported in the browser');
                 container.querySelector('#sha1Hash').textContent = await simpleHash(text, 'SHA-1');
                 container.querySelector('#sha256Hash').textContent = await simpleHash(text, 'SHA-256');
                 container.querySelector('#sha512Hash').textContent = await simpleHash(text, 'SHA-512');
             } catch (e) {
-                alert('Errore nella generazione hash: ' + e.message);
+                alert(`${this.t('hash.error', 'Hash generation error')}: ${e.message}`);
             }
         });
 
@@ -1437,7 +1788,7 @@ class OnlineToolsApp {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');
                 const text = container.querySelector(`#${elementId}`)?.textContent;
-                if (text && text !== 'MD5 non supportato nel browser') this.copyToClipboard(text);
+                if (text && text !== this.t('hash.md5Unsupported', 'MD5 not supported in the browser')) this.copyToClipboard(text);
             });
         });
     }
@@ -1497,17 +1848,17 @@ class OnlineToolsApp {
 
                 if (parseError) {
                     output.value = '';
-                    this.setStatus(validation, `XML non valido: ${parseError.textContent}`, 'error');
+                    this.setStatus(validation, `${this.t('xml.invalid', 'Invalid XML')}: ${parseError.textContent}`, 'error');
                 } else {
                     const indentValue = container.querySelector('input[name="xmlIndent"]:checked')?.value || '2';
                     const indent = indentValue === 'tab' ? '\t' : indentValue;
                     
                     output.value = formatXml(xml, indent);
-                    this.setStatus(validation, 'XML valido', 'success');
+                    this.setStatus(validation, this.t('xml.valid', 'Valid XML'), 'success');
                 }
             } catch (e) {
                 output.value = '';
-                this.setStatus(validation, `Errore: ${e.message}`, 'error');
+                this.setStatus(validation, `${this.t('common.error', 'Error')}: ${e.message}`, 'error');
             }
         });
 
@@ -1541,7 +1892,7 @@ class OnlineToolsApp {
             try {
                 const parts = jwt.split('.');
                 if (parts.length !== 3) {
-                    throw new Error('JWT deve avere 3 parti separate da punti');
+                    throw new Error(this.t('jwt.invalidParts', 'JWT must have 3 parts separated by dots'));
                 }
 
                 // Decode header
@@ -1559,26 +1910,29 @@ class OnlineToolsApp {
                 ).join('');
                 signatureOutput.value = signatureHex;
 
-                const validationLines = ['JWT decodificato con successo', 'Firma non verificata in questa versione'];
+                const validationLines = [
+                    this.t('jwt.decoded', 'JWT decoded successfully'),
+                    this.t('jwt.signatureNotVerified', 'Signature not verified in this version')
+                ];
                 
                 if (payload.exp) {
                     const expDate = new Date(payload.exp * 1000);
                     const now = new Date();
                     if (expDate < now) {
-                        validationLines.push(`Token scaduto il ${expDate.toLocaleString()}`);
+                        validationLines.push(`${this.t('jwt.expiredOn', 'Token expired on')} ${expDate.toLocaleString()}`);
                     } else {
-                        validationLines.push(`Token valido fino al ${expDate.toLocaleString()}`);
+                        validationLines.push(`${this.t('jwt.validUntil', 'Token valid until')} ${expDate.toLocaleString()}`);
                     }
                 }
 
                 if (payload.iat) {
                     const iatDate = new Date(payload.iat * 1000);
-                    validationLines.push(`Emesso il ${iatDate.toLocaleString()}`);
+                    validationLines.push(`${this.t('jwt.issuedAt', 'Issued at')} ${iatDate.toLocaleString()}`);
                 }
 
                 this.setStatus(validation, validationLines.join('\n'), 'success');
             } catch (e) {
-                this.setStatus(validation, `Errore: ${e.message}`, 'error');
+                this.setStatus(validation, `${this.t('common.error', 'Error')}: ${e.message}`, 'error');
                 
                 headerOutput.value = '';
                 payloadOutput.value = '';
@@ -1623,7 +1977,7 @@ class OnlineToolsApp {
             if (!cert) return;
 
             if (!cert.includes('-----BEGIN CERTIFICATE-----')) {
-                alert('Formato certificato non valido. Inserisci un certificato PEM.');
+                alert(this.t('cert.invalidFormat', 'Invalid certificate format. Please enter a PEM certificate.'));
                 return;
             }
 
@@ -1631,14 +1985,14 @@ class OnlineToolsApp {
                 const der = pemToDer(cert);
                 const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', der));
 
-                container.querySelector('#certSubject').textContent = 'Non disponibile in modalità browser-only';
-                container.querySelector('#certIssuer').textContent = 'Non disponibile in modalità browser-only';
+                container.querySelector('#certSubject').textContent = this.t('cert.browserOnly', 'Not available in browser-only mode');
+                container.querySelector('#certIssuer').textContent = this.t('cert.browserOnly', 'Not available in browser-only mode');
                 container.querySelector('#certSerial').textContent = bytesToHex(digest);
-                container.querySelector('#certValidFrom').textContent = `DER size: ${der.length} bytes`;
-                container.querySelector('#certValidTo').textContent = 'Richiede parser ASN.1 completo';
-                container.querySelector('#certAlgorithm').textContent = 'Fingerprint SHA-256';
+                container.querySelector('#certValidFrom').textContent = `${this.t('cert.derSize', 'DER size')}: ${der.length} bytes`;
+                container.querySelector('#certValidTo').textContent = this.t('cert.requiresAsn1', 'Requires a complete ASN.1 parser');
+                container.querySelector('#certAlgorithm').textContent = this.t('cert.fingerprint', 'SHA-256 fingerprint');
             } catch (e) {
-                alert('Errore nel parsing del certificato: ' + e.message);
+                alert(`${this.t('cert.parseError', 'Certificate parsing error')}: ${e.message}`);
             }
         });
 
@@ -1711,37 +2065,37 @@ class OnlineToolsApp {
             let strengthText, strengthColor, strengthBg;
 
             if (score <= 3) {
-                strengthText = 'Debole';
+                strengthText = this.t('passwordCheck.weak', 'Weak');
                 strengthColor = 'var(--color-error)';
                 strengthBg = 'rgba(var(--color-error-rgb), 0.1)';
             } else if (score <= 5) {
-                strengthText = 'Media';
+                strengthText = this.t('passwordCheck.medium', 'Medium');
                 strengthColor = 'var(--color-warning)';
                 strengthBg = 'rgba(var(--color-warning-rgb), 0.1)';
             } else {
-                strengthText = 'Forte';
+                strengthText = this.t('passwordCheck.strong', 'Strong');
                 strengthColor = 'var(--color-success)';
                 strengthBg = 'rgba(var(--color-success-rgb), 0.1)';
             }
 
             strengthElement.innerHTML = `
                 <div style="padding: var(--space-8); background: ${strengthBg}; color: ${strengthColor}; border-radius: var(--radius-base); text-align: center; font-weight: var(--font-weight-semibold);">
-                    Password: ${strengthText} (${score}/8)
+                    ${this.t('passwordCheck.passwordStrength', 'Password')}: ${strengthText} (${score}/8)
                 </div>
             `;
 
             // Suggestions
             const suggestions = [];
-            if (!checks.length) suggestions.push('• Usa almeno 8 caratteri');
-            if (!checks.uppercase) suggestions.push('• Aggiungi lettere maiuscole');
-            if (!checks.lowercase) suggestions.push('• Aggiungi lettere minuscole');
-            if (!checks.numbers) suggestions.push('• Aggiungi numeri');
-            if (!checks.symbols) suggestions.push('• Aggiungi simboli speciali');
-            if (password.length < 12) suggestions.push('• Considera di usare almeno 12 caratteri');
+            if (!checks.length) suggestions.push(`• ${this.t('passwordCheck.suggestionLength', 'Use at least 8 characters')}`);
+            if (!checks.uppercase) suggestions.push(`• ${this.t('passwordCheck.suggestionUppercase', 'Add uppercase letters')}`);
+            if (!checks.lowercase) suggestions.push(`• ${this.t('passwordCheck.suggestionLowercase', 'Add lowercase letters')}`);
+            if (!checks.numbers) suggestions.push(`• ${this.t('passwordCheck.suggestionNumbers', 'Add numbers')}`);
+            if (!checks.symbols) suggestions.push(`• ${this.t('passwordCheck.suggestionSymbols', 'Add special symbols')}`);
+            if (password.length < 12) suggestions.push(`• ${this.t('passwordCheck.suggestionLonger', 'Consider using at least 12 characters')}`);
 
             container.querySelector('#passwordSuggestions').innerHTML = suggestions.length > 0 
-                ? `<strong>Suggerimenti:</strong><br>${suggestions.join('<br>')}`
-                : '<strong>✓ Password robusta!</strong>';
+                ? `<strong>${this.t('passwordCheck.suggestions', 'Suggestions')}:</strong><br>${suggestions.join('<br>')}`
+                : `<strong>${this.t('passwordCheck.goodPassword', '✓ Strong password!')}</strong>`;
         });
     }
 
@@ -1768,7 +2122,7 @@ class OnlineToolsApp {
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
             
             qrOutput.innerHTML = `<img src="${qrUrl}" alt="QR Code" style="max-width: 100%; height: auto; border-radius: var(--radius-base);">`;
-            this.showMessage('QR generato tramite un servizio esterno.', 'success');
+            this.showMessage(this.t('qr.generatedExternal', 'QR generated through an external service.'), 'success');
             
             downloadBtn.style.display = 'inline-block';
             downloadBtn.onclick = () => {
@@ -1784,7 +2138,7 @@ class OnlineToolsApp {
             if (!file) return;
 
             if (!('BarcodeDetector' in window)) {
-                decodedText.value = 'Questo browser non supporta BarcodeDetector per la lettura locale dei QR.';
+                decodedText.value = this.t('qr.barcodeUnsupported', 'This browser does not support BarcodeDetector for local QR reading.');
                 return;
             }
 
@@ -1792,9 +2146,9 @@ class OnlineToolsApp {
                 const detector = new window.BarcodeDetector({ formats: ['qr_code'] });
                 const imageBitmap = await createImageBitmap(file);
                 const barcodes = await detector.detect(imageBitmap);
-                decodedText.value = barcodes[0]?.rawValue || 'Nessun QR code rilevato nell’immagine.';
+                decodedText.value = barcodes[0]?.rawValue || this.t('qr.noQrFound', 'No QR code detected in the image.');
             } catch (error) {
-                decodedText.value = `Errore nella lettura del QR: ${error.message}`;
+                decodedText.value = `${this.t('qr.readError', 'QR read error')}: ${error.message}`;
             }
         });
 
