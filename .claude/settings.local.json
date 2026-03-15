@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(git pull:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(cut -d'\\(' -f1)",
+      "Bash(git -C /Users/andreamargiovanni/dev/tools-collection branch --show-current)",
+      "Bash(npm install:*)",
+      "Bash(npx astro:*)",
+      "Bash(npx vitest:*)",
+      "Bash(git -C /Users/andreamargiovanni/dev/tools-collection status)",
+      "Bash(git -C /Users/andreamargiovanni/dev/tools-collection log --oneline -5)",
+      "Bash(git -C /Users/andreamargiovanni/dev/tools-collection check-ignore dist/ node_modules/ .astro/)",
+      "Bash(git log:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr:*)"
     ],
     "deny": []
   }
