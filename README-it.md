@@ -397,6 +397,7 @@ in the Software without restriction...
 ## 👥 Autori
 
 - **Andrea Margiovanni** - *Sviluppatore principale* - [@amargiovanni](https://github.com/amargiovanni)
+- **Giovanni "Gioxx" Solone** - *Manutenzione, bugfix, Docker e miglioramenti UX/UI* - [@gioxx](https://github.com/gioxx)
 
 ### Ringraziamenti
 

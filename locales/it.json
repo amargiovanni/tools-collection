@@ -13,6 +13,8 @@
   "home.title": "Strumenti Online per il Lavoro di Tutti i Giorni",
   "home.description": "Scegli uno strumento dal catalogo qui sotto. Quando ne apri uno, l'elenco completo si sposta nella sidebar per una navigazione piu rapida.",
   "home.openTool": "Apri tool",
+  "home.footerName": "Tools Collection",
+  "home.footerGithub": "GitHub",
 
   "sidebar.textProcessing": "Elaborazione Testo",
   "sidebar.generators": "Generatori",

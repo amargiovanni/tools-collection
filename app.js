@@ -102,6 +102,8 @@ class OnlineToolsApp {
             { selector: '#homeView .home-eyebrow', key: 'home.eyebrow' },
             { selector: '#homeView .home-hero h1', key: 'home.title' },
             { selector: '#homeView .home-hero p', key: 'home.description' },
+            { selector: '.home-footer-name', key: 'home.footerName' },
+            { selector: '.home-footer-link', key: 'home.footerGithub' },
 
             { selector: '.tool-category:nth-of-type(1) h3', key: 'sidebar.textProcessing' },
             { selector: '.tool-category:nth-of-type(2) h3', key: 'sidebar.generators' },

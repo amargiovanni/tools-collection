@@ -112,14 +112,32 @@
         <main class="main-content">
             <section class="home-view active" id="homeView">
                 <div class="home-hero">
-                    <span class="home-eyebrow">Collection</span>
-                    <h1>Online Tools for Daily Work</h1>
-                    <p>Pick a tool from the catalog below. When you open one, the full tools list moves into the sidebar for faster navigation.</p>
+                    <div class="home-hero-layout">
+                        <div class="home-hero-copy">
+                            <span class="home-eyebrow">Collection</span>
+                            <h1>Online Tools for Daily Work</h1>
+                            <p>Pick a tool from the catalog below. When you open one, the full tools list moves into the sidebar for faster navigation.</p>
+                        </div>
+                        <img
+                            class="home-hero-logo"
+                            src="data/logo.png"
+                            alt=""
+                            loading="lazy"
+                            onerror="this.remove()"
+                        >
+                    </div>
                 </div>
                 <div class="home-search">
                     <input type="text" id="homeSearchInput" class="form-control" placeholder="Search tools...">
                 </div>
                 <div class="home-catalog" id="homeCatalog"></div>
+                <footer class="home-footer">
+                    <span class="home-footer-name">Tools Collection</span>
+                    <span class="home-footer-separator">•</span>
+                    <span class="home-footer-version">v0.4.3</span>
+                    <span class="home-footer-separator">•</span>
+                    <a class="home-footer-link" href="https://github.com/gioxx/tools-collection" target="_blank" rel="noreferrer">GitHub</a>
+                </footer>
             </section>
 
             <!-- List Generator Tool -->
