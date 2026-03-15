@@ -10,6 +10,7 @@ This changelog currently tracks the recent evolution of the project by published
 - Added `.dockerignore` exclusions for `Dockerfile` and `compose.yaml` so they are not copied into the final production image.
 - Added `.github/dependabot.yml` to keep npm packages, GitHub Actions, and Docker base image dependencies updated automatically.
 - Added a reusable brand mark component with support for a custom `/data/logo.png` image across the home page and tool sidebar.
+- Added Docker runtime support for configuring the default application language through `DEFAULT_LANGUAGE`.
 
 ### Changed
 - Bumped the product version to `1.1.1`.

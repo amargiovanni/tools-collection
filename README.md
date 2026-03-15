@@ -115,6 +115,14 @@ docker compose up --build -d
 
 Available at `http://localhost:8080`.
 
+To set the default language served on the first visit, pass `DEFAULT_LANGUAGE=en` or `DEFAULT_LANGUAGE=it` through Docker Compose:
+
+```bash
+DEFAULT_LANGUAGE=it docker compose up --build -d
+```
+
+If the browser already has a saved language preference in `localStorage`, that preference still wins.
+
 ### Custom Logo
 
 The application can display a custom logo from `data/logo.png` in the homepage hero and next to `Online Tools` in the tool sidebar/header.

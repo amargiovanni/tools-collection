@@ -7,10 +7,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="refresh" content="0;url=/en/" />
     <title>Redirecting...</title>
+    <script src="/default-language.js"></script>
     <script is:inline>
       var lang = localStorage.getItem('lang')
       if (!lang) {
-        lang = navigator.language.slice(0, 2) === 'it' ? 'it' : 'en'
+        var configuredDefault =
+          typeof window.__DEFAULT_LANGUAGE__ === 'string' &&
+          (window.__DEFAULT_LANGUAGE__ === 'it' || window.__DEFAULT_LANGUAGE__ === 'en')
+            ? window.__DEFAULT_LANGUAGE__
+            : 'en'
+        lang = configuredDefault
       }
       location.replace('/' + lang + '/')
     </script>

@@ -31,6 +31,7 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={lang} href={canonicalUrl} />
     <link rel="alternate" hreflang={altLang} href={altUrl} />
+    <script src="/default-language.js"></script>
     <ClientRouter />
     <!-- Theme: apply before paint to avoid flash -->
     <script is:inline>
@@ -59,12 +60,15 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
         }
         var slug = renames[hash] || hash
         var stored = localStorage.getItem('lang')
+        var configuredDefault =
+          typeof window.__DEFAULT_LANGUAGE__ === 'string' &&
+          (window.__DEFAULT_LANGUAGE__ === 'it' || window.__DEFAULT_LANGUAGE__ === 'en')
+            ? window.__DEFAULT_LANGUAGE__
+            : 'en'
         var lang =
           stored === 'it' || stored === 'en'
             ? stored
-            : navigator.language.slice(0, 2) === 'it'
-              ? 'it'
-              : 'en'
+            : configuredDefault
         location.replace('/' + lang + '/tools/' + slug + '/')
       })()
     </script>
