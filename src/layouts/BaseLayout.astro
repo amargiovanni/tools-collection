@@ -89,24 +89,24 @@ const altUrl = new URL(altPath, Astro.site ?? 'https://tools.example.com').href
           if (!image || !fallback) return
 
           image.addEventListener('load', function () {
-            fallback.classList.add('hidden')
-            image.classList.remove('hidden')
+            fallback.hidden = true
+            image.hidden = false
           })
 
           image.addEventListener('error', function () {
-            image.classList.add('hidden')
-            fallback.classList.remove('hidden')
+            image.hidden = true
+            fallback.hidden = false
           })
 
           image.setAttribute('src', customLogoPath)
 
           if (image.complete) {
             if (image.naturalWidth > 0) {
-              fallback.classList.add('hidden')
-              image.classList.remove('hidden')
+              fallback.hidden = true
+              image.hidden = false
             } else {
-              image.classList.add('hidden')
-              fallback.classList.remove('hidden')
+              image.hidden = true
+              fallback.hidden = false
             }
           }
         })

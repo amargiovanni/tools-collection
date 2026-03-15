@@ -13,7 +13,8 @@ const { wrapperClass = '', imageClass = '', fallbackClass = '' } = Astro.props
     alt=""
     loading="eager"
     decoding="async"
-    class={`hidden ${imageClass}`.trim()}
+    class={imageClass}
+    hidden
     data-brand-logo
   />
   <span class={fallbackClass} data-brand-fallback aria-hidden="true">
