@@ -1,7 +1,7 @@
 // App initialization and management
 class OnlineToolsApp {
     constructor() {
-        this.assetVersion = '0.4.3';
+        this.assetVersion = '0.4.4';
         this.currentTool = null;
         this.currentView = 'home';
         this.currentSearchTerm = '';
@@ -122,6 +122,7 @@ class OnlineToolsApp {
             { selector: '[data-tool="remove-lines-containing"]', key: 'nav.removeLinesContaining' },
             { selector: '[data-tool="password-generator"]', key: 'nav.passwordGenerator' },
             { selector: '[data-tool="username-generator"]', key: 'nav.usernameGenerator' },
+            { selector: '[data-tool="pin-generator"]', key: 'nav.pinGenerator' },
             { selector: '[data-tool="domain-extractor"]', key: 'nav.domainExtractor' },
             { selector: '[data-tool="email-extractor"]', key: 'nav.emailExtractor' },
             { selector: '[data-tool="count-duplicates"]', key: 'nav.countDuplicates' },
@@ -137,6 +138,7 @@ class OnlineToolsApp {
             { selector: '[data-tool="xml-beautifier"]', key: 'nav.xmlBeautifier' },
             { selector: '[data-tool="color-picker"]', key: 'nav.colorPicker' },
             { selector: '[data-tool="timestamp-converter"]', key: 'nav.timestampConverter' },
+            { selector: '[data-tool="time-convert"]', key: 'nav.timeConvert' },
             { selector: '[data-tool="hash-generator"]', key: 'nav.hashGenerator' },
 
             { selector: '#list-generator .tool-header h2', key: 'list.title' },
@@ -154,10 +156,10 @@ class OnlineToolsApp {
             { selector: '#password-generator .tool-header p', key: 'passwordGenerator.description' },
             { selector: '#password-generator .setting-item:nth-of-type(1) .form-label', key: 'passwordGenerator.lengthLabel', type: 'textNode', trailingSpace: true },
             { selector: '#password-generator .setting-item:nth-of-type(2) .form-label', key: 'passwordGenerator.countLabel' },
-            { selector: '#password-generator .setting-item:nth-of-type(3) label', key: 'passwordGenerator.includeUppercase', type: 'textNode', leadingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(4) label', key: 'passwordGenerator.includeLowercase', type: 'textNode', leadingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(5) label', key: 'passwordGenerator.includeNumbers', type: 'textNode', leadingSpace: true },
-            { selector: '#password-generator .setting-item:nth-of-type(6) label', key: 'passwordGenerator.includeSymbols', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(1) label', key: 'passwordGenerator.includeUppercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(2) label', key: 'passwordGenerator.includeLowercase', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(3) label', key: 'passwordGenerator.includeNumbers', type: 'textNode', leadingSpace: true },
+            { selector: '#password-generator .password-options-grid .password-option-item:nth-of-type(4) label', key: 'passwordGenerator.includeSymbols', type: 'textNode', leadingSpace: true },
             { selector: '#generatePassword', key: 'passwordGenerator.generate' },
             { selector: '#passwordResultsHeader .form-label', key: 'passwordGenerator.outputLabel' },
             { selector: '#copyAllPasswords', key: 'passwordGenerator.copyAll' },
@@ -173,6 +175,15 @@ class OnlineToolsApp {
             { selector: '#generateUsernames', key: 'username.generate' },
             { selector: '#usernameResultsHeader .form-label', key: 'username.outputLabel' },
             { selector: '#copyAllUsernames', key: 'username.copyAll' },
+
+            { selector: '#pin-generator .tool-header h2', key: 'pin.title' },
+            { selector: '#pin-generator .tool-header p', key: 'pin.description' },
+            { selector: '#pin-generator .setting-item:nth-of-type(1) .form-label', key: 'pin.lengthLabel' },
+            { selector: '#pin-generator .setting-item:nth-of-type(2) .form-label', key: 'pin.countLabel' },
+            { selector: '#pin-generator .setting-item:nth-of-type(3) label', key: 'pin.unique', type: 'textNode', leadingSpace: true },
+            { selector: '#generatePins', key: 'pin.generate' },
+            { selector: '#pinResultsHeader .form-label', key: 'pin.outputLabel' },
+            { selector: '#copyAllPins', key: 'pin.copyAll' },
 
             { selector: '#add-text-lines .tool-header h2', key: 'addText.title' },
             { selector: '#add-text-lines .tool-header p', key: 'addText.description' },
@@ -329,6 +340,25 @@ class OnlineToolsApp {
             { selector: '#timestamp-converter .result-item:nth-of-type(1) span:first-child', key: 'timestamp.unixSeconds' },
             { selector: '#timestamp-converter .result-item:nth-of-type(2) span:first-child', key: 'timestamp.unixMilliseconds' },
             { selector: '#timestamp-converter .result-item:nth-of-type(5) span:first-child', key: 'timestamp.locale' },
+
+            { selector: '#time-convert .tool-header h2', key: 'timeConvert.title' },
+            { selector: '#time-convert .tool-header p', key: 'timeConvert.description' },
+            { selector: '#time-convert .input-section > div > div:nth-of-type(1) .form-label', key: 'timeConvert.inputLabel' },
+            { selector: '#timeConvertInput', key: 'timeConvert.placeholder', attr: 'placeholder' },
+            { selector: '#time-convert .input-section > div > div:nth-of-type(2) .form-label', key: 'timeConvert.unitLabel' },
+            { selector: '#timeConvertUnit option[value="milliseconds"]', key: 'timeConvert.unitMilliseconds' },
+            { selector: '#timeConvertUnit option[value="seconds"]', key: 'timeConvert.unitSeconds' },
+            { selector: '#timeConvertUnit option[value="minutes"]', key: 'timeConvert.unitMinutes' },
+            { selector: '#timeConvertUnit option[value="hours"]', key: 'timeConvert.unitHours' },
+            { selector: '#timeConvertUnit option[value="days"]', key: 'timeConvert.unitDays' },
+            { selector: '#convertTimeValueBtn', key: 'timeConvert.convert' },
+            { selector: '#time-convert .output-header .form-label', key: 'timeConvert.outputLabel' },
+            { selector: '#time-convert .result-item:nth-of-type(1) span:first-child', key: 'timeConvert.milliseconds' },
+            { selector: '#time-convert .result-item:nth-of-type(2) span:first-child', key: 'timeConvert.seconds' },
+            { selector: '#time-convert .result-item:nth-of-type(3) span:first-child', key: 'timeConvert.minutes' },
+            { selector: '#time-convert .result-item:nth-of-type(4) span:first-child', key: 'timeConvert.hours' },
+            { selector: '#time-convert .result-item:nth-of-type(5) span:first-child', key: 'timeConvert.days' },
+            { selector: '#time-convert .result-item:nth-of-type(6) span:first-child', key: 'timeConvert.formatted' },
 
             { selector: '#hash-generator .tool-header h2', key: 'hash.title' },
             { selector: '#hash-generator .tool-header p', key: 'hash.description' },
@@ -771,6 +801,7 @@ class OnlineToolsApp {
         this.initListGenerator();
         this.initPasswordGenerator();
         this.initUsernameGenerator();
+        this.initPinGenerator();
         this.initAddTextToLines();
         this.initConvertCase();
         this.initCountDuplicates();
@@ -787,6 +818,7 @@ class OnlineToolsApp {
         this.initRegexTester();
         this.initColorPicker();
         this.initTimestampConverter();
+        this.initTimeConvert();
         this.initHashGenerator();
         this.initXmlBeautifier();
         this.initCertExtractor();
@@ -1051,7 +1083,80 @@ class OnlineToolsApp {
         });
     }
 
-    // 4. Add Text to Lines
+    // 4. PIN Generator
+    initPinGenerator() {
+        const container = document.getElementById('pin-generator');
+        if (!container) return;
+
+        const generateBtn = container.querySelector('#generatePins');
+        const resultsContainer = container.querySelector('#pinResults');
+        const resultsHeader = container.querySelector('#pinResultsHeader');
+        const copyAllBtn = container.querySelector('#copyAllPins');
+        const lengthInput = container.querySelector('#pinLength');
+        const countInput = container.querySelector('#pinCount');
+        const uniqueInput = container.querySelector('#pinUnique');
+
+        if (!generateBtn || !resultsContainer || !lengthInput || !countInput) return;
+
+        const randomDigit = () => {
+            const values = new Uint32Array(1);
+            crypto.getRandomValues(values);
+            return (values[0] % 10).toString();
+        };
+
+        const generatePinValue = (length) => Array.from({ length }, randomDigit).join('');
+
+        generateBtn.addEventListener('click', () => {
+            const length = Math.max(3, Math.min(12, parseInt(lengthInput.value || '6', 10)));
+            const count = Math.max(1, Math.min(50, parseInt(countInput.value || '10', 10)));
+            const avoidDuplicates = uniqueInput?.checked ?? true;
+            const pins = [];
+            const generated = new Set();
+            const maxAttempts = count * 20;
+            let attempts = 0;
+
+            resultsContainer.innerHTML = '';
+
+            while (pins.length < count && attempts < maxAttempts) {
+                const pin = generatePinValue(length);
+                attempts++;
+
+                if (avoidDuplicates && generated.has(pin)) {
+                    continue;
+                }
+
+                generated.add(pin);
+                pins.push(pin);
+            }
+
+            pins.forEach(pin => {
+                const pinItem = document.createElement('div');
+                pinItem.className = 'username-item';
+                pinItem.innerHTML = `
+                    <span class="username-text">${pin}</span>
+                    <button class="btn btn--sm copy-pin-item">${this.t('common.copy', 'Copy')}</button>
+                `;
+
+                pinItem.querySelector('.copy-pin-item').addEventListener('click', () => {
+                    this.copyToClipboard(pin);
+                });
+
+                resultsContainer.appendChild(pinItem);
+            });
+
+            if (resultsHeader) {
+                resultsHeader.style.display = pins.length > 0 ? 'flex' : 'none';
+            }
+
+            if (copyAllBtn) {
+                copyAllBtn.onclick = () => {
+                    this.copyToClipboard(pins.join('\n'));
+                };
+            }
+        });
+    }
+
+    // 5. Add Text to Lines
     initAddTextToLines() {
         const container = document.getElementById('add-text-lines');
         if (!container) return;
@@ -1089,7 +1194,7 @@ class OnlineToolsApp {
         });
     }
 
-    // 5. Convert Case
+    // 6. Convert Case
     initConvertCase() {
         const container = document.getElementById('convert-case');
         if (!container) return;
@@ -1843,6 +1948,66 @@ class OnlineToolsApp {
         });
 
         // Add copy functionality
+        container.querySelectorAll('button[data-copy]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const elementId = btn.getAttribute('data-copy');
+                const text = container.querySelector(`#${elementId}`)?.textContent;
+                if (text) this.copyToClipboard(text);
+            });
+        });
+    }
+
+    // TimeConvert
+    initTimeConvert() {
+        const container = document.getElementById('time-convert');
+        if (!container) return;
+
+        const input = container.querySelector('#timeConvertInput');
+        const unit = container.querySelector('#timeConvertUnit');
+        const convertBtn = container.querySelector('#convertTimeValueBtn');
+
+        const formatNumber = (value) => {
+            if (!Number.isFinite(value)) return '';
+            return Number.isInteger(value) ? `${value}` : value.toFixed(6).replace(/\.?0+$/, '');
+        };
+
+        const formatDuration = (totalSeconds) => {
+            const seconds = Math.max(0, Math.floor(totalSeconds));
+            const days = Math.floor(seconds / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            const hhmmss = [hours, minutes, secs].map(value => String(value).padStart(2, '0')).join(':');
+            return days > 0 ? `${days}d ${hhmmss}` : hhmmss;
+        };
+
+        convertBtn?.addEventListener('click', () => {
+            const rawValue = parseFloat(input.value);
+            if (!Number.isFinite(rawValue) || rawValue < 0) {
+                alert(this.t('timeConvert.invalid', 'Enter a valid non-negative time value'));
+                return;
+            }
+
+            const unitValue = unit.value;
+            const milliseconds = unitValue === 'milliseconds' ? rawValue :
+                unitValue === 'seconds' ? rawValue * 1000 :
+                unitValue === 'minutes' ? rawValue * 60 * 1000 :
+                unitValue === 'hours' ? rawValue * 60 * 60 * 1000 :
+                rawValue * 24 * 60 * 60 * 1000;
+
+            const seconds = milliseconds / 1000;
+            const minutes = seconds / 60;
+            const hours = minutes / 60;
+            const days = hours / 24;
+
+            container.querySelector('#timeMilliseconds').textContent = formatNumber(milliseconds);
+            container.querySelector('#timeSeconds').textContent = formatNumber(seconds);
+            container.querySelector('#timeMinutes').textContent = formatNumber(minutes);
+            container.querySelector('#timeHours').textContent = formatNumber(hours);
+            container.querySelector('#timeDays').textContent = formatNumber(days);
+            container.querySelector('#timeFormatted').textContent = formatDuration(seconds);
+        });
+
         container.querySelectorAll('button[data-copy]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const elementId = btn.getAttribute('data-copy');

@@ -1184,8 +1184,14 @@ body[data-view="home"] .sidebar {
   grid-column: 1 / -1;
 }
 
+.password-options-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-12) var(--space-16);
+}
+
 .password-option-item {
-  justify-content: center;
   align-self: stretch;
 }
 
@@ -1557,6 +1563,11 @@ body[data-view="home"] .sidebar {
   }
 
   .password-settings-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .password-options-grid {
     grid-template-columns: 1fr;
     gap: var(--space-12);
   }

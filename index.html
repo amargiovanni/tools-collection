@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔧 Tools Collection</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.4.3">
-    <link rel="stylesheet" href="style.css?v=0.4.3">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.4.4">
+    <link rel="stylesheet" href="style.css?v=0.4.4">
 </head>
 <body data-view="home">
     <!-- Mobile Menu Toggle -->
@@ -15,7 +15,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="app-controls">
-        <span class="version-badge" id="versionBadge">v0.4.3</span>
+        <span class="version-badge" id="versionBadge">v0.4.4</span>
         <button class="home-toggle" id="homeToggle" type="button" aria-label="Back to home">⌂</button>
         <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">EN</button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
@@ -51,6 +51,7 @@
                     <ul>
                         <li><a href="#" data-tool="password-generator" class="tool-link">🔑 Password Generator</a></li>
                         <li><a href="#" data-tool="username-generator" class="tool-link">👤 Username Generator</a></li>
+                        <li><a href="#" data-tool="pin-generator" class="tool-link">🔢 PIN Generator</a></li>
                     </ul>
                 </div>
 
@@ -102,6 +103,7 @@
                     <ul>
                         <li><a href="#" data-tool="color-picker" class="tool-link">🎨 Color Picker/Converter</a></li>
                         <li><a href="#" data-tool="timestamp-converter" class="tool-link">🕐 Timestamp Converter</a></li>
+                        <li><a href="#" data-tool="time-convert" class="tool-link">⏱️ TimeConvert</a></li>
                         <li><a href="#" data-tool="hash-generator" class="tool-link">🔏 Hash Generator</a></li>
                     </ul>
                 </div>
@@ -134,7 +136,7 @@
                 <footer class="home-footer">
                     <span class="home-footer-name">Tools Collection</span>
                     <span class="home-footer-separator">•</span>
-                    <span class="home-footer-version">v0.4.3</span>
+                    <span class="home-footer-version">v0.4.4</span>
                     <span class="home-footer-separator">•</span>
                     <a class="home-footer-link" href="https://github.com/gioxx/tools-collection" target="_blank" rel="noreferrer">GitHub</a>
                 </footer>
@@ -186,17 +188,19 @@
                             <label class="form-label">Numero di password:</label>
                             <input type="number" id="passwordCount" class="form-control" value="5" min="1" max="20">
                         </div>
-                        <div class="setting-item password-option-item">
-                            <label><input type="checkbox" id="includeUppercase" checked> Maiuscole (A-Z)</label>
-                        </div>
-                        <div class="setting-item password-option-item">
-                            <label><input type="checkbox" id="includeLowercase" checked> Minuscole (a-z)</label>
-                        </div>
-                        <div class="setting-item password-option-item">
-                            <label><input type="checkbox" id="includeNumbers" checked> Numeri (0-9)</label>
-                        </div>
-                        <div class="setting-item password-option-item">
-                            <label><input type="checkbox" id="includeSymbols"> Simboli (!@#$%)</label>
+                        <div class="password-options-grid">
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeUppercase" checked> Maiuscole (A-Z)</label>
+                            </div>
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeLowercase" checked> Minuscole (a-z)</label>
+                            </div>
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeNumbers" checked> Numeri (0-9)</label>
+                            </div>
+                            <div class="setting-item password-option-item">
+                                <label><input type="checkbox" id="includeSymbols"> Simboli (!@#$%)</label>
+                            </div>
                         </div>
                     </div>
                     <div class="generate-section">
@@ -239,6 +243,37 @@
                             <button class="btn btn--sm" id="copyAllUsernames">Copy All</button>
                         </div>
                         <div class="username-results" id="usernameResults"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIN Generator Tool -->
+            <div id="pin-generator" class="tool-container">
+                <div class="tool-header">
+                    <h2>🔢 PIN Generator</h2>
+                    <p>Generate numeric PIN codes with configurable length and quantity</p>
+                </div>
+                <div class="tool-content">
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label class="form-label">PIN length:</label>
+                            <input type="number" id="pinLength" class="form-control" value="6" min="3" max="12">
+                        </div>
+                        <div class="setting-item">
+                            <label class="form-label">Number of PINs:</label>
+                            <input type="number" id="pinCount" class="form-control" value="10" min="1" max="50">
+                        </div>
+                        <div class="setting-item">
+                            <label><input type="checkbox" id="pinUnique" checked> Avoid duplicates</label>
+                        </div>
+                    </div>
+                    <div class="generate-section">
+                        <button class="btn btn--primary" id="generatePins">Generate PINs</button>
+                        <div class="output-header username-results-header" id="pinResultsHeader" style="display: none;">
+                            <label class="form-label">Generated PINs:</label>
+                            <button class="btn btn--sm" id="copyAllPins">Copy All</button>
+                        </div>
+                        <div class="username-results" id="pinResults"></div>
                     </div>
                 </div>
             </div>
@@ -790,6 +825,74 @@ https://subdomain.example.org/page
                 </div>
             </div>
 
+            <!-- TimeConvert Tool -->
+            <div id="time-convert" class="tool-container">
+                <div class="tool-header">
+                    <h2>⏱️ TimeConvert</h2>
+                    <p>Convert durations between common time units and formatted output</p>
+                </div>
+                <div class="tool-content">
+                    <div class="input-section">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-16);">
+                            <div>
+                                <label class="form-label">Time value:</label>
+                                <input type="number" id="timeConvertInput" class="form-control" placeholder="3600" min="0" step="any">
+                            </div>
+                            <div>
+                                <label class="form-label">Unit:</label>
+                                <select id="timeConvertUnit" class="form-control">
+                                    <option value="milliseconds">Milliseconds</option>
+                                    <option value="seconds" selected>Seconds</option>
+                                    <option value="minutes">Minutes</option>
+                                    <option value="hours">Hours</option>
+                                    <option value="days">Days</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-section">
+                        <button class="btn btn--primary btn--full-width" id="convertTimeValueBtn">Convert Time</button>
+                    </div>
+                    <div class="output-section">
+                        <div class="output-header">
+                            <label class="form-label">Results:</label>
+                        </div>
+                        <div class="results-container">
+                            <div class="result-item">
+                                <span>Milliseconds:</span>
+                                <span id="timeMilliseconds" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeMilliseconds">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Seconds:</span>
+                                <span id="timeSeconds" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeSeconds">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Minutes:</span>
+                                <span id="timeMinutes" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeMinutes">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Hours:</span>
+                                <span id="timeHours" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeHours">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>Days:</span>
+                                <span id="timeDays" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeDays">Copy</button>
+                            </div>
+                            <div class="result-item">
+                                <span>HH:MM:SS:</span>
+                                <span id="timeFormatted" class="result-text"></span>
+                                <button class="btn btn--sm" data-copy="timeFormatted">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Hash Generator Tool -->
             <div id="hash-generator" class="tool-container">
                 <div class="tool-header">
@@ -1031,6 +1134,6 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
         </main>
     </div>
 
-    <script src="app.js?v=0.4.3"></script>
+    <script src="app.js?v=0.4.4"></script>
 </body>
 </html>
