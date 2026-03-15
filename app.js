@@ -4,6 +4,7 @@ class OnlineToolsApp {
         this.assetVersion = '0.4.3';
         this.currentTool = null;
         this.currentView = 'home';
+        this.currentSearchTerm = '';
         this.supportedLanguages = ['en', 'it'];
         this.defaultLanguage = 'en';
         this.currentLanguage = this.defaultLanguage;
@@ -97,6 +98,7 @@ class OnlineToolsApp {
             { selector: '.sidebar-header h1', key: 'app.title' },
             { selector: '.sidebar-header p', key: 'app.description' },
             { selector: '#searchInput', key: 'app.searchPlaceholder', attr: 'placeholder' },
+            { selector: '#homeSearchInput', key: 'app.searchPlaceholder', attr: 'placeholder' },
             { selector: '#homeView .home-eyebrow', key: 'home.eyebrow' },
             { selector: '#homeView .home-hero h1', key: 'home.title' },
             { selector: '#homeView .home-hero p', key: 'home.description' },
@@ -692,20 +694,35 @@ class OnlineToolsApp {
             section.append(header, grid);
             catalog.appendChild(section);
         });
+
+        this.filterTools(this.currentSearchTerm);
     }
 
     // Search Management
     initSearch() {
-        const searchInput = document.getElementById('searchInput');
-        if (!searchInput) return;
+        const searchInputs = [
+            document.getElementById('searchInput'),
+            document.getElementById('homeSearchInput')
+        ].filter(Boolean);
 
-        searchInput.addEventListener('input', (e) => {
-            this.filterTools(e.target.value);
+        if (searchInputs.length === 0) return;
+
+        searchInputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                searchInputs.forEach(otherInput => {
+                    if (otherInput !== e.target) {
+                        otherInput.value = value;
+                    }
+                });
+                this.filterTools(value);
+            });
         });
     }
 
     filterTools(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
+        this.currentSearchTerm = term;
         
         document.querySelectorAll('.tool-link').forEach(link => {
             const toolName = link.textContent.toLowerCase();
@@ -724,6 +741,21 @@ class OnlineToolsApp {
         document.querySelectorAll('.tool-category').forEach(category => {
             const visibleLinks = category.querySelectorAll('.tool-link:not(.search-hidden)');
             if (visibleLinks.length === 0 && term) {
+                category.style.display = 'none';
+            } else {
+                category.style.display = '';
+            }
+        });
+
+        document.querySelectorAll('.home-tool-card').forEach(card => {
+            const cardText = card.textContent.toLowerCase();
+            const isVisible = !term || cardText.includes(term);
+            card.style.display = isVisible ? '' : 'none';
+        });
+
+        document.querySelectorAll('.home-category').forEach(category => {
+            const visibleCards = [...category.querySelectorAll('.home-tool-card')].filter(card => card.style.display !== 'none');
+            if (visibleCards.length === 0 && term) {
                 category.style.display = 'none';
             } else {
                 category.style.display = '';

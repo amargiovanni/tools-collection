@@ -893,6 +893,10 @@ select.form-control {
   display: block;
 }
 
+.home-search {
+  margin-top: var(--space-20);
+}
+
 .home-hero {
   position: relative;
   overflow: hidden;
@@ -984,8 +988,9 @@ select.form-control {
 
 .home-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-16);
+  align-items: stretch;
 }
 
 .home-tool-card {
@@ -1447,7 +1452,7 @@ body[data-view="home"] .sidebar {
   }
 
   .home-card-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   
   /* Tool container responsive */
@@ -1600,6 +1605,10 @@ body[data-view="home"] .sidebar {
 
   .home-hero h1 {
     max-width: none;
+  }
+
+  .home-card-grid {
+    grid-template-columns: 1fr;
   }
 
   .home-category-header {
