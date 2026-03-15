@@ -15,6 +15,7 @@ This changelog currently tracks the recent evolution of the project by published
 ### Changed
 - Bumped the product version to `1.1.1`.
 - Updated the production Docker image build to use a multi-stage Astro static build before serving the compiled `dist/` output with `nginx:alpine`.
+- Switched the Docker build stage to `node:24-alpine` and limited published image architectures to `linux/amd64` and `linux/arm64` because `node:25-alpine` does not provide `linux/arm/v7` manifests.
 - Restored visible version badges in the home header, home footer, tool header, and tool footer using `package.json` as the shared source of truth.
 - Restored support for a custom `/data/logo.png` brand image on the home page and next to the app title inside the tool sidebar.
 - Made custom logo loading more robust by assigning the image source only after the browser listeners are attached.
