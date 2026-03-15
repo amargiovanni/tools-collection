@@ -26,7 +26,7 @@ export function CopyButton(props: CopyButtonProps) {
       onClick={handleCopy}
       class={props.class}
     >
-      {copied() ? '✓' : '📋'} {copied() ? (props.label ? '' : '') : (props.label ?? '')}
+      {copied() ? '✓ Copied!' : (props.label ? <>📋 {props.label}</> : '📋')}
     </Button>
   )
 }
