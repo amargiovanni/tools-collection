@@ -750,6 +750,21 @@ select.form-control {
   align-items: center;
 }
 
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 var(--space-12);
+  border: 1px solid rgba(var(--color-teal-500-rgb), 0.35);
+  border-radius: var(--radius-full);
+  background: rgba(var(--color-teal-500-rgb), 0.12);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
 /* Sidebar Styles */
 .sidebar {
   background-color: var(--color-surface);
