@@ -26,6 +26,7 @@ This changelog currently tracks the recent evolution of the project by published
 
 ### Fixed
 - Added trailing slashes to generated tool URLs to avoid incorrect Nginx redirects that could drop non-default ports such as `:8080` in container deployments.
+- Marked the runtime `default-language.js` include as inline in Astro pages so production Docker builds no longer fail during asset bundling.
 
 ## Published: `b56cdbb` (`v1.0.0`)
 
