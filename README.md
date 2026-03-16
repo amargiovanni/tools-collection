@@ -1,6 +1,6 @@
 # Tools Collection
 
-A modular, type-safe collection of 27 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
+A modular, type-safe collection of 28 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,7 +9,7 @@ A modular, type-safe collection of 27 browser-based developer tools. Built with 
 
 ## What it does
 
-27 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
+28 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
 ## Tools
 
@@ -20,7 +20,7 @@ A modular, type-safe collection of 27 browser-based developer tools. Built with 
 | **Extraction** | Domain Extractor, Email Extractor |
 | **Analysis** | Count Duplicates |
 | **Security** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
-| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder |
+| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter |
 | **Development** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier |
 | **Utilities** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator |
 
@@ -51,11 +51,11 @@ src/pages/en/tools/[tool].astro    ← Astro page (mounts island via client:load
 src/
 ├── components/
 │   ├── ui/              # 13 reusable Solid components (Button, TextArea, OutputPanel, ...)
-│   ├── tools/           # 27 tool UI components (one per tool)
+│   ├── tools/           # 28 tool UI components (one per tool)
 │   ├── Sidebar.astro    # Category navigation
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts         # Tool registry (27 entries with metadata)
+│   ├── tools.ts         # Tool registry (28 entries with metadata)
 │   └── tool-components.ts # Lazy component mapping (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts         # Type-safe t(lang, key) helper
@@ -79,7 +79,7 @@ src/
 │   └── de/              # German pages
 ├── styles/
 │   └── global.css       # Tailwind 4 @theme tokens + dark mode
-└── tools/               # 27 pure logic modules (zero DOM)
+└── tools/               # 28 pure logic modules (zero DOM)
 ```
 
 ## Getting Started
@@ -107,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-Output goes to `dist/` — 141 static HTML pages (28 per language x 5) ready for any hosting.
+Output goes to `dist/` — 146 static HTML pages (29 per language x 5, plus root redirect) ready for any hosting.
 
 ### Docker
 
@@ -158,7 +158,7 @@ No adapter needed — Astro's default static output works directly:
 | Command | Description |
 |---|---|
 | `npm run dev` | Start dev server with HMR |
-| `npm run build` | Build for production (141 pages) |
+| `npm run build` | Build for production (146 pages) |
 | `npm run preview` | Preview production build |
 | `npm run test` | Run unit tests |
 | `npm run test:watch` | Run unit tests in watch mode |
@@ -169,7 +169,7 @@ No adapter needed — Astro's default static output works directly:
 
 ### Testing
 
-300+ unit tests (Vitest) covering all 27 pure logic modules, i18n, and shared components:
+300+ unit tests (Vitest) covering all 28 pure logic modules, i18n, and shared components:
 
 ```bash
 npm test
