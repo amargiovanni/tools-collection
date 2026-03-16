@@ -21,6 +21,12 @@ interface CollectionNode {
   entries: RegistryEntry[]
 }
 
+const DWORD_RE = /^dword:/i
+const HEX_VALUE_RE = /^hex(?:\(([0-9a-fA-F]+)\))?:(.*)$/i
+const REGISTRY_HEADER_RE = /^Windows Registry Editor/i
+const REGEDIT4_RE = /^REGEDIT4$/i
+const KEY_LINE_RE = /^\[(.+)\]$/
+
 const hiveMap: Record<string, string> = {
   HKEY_LOCAL_MACHINE: 'HKLM',
   HKLM: 'HKLM',
@@ -159,7 +165,7 @@ function parseValueLine(line: string): ParsedValue | null {
     }
   }
 
-  if (/^dword:/i.test(rawValue)) {
+  if (DWORD_RE.test(rawValue)) {
     const hex = rawValue.slice(6).trim()
     const parsed = Number.parseInt(hex, 16)
     return {
@@ -169,7 +175,7 @@ function parseValueLine(line: string): ParsedValue | null {
     }
   }
 
-  const hexMatch = rawValue.match(/^hex(?:\(([0-9a-fA-F]+)\))?:(.*)$/i)
+  const hexMatch = rawValue.match(HEX_VALUE_RE)
   if (hexMatch) {
     const typeCode = (hexMatch[1] ?? '').toLowerCase()
     const payload = hexMatch[2] ?? ''
@@ -217,13 +223,13 @@ function parseRegistry(text: string): {
       !line ||
       line.startsWith(';') ||
       line.startsWith('#') ||
-      /^Windows Registry Editor/i.test(line) ||
-      /^REGEDIT4$/i.test(line)
+      REGISTRY_HEADER_RE.test(line) ||
+      REGEDIT4_RE.test(line)
     ) {
       continue
     }
 
-    const keyMatch = line.match(/^\[(.+)\]$/)
+    const keyMatch = line.match(KEY_LINE_RE)
     if (keyMatch) {
       currentKey = keyMatch[1]
       if (currentKey.startsWith('-')) {

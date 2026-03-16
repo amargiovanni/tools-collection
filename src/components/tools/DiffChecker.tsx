@@ -6,7 +6,7 @@ import { Badge } from '../ui/Badge'
 import { StatusMessage } from '../ui/StatusMessage'
 import { computeDiff } from '../../tools/diff-checker'
 import type { DiffResult } from '../../tools/diff-checker'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -45,7 +45,7 @@ export default function DiffChecker(props: Props) {
     if (res.ok) {
       setResult(res.value)
     } else {
-      setError(res.error.message)
+      setError(translateError(props.lang, res.error))
     }
   }
 

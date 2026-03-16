@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { t, getLanguageFromPath, getAlternateLanguage, getCategoryName, languages, defaultLanguage } from '../../src/i18n'
+import { t, translateError, getLanguageFromPath, getAlternateLanguage, getCategoryName, languages, defaultLanguage } from '../../src/i18n'
 import type { Language } from '../../src/i18n'
 import enMessages from '../../src/i18n/messages/en.json'
 import itMessages from '../../src/i18n/messages/it.json'
@@ -36,6 +36,36 @@ describe('i18n', () => {
     }
     for (const [key, value] of Object.entries(itMessages)) {
       expect(value.length, `it.json key "${key}" is empty`).toBeGreaterThan(0)
+    }
+  })
+})
+
+describe('translateError', () => {
+  it('returns translated message for known error code (en)', () => {
+    expect(translateError('en', { code: 'EMPTY_INPUT', message: 'fallback' })).toBe('Please enter some input')
+  })
+
+  it('returns translated message for known error code (it)', () => {
+    expect(translateError('it', { code: 'EMPTY_INPUT', message: 'fallback' })).toBe('Inserisci un input')
+  })
+
+  it('returns raw message for unknown error code', () => {
+    expect(translateError('en', { code: 'UNKNOWN_CODE_XYZ', message: 'raw fallback message' })).toBe('raw fallback message')
+  })
+
+  it('translates all standard error codes for both languages', () => {
+    const standardCodes = [
+      'EMPTY_INPUT', 'INVALID_JSON', 'INVALID_XML', 'INVALID_REGEX',
+      'INVALID_PEM', 'INVALID_BASE64', 'INVALID_URL', 'INVALID_COLOR',
+      'INVALID_TIMESTAMP', 'INVALID_TIME_VALUE', 'INVALID_REG_FILE',
+      'NO_CHARSET', 'NO_TERMS', 'HASH_ERROR', 'QR_UNSUPPORTED',
+      'QR_NOT_FOUND', 'UNIQUE_IMPOSSIBLE',
+    ]
+    for (const code of standardCodes) {
+      const en = translateError('en', { code, message: 'unused' })
+      const it = translateError('it', { code, message: 'unused' })
+      expect(en, `errors_${code} missing in en.json`).not.toBe('unused')
+      expect(it, `errors_${code} missing in it.json`).not.toBe('unused')
     }
   })
 })

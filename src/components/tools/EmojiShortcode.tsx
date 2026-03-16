@@ -4,7 +4,7 @@ import { Button } from '../ui/Button'
 import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { toEmoji, toShortcode } from '../../tools/emoji-shortcode'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -27,7 +27,7 @@ export default function EmojiShortcode(props: Props) {
     if (result.ok) {
       setOutput(result.value)
     } else {
-      setError(result.error.message)
+      setError(translateError(props.lang, result.error))
     }
   }
 

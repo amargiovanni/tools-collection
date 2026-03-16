@@ -5,7 +5,7 @@ import { CopyButton } from '../ui/CopyButton'
 import { StatusMessage } from '../ui/StatusMessage'
 import { inspectPem } from '../../tools/pem-inspector'
 import type { CertInfo } from '../../tools/pem-inspector'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -28,7 +28,7 @@ export default function PemInspector(props: Props) {
     if (res.ok) {
       setResult(res.value)
     } else {
-      setError(res.error.message)
+      setError(translateError(props.lang, res.error))
     }
     setLoading(false)
   }
@@ -75,7 +75,7 @@ export default function PemInspector(props: Props) {
 
             <div class="rounded-lg border border-border bg-surface-raised p-4">
               <span class="text-sm font-medium text-text-secondary">
-                DER Hex (first 20 bytes)
+                {t(props.lang, 'tools_pemInspector_derHex')}
               </span>
               <p class="mt-1 break-all font-mono text-sm text-text-primary">
                 {info().derHex}

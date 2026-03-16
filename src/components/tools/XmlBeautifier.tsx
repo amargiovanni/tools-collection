@@ -6,7 +6,7 @@ import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { formatXml } from '../../tools/xml-beautifier'
 import type { XmlIndent } from '../../tools/xml-beautifier'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -18,13 +18,12 @@ export default function XmlBeautifier(props: Props) {
   const [indent, setIndent] = createSignal<XmlIndent>(2)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
-  const [valid, setValid] = createSignal<boolean | null>(null)
 
-  const indentOptions = [
-    { value: '2', label: '2 spaces' },
-    { value: '4', label: '4 spaces' },
-    { value: 'tab', label: 'Tab' },
-  ] as const
+  const indentOptions = () => [
+    { value: '2', label: t(props.lang, 'tools_xmlBeautifier_indent2') },
+    { value: '4', label: t(props.lang, 'tools_xmlBeautifier_indent4') },
+    { value: 'tab', label: t(props.lang, 'tools_xmlBeautifier_indentTab') },
+  ]
 
   const parseIndent = (value: string): XmlIndent => {
     if (value === 'tab') return 'tab'
@@ -33,17 +32,14 @@ export default function XmlBeautifier(props: Props) {
 
   const handleFormat = () => {
     setError(null)
-    setValid(null)
     setOutput('')
 
     const result = formatXml(input(), indent())
 
     if (result.ok) {
       setOutput(result.value)
-      setValid(true)
     } else {
-      setError(result.error.message)
-      setValid(false)
+      setError(translateError(props.lang, result.error))
     }
   }
 
@@ -58,8 +54,8 @@ export default function XmlBeautifier(props: Props) {
         rows={8}
       />
       <Select
-        label="Indent:"
-        options={[...indentOptions]}
+        label={t(props.lang, 'tools_xmlBeautifier_indentLabel')}
+        options={indentOptions()}
         value={String(indent())}
         onChange={(e) => setIndent(parseIndent(e.currentTarget.value))}
       />
@@ -68,7 +64,7 @@ export default function XmlBeautifier(props: Props) {
       </Button>
 
       {error() && <StatusMessage type="error" message={error()!} />}
-      {valid() === true && (
+      {!error() && output() && (
         <StatusMessage type="success" message={t(props.lang, 'tools_xmlBeautifier_valid')} />
       )}
 

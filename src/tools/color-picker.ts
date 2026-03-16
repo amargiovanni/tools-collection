@@ -44,8 +44,12 @@ export function hexToRgb(hex: string): Result<RgbColor> {
   })
 }
 
+function isValidRgb(rgb: RgbColor): boolean {
+  return rgb.r >= 0 && rgb.r <= 255 && rgb.g >= 0 && rgb.g <= 255 && rgb.b >= 0 && rgb.b <= 255
+}
+
 export function rgbToHex(rgb: RgbColor): Result<string> {
-  if (rgb.r < 0 || rgb.r > 255 || rgb.g < 0 || rgb.g > 255 || rgb.b < 0 || rgb.b > 255) {
+  if (!isValidRgb(rgb)) {
     return err('INVALID_RGB', 'RGB values must be between 0 and 255')
   }
 
@@ -60,7 +64,7 @@ export function rgbToHex(rgb: RgbColor): Result<string> {
 }
 
 export function rgbToHsl(rgb: RgbColor): Result<HslColor> {
-  if (rgb.r < 0 || rgb.r > 255 || rgb.g < 0 || rgb.g > 255 || rgb.b < 0 || rgb.b > 255) {
+  if (!isValidRgb(rgb)) {
     return err('INVALID_RGB', 'RGB values must be between 0 and 255')
   }
 

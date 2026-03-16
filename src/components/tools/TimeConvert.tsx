@@ -2,8 +2,8 @@ import { createSignal, Show } from 'solid-js'
 import { Input } from '../ui/Input'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
-import { CopyButton } from '../ui/CopyButton'
 import { StatusMessage } from '../ui/StatusMessage'
+import { ResultCard } from '../ui/ResultCard'
 import { convertTime, formatNumber } from '../../tools/time-convert'
 import type { TimeUnit, TimeConvertResult } from '../../tools/time-convert'
 import { t, translateError } from '../../i18n'
@@ -88,13 +88,7 @@ export default function TimeConvert(props: Props) {
       <Show when={result()}>
         <div class="grid gap-3 sm:grid-cols-2">
           {cards().map((card) => (
-            <div class="flex items-center justify-between rounded-lg border border-border bg-surface-raised p-3">
-              <div>
-                <span class="text-xs text-text-muted">{card.label}</span>
-                <p class="font-mono text-sm text-text-primary">{card.value}</p>
-              </div>
-              <CopyButton getValue={() => card.value} />
-            </div>
+            <ResultCard label={card.label} value={card.value} />
           ))}
         </div>
       </Show>
