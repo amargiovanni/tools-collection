@@ -60,7 +60,9 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
+          # Temporary fallback: keep publishing amd64 images only.
+          # Re-enable arm64 when Astro compiler instability on arm64 is resolved.
+          platforms: linux/amd64
           push: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
