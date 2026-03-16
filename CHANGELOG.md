@@ -7,7 +7,7 @@ This changelog currently tracks the recent evolution of the project by published
 ## Upcoming release (`1.2.1`)
 
 ### Added
-- Added a new `Data Size Converter` tool supporting decimal (`KB/MB/GB/TB`) and binary (`KiB/MiB/GiB/TiB`) units plus bit/byte conversion.
+- Added a new `Data Size Converter` tool with bit/byte conversion and support for `KB/MB/GB/TB` plus `KiB/MiB/GiB/TiB`.
 - Added Spanish, French, and German translations (375 keys each) with full i18n support for 5 languages.
 - Added a language switcher dropdown menu replacing the single-language toggle, showing all available languages.
 - Added Playwright end-to-end browser tests covering all 28 tools and navigation (56 tests across 28 spec files).
@@ -32,6 +32,7 @@ This changelog currently tracks the recent evolution of the project by published
 - Updated docs and tests to reflect the new tool count and dynamic catalog totals.
 
 ### Fixed
+- Fixed data-size conversion semantics to follow base 1024 for `KB/MB/GB/TB` (common IT usage), so `4 GB = 4096 MB`.
 - Fixed 7 components bypassing `translateError()` and showing raw English error messages to Italian (and now all non-English) users.
 - Fixed hardcoded English strings in `JsonFormatter`, `XmlBeautifier`, and `PemInspector` that were not using i18n keys.
 - Fixed `QrCode` component re-implementing functions already exported from `qr-code.ts`.
