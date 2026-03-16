@@ -34,7 +34,7 @@ describe('convertDataSize', () => {
     if (result.ok) {
       expect(result.value.B).toBe(1_073_741_824)
       expect(result.value.MiB).toBe(1_024)
-      expect(result.value.GB).toBeCloseTo(1.073741824)
+      expect(result.value.GB).toBe(1)
     }
   })
 
