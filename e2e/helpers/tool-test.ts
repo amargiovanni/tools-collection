@@ -52,6 +52,7 @@ export async function toolTest(page: Page, options: ToolTestOptions): Promise<vo
 
   if (options.expectOutputContains) {
     const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toContainText(options.expectOutputContains)
+    const escaped = options.expectOutputContains.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    await expect(output).toHaveValue(new RegExp(escaped))
   }
 }
