@@ -1,3 +1,4 @@
+import { Suspense } from 'solid-js'
 import { toolComponents } from '../config/tool-components'
 import type { Language } from '../i18n'
 
@@ -17,5 +18,15 @@ export default function ToolRenderer(props: Props) {
     )
   }
 
-  return <Component lang={props.lang} />
+  return (
+    <Suspense
+      fallback={
+        <div class="flex items-center justify-center py-12">
+          <div class="h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+        </div>
+      }
+    >
+      <Component lang={props.lang} />
+    </Suspense>
+  )
 }
