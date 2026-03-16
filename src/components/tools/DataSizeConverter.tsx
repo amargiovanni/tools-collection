@@ -15,7 +15,7 @@ interface Props {
 
 export default function DataSizeConverter(props: Props) {
   const [input, setInput] = createSignal('')
-  const [unit, setUnit] = createSignal<DataSizeUnit>('MB')
+  const [unit, setUnit] = createSignal<DataSizeUnit>('GiB')
   const [result, setResult] = createSignal<DataSizeResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
 
@@ -84,6 +84,11 @@ export default function DataSizeConverter(props: Props) {
           onChange={(e) => setUnit(e.currentTarget.value as DataSizeUnit)}
           class="w-44"
         />
+      </div>
+
+      <div class="flex flex-col gap-1 rounded-lg border border-border bg-surface-raised p-3 text-xs text-text-secondary">
+        <p>{t(props.lang, 'tools_dataSizeConverter_unitHint')}</p>
+        <p>{t(props.lang, 'tools_dataSizeConverter_exampleHint')}</p>
       </div>
 
       <Button variant="primary" onClick={handleConvert}>
