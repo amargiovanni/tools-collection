@@ -33,6 +33,7 @@ export function StatusMessage(props: StatusMessageProps) {
     <div
       class={statusVariants({ type: props.type })}
       role={props.type === 'error' ? 'alert' : 'status'}
+      data-testid="status-message"
     >
       <span class="shrink-0 font-bold">{icons[props.type]}</span>
       <span class="flex-1">{props.message}</span>

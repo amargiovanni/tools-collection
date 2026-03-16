@@ -12,6 +12,7 @@ interface TextAreaProps {
   id?: string
   class?: string
   monospace?: boolean
+  testId?: string
 }
 
 export function TextArea(props: TextAreaProps) {
@@ -26,6 +27,7 @@ export function TextArea(props: TextAreaProps) {
       )}
       <textarea
         id={resolvedId}
+        data-testid={props.testId ?? 'textarea'}
         placeholder={props.placeholder}
         rows={props.rows ?? 6}
         readonly={props.readonly}

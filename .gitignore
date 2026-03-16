@@ -25,3 +25,7 @@ coverage/
 
 # Tasks
 tasks/
+
+# Playwright
+playwright-report/
+test-results/

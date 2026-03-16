@@ -14,6 +14,7 @@ interface InputProps {
   step?: number
   id?: string
   class?: string
+  testId?: string
 }
 
 export function Input(props: InputProps) {
@@ -28,6 +29,7 @@ export function Input(props: InputProps) {
       )}
       <input
         id={resolvedId}
+        data-testid={props.testId ?? 'input'}
         type={props.type ?? 'text'}
         placeholder={props.placeholder}
         value={props.value ?? ''}

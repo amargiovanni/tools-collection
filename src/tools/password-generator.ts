@@ -17,24 +17,29 @@ const CHARSETS = {
   symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
 } as const
 
-function getRandomIndex(max: number): number {
-  const values = new Uint32Array(1)
+function getRandomValues(count: number): Uint32Array {
+  const values = new Uint32Array(count)
   crypto.getRandomValues(values)
-  return values[0]! % max
+  return values
 }
 
 function generateSinglePassword(length: number, selectedCharsets: string[], fullCharset: string): string {
+  // Pre-generate all random values needed: charset picks + fill + shuffle
+  const totalRandom = selectedCharsets.length + (length - selectedCharsets.length) + length
+  const randoms = getRandomValues(totalRandom)
+  let ri = 0
+
   // Ensure at least one character from each selected charset
-  const passwordChars = selectedCharsets.map(set => set.charAt(getRandomIndex(set.length)))
+  const passwordChars = selectedCharsets.map(set => set.charAt(randoms[ri++]! % set.length))
 
   // Fill remaining positions from the full charset
   while (passwordChars.length < length) {
-    passwordChars.push(fullCharset.charAt(getRandomIndex(fullCharset.length)))
+    passwordChars.push(fullCharset.charAt(randoms[ri++]! % fullCharset.length))
   }
 
   // Fisher-Yates shuffle
   for (let i = passwordChars.length - 1; i > 0; i--) {
-    const j = getRandomIndex(i + 1)
+    const j = randoms[ri++]! % (i + 1)
     const temp = passwordChars[i]!
     passwordChars[i] = passwordChars[j]!
     passwordChars[j] = temp

@@ -7,14 +7,10 @@ export interface PinOptions {
   unique: boolean
 }
 
-function randomDigit(): string {
-  const values = new Uint32Array(1)
-  crypto.getRandomValues(values)
-  return (values[0]! % 10).toString()
-}
-
 function generatePinValue(length: number): string {
-  return Array.from({ length }, randomDigit).join('')
+  const values = new Uint32Array(length)
+  crypto.getRandomValues(values)
+  return Array.from(values, (v) => (v % 10).toString()).join('')
 }
 
 export function generatePins(options: PinOptions): Result<string[]> {

@@ -1,41 +1,90 @@
 import { describe, it, expect } from 'vitest'
-import { t, getLanguageFromPath, getAlternateLanguage, getCategoryName, languages, defaultLanguage } from '../../src/i18n'
+import { t, translateError, getLanguageFromPath, getOtherLanguages, getCategoryName, languages, defaultLanguage, languageNames } from '../../src/i18n'
 import type { Language } from '../../src/i18n'
 import enMessages from '../../src/i18n/messages/en.json'
 import itMessages from '../../src/i18n/messages/it.json'
+import esMessages from '../../src/i18n/messages/es.json'
+import frMessages from '../../src/i18n/messages/fr.json'
+import deMessages from '../../src/i18n/messages/de.json'
+
+const allMessages: Record<string, Record<string, string>> = { en: enMessages, it: itMessages, es: esMessages, fr: frMessages, de: deMessages }
 
 describe('i18n', () => {
-  it('t returns English string for known key', () => {
+  it('languages array contains all 5 languages', () => {
+    expect(languages).toEqual(['en', 'it', 'es', 'fr', 'de'])
+  })
+
+  it('t returns correct string per language', () => {
     expect(t('en', 'app_title')).toBe('Online Tools')
-  })
-
-  it('t returns Italian string for known key', () => {
     expect(t('it', 'app_title')).toBe('Strumenti online')
+    expect(t('es', 'app_title')).toBeTruthy()
+    expect(t('fr', 'app_title')).toBeTruthy()
+    expect(t('de', 'app_title')).toBeTruthy()
   })
 
-  it('both locales have the same number of keys', () => {
+  it('all locales have the same number of keys as en', () => {
     const enKeys = Object.keys(enMessages)
-    const itKeys = Object.keys(itMessages)
-    expect(enKeys.length).toBe(itKeys.length)
+    for (const lang of languages) {
+      const keys = Object.keys(allMessages[lang])
+      expect(keys.length, `${lang}.json has ${keys.length} keys, en.json has ${enKeys.length}`).toBe(enKeys.length)
+    }
   })
 
-  it('both locales have identical key sets', () => {
+  it('all locales have identical key sets', () => {
     const enKeys = new Set(Object.keys(enMessages))
-    const itKeys = new Set(Object.keys(itMessages))
-    for (const key of enKeys) {
-      expect(itKeys.has(key), `Key "${key}" missing in it.json`).toBe(true)
-    }
-    for (const key of itKeys) {
-      expect(enKeys.has(key), `Key "${key}" missing in en.json`).toBe(true)
+    for (const lang of languages) {
+      if (lang === 'en') continue
+      const langKeys = new Set(Object.keys(allMessages[lang]))
+      for (const key of enKeys) {
+        expect(langKeys.has(key), `Key "${key}" missing in ${lang}.json`).toBe(true)
+      }
+      for (const key of langKeys) {
+        expect(enKeys.has(key), `Key "${key}" in ${lang}.json is extra (not in en.json)`).toBe(true)
+      }
     }
   })
 
-  it('no values are empty strings', () => {
-    for (const [key, value] of Object.entries(enMessages)) {
-      expect(value.length, `en.json key "${key}" is empty`).toBeGreaterThan(0)
+  it('no values are empty strings in any locale', () => {
+    for (const lang of languages) {
+      for (const [key, value] of Object.entries(allMessages[lang])) {
+        expect(value.length, `${lang}.json key "${key}" is empty`).toBeGreaterThan(0)
+      }
     }
-    for (const [key, value] of Object.entries(itMessages)) {
-      expect(value.length, `it.json key "${key}" is empty`).toBeGreaterThan(0)
+  })
+
+  it('languageNames has entries for all languages', () => {
+    for (const lang of languages) {
+      expect(languageNames[lang]).toBeTruthy()
+    }
+  })
+})
+
+describe('translateError', () => {
+  it('returns translated message for known error code (en)', () => {
+    expect(translateError('en', { code: 'EMPTY_INPUT', message: 'fallback' })).toBe('Please enter some input')
+  })
+
+  it('returns translated message for known error code (it)', () => {
+    expect(translateError('it', { code: 'EMPTY_INPUT', message: 'fallback' })).toBe('Inserisci un input')
+  })
+
+  it('returns raw message for unknown error code', () => {
+    expect(translateError('en', { code: 'UNKNOWN_CODE_XYZ', message: 'raw fallback message' })).toBe('raw fallback message')
+  })
+
+  it('translates all standard error codes for all languages', () => {
+    const standardCodes = [
+      'EMPTY_INPUT', 'INVALID_JSON', 'INVALID_XML', 'INVALID_REGEX',
+      'INVALID_PEM', 'INVALID_BASE64', 'INVALID_URL', 'INVALID_COLOR',
+      'INVALID_TIMESTAMP', 'INVALID_TIME_VALUE', 'INVALID_REG_FILE',
+      'NO_CHARSET', 'NO_TERMS', 'HASH_ERROR', 'QR_UNSUPPORTED',
+      'QR_NOT_FOUND', 'UNIQUE_IMPOSSIBLE',
+    ]
+    for (const code of standardCodes) {
+      for (const lang of languages) {
+        const result = translateError(lang, { code, message: 'unused' })
+        expect(result, `errors_${code} missing in ${lang}.json`).not.toBe('unused')
+      }
     }
   })
 })
@@ -53,18 +102,34 @@ describe('getLanguageFromPath', () => {
     expect(getLanguageFromPath('/')).toBe(defaultLanguage)
   })
 
+  it('extracts es from path', () => {
+    expect(getLanguageFromPath('/es/tools/base64')).toBe('es')
+  })
+
+  it('extracts fr from path', () => {
+    expect(getLanguageFromPath('/fr/')).toBe('fr')
+  })
+
+  it('extracts de from path', () => {
+    expect(getLanguageFromPath('/de/tools/json-formatter')).toBe('de')
+  })
+
   it('defaults to en for unknown language prefix', () => {
-    expect(getLanguageFromPath('/fr/tools/')).toBe(defaultLanguage)
+    expect(getLanguageFromPath('/pt/tools/')).toBe(defaultLanguage)
   })
 })
 
-describe('getAlternateLanguage', () => {
-  it('returns it for en', () => {
-    expect(getAlternateLanguage('en')).toBe('it')
+describe('getOtherLanguages', () => {
+  it('returns all languages except the given one', () => {
+    expect(getOtherLanguages('en')).toEqual(['it', 'es', 'fr', 'de'])
   })
 
-  it('returns en for it', () => {
-    expect(getAlternateLanguage('it')).toBe('en')
+  it('returns 4 languages for any input', () => {
+    for (const lang of languages) {
+      const others = getOtherLanguages(lang)
+      expect(others).toHaveLength(4)
+      expect(others).not.toContain(lang)
+    }
   })
 })
 

@@ -34,7 +34,7 @@ export function FileInput(props: FileInputProps) {
   }
 
   return (
-    <div class={`flex flex-col gap-1.5 ${props.class ?? ''}`}>
+    <div class={`flex flex-col gap-1.5 ${props.class ?? ''}`} data-testid="file-input">
       {props.label && (
         <label for={resolvedId} class="text-sm font-medium text-text-secondary">
           {props.label}

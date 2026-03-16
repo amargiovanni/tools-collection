@@ -15,6 +15,7 @@ interface SelectProps {
   onChange?: JSX.EventHandlerUnion<HTMLSelectElement, Event>
   id?: string
   class?: string
+  testId?: string
 }
 
 export function Select(props: SelectProps) {
@@ -29,6 +30,7 @@ export function Select(props: SelectProps) {
       )}
       <select
         id={resolvedId}
+        data-testid={props.testId ?? 'select'}
         value={props.value}
         onChange={props.onChange}
         class="w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus cursor-pointer"

@@ -1,68 +1,41 @@
 /**
- * Explicit mapping of tool IDs to their Solid component imports.
- * This avoids import.meta.glob issues with Astro's hydration.
- * When adding a new tool, add its import here.
+ * Lazy mapping of tool IDs to their Solid component imports.
+ * Each tool is loaded on demand via dynamic import() for code splitting.
+ * When adding a new tool, add its lazy import here.
  */
 
-import ListGenerator from '../components/tools/ListGenerator'
-import AddTextToLines from '../components/tools/AddTextToLines'
-import ConvertCase from '../components/tools/ConvertCase'
-import RemoveDuplicateLines from '../components/tools/RemoveDuplicateLines'
-import RemoveLineBreaks from '../components/tools/RemoveLineBreaks'
-import RemoveLinesContaining from '../components/tools/RemoveLinesContaining'
-import PasswordGenerator from '../components/tools/PasswordGenerator'
-import UsernameGenerator from '../components/tools/UsernameGenerator'
-import PinGenerator from '../components/tools/PinGenerator'
-import DomainExtractor from '../components/tools/DomainExtractor'
-import EmailExtractor from '../components/tools/EmailExtractor'
-import CountDuplicates from '../components/tools/CountDuplicates'
-import PemInspector from '../components/tools/PemInspector'
-import PasswordStrength from '../components/tools/PasswordStrength'
-import QrCode from '../components/tools/QrCode'
-import EmojiShortcode from '../components/tools/EmojiShortcode'
-import Base64 from '../components/tools/Base64'
-import UrlEncoder from '../components/tools/UrlEncoder'
-import JsonFormatter from '../components/tools/JsonFormatter'
-import DiffChecker from '../components/tools/DiffChecker'
-import RegexTester from '../components/tools/RegexTester'
-import XmlBeautifier from '../components/tools/XmlBeautifier'
-import ColorPicker from '../components/tools/ColorPicker'
-import TimestampConverter from '../components/tools/TimestampConverter'
-import TimeConvert from '../components/tools/TimeConvert'
-import Reg2Gpo from '../components/tools/Reg2Gpo'
-import HashGenerator from '../components/tools/HashGenerator'
-
+import { lazy } from 'solid-js'
 import type { Component } from 'solid-js'
 import type { Language } from '../i18n'
 
 type ToolComponent = Component<{ lang: Language }>
 
 export const toolComponents: Record<string, ToolComponent> = {
-  'list-generator': ListGenerator,
-  'add-text-to-lines': AddTextToLines,
-  'convert-case': ConvertCase,
-  'remove-duplicate-lines': RemoveDuplicateLines,
-  'remove-line-breaks': RemoveLineBreaks,
-  'remove-lines-containing': RemoveLinesContaining,
-  'password-generator': PasswordGenerator,
-  'username-generator': UsernameGenerator,
-  'pin-generator': PinGenerator,
-  'domain-extractor': DomainExtractor,
-  'email-extractor': EmailExtractor,
-  'count-duplicates': CountDuplicates,
-  'pem-inspector': PemInspector,
-  'password-strength': PasswordStrength,
-  'qr-code': QrCode,
-  'emoji-shortcode': EmojiShortcode,
-  'base64': Base64,
-  'url-encoder': UrlEncoder,
-  'json-formatter': JsonFormatter,
-  'diff-checker': DiffChecker,
-  'regex-tester': RegexTester,
-  'xml-beautifier': XmlBeautifier,
-  'color-picker': ColorPicker,
-  'timestamp-converter': TimestampConverter,
-  'time-convert': TimeConvert,
-  'reg2gpo': Reg2Gpo,
-  'hash-generator': HashGenerator,
+  'list-generator': lazy(() => import('../components/tools/ListGenerator')),
+  'add-text-to-lines': lazy(() => import('../components/tools/AddTextToLines')),
+  'convert-case': lazy(() => import('../components/tools/ConvertCase')),
+  'remove-duplicate-lines': lazy(() => import('../components/tools/RemoveDuplicateLines')),
+  'remove-line-breaks': lazy(() => import('../components/tools/RemoveLineBreaks')),
+  'remove-lines-containing': lazy(() => import('../components/tools/RemoveLinesContaining')),
+  'password-generator': lazy(() => import('../components/tools/PasswordGenerator')),
+  'username-generator': lazy(() => import('../components/tools/UsernameGenerator')),
+  'pin-generator': lazy(() => import('../components/tools/PinGenerator')),
+  'domain-extractor': lazy(() => import('../components/tools/DomainExtractor')),
+  'email-extractor': lazy(() => import('../components/tools/EmailExtractor')),
+  'count-duplicates': lazy(() => import('../components/tools/CountDuplicates')),
+  'pem-inspector': lazy(() => import('../components/tools/PemInspector')),
+  'password-strength': lazy(() => import('../components/tools/PasswordStrength')),
+  'qr-code': lazy(() => import('../components/tools/QrCode')),
+  'emoji-shortcode': lazy(() => import('../components/tools/EmojiShortcode')),
+  'base64': lazy(() => import('../components/tools/Base64')),
+  'url-encoder': lazy(() => import('../components/tools/UrlEncoder')),
+  'json-formatter': lazy(() => import('../components/tools/JsonFormatter')),
+  'diff-checker': lazy(() => import('../components/tools/DiffChecker')),
+  'regex-tester': lazy(() => import('../components/tools/RegexTester')),
+  'xml-beautifier': lazy(() => import('../components/tools/XmlBeautifier')),
+  'color-picker': lazy(() => import('../components/tools/ColorPicker')),
+  'timestamp-converter': lazy(() => import('../components/tools/TimestampConverter')),
+  'time-convert': lazy(() => import('../components/tools/TimeConvert')),
+  'reg2gpo': lazy(() => import('../components/tools/Reg2Gpo')),
+  'hash-generator': lazy(() => import('../components/tools/HashGenerator')),
 }

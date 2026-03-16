@@ -6,10 +6,10 @@ import { FileInput } from '../ui/FileInput'
 import { DownloadButton } from '../ui/DownloadButton'
 import { StatusMessage } from '../ui/StatusMessage'
 import { OutputPanel } from '../ui/OutputPanel'
+import { generateQrUrl, isBarcodeDetectorAvailable } from '../../tools/qr-code'
+import type { QrSize } from '../../tools/qr-code'
 import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
-
-type QrSize = 200 | 300 | 400
 
 interface Props {
   lang: Language
@@ -21,14 +21,6 @@ const sizeOptions = [
   { value: '400', label: '400x400' },
 ] as const
 
-function isBarcodeDetectorAvailable(): boolean {
-  return typeof globalThis !== 'undefined' && 'BarcodeDetector' in globalThis
-}
-
-function generateQrUrl(text: string, size: QrSize): string {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`
-}
-
 export default function QrCode(props: Props) {
   const [text, setText] = createSignal('')
   const [size, setSize] = createSignal<QrSize>(300)
@@ -39,18 +31,16 @@ export default function QrCode(props: Props) {
   const [loading, setLoading] = createSignal(false)
 
   const handleGenerate = () => {
-    const trimmed = text().trim()
-    if (!trimmed) {
-      setError(t(props.lang, 'errors_EMPTY_INPUT'))
-      return
-    }
-
     setLoading(true)
     setError(null)
     setQrImage(null)
 
-    const url = generateQrUrl(trimmed, size())
-    setQrImage(url)
+    const result = generateQrUrl({ text: text(), size: size() })
+    if (result.ok) {
+      setQrImage(result.value)
+    } else {
+      setError(translateError(props.lang, result.error))
+    }
     setLoading(false)
   }
 

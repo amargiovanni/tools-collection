@@ -6,7 +6,7 @@ import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
 import { formatJson, validateJson } from '../../tools/json-formatter'
 import type { JsonIndent } from '../../tools/json-formatter'
-import { t } from '../../i18n'
+import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
 
 interface Props {
@@ -18,7 +18,6 @@ export default function JsonFormatter(props: Props) {
   const [indent, setIndent] = createSignal<JsonIndent>(2)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
-  const [valid, setValid] = createSignal<boolean | null>(null)
 
   const indentOptions = () => [
     { value: '2', label: t(props.lang, 'tools_jsonFormatter_indent2') },
@@ -35,15 +34,11 @@ export default function JsonFormatter(props: Props) {
 
   const handleFormat = () => {
     setError(null)
-    setValid(null)
     setOutput('')
 
     const validation = validateJson(input())
-    if (validation.ok) {
-      setValid(true)
-    } else {
-      setValid(false)
-      setError(validation.error.message)
+    if (!validation.ok) {
+      setError(translateError(props.lang, validation.error))
       return
     }
 
@@ -51,8 +46,7 @@ export default function JsonFormatter(props: Props) {
     if (result.ok) {
       setOutput(result.value)
     } else {
-      setError(result.error.message)
-      setValid(false)
+      setError(translateError(props.lang, result.error))
     }
   }
 
@@ -67,7 +61,7 @@ export default function JsonFormatter(props: Props) {
         rows={8}
       />
       <Select
-        label="Indent:"
+        label={t(props.lang, 'tools_jsonFormatter_indentLabel')}
         options={indentOptions()}
         value={String(indent())}
         onChange={(e) => setIndent(parseIndent(e.currentTarget.value))}
@@ -77,7 +71,7 @@ export default function JsonFormatter(props: Props) {
       </Button>
 
       {error() && <StatusMessage type="error" message={error()!} />}
-      {valid() === true && (
+      {!error() && output() && (
         <StatusMessage type="success" message={t(props.lang, 'tools_jsonFormatter_valid')} />
       )}
 
