@@ -29,10 +29,11 @@ export interface DataSizeResult {
 const bytesPerUnit: Record<DataSizeUnit, number> = {
   b: 1 / 8,
   B: 1,
-  KB: 1_000,
-  MB: 1_000_000,
-  GB: 1_000_000_000,
-  TB: 1_000_000_000_000,
+  // In this project KB/MB/GB/TB follow the common IT interpretation (base 1024).
+  KB: 1_024,
+  MB: 1_048_576,
+  GB: 1_073_741_824,
+  TB: 1_099_511_627_776,
   KiB: 1_024,
   MiB: 1_048_576,
   GiB: 1_073_741_824,

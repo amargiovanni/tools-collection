@@ -332,10 +332,10 @@
   "tools_dataSizeConverter_unitLabel": "Unità:",
   "tools_dataSizeConverter_unitBit": "bit (b)",
   "tools_dataSizeConverter_unitByte": "byte (B)",
-  "tools_dataSizeConverter_unitKB": "kilobyte (KB, decimale)",
-  "tools_dataSizeConverter_unitMB": "megabyte (MB, decimale)",
-  "tools_dataSizeConverter_unitGB": "gigabyte (GB, decimale)",
-  "tools_dataSizeConverter_unitTB": "terabyte (TB, decimale)",
+  "tools_dataSizeConverter_unitKB": "kilobyte (KB, base 1024)",
+  "tools_dataSizeConverter_unitMB": "megabyte (MB, base 1024)",
+  "tools_dataSizeConverter_unitGB": "gigabyte (GB, base 1024)",
+  "tools_dataSizeConverter_unitTB": "terabyte (TB, base 1024)",
   "tools_dataSizeConverter_unitKiB": "kibibyte (KiB, binario)",
   "tools_dataSizeConverter_unitMiB": "mebibyte (MiB, binario)",
   "tools_dataSizeConverter_unitGiB": "gibibyte (GiB, binario)",
@@ -353,8 +353,8 @@
   "tools_dataSizeConverter_gibibytes": "Gibibyte (GiB):",
   "tools_dataSizeConverter_tebibytes": "Tebibyte (TiB):",
   "tools_dataSizeConverter_invalid": "Inserisci una dimensione dati valida e non negativa",
-  "tools_dataSizeConverter_unitHint": "Le unita decimali usano base 1000 (KB, MB, GB, TB). Le unita binarie usano base 1024 (KiB, MiB, GiB, TiB).",
-  "tools_dataSizeConverter_exampleHint": "Esempio: 4 GB = 4000 MB = 3814.6972666016 MiB, mentre 4 GiB = 4096 MiB.",
+  "tools_dataSizeConverter_unitHint": "In questo tool KB/MB/GB/TB sono interpretati in base 1024 (uso informatico comune). Anche KiB/MiB/GiB/TiB usano base 1024.",
+  "tools_dataSizeConverter_exampleHint": "Esempio: 4 GB = 4096 MB.",
 
   "tools_reg2gpo_name": "Reg2GPO",
   "tools_reg2gpo_description": "Converte export del Registro di Windows in XML per Group Policy Preferences",
@@ -405,3 +405,4 @@
   "errors_QR_NOT_FOUND": "Nessun QR code rilevato nell'immagine",
   "errors_UNIQUE_IMPOSSIBLE": "Impossibile generare abbastanza valori unici con i vincoli dati"
 }
+

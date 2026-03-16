@@ -18,13 +18,13 @@ describe('convertDataSize', () => {
     }
   })
 
-  it('converts decimal units correctly', () => {
+  it('converts MB using binary base correctly', () => {
     const result = convertDataSize(1, 'MB')
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.B).toBe(1_000_000)
-      expect(result.value.KB).toBe(1_000)
-      expect(result.value.GB).toBe(0.001)
+      expect(result.value.B).toBe(1_048_576)
+      expect(result.value.KB).toBe(1_024)
+      expect(result.value.GB).toBeCloseTo(1 / 1024)
     }
   })
 
@@ -44,6 +44,14 @@ describe('convertDataSize', () => {
     if (result.ok) {
       expect(result.value.B).toBe(1)
       expect(result.value.KiB).toBeCloseTo(1 / 1024)
+    }
+  })
+
+  it('converts GB to MB as 1024-based units', () => {
+    const result = convertDataSize(4, 'GB')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.MB).toBe(4096)
     }
   })
 })

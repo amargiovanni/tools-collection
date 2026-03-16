@@ -332,10 +332,10 @@
   "tools_dataSizeConverter_unitLabel": "Einheit:",
   "tools_dataSizeConverter_unitBit": "Bit (b)",
   "tools_dataSizeConverter_unitByte": "Byte (B)",
-  "tools_dataSizeConverter_unitKB": "Kilobyte (KB, dezimal)",
-  "tools_dataSizeConverter_unitMB": "Megabyte (MB, dezimal)",
-  "tools_dataSizeConverter_unitGB": "Gigabyte (GB, dezimal)",
-  "tools_dataSizeConverter_unitTB": "Terabyte (TB, dezimal)",
+  "tools_dataSizeConverter_unitKB": "Kilobyte (KB, Basis 1024)",
+  "tools_dataSizeConverter_unitMB": "Megabyte (MB, Basis 1024)",
+  "tools_dataSizeConverter_unitGB": "Gigabyte (GB, Basis 1024)",
+  "tools_dataSizeConverter_unitTB": "Terabyte (TB, Basis 1024)",
   "tools_dataSizeConverter_unitKiB": "Kibibyte (KiB, binaer)",
   "tools_dataSizeConverter_unitMiB": "Mebibyte (MiB, binaer)",
   "tools_dataSizeConverter_unitGiB": "Gibibyte (GiB, binaer)",
@@ -353,8 +353,8 @@
   "tools_dataSizeConverter_gibibytes": "Gibibytes (GiB):",
   "tools_dataSizeConverter_tebibytes": "Tebibytes (TiB):",
   "tools_dataSizeConverter_invalid": "Bitte einen gueltigen, nicht negativen Datengroessenwert eingeben",
-  "tools_dataSizeConverter_unitHint": "Dezimale Einheiten nutzen Basis 1000 (KB, MB, GB, TB). Binaere Einheiten nutzen Basis 1024 (KiB, MiB, GiB, TiB).",
-  "tools_dataSizeConverter_exampleHint": "Beispiel: 4 GB = 4000 MB = 3814.6972666016 MiB, waehrend 4 GiB = 4096 MiB.",
+  "tools_dataSizeConverter_unitHint": "In diesem Tool werden KB/MB/GB/TB mit Basis 1024 interpretiert (haeufige IT-Nutzung). KiB/MiB/GiB/TiB nutzen ebenfalls Basis 1024.",
+  "tools_dataSizeConverter_exampleHint": "Beispiel: 4 GB = 4096 MB.",
 
   "tools_reg2gpo_name": "Reg2GPO",
   "tools_reg2gpo_description": "Windows-Registry-Exporte in Group Policy Preferences XML umwandeln",
@@ -405,3 +405,4 @@
   "errors_QR_NOT_FOUND": "Kein QR-Code im Bild erkannt",
   "errors_UNIQUE_IMPOSSIBLE": "Mit den gegebenen Einschränkungen können nicht genügend eindeutige Werte generiert werden"
 }
+
