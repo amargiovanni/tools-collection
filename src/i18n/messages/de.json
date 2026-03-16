@@ -396,7 +396,7 @@
   "errors_INVALID_COLOR": "Ungültiges Farbformat",
   "errors_INVALID_TIMESTAMP": "Ungültiger Zeitstempel",
   "errors_INVALID_TIME_VALUE": "Ungültiger Zeitwert",
-  "errors_INVALID_SIZE_VALUE": "Ungueltiger Datengroessenwert",
+  "errors_INVALID_SIZE_VALUE": "Ungültiger Datengrößenwert",
   "errors_INVALID_REG_FILE": "Ungültige Registry-Datei",
   "errors_NO_CHARSET": "Wähle mindestens einen Zeichensatz aus",
   "errors_NO_TERMS": "Keine Suchbegriffe angegeben",
