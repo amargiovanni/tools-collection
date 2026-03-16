@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import HomeCatalog from '../../components/HomeCatalog.astro'
+import { t } from '../../i18n'
+
+const lang = 'es' as const
+---
+
+<BaseLayout title={t(lang, 'app_documentTitle')} description={t(lang, 'app_description')} lang={lang}>
+  <HomeCatalog lang={lang} />
+</BaseLayout>

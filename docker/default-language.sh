@@ -4,8 +4,7 @@ set -eu
 default_language="${DEFAULT_LANGUAGE:-en}"
 
 case "$default_language" in
-  it) ;;
-  en) ;;
+  en|it|es|fr|de) ;;
   *) default_language="en" ;;
 esac
 

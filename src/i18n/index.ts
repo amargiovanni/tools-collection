@@ -1,33 +1,50 @@
 import en from './messages/en.json'
 import it from './messages/it.json'
+import es from './messages/es.json'
+import fr from './messages/fr.json'
+import de from './messages/de.json'
 
-export const languages = ['en', 'it'] as const
+export const languages = ['en', 'it', 'es', 'fr', 'de'] as const
 export type Language = (typeof languages)[number]
 export const defaultLanguage: Language = 'en'
 
+export const languageNames: Record<Language, string> = {
+  en: 'English',
+  it: 'Italiano',
+  es: 'Español',
+  fr: 'Français',
+  de: 'Deutsch',
+}
+
 type Messages = typeof en
 
-// Compile-time check: it.json must have the same keys as en.json
+// Compile-time check: all locale files must have the same keys as en.json
 const _itCheck: Messages = it
+const _esCheck: Messages = es
+const _frCheck: Messages = fr
+const _deCheck: Messages = de
 
 export type MessageKey = keyof Messages
 
-const messages: Record<Language, Messages> = { en, it }
+const messages: Record<Language, Messages> = { en, it, es, fr, de }
+
+const languagePattern = languages.join('|')
+const langPathRegex = new RegExp(`^\\/(${languagePattern})\\/`)
 
 export function t(lang: Language, key: MessageKey): string {
   return messages[lang][key]
 }
 
 export function getLanguageFromPath(path: string): Language {
-  const match = path.match(/^\/(en|it)\//)
+  const match = path.match(langPathRegex)
   if (match) {
     return match[1] as Language
   }
   return defaultLanguage
 }
 
-export function getAlternateLanguage(lang: Language): Language {
-  return lang === 'en' ? 'it' : 'en'
+export function getOtherLanguages(lang: Language): Language[] {
+  return languages.filter((l) => l !== lang)
 }
 
 /**

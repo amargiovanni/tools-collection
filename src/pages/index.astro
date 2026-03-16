@@ -9,11 +9,12 @@
     <title>Redirecting...</title>
     <script is:inline src="/default-language.js"></script>
     <script is:inline>
+      var supported = ['en', 'it', 'es', 'fr', 'de']
       var lang = localStorage.getItem('lang')
-      if (!lang) {
+      if (!lang || supported.indexOf(lang) === -1) {
         var configuredDefault =
           typeof window.__DEFAULT_LANGUAGE__ === 'string' &&
-          (window.__DEFAULT_LANGUAGE__ === 'it' || window.__DEFAULT_LANGUAGE__ === 'en')
+          supported.indexOf(window.__DEFAULT_LANGUAGE__) !== -1
             ? window.__DEFAULT_LANGUAGE__
             : 'en'
         lang = configuredDefault
