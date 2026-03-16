@@ -11,7 +11,7 @@ interface Props {
 
 const { lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
-const totalTools = 27
+const totalTools = categories.reduce((total, category) => total + getToolsByCategory(category).length, 0)
 
 const categoryColors: Record<string, string> = {
   'text-processing': 'from-teal-500/10 to-cyan-500/10 border-teal-500/20 hover:border-teal-400',

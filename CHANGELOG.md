@@ -4,32 +4,35 @@ All notable changes to this project are documented in this file.
 
 This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
 
-## Upcoming release (`1.2.0`)
+## Upcoming release (`1.2.1`)
 
 ### Added
+- Added a new `Data Size Converter` tool with bit/byte conversion and support for `KB/MB/GB/TB` plus `KiB/MiB/GiB/TiB`.
 - Added Spanish, French, and German translations (375 keys each) with full i18n support for 5 languages.
 - Added a language switcher dropdown menu replacing the single-language toggle, showing all available languages.
-- Added Playwright end-to-end browser tests covering all 27 tools and navigation (56 tests across 28 spec files).
+- Added Playwright end-to-end browser tests covering all 28 tools and navigation (56 tests across 28 spec files).
 - Added `data-testid` attributes to shared UI components for stable e2e test selectors.
 - Added shared `ResultCard` component used by HashGenerator, TimestampConverter, TimeConvert, and ColorPicker.
 - Added `translateError()` helper with dedicated unit tests for localized error messages.
 - Added SolidJS component testing infrastructure (`@solidjs/testing-library`, `jsdom`).
 
 ### Changed
-- Bumped the product version to `1.2.0`.
-- Replaced eager static imports of all 27 tool components with SolidJS `lazy()` dynamic imports for code splitting (44 separate JS chunks instead of 1 monolithic bundle).
+- Bumped the product version to `1.2.1`.
+- Replaced eager static imports of all 28 tool components with SolidJS `lazy()` dynamic imports for code splitting (44 separate JS chunks instead of 1 monolithic bundle).
 - Replaced `getAlternateLanguage()` with `getOtherLanguages()` to support 5 languages.
 - Updated root redirect and hash redirect scripts to recognize all 5 supported languages.
 - Updated `hreflang` alternate links in `BaseLayout` to include all 5 languages.
 - Updated Docker `default-language.sh` to accept `es`, `fr`, and `de` in addition to `en` and `it`.
-- Updated CI workflow to run Playwright e2e tests after build and verify 141 generated pages.
+- Updated CI workflow to run Playwright e2e tests after build and verify 146 generated pages.
 - Hoisted regex patterns to module scope in `xml-beautifier`, `reg2gpo`, and `email-extractor` for better performance.
 - Batched `crypto.getRandomValues()` calls in password and PIN generators instead of one syscall per character.
 - Extracted `isValidRgb()` helper in `color-picker` to deduplicate RGB range validation.
 - Removed redundant `valid` signal from `JsonFormatter` and `XmlBeautifier` (derived from output state).
 - Set minimum `font-size: 16px` on all input elements to prevent iOS auto-zoom on focus.
+- Updated docs and tests to reflect the new tool count and dynamic catalog totals.
 
 ### Fixed
+- Fixed data-size conversion semantics to follow base 1024 for `KB/MB/GB/TB` (common IT usage), so `4 GB = 4096 MB`.
 - Fixed 7 components bypassing `translateError()` and showing raw English error messages to Italian (and now all non-English) users.
 - Fixed hardcoded English strings in `JsonFormatter`, `XmlBeautifier`, and `PemInspector` that were not using i18n keys.
 - Fixed `QrCode` component re-implementing functions already exported from `qr-code.ts`.

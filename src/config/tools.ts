@@ -157,6 +157,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['url', 'encode', 'decode', 'percent', 'uri', 'component'],
     path: '/tools/url-encoder',
   },
+  {
+    id: 'data-size-converter',
+    category: 'converters',
+    icon: '💾',
+    keywords: ['data', 'size', 'bit', 'byte', 'kb', 'mb', 'gb', 'tb', 'kib', 'mib', 'gib', 'tib'],
+    path: '/tools/data-size-converter',
+  },
 
   // Development
   {

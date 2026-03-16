@@ -29,6 +29,7 @@ export const toolComponents: Record<string, ToolComponent> = {
   'emoji-shortcode': lazy(() => import('../components/tools/EmojiShortcode')),
   'base64': lazy(() => import('../components/tools/Base64')),
   'url-encoder': lazy(() => import('../components/tools/UrlEncoder')),
+  'data-size-converter': lazy(() => import('../components/tools/DataSizeConverter')),
   'json-formatter': lazy(() => import('../components/tools/JsonFormatter')),
   'diff-checker': lazy(() => import('../components/tools/DiffChecker')),
   'regex-tester': lazy(() => import('../components/tools/RegexTester')),

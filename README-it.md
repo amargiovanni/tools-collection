@@ -1,6 +1,6 @@
 # Tools Collection
 
-Una raccolta modulare e type-safe di 27 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
+Una raccolta modulare e type-safe di 28 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,7 +9,7 @@ Una raccolta modulare e type-safe di 27 strumenti per sviluppatori che funzionan
 
 ## Cosa Fa
 
-27 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+28 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
 ## Strumenti
 
@@ -20,7 +20,7 @@ Una raccolta modulare e type-safe di 27 strumenti per sviluppatori che funzionan
 | **Estrazione** | Domain Extractor, Email Extractor |
 | **Analisi** | Count Duplicates |
 | **Sicurezza** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
-| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder |
+| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter |
 | **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier |
 | **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator |
 
@@ -51,11 +51,11 @@ src/pages/en/tools/[tool].astro        ← Pagina Astro (monta l'island con clie
 src/
 ├── components/
 │   ├── ui/                # 13 componenti Solid riutilizzabili (Button, TextArea, OutputPanel, ...)
-│   ├── tools/             # 27 componenti UI tool (uno per tool)
+│   ├── tools/             # 28 componenti UI tool (uno per tool)
 │   ├── Sidebar.astro      # Navigazione per categorie
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts           # Registry tool (27 voci con metadati)
+│   ├── tools.ts           # Registry tool (28 voci con metadati)
 │   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
@@ -79,7 +79,7 @@ src/
 │   └── de/                # Pagine tedesche
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 27 moduli di logica pura (zero DOM)
+└── tools/                 # 28 moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -107,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 141 pagine HTML statiche (28 per lingua x 5) pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: 146 pagine HTML statiche (29 per lingua x 5, piu redirect root) pronte per qualsiasi hosting.
 
 ### Docker
 
@@ -158,7 +158,7 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 | Comando | Descrizione |
 |---|---|
 | `npm run dev` | Avvia il server di sviluppo con HMR |
-| `npm run build` | Build di produzione (141 pagine) |
+| `npm run build` | Build di produzione (146 pagine) |
 | `npm run preview` | Anteprima della build di produzione |
 | `npm run test` | Esegue i test unitari |
 | `npm run test:watch` | Esegue i test unitari in watch mode |
@@ -169,7 +169,7 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 
 ### Test
 
-300+ test unitari (Vitest) coprono tutti i 27 moduli di logica pura, i18n e componenti condivisi:
+300+ test unitari (Vitest) coprono tutti i 28 moduli di logica pura, i18n e componenti condivisi:
 
 ```bash
 npm test
