@@ -58,6 +58,7 @@ export default function DiffChecker(props: Props) {
           value={left()}
           onInput={(e) => setLeft(e.currentTarget.value)}
           rows={8}
+          testId="textarea-original"
         />
         <TextArea
           label={t(props.lang, 'tools_diffChecker_modifiedText')}
@@ -65,6 +66,7 @@ export default function DiffChecker(props: Props) {
           value={right()}
           onInput={(e) => setRight(e.currentTarget.value)}
           rows={8}
+          testId="textarea-modified"
         />
       </div>
       <div class="flex flex-wrap items-center gap-4">

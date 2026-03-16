@@ -15,7 +15,7 @@ export function OutputPanel(props: OutputPanelProps) {
   const isMono = () => props.monospace !== false
 
   return (
-    <div class={`relative ${props.class ?? ''}`}>
+    <div class={`relative ${props.class ?? ''}`} data-testid="output-panel">
       <TextArea
         label={props.label}
         value={props.value}
