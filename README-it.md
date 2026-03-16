@@ -9,7 +9,7 @@ Una raccolta modulare e type-safe di 27 strumenti per sviluppatori che funzionan
 
 ## Cosa Fa
 
-27 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Due lingue (EN/IT), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+27 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
 ## Strumenti
 
@@ -34,7 +34,7 @@ Una raccolta modulare e type-safe di 27 strumenti per sviluppatori che funzionan
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
 | i18n | Messaggi JSON type-safe con validazione compile-time delle chiavi |
 | Ricerca | [Fuse.js](https://www.fusejs.io/) — fuzzy search nella command palette |
-| Test | [Vitest](https://vitest.dev/) — oltre 290 test, copertura della logica pura |
+| Test | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — 300+ test unitari, 56 test e2e nel browser |
 | Varianti | [cva](https://cva.style/) — varianti componenti type-safe |
 
 ## Architettura
@@ -56,10 +56,10 @@ src/
 │   └── HomeCatalog.astro
 ├── config/
 │   ├── tools.ts           # Registry tool (27 voci con metadati)
-│   └── tool-components.ts # Mapping componenti per rendering dinamico
+│   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
-│   └── messages/          # en.json, it.json (280+ chiavi per file)
+│   └── messages/          # en/it/es/fr/de.json (375 chiavi per file)
 ├── islands/
 │   ├── CommandPalette.tsx # Fuzzy search via Ctrl/Cmd+K
 │   └── ToolRenderer.tsx   # Dispatcher dinamico componenti tool
@@ -69,12 +69,14 @@ src/
 ├── lib/
 │   ├── result.ts          # Tipo Result<T> per error handling
 │   ├── clipboard.ts       # Copia con fallback
-│   ├── download.ts        # Utility download file
-│   └── toast.tsx          # Contesto notifiche toast
+│   └── download.ts        # Utility download file
 ├── pages/
 │   ├── index.astro        # Redirect root → /{lang}/
 │   ├── en/                # Pagine inglesi
-│   └── it/                # Pagine italiane
+│   ├── it/                # Pagine italiane
+│   ├── es/                # Pagine spagnole
+│   ├── fr/                # Pagine francesi
+│   └── de/                # Pagine tedesche
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
 └── tools/                 # 27 moduli di logica pura (zero DOM)
@@ -105,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 57 pagine HTML statiche pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: 141 pagine HTML statiche (28 per lingua x 5) pronte per qualsiasi hosting.
 
 ### Docker
 
@@ -115,7 +117,7 @@ docker compose up --build -d
 
 Disponibile su `http://localhost:8080`.
 
-Per impostare la lingua predefinita mostrata alla prima visita, passa `DEFAULT_LANGUAGE=en` oppure `DEFAULT_LANGUAGE=it` tramite Docker Compose:
+Per impostare la lingua predefinita mostrata alla prima visita, passa `DEFAULT_LANGUAGE` (`en`, `it`, `es`, `fr` o `de`) tramite Docker Compose:
 
 ```bash
 DEFAULT_LANGUAGE=it docker compose up --build -d
@@ -156,22 +158,30 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 | Comando | Descrizione |
 |---|---|
 | `npm run dev` | Avvia il server di sviluppo con HMR |
-| `npm run build` | Build di produzione (57 pagine) |
+| `npm run build` | Build di produzione (141 pagine) |
 | `npm run preview` | Anteprima della build di produzione |
-| `npm run test` | Esegue tutti i test |
-| `npm run test:watch` | Esegue i test in watch mode |
-| `npm run test:coverage` | Esegue i test con report di copertura |
+| `npm run test` | Esegue i test unitari |
+| `npm run test:watch` | Esegue i test unitari in watch mode |
+| `npm run test:coverage` | Esegue i test unitari con report di copertura |
+| `npm run test:e2e` | Esegue i test e2e Playwright nel browser |
+| `npm run test:e2e:ui` | Esegue i test e2e con UI interattiva |
 | `npm run check` | Type check Astro |
 
 ### Test
 
-Oltre 290 test coprono tutti i 27 moduli di logica pura:
+300+ test unitari (Vitest) coprono tutti i 27 moduli di logica pura, i18n e componenti condivisi:
 
 ```bash
 npm test
 ```
 
-I test si trovano in `tests/` e coprono ogni funzione in `src/tools/`. Solo logica pura: niente DOM, nessuna API browser mockata.
+56 test end-to-end nel browser (Playwright) coprono ogni tool e la navigazione:
+
+```bash
+npm run build && npm run test:e2e
+```
+
+Usa `npm run test:e2e:ui` per un'interfaccia interattiva dove puoi eseguire i test uno alla volta e ispezionare lo stato del browser.
 
 ### Aggiungere un Nuovo Tool
 
@@ -180,7 +190,8 @@ I test si trovano in `tests/` e coprono ogni funzione in `src/tools/`. Solo logi
 3. **Componente UI** — Crea `src/components/tools/MyTool.tsx` componendo `src/components/ui/*`
 4. **Registry** — Aggiungi la voce in `src/config/tools.ts`
 5. **Component map** — Aggiungi l'import in `src/config/tool-components.ts`
-6. **i18n** — Aggiungi le chiavi sia in `en.json` sia in `it.json`
+6. **i18n** — Aggiungi le chiavi in tutti i 5 file locale (`en.json`, `it.json`, `es.json`, `fr.json`, `de.json`)
+7. **Test e2e** — Crea `e2e/tools/my-tool.spec.ts` usando l'helper `toolTest`
 
 Il tool ottiene automaticamente una pagina in `/{lang}/tools/my-tool` e compare in sidebar, home e command palette.
 
