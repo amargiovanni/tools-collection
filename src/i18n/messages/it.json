@@ -403,6 +403,11 @@
   "errors_HASH_ERROR": "Errore nella generazione hash",
   "errors_QR_UNSUPPORTED": "BarcodeDetector non supportato in questo browser",
   "errors_QR_NOT_FOUND": "Nessun QR code rilevato nell'immagine",
-  "errors_UNIQUE_IMPOSSIBLE": "Impossibile generare abbastanza valori unici con i vincoli dati"
+  "errors_UNIQUE_IMPOSSIBLE": "Impossibile generare abbastanza valori unici con i vincoli dati",
+
+  "favorites_title": "Preferiti",
+  "favorites_add": "Aggiungi ai preferiti",
+  "favorites_remove": "Rimuovi dai preferiti",
+  "favorites_empty": "Nessun preferito"
 }
 

@@ -1,5 +1,5 @@
 ---
-import { categories, getToolsByCategory } from '../config/tools'
+import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
 import { t, getCategoryName, getOtherLanguages, languageNames } from '../i18n'
 import type { Language, MessageKey } from '../i18n'
 import BrandMark from './BrandMark.astro'
@@ -12,6 +12,19 @@ interface Props {
 const { lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
 const totalTools = categories.reduce((total, category) => total + getToolsByCategory(category).length, 0)
+
+// Build lookup maps for client-side favorites rendering
+const homeToolData: Record<string, { name: string; desc: string; icon: string; category: string }> = {}
+for (const tool of toolRegistry) {
+  const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
+  const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
+  homeToolData[tool.id] = {
+    name: t(lang, nameKey),
+    desc: t(lang, descKey),
+    icon: tool.icon,
+    category: tool.category,
+  }
+}
 
 const categoryColors: Record<string, string> = {
   'text-processing': 'from-teal-500/10 to-cyan-500/10 border-teal-500/20 hover:border-teal-400',
@@ -153,6 +166,18 @@ const categoryAccents: Record<string, string> = {
 
   <!-- Tool catalog -->
   <div class="mx-auto max-w-6xl px-4 pb-20">
+    <!-- Favorites section (populated client-side) -->
+    <section id="home-favorites" class="mb-12 hidden" data-lang={lang}>
+      <div class="mb-5 flex items-center gap-3">
+        <h2 class="text-sm font-bold uppercase tracking-widest text-amber-500 dark:text-amber-400">
+          ⭐ {t(lang, 'favorites_title')}
+        </h2>
+        <div class="h-px flex-1 bg-border"></div>
+        <span id="home-favorites-count" class="text-xs text-text-muted">0</span>
+      </div>
+      <div id="home-favorites-grid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
     {categories.map((cat) => {
       const tools = getToolsByCategory(cat)
       const colorClass = categoryColors[cat] ?? ''
@@ -281,4 +306,60 @@ const categoryAccents: Record<string, string> = {
     initHomeSearch()
     initThemeToggle()
   })
+</script>
+
+<!-- Home favorites hydration -->
+<script define:vars={{ homeToolData, categoryColors: categoryColors }} is:inline>
+  function initHomeFavorites() {
+    var section = document.getElementById('home-favorites')
+    if (!section) return
+    var lang = section.dataset.lang
+    var grid = document.getElementById('home-favorites-grid')
+    var countEl = document.getElementById('home-favorites-count')
+    if (!grid) return
+
+    var raw = localStorage.getItem('favorite-tools')
+    if (!raw) { section.classList.add('hidden'); return }
+
+    try {
+      var favIds = JSON.parse(raw)
+      if (!Array.isArray(favIds) || favIds.length === 0) { section.classList.add('hidden'); return }
+
+      grid.innerHTML = ''
+      var count = 0
+
+      for (var i = 0; i < favIds.length; i++) {
+        var id = favIds[i]
+        var data = homeToolData[id]
+        if (!data) continue
+        count++
+
+        var colorClass = categoryColors[data.category] || ''
+        var href = '/' + lang + '/tools/' + id + '/'
+
+        var a = document.createElement('a')
+        a.href = href
+        a.className = 'group relative flex items-start gap-3.5 rounded-xl border bg-gradient-to-br p-4 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ' + colorClass
+
+        a.innerHTML = '<span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm" role="img" aria-hidden="true">' + data.icon + '</span>'
+          + '<div class="min-w-0"><h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">' + data.name + '</h3>'
+          + '<p class="mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2">' + data.desc + '</p></div>'
+          + '<svg class="absolute right-3 top-4 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>'
+
+        grid.appendChild(a)
+      }
+
+      if (countEl) countEl.textContent = String(count)
+      if (count > 0) {
+        section.classList.remove('hidden')
+      } else {
+        section.classList.add('hidden')
+      }
+    } catch (e) {
+      section.classList.add('hidden')
+    }
+  }
+
+  initHomeFavorites()
+  document.addEventListener('astro:page-load', initHomeFavorites)
 </script>

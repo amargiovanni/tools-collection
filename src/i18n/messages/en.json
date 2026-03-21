@@ -403,5 +403,10 @@
   "errors_HASH_ERROR": "Hash generation error",
   "errors_QR_UNSUPPORTED": "BarcodeDetector not supported in this browser",
   "errors_QR_NOT_FOUND": "No QR code detected in the image",
-  "errors_UNIQUE_IMPOSSIBLE": "Cannot generate enough unique values with the given constraints"
+  "errors_UNIQUE_IMPOSSIBLE": "Cannot generate enough unique values with the given constraints",
+
+  "favorites_title": "Favorites",
+  "favorites_add": "Add to favorites",
+  "favorites_remove": "Remove from favorites",
+  "favorites_empty": "No favorites yet"
 }
