@@ -34,6 +34,7 @@ export const toolComponents: Record<string, ToolComponent> = {
   'diff-checker': lazy(() => import('../components/tools/DiffChecker')),
   'regex-tester': lazy(() => import('../components/tools/RegexTester')),
   'xml-beautifier': lazy(() => import('../components/tools/XmlBeautifier')),
+  'cron-expression': lazy(() => import('../components/tools/CronExpression')),
   'color-picker': lazy(() => import('../components/tools/ColorPicker')),
   'timestamp-converter': lazy(() => import('../components/tools/TimestampConverter')),
   'time-convert': lazy(() => import('../components/tools/TimeConvert')),

@@ -286,6 +286,16 @@
   "tools_xmlBeautifier_valid": "XML valide",
   "tools_xmlBeautifier_invalid": "XML invalide",
 
+  "tools_cronExpression_name": "Analyseur d'expressions cron",
+  "tools_cronExpression_description": "Explique les expressions cron à 5 champs et les raccourcis courants",
+  "tools_cronExpression_inputLabel": "Expression cron :",
+  "tools_cronExpression_placeholder": "*/15 * * * *",
+  "tools_cronExpression_fieldMinute": "Minute",
+  "tools_cronExpression_fieldHour": "Heure",
+  "tools_cronExpression_fieldDayOfMonth": "Jour du mois",
+  "tools_cronExpression_fieldMonth": "Mois",
+  "tools_cronExpression_fieldDayOfWeek": "Jour de la semaine",
+
   "tools_colorPicker_name": "Sélecteur/Convertisseur de couleurs",
   "tools_colorPicker_description": "Sélectionner des couleurs et convertir entre les formats",
   "tools_colorPicker_inputLabel": "Ou saisissez une couleur :",
@@ -396,6 +406,7 @@
   "errors_INVALID_COLOR": "Format de couleur invalide",
   "errors_INVALID_TIMESTAMP": "Timestamp invalide",
   "errors_INVALID_TIME_VALUE": "Valeur temporelle invalide",
+  "errors_INVALID_CRON": "Expression cron invalide",
   "errors_INVALID_SIZE_VALUE": "Valeur de taille de donnees invalide",
   "errors_INVALID_REG_FILE": "Fichier de registre invalide",
   "errors_NO_CHARSET": "Sélectionnez au moins un jeu de caractères",
@@ -405,4 +416,3 @@
   "errors_QR_NOT_FOUND": "Aucun QR code détecté dans l'image",
   "errors_UNIQUE_IMPOSSIBLE": "Impossible de générer suffisamment de valeurs uniques avec les contraintes données"
 }
-

@@ -4,21 +4,23 @@ All notable changes to this project are documented in this file.
 
 This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
 
-## Upcoming release (`1.2.1`)
+## Upcoming release (`1.2.2`)
 
 ### Added
+- Added a new `Cron Expression Parser` tool that explains standard 5-field cron schedules plus common shortcuts like `@daily` and `@reboot`.
+- Added an assisted cron builder with clickable schedule presets and field selectors to compose cron expressions visually.
 - Added a new `Data Size Converter` tool with bit/byte conversion and support for `KB/MB/GB/TB` plus `KiB/MiB/GiB/TiB`.
-- Added Spanish, French, and German translations (375 keys each) with full i18n support for 5 languages.
+- Added Spanish, French, and German translations (382 keys each) with full i18n support for 5 languages.
 - Added a language switcher dropdown menu replacing the single-language toggle, showing all available languages.
-- Added Playwright end-to-end browser tests covering all 28 tools and navigation (56 tests across 28 spec files).
+- Added Playwright end-to-end browser tests covering all 29 tools and navigation (57 tests across 29 spec files).
 - Added `data-testid` attributes to shared UI components for stable e2e test selectors.
 - Added shared `ResultCard` component used by HashGenerator, TimestampConverter, TimeConvert, and ColorPicker.
 - Added `translateError()` helper with dedicated unit tests for localized error messages.
 - Added SolidJS component testing infrastructure (`@solidjs/testing-library`, `jsdom`).
 
 ### Changed
-- Bumped the product version to `1.2.1`.
-- Replaced eager static imports of all 28 tool components with SolidJS `lazy()` dynamic imports for code splitting (44 separate JS chunks instead of 1 monolithic bundle).
+- Bumped the product version to `1.2.2`.
+- Replaced eager static imports of all 29 tool components with SolidJS `lazy()` dynamic imports for code splitting (44 separate JS chunks instead of 1 monolithic bundle).
 - Replaced `getAlternateLanguage()` with `getOtherLanguages()` to support 5 languages.
 - Updated root redirect and hash redirect scripts to recognize all 5 supported languages.
 - Updated `hreflang` alternate links in `BaseLayout` to include all 5 languages.
