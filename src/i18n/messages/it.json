@@ -286,6 +286,16 @@
   "tools_xmlBeautifier_valid": "XML valido",
   "tools_xmlBeautifier_invalid": "XML non valido",
 
+  "tools_cronExpression_name": "Cron Expression Parser",
+  "tools_cronExpression_description": "Spiega le espressioni cron a 5 campi e gli shortcut piu comuni",
+  "tools_cronExpression_inputLabel": "Espressione cron:",
+  "tools_cronExpression_placeholder": "*/15 * * * *",
+  "tools_cronExpression_fieldMinute": "Minuto",
+  "tools_cronExpression_fieldHour": "Ora",
+  "tools_cronExpression_fieldDayOfMonth": "Giorno del mese",
+  "tools_cronExpression_fieldMonth": "Mese",
+  "tools_cronExpression_fieldDayOfWeek": "Giorno della settimana",
+
   "tools_colorPicker_name": "Color Picker/Converter",
   "tools_colorPicker_description": "Seleziona colori e converti tra diversi formati",
   "tools_colorPicker_inputLabel": "O inserisci un colore:",
@@ -396,6 +406,7 @@
   "errors_INVALID_COLOR": "Formato colore non valido",
   "errors_INVALID_TIMESTAMP": "Timestamp non valido",
   "errors_INVALID_TIME_VALUE": "Valore tempo non valido",
+  "errors_INVALID_CRON": "Espressione cron non valida",
   "errors_INVALID_SIZE_VALUE": "Valore dimensione dati non valido",
   "errors_INVALID_REG_FILE": "File registro non valido",
   "errors_NO_CHARSET": "Seleziona almeno un tipo di carattere",
@@ -405,4 +416,3 @@
   "errors_QR_NOT_FOUND": "Nessun QR code rilevato nell'immagine",
   "errors_UNIQUE_IMPOSSIBLE": "Impossibile generare abbastanza valori unici con i vincoli dati"
 }
-

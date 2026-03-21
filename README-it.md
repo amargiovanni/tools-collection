@@ -1,6 +1,6 @@
 # Tools Collection
 
-Una raccolta modulare e type-safe di 28 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
+Una raccolta modulare e type-safe di 29 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,7 +9,9 @@ Una raccolta modulare e type-safe di 28 strumenti per sviluppatori che funzionan
 
 ## Cosa Fa
 
-28 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+29 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+
+Tra le novita della `1.2.2`: `Cron Expression Parser` con builder visuale per gli schedule piu comuni, oltre all'allineamento completo di metadata e documentazione al catalogo da 29 tool.
 
 ## Strumenti
 
@@ -21,7 +23,7 @@ Una raccolta modulare e type-safe di 28 strumenti per sviluppatori che funzionan
 | **Analisi** | Count Duplicates |
 | **Sicurezza** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
 | **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter |
-| **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier |
+| **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser |
 | **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator |
 
 ## Stack Tecnologico
@@ -34,7 +36,7 @@ Una raccolta modulare e type-safe di 28 strumenti per sviluppatori che funzionan
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
 | i18n | Messaggi JSON type-safe con validazione compile-time delle chiavi |
 | Ricerca | [Fuse.js](https://www.fusejs.io/) — fuzzy search nella command palette |
-| Test | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — 300+ test unitari, 56 test e2e nel browser |
+| Test | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — 300+ test unitari, 57 test e2e nel browser |
 | Varianti | [cva](https://cva.style/) — varianti componenti type-safe |
 
 ## Architettura
@@ -51,15 +53,15 @@ src/pages/en/tools/[tool].astro        ← Pagina Astro (monta l'island con clie
 src/
 ├── components/
 │   ├── ui/                # 13 componenti Solid riutilizzabili (Button, TextArea, OutputPanel, ...)
-│   ├── tools/             # 28 componenti UI tool (uno per tool)
+│   ├── tools/             # 29 componenti UI tool (uno per tool)
 │   ├── Sidebar.astro      # Navigazione per categorie
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts           # Registry tool (28 voci con metadati)
+│   ├── tools.ts           # Registry tool (29 voci con metadati)
 │   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
-│   └── messages/          # en/it/es/fr/de.json (375 chiavi per file)
+│   └── messages/          # en/it/es/fr/de.json (382 chiavi per file)
 ├── islands/
 │   ├── CommandPalette.tsx # Fuzzy search via Ctrl/Cmd+K
 │   └── ToolRenderer.tsx   # Dispatcher dinamico componenti tool
@@ -79,7 +81,7 @@ src/
 │   └── de/                # Pagine tedesche
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 28 moduli di logica pura (zero DOM)
+└── tools/                 # 29 moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -169,13 +171,13 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 
 ### Test
 
-300+ test unitari (Vitest) coprono tutti i 28 moduli di logica pura, i18n e componenti condivisi:
+300+ test unitari (Vitest) coprono tutti i 29 moduli di logica pura, i18n e componenti condivisi:
 
 ```bash
 npm test
 ```
 
-56 test end-to-end nel browser (Playwright) coprono ogni tool e la navigazione:
+57 test end-to-end nel browser (Playwright) coprono ogni tool e la navigazione:
 
 ```bash
 npm run build && npm run test:e2e

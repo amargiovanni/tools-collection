@@ -194,6 +194,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['xml', 'format', 'beautify', 'validate', 'pretty'],
     path: '/tools/xml-beautifier',
   },
+  {
+    id: 'cron-expression',
+    category: 'development',
+    icon: '🗓️',
+    keywords: ['cron', 'schedule', 'expression', 'crontab', 'parser', 'jobs'],
+    path: '/tools/cron-expression',
+  },
 
   // Utilities
   {

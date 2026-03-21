@@ -286,6 +286,16 @@
   "tools_xmlBeautifier_valid": "Gültiges XML",
   "tools_xmlBeautifier_invalid": "Ungültiges XML",
 
+  "tools_cronExpression_name": "Cron-Ausdruck Parser",
+  "tools_cronExpression_description": "Erklart 5-teilige Cron-Ausdrucke und ubliche Kurzformen",
+  "tools_cronExpression_inputLabel": "Cron-Ausdruck:",
+  "tools_cronExpression_placeholder": "*/15 * * * *",
+  "tools_cronExpression_fieldMinute": "Minute",
+  "tools_cronExpression_fieldHour": "Stunde",
+  "tools_cronExpression_fieldDayOfMonth": "Tag des Monats",
+  "tools_cronExpression_fieldMonth": "Monat",
+  "tools_cronExpression_fieldDayOfWeek": "Wochentag",
+
   "tools_colorPicker_name": "Color Picker/Converter",
   "tools_colorPicker_description": "Farben auswählen und zwischen Formaten konvertieren",
   "tools_colorPicker_inputLabel": "Oder eine Farbe eingeben:",
@@ -396,6 +406,7 @@
   "errors_INVALID_COLOR": "Ungültiges Farbformat",
   "errors_INVALID_TIMESTAMP": "Ungültiger Zeitstempel",
   "errors_INVALID_TIME_VALUE": "Ungültiger Zeitwert",
+  "errors_INVALID_CRON": "Ungueltiger Cron-Ausdruck",
   "errors_INVALID_SIZE_VALUE": "Ungültiger Datengrößenwert",
   "errors_INVALID_REG_FILE": "Ungültige Registry-Datei",
   "errors_NO_CHARSET": "Wähle mindestens einen Zeichensatz aus",
@@ -405,4 +416,3 @@
   "errors_QR_NOT_FOUND": "Kein QR-Code im Bild erkannt",
   "errors_UNIQUE_IMPOSSIBLE": "Mit den gegebenen Einschränkungen können nicht genügend eindeutige Werte generiert werden"
 }
-
