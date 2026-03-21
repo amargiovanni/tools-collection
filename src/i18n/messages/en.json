@@ -407,6 +407,5 @@
 
   "favorites_title": "Favorites",
   "favorites_add": "Add to favorites",
-  "favorites_remove": "Remove from favorites",
-  "favorites_empty": "No favorites yet"
+  "favorites_remove": "Remove from favorites"
 }

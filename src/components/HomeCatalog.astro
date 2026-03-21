@@ -309,7 +309,7 @@ const categoryAccents: Record<string, string> = {
 </script>
 
 <!-- Home favorites hydration -->
-<script define:vars={{ homeToolData, categoryColors: categoryColors }} is:inline>
+<script define:vars={{ homeToolData, categoryColors }} is:inline>
   function initHomeFavorites() {
     var section = document.getElementById('home-favorites')
     if (!section) return
@@ -330,6 +330,7 @@ const categoryAccents: Record<string, string> = {
 
       for (var i = 0; i < favIds.length; i++) {
         var id = favIds[i]
+        if (typeof id !== 'string') continue
         var data = homeToolData[id]
         if (!data) continue
         count++
@@ -341,11 +342,25 @@ const categoryAccents: Record<string, string> = {
         a.href = href
         a.className = 'group relative flex items-start gap-3.5 rounded-xl border bg-gradient-to-br p-4 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ' + colorClass
 
-        a.innerHTML = '<span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm" role="img" aria-hidden="true">' + data.icon + '</span>'
-          + '<div class="min-w-0"><h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">' + data.name + '</h3>'
-          + '<p class="mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2">' + data.desc + '</p></div>'
-          + '<svg class="absolute right-3 top-4 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>'
+        var iconSpan = document.createElement('span')
+        iconSpan.className = 'mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm'
+        iconSpan.setAttribute('role', 'img')
+        iconSpan.setAttribute('aria-hidden', 'true')
+        iconSpan.textContent = data.icon
 
+        var textDiv = document.createElement('div')
+        textDiv.className = 'min-w-0'
+        var h3 = document.createElement('h3')
+        h3.className = 'font-semibold text-text-primary group-hover:text-accent transition-colors'
+        h3.textContent = data.name
+        var p = document.createElement('p')
+        p.className = 'mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2'
+        p.textContent = data.desc
+        textDiv.appendChild(h3)
+        textDiv.appendChild(p)
+
+        a.appendChild(iconSpan)
+        a.appendChild(textDiv)
         grid.appendChild(a)
       }
 

@@ -68,55 +68,56 @@ for (const tool of toolRegistry) {
 <!-- Sidebar favorites hydration -->
 <script define:vars={{ toolNames, toolIcons }} is:inline>
   function initSidebarFavorites() {
-    document.querySelectorAll('#sidebar-favorites').forEach(function (section) {
-      var lang = section.dataset.lang
-      var currentPath = section.dataset.currentPath
-      var list = section.querySelector('#sidebar-favorites-list')
-      if (!list) return
+    var section = document.getElementById('sidebar-favorites')
+    if (!section) return
+    var lang = section.dataset.lang
+    var currentPath = section.dataset.currentPath
+    var list = document.getElementById('sidebar-favorites-list')
+    if (!list) return
 
-      var raw = localStorage.getItem('favorite-tools')
-      if (!raw) { section.classList.add('hidden'); return }
+    var raw = localStorage.getItem('favorite-tools')
+    if (!raw) { section.classList.add('hidden'); return }
 
-      try {
-        var favIds = JSON.parse(raw)
-        if (!Array.isArray(favIds) || favIds.length === 0) { section.classList.add('hidden'); return }
+    try {
+      var favIds = JSON.parse(raw)
+      if (!Array.isArray(favIds) || favIds.length === 0) { section.classList.add('hidden'); return }
 
-        list.innerHTML = ''
-        var count = 0
-        for (var i = 0; i < favIds.length; i++) {
-          var id = favIds[i]
-          var name = toolNames[id]
-          var icon = toolIcons[id]
-          if (!name) continue
-          count++
-          var href = '/' + lang + '/tools/' + id + '/'
-          var isActive = currentPath === href
-          var li = document.createElement('li')
-          var a = document.createElement('a')
-          a.href = href
-          a.className = isActive
-            ? 'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors bg-accent-light text-accent font-medium'
-            : 'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-          if (isActive) a.setAttribute('aria-current', 'page')
-          var span = document.createElement('span')
-          span.className = 'text-base'
-          span.setAttribute('aria-hidden', 'true')
-          span.textContent = icon
-          a.appendChild(span)
-          a.appendChild(document.createTextNode(name))
-          li.appendChild(a)
-          list.appendChild(li)
-        }
+      list.innerHTML = ''
+      var count = 0
+      for (var i = 0; i < favIds.length; i++) {
+        var id = favIds[i]
+        if (typeof id !== 'string') continue
+        var name = toolNames[id]
+        var icon = toolIcons[id]
+        if (!name) continue
+        count++
+        var href = '/' + lang + '/tools/' + id + '/'
+        var isActive = currentPath === href
+        var li = document.createElement('li')
+        var a = document.createElement('a')
+        a.href = href
+        a.className = isActive
+          ? 'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors bg-accent-light text-accent font-medium'
+          : 'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+        if (isActive) a.setAttribute('aria-current', 'page')
+        var span = document.createElement('span')
+        span.className = 'text-base'
+        span.setAttribute('aria-hidden', 'true')
+        span.textContent = icon
+        a.appendChild(span)
+        a.appendChild(document.createTextNode(name))
+        li.appendChild(a)
+        list.appendChild(li)
+      }
 
-        if (count > 0) {
-          section.classList.remove('hidden')
-        } else {
-          section.classList.add('hidden')
-        }
-      } catch (e) {
+      if (count > 0) {
+        section.classList.remove('hidden')
+      } else {
         section.classList.add('hidden')
       }
-    })
+    } catch (e) {
+      section.classList.add('hidden')
+    }
   }
 
   initSidebarFavorites()

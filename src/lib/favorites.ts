@@ -31,28 +31,3 @@ export function toggleFavorite(toolId: string): boolean {
   }
   return index === -1
 }
-
-export function addFavorite(toolId: string): void {
-  const current = [...getFavorites()]
-  if (!current.includes(toolId)) {
-    current.push(toolId)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(current))
-    } catch {
-      // storage full – silently ignore
-    }
-  }
-}
-
-export function removeFavorite(toolId: string): void {
-  const current = [...getFavorites()]
-  const index = current.indexOf(toolId)
-  if (index !== -1) {
-    current.splice(index, 1)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(current))
-    } catch {
-      // silently ignore
-    }
-  }
-}

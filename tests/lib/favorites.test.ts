@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { getFavorites, isFavorite, toggleFavorite, addFavorite, removeFavorite } from '../../src/lib/favorites'
+import { getFavorites, isFavorite, toggleFavorite } from '../../src/lib/favorites'
 
 describe('favorites', () => {
   beforeEach(() => {
@@ -66,44 +66,6 @@ describe('favorites', () => {
       toggleFavorite('base64')
       expect(getFavorites()).toEqual(['base64'])
       toggleFavorite('base64')
-      expect(getFavorites()).toEqual([])
-    })
-  })
-
-  describe('addFavorite', () => {
-    it('adds a tool to empty favorites', () => {
-      addFavorite('json-formatter')
-      expect(getFavorites()).toEqual(['json-formatter'])
-    })
-
-    it('does not duplicate an existing favorite', () => {
-      addFavorite('json-formatter')
-      addFavorite('json-formatter')
-      expect(getFavorites()).toEqual(['json-formatter'])
-    })
-
-    it('appends to existing favorites', () => {
-      addFavorite('json-formatter')
-      addFavorite('base64')
-      expect(getFavorites()).toEqual(['json-formatter', 'base64'])
-    })
-  })
-
-  describe('removeFavorite', () => {
-    it('removes an existing favorite', () => {
-      localStorage.setItem('favorite-tools', JSON.stringify(['json-formatter', 'base64']))
-      removeFavorite('json-formatter')
-      expect(getFavorites()).toEqual(['base64'])
-    })
-
-    it('does nothing when removing a non-existing favorite', () => {
-      localStorage.setItem('favorite-tools', JSON.stringify(['base64']))
-      removeFavorite('json-formatter')
-      expect(getFavorites()).toEqual(['base64'])
-    })
-
-    it('does nothing on empty storage', () => {
-      removeFavorite('json-formatter')
       expect(getFavorites()).toEqual([])
     })
   })

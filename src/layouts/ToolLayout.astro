@@ -185,6 +185,8 @@ const currentPath = Astro.url.pathname
 
   <!-- Mobile menu + focus management -->
   <script>
+    import { isFavorite, toggleFavorite } from '../lib/favorites'
+
     function initToolLayout() {
       // Mobile menu
       const toggle = document.getElementById('mobile-menu-toggle')
@@ -217,17 +219,8 @@ const currentPath = Astro.url.pathname
         const iconEmpty = document.getElementById('fav-icon-empty')
         const iconFilled = document.getElementById('fav-icon-filled')
 
-        function getFavs(): string[] {
-          try {
-            const raw = localStorage.getItem('favorite-tools')
-            if (!raw) return []
-            const parsed = JSON.parse(raw)
-            return Array.isArray(parsed) ? parsed.filter((v: unknown) => typeof v === 'string') : []
-          } catch { return [] }
-        }
-
         function updateFavIcon() {
-          const isFav = getFavs().includes(toolId)
+          const isFav = isFavorite(toolId)
           if (iconEmpty && iconFilled) {
             iconEmpty.classList.toggle('hidden', isFav)
             iconFilled.classList.toggle('hidden', !isFav)
@@ -239,14 +232,7 @@ const currentPath = Astro.url.pathname
         updateFavIcon()
 
         favBtn.addEventListener('click', () => {
-          const current = getFavs()
-          const idx = current.indexOf(toolId)
-          if (idx === -1) {
-            current.push(toolId)
-          } else {
-            current.splice(idx, 1)
-          }
-          try { localStorage.setItem('favorite-tools', JSON.stringify(current)) } catch {}
+          toggleFavorite(toolId)
           updateFavIcon()
         })
       }
