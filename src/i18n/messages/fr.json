@@ -287,7 +287,7 @@
   "tools_xmlBeautifier_invalid": "XML invalide",
 
   "tools_cronExpression_name": "Analyseur d expressions cron",
-  "tools_cronExpression_description": "Explique les expressions cron a 5 champs et les raccourcis courants",
+  "tools_cronExpression_description": "Explique les expressions cron à 5 champs et les raccourcis courants",
   "tools_cronExpression_inputLabel": "Expression cron :",
   "tools_cronExpression_placeholder": "*/15 * * * *",
   "tools_cronExpression_fieldMinute": "Minute",
