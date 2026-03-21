@@ -287,7 +287,7 @@
   "tools_xmlBeautifier_invalid": "Invalid XML",
 
   "tools_cronExpression_name": "Cron Expression Parser",
-  "tools_cronExpression_description": "Explain 5-field cron expressions and common cron shortcuts",
+  "tools_cronExpression_description": "Parse and explain 5-field cron expressions and common shortcuts",
   "tools_cronExpression_inputLabel": "Cron expression:",
   "tools_cronExpression_placeholder": "*/15 * * * *",
   "tools_cronExpression_fieldMinute": "Minute",
