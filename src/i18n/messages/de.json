@@ -287,7 +287,7 @@
   "tools_xmlBeautifier_invalid": "Ungültiges XML",
 
   "tools_cronExpression_name": "Cron-Ausdruck Parser",
-  "tools_cronExpression_description": "Erklart 5-teilige Cron-Ausdrucke und ubliche Kurzformen",
+  "tools_cronExpression_description": "Erklärt 5-teilige Cron-Ausdrücke und übliche Kurzformen",
   "tools_cronExpression_inputLabel": "Cron-Ausdruck:",
   "tools_cronExpression_placeholder": "*/15 * * * *",
   "tools_cronExpression_fieldMinute": "Minute",
