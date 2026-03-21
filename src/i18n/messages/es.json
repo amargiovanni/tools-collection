@@ -406,7 +406,7 @@
   "errors_INVALID_COLOR": "Formato de color no válido",
   "errors_INVALID_TIMESTAMP": "Marca de tiempo no válida",
   "errors_INVALID_TIME_VALUE": "Valor de tiempo no válido",
-  "errors_INVALID_CRON": "Expresion cron no valida",
+  "errors_INVALID_CRON": "Expresión cron no válida",
   "errors_INVALID_SIZE_VALUE": "Valor de tamaño de datos no válido",
   "errors_INVALID_REG_FILE": "Archivo de registro no válido",
   "errors_NO_CHARSET": "Selecciona al menos un conjunto de caracteres",
