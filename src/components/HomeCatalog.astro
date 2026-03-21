@@ -1,7 +1,7 @@
 ---
 import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
-import { t, getCategoryName, getOtherLanguages, languageNames } from '../i18n'
-import type { Language, MessageKey } from '../i18n'
+import { t, getCategoryName, getOtherLanguages, languageNames, getToolNameKey, getToolDescKey } from '../i18n'
+import type { Language } from '../i18n'
 import BrandMark from './BrandMark.astro'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
 
@@ -16,11 +16,9 @@ const totalTools = categories.reduce((total, category) => total + getToolsByCate
 // Build lookup maps for client-side favorites rendering
 const homeToolData: Record<string, { name: string; desc: string; icon: string; category: string }> = {}
 for (const tool of toolRegistry) {
-  const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-  const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
   homeToolData[tool.id] = {
-    name: t(lang, nameKey),
-    desc: t(lang, descKey),
+    name: t(lang, getToolNameKey(tool.id)),
+    desc: t(lang, getToolDescKey(tool.id)),
     icon: tool.icon,
     category: tool.category,
   }
@@ -193,8 +191,6 @@ const categoryAccents: Record<string, string> = {
           </div>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {tools.map((tool) => {
-              const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-              const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
               return (
                 <a
                   href={`/${lang}/tools/${tool.id}/`}
@@ -205,9 +201,9 @@ const categoryAccents: Record<string, string> = {
                   </span>
                   <div class="min-w-0">
                     <h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">
-                      {t(lang, nameKey)}
+                      {t(lang, getToolNameKey(tool.id))}
                     </h3>
-                    <p class="mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2">{t(lang, descKey)}</p>
+                    <p class="mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2">{t(lang, getToolDescKey(tool.id))}</p>
                   </div>
                   <svg class="absolute right-3 top-4 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -377,4 +373,5 @@ const categoryAccents: Record<string, string> = {
 
   initHomeFavorites()
   document.addEventListener('astro:page-load', initHomeFavorites)
+  window.addEventListener('favorites-updated', initHomeFavorites)
 </script>

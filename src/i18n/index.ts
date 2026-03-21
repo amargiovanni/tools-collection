@@ -79,3 +79,15 @@ export function getCategoryName(lang: Language, categoryId: string): string {
   if (!key) return categoryId
   return t(lang, key)
 }
+
+function toolIdToCamel(id: string): string {
+  return id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())
+}
+
+export function getToolNameKey(toolId: string): MessageKey {
+  return `tools_${toolIdToCamel(toolId)}_name` as MessageKey
+}
+
+export function getToolDescKey(toolId: string): MessageKey {
+  return `tools_${toolIdToCamel(toolId)}_description` as MessageKey
+}

@@ -1,4 +1,5 @@
-const STORAGE_KEY = 'favorite-tools'
+export const STORAGE_KEY = 'favorite-tools'
+export const FAVORITES_UPDATED_EVENT = 'favorites-updated'
 
 export function getFavorites(): readonly string[] {
   try {
@@ -29,5 +30,6 @@ export function toggleFavorite(toolId: string): boolean {
   } catch {
     return index === -1 ? false : true
   }
+  window.dispatchEvent(new CustomEvent(FAVORITES_UPDATED_EVENT))
   return index === -1
 }

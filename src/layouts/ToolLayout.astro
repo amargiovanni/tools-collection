@@ -2,8 +2,8 @@
 import BaseLayout from './BaseLayout.astro'
 import Sidebar from '../components/Sidebar.astro'
 import BrandMark from '../components/BrandMark.astro'
-import { t, getOtherLanguages, languageNames } from '../i18n'
-import type { Language, MessageKey } from '../i18n'
+import { t, getOtherLanguages, languageNames, getToolNameKey, getToolDescKey } from '../i18n'
+import type { Language } from '../i18n'
 import type { ToolMeta } from '../config/tools'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
 
@@ -14,10 +14,8 @@ interface Props {
 
 const { tool, lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
-const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
-const toolName = t(lang, nameKey)
-const toolDesc = t(lang, descKey)
+const toolName = t(lang, getToolNameKey(tool.id))
+const toolDesc = t(lang, getToolDescKey(tool.id))
 const currentPath = Astro.url.pathname
 ---
 

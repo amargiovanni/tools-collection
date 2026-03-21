@@ -1,7 +1,7 @@
 ---
 import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
-import { t, getCategoryName } from '../i18n'
-import type { Language, MessageKey } from '../i18n'
+import { t, getCategoryName, getToolNameKey } from '../i18n'
+import type { Language } from '../i18n'
 
 interface Props {
   lang: Language
@@ -13,8 +13,7 @@ const { lang, currentPath } = Astro.props
 const toolNames: Record<string, string> = {}
 const toolIcons: Record<string, string> = {}
 for (const tool of toolRegistry) {
-  const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-  toolNames[tool.id] = t(lang, nameKey)
+  toolNames[tool.id] = t(lang, getToolNameKey(tool.id))
   toolIcons[tool.id] = tool.icon
 }
 ---
@@ -40,7 +39,6 @@ for (const tool of toolRegistry) {
           {tools.map((tool) => {
             const href = `/${lang}/tools/${tool.id}/`
             const isActive = currentPath === href
-            const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
             return (
               <li>
                 <a
@@ -54,7 +52,7 @@ for (const tool of toolRegistry) {
                   aria-current={isActive ? 'page' : undefined}
                 >
                   <span class="text-base" aria-hidden="true">{tool.icon}</span>
-                  {t(lang, nameKey)}
+                  {t(lang, getToolNameKey(tool.id))}
                 </a>
               </li>
             )
@@ -122,4 +120,5 @@ for (const tool of toolRegistry) {
 
   initSidebarFavorites()
   document.addEventListener('astro:page-load', initSidebarFavorites)
+  window.addEventListener('favorites-updated', initSidebarFavorites)
 </script>

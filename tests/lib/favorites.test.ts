@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { getFavorites, isFavorite, toggleFavorite } from '../../src/lib/favorites'
+import { getFavorites, isFavorite, toggleFavorite, FAVORITES_UPDATED_EVENT } from '../../src/lib/favorites'
 
 describe('favorites', () => {
   beforeEach(() => {
@@ -77,12 +77,39 @@ describe('favorites', () => {
       vi.restoreAllMocks()
     })
 
-    it('toggleFavorite handles localStorage.setItem throwing', () => {
+    it('toggleFavorite handles setItem throwing on add', () => {
       vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota') })
-      // Should not throw, returns the intended state
       const result = toggleFavorite('json-formatter')
-      // When setItem fails on add, returns false (failed to add)
       expect(result).toBe(false)
+      vi.restoreAllMocks()
+    })
+
+    it('toggleFavorite handles setItem throwing on removal', () => {
+      localStorage.setItem('favorite-tools', JSON.stringify(['json-formatter']))
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota') })
+      const result = toggleFavorite('json-formatter')
+      // When setItem fails on remove, returns true (item still present)
+      expect(result).toBe(true)
+      vi.restoreAllMocks()
+    })
+  })
+
+  describe('event dispatch', () => {
+    it('dispatches favorites-updated event on successful toggle', () => {
+      const handler = vi.fn()
+      window.addEventListener(FAVORITES_UPDATED_EVENT, handler)
+      toggleFavorite('json-formatter')
+      expect(handler).toHaveBeenCalledOnce()
+      window.removeEventListener(FAVORITES_UPDATED_EVENT, handler)
+    })
+
+    it('does not dispatch event when setItem fails', () => {
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota') })
+      const handler = vi.fn()
+      window.addEventListener(FAVORITES_UPDATED_EVENT, handler)
+      toggleFavorite('json-formatter')
+      expect(handler).not.toHaveBeenCalled()
+      window.removeEventListener(FAVORITES_UPDATED_EVENT, handler)
       vi.restoreAllMocks()
     })
   })
