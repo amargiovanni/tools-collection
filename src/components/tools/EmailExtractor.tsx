@@ -1,4 +1,5 @@
-import { createSignal } from 'solid-js'
+import { createSignal, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { TextArea } from '../ui/TextArea'
 import { Checkbox } from '../ui/Checkbox'
 import { Button } from '../ui/Button'
@@ -19,6 +20,21 @@ export default function EmailExtractor(props: Props) {
   const [output, setOutput] = createSignal('')
   const [count, setCount] = createSignal(0)
   const [error, setError] = createSignal<string | null>(null)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.input === 'string') setInput(saved.input)
+      if (typeof saved.removeDuplicates === 'boolean') setRemoveDuplicates(saved.removeDuplicates)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { input: input(), removeDuplicates: removeDuplicates() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const handleExtract = () => {
     const result = extractEmails(input(), removeDuplicates())

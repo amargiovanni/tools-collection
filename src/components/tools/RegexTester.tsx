@@ -1,4 +1,5 @@
-import { createSignal, Show, For } from 'solid-js'
+import { createSignal, Show, For, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { TextArea } from '../ui/TextArea'
 import { Checkbox } from '../ui/Checkbox'
@@ -21,6 +22,24 @@ export default function RegexTester(props: Props) {
   const [flagCase, setFlagCase] = createSignal(false)
   const [flagMultiline, setFlagMultiline] = createSignal(false)
   const [matches, setMatches] = createSignal<RegexMatch[]>([])
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.pattern === 'string') setPattern(saved.pattern)
+      if (typeof saved.testText === 'string') setTestText(saved.testText)
+      if (typeof saved.flagGlobal === 'boolean') setFlagGlobal(saved.flagGlobal)
+      if (typeof saved.flagCase === 'boolean') setFlagCase(saved.flagCase)
+      if (typeof saved.flagMultiline === 'boolean') setFlagMultiline(saved.flagMultiline)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { pattern: pattern(), testText: testText(), flagGlobal: flagGlobal(), flagCase: flagCase(), flagMultiline: flagMultiline() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
   const [error, setError] = createSignal<string | null>(null)
   const [tested, setTested] = createSignal(false)
 

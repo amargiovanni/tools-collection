@@ -1,4 +1,5 @@
-import { createSignal } from 'solid-js'
+import { createSignal, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { TextArea } from '../ui/TextArea'
 import { Input } from '../ui/Input'
 import { Checkbox } from '../ui/Checkbox'
@@ -22,6 +23,22 @@ export default function RemoveLinesContaining(props: Props) {
   const [removed, setRemoved] = createSignal(0)
   const [kept, setKept] = createSignal(0)
   const [error, setError] = createSignal<string | null>(null)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.input === 'string') setInput(saved.input)
+      if (typeof saved.termsInput === 'string') setTermsInput(saved.termsInput)
+      if (typeof saved.caseSensitive === 'boolean') setCaseSensitive(saved.caseSensitive)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { input: input(), termsInput: termsInput(), caseSensitive: caseSensitive() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const handleRemove = () => {
     const terms = termsInput()
