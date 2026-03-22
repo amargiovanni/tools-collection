@@ -33,7 +33,7 @@ Three layers of work:
 
 ```
 src/lib/share.ts                    core encode/decode logic
-src/components/ui/ShareButton.tsx   UI button, copy-to-clipboard
+src/components/ui/ShareButton.tsx   UI button, copy-to-clipboard (Solid.js island)
 each tool component                 exposes current state + reads ?s= on mount
 ```
 
@@ -67,102 +67,127 @@ The `v` version field allows future schema migrations without breaking existing 
 6. Return `envelope.state`
 7. On any error (corrupt data, wrong version, JSON parse fail) → return `null`, never throw
 
+> **Environment note:** `CompressionStream` / `DecompressionStream` are Web APIs available natively in Node.js 18+. Unit tests for `share.ts` must run in the `node` environment (default in this project's Vitest config). Do not run these tests in jsdom.
+
 ---
 
 ## `src/components/ui/ShareButton.tsx`
 
-- React island, placed in `ToolLayout.astro` header next to the favorites star button
-- Props: none (state is fetched via custom event)
+**Framework: Solid.js** (consistent with all other island components in the codebase).
+
+- Solid.js island, placed in `ToolLayout.astro` header next to the favorites star button
 - On click:
   1. Dispatches `tool-state-request` custom event on `window`
-  2. Awaits `tool-state-response` event (timeout: 200ms; if no response → no-op)
-  3. Calls `encodeState(detail.state)`
-  4. Builds URL: `location.href` with `?s=<encoded>` (replaces existing `s` param if present)
-  5. Writes URL to clipboard via `navigator.clipboard.writeText()`
-  6. Shows check-mark feedback for 2s (same pattern as existing `CopyButton`)
+  2. Awaits `tool-state-response` event with a 200ms timeout
+  3. If no response received within 200ms → the tool is not yet wired; button shows a brief "Not available" feedback (1.5s) and does nothing else
+  4. On response: calls `encodeState(detail.state)`
+  5. Builds URL: `location.href` with `?s=<encoded>` (replaces existing `s` param if present)
+  6. Writes URL to clipboard via `navigator.clipboard.writeText()`
+  7. Shows check-mark feedback for **1.5s** (matching `CopyButton` exactly)
+
+**i18n keys required** (add to all 5 locale files: en, it, es, fr, de):
+- `share_copy` — button label / aria-label ("Share", "Condividi", etc.)
+- `share_copied` — feedback after successful copy ("Copied!", "Copiato!", etc.)
+- `share_unavailable` — feedback when tool is not wired ("Not available", "Non disponibile", etc.)
 
 ---
 
 ## Per-Tool State Wiring
 
-Each tool component gains two behaviours:
+**Framework: Solid.js.** All tool components use `createSignal`, `onMount`, `onCleanup`, `createEffect` — not React hooks.
+
+Each tool gains two behaviours:
 
 ### 1. Read state from URL on mount
 
 ```ts
-useEffect(() => {
+// Solid.js pattern
+onMount(async () => {
   const param = new URLSearchParams(location.search).get('s')
-  decodeState(param).then(saved => {
-    if (saved) applyState(saved) // apply recognised fields, ignore unknown ones
-  })
-}, [])
+  const saved = await decodeState(param)
+  if (saved) applyState(saved) // apply recognised fields, ignore unknown
+})
 ```
 
-`applyState` applies only fields the tool recognises; unknown keys are silently ignored. This ensures forward/backward compatibility when tool options change.
+`applyState` uses the tool's existing setters (e.g. `setInput`, `setMode`). Unknown keys in `saved` are silently ignored, ensuring forward/backward compatibility.
 
 ### 2. Respond to state requests
 
 ```ts
-useEffect(() => {
+// Solid.js pattern — signals are read inside the handler at call time,
+// so there is no stale-closure risk (Solid tracks reactivity at read time).
+onMount(() => {
   const handler = () => {
     window.dispatchEvent(new CustomEvent('tool-state-response', {
-      detail: { state: getCurrentState() }
+      detail: { state: { /* read signals here, e.g. input(), mode() */ } }
     }))
   }
   window.addEventListener('tool-state-request', handler)
-  return () => window.removeEventListener('tool-state-request', handler)
-}, [getCurrentState])
+  onCleanup(() => window.removeEventListener('tool-state-request', handler))
+})
 ```
 
-`getCurrentState()` returns only fields needed to reproduce the result: input text, configuration options. Not transient UI state (loading flags, error messages, focus).
+State to serialize: only fields needed to reproduce the result (input text, configuration). Not transient UI state (loading flags, error messages).
 
 ---
 
 ## Roll-out Plan
 
-Not all 28 tools need wiring in the first PR. Phase 1 covers the highest-traffic tools:
+Phase 1 covers the highest-traffic tools. The state fields below reflect **the actual signals** present in each component:
 
 | Tool | State fields |
 |------|-------------|
 | `json-formatter` | `input`, `indent` |
-| `base64` | `input`, `mode` (encode/decode) |
+| `base64` | `input` only (no mode signal — encode/decode are separate buttons) |
 | `regex-tester` | `pattern`, `flags`, `input` |
 | `diff-checker` | `left`, `right` |
-| `url-encoder` | `input`, `mode` |
-| `hash-generator` | `input`, `algorithm` |
+| `url-encoder` | `input` only (no mode signal — encode/decode/encodeComponent are separate buttons) |
+| `hash-generator` | `input` only (all three algorithms run simultaneously, no selector) |
 
 Remaining tools can be wired incrementally in subsequent PRs.
+
+### Known behavior gap — language switcher
+
+The language switcher in `ToolLayout.astro` generates locale URLs without query parameters, so navigating between locales via the switcher will strip the `?s=` param. This is **accepted behavior** for v1.3.0. Adding `?s=` preservation to the language switcher is deferred to a future iteration.
 
 ---
 
 ## Testing
 
-### Unit (`tests/lib/share.test.ts`)
+### Unit (`tests/lib/share.test.ts`) — Node environment
 
 | Test | Expectation |
 |------|-------------|
-| Round-trip: short ASCII input | decode(encode(state)) deep-equals state |
+| Round-trip: short ASCII input | `decodeState(await encodeState(s))` deep-equals original state |
 | Round-trip: large input (10KB JSON) | same |
 | Round-trip: unicode / emoji | same |
-| Corrupt param | decodeState returns null, no throw |
-| Empty param | decodeState returns null |
-| Unknown version (`v: 999`) | decodeState returns null |
-| Partial state (subset of tool fields) | applyState applies known fields, ignores rest |
+| Corrupt base64 param | `decodeState` returns `null`, no throw |
+| Empty / null param | `decodeState` returns `null` |
+| Unknown version (`v: 999`) | `decodeState` returns `null` |
+
+### Per-tool unit tests (e.g. `tests/components/json-formatter.test.ts`)
+
+| Test | Expectation |
+|------|-------------|
+| `applyState` with full valid state | all recognised signals updated |
+| `applyState` with partial state (subset of fields) | known fields updated, rest unchanged |
+| `applyState` with unknown keys | known fields updated, unknown keys ignored without error |
 
 ### E2e (`e2e/share.spec.ts`)
 
 | Scenario | Steps |
 |----------|-------|
 | Share json-formatter | Open tool → enter input → click Share → open copied URL → verify input pre-populated |
-| Share base64 (encode mode) | Open tool → set input + mode → share → verify |
-| Corrupt `?s=` param | Navigate to tool with `?s=INVALID` → tool opens empty, no error shown |
+| Share regex-tester (with flags) | Open tool → set pattern + flags + input → share → verify all three fields |
+| Corrupt `?s=` param | Navigate to tool with `?s=INVALID` → tool opens empty, no error shown to user |
 | Share URL survives reload | Open pre-filled URL → reload → state preserved |
+| Unwired tool | Click Share on an unwired tool → "Not available" feedback shown, no URL copied |
 
 ---
 
 ## Out of Scope
 
-- Syncing shared state to other open tabs (not needed)
-- Server-side analytics on shared links (future consideration)
-- Expiry / revocation of shared links (no server, links are eternal)
-- Sharing across different locales (link works regardless of locale in URL)
+- Language switcher preserving `?s=` across locale switches (deferred — see Known behavior gap)
+- Syncing shared state to other open tabs
+- Server-side analytics on shared links
+- Expiry / revocation of shared links (links are eternal — no server)
