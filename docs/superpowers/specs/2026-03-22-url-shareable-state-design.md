@@ -139,7 +139,7 @@ Phase 1 covers the highest-traffic tools. The state fields below reflect **the a
 |------|-------------|
 | `json-formatter` | `input`, `indent` |
 | `base64` | `input` only (no mode signal — encode/decode are separate buttons) |
-| `regex-tester` | `pattern`, `flags`, `input` |
+| `regex-tester` | `pattern`, `testText`, `flagGlobal`, `flagCase`, `flagMultiline` (actual signal names in `RegexTester.tsx`) |
 | `diff-checker` | `left`, `right` |
 | `url-encoder` | `input` only (no mode signal — encode/decode/encodeComponent are separate buttons) |
 | `hash-generator` | `input` only (all three algorithms run simultaneously, no selector) |
