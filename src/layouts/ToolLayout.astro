@@ -156,7 +156,7 @@ const currentPath = Astro.url.pathname
               ✕
             </button>
           </div>
-          <Sidebar lang={lang} currentPath={currentPath} />
+          <Sidebar lang={lang} currentPath={currentPath} mobile />
         </aside>
       </div>
 
@@ -229,10 +229,13 @@ const currentPath = Astro.url.pathname
 
         updateFavIcon()
 
-        favBtn.addEventListener('click', () => {
-          toggleFavorite(toolId)
-          updateFavIcon()
-        })
+        if (favBtn.dataset['favBound'] !== 'true') {
+          favBtn.dataset['favBound'] = 'true'
+          favBtn.addEventListener('click', () => {
+            toggleFavorite(toolId)
+            updateFavIcon()
+          })
+        }
       }
 
       const searchTrigger = document.getElementById('tool-search-trigger')

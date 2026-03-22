@@ -6,9 +6,10 @@ import type { Language } from '../i18n'
 interface Props {
   lang: Language
   currentPath?: string
+  mobile?: boolean
 }
 
-const { lang, currentPath } = Astro.props
+const { lang, currentPath, mobile = false } = Astro.props
 
 const toolNames: Record<string, string> = {}
 const toolIcons: Record<string, string> = {}
@@ -20,11 +21,11 @@ for (const tool of toolRegistry) {
 
 <nav class="flex flex-col gap-4 py-4" aria-label="Tool navigation">
   <!-- Favorites section (populated client-side) -->
-  <div id="sidebar-favorites" class="hidden" data-lang={lang} data-current-path={currentPath}>
+  <div id={!mobile ? 'sidebar-favorites' : undefined} data-favorites-section class="hidden" data-lang={lang} data-current-path={currentPath}>
     <h3 class="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-amber-500 dark:text-amber-400">
       ⭐ {t(lang, 'favorites_title')}
     </h3>
-    <ul id="sidebar-favorites-list" class="flex flex-col gap-0.5"></ul>
+    <ul id={!mobile ? 'sidebar-favorites-list' : undefined} data-favorites-list class="flex flex-col gap-0.5"></ul>
     <div class="mb-2 border-b border-border"></div>
   </div>
 
@@ -65,12 +66,10 @@ for (const tool of toolRegistry) {
 
 <!-- Sidebar favorites hydration -->
 <script define:vars={{ toolNames, toolIcons }} is:inline>
-  function initSidebarFavorites() {
-    var section = document.getElementById('sidebar-favorites')
-    if (!section) return
+  function updateFavoritesSection(section) {
     var lang = section.dataset.lang
     var currentPath = section.dataset.currentPath
-    var list = document.getElementById('sidebar-favorites-list')
+    var list = section.querySelector('[data-favorites-list]')
     if (!list) return
 
     var raw = localStorage.getItem('favorite-tools')
@@ -116,6 +115,10 @@ for (const tool of toolRegistry) {
     } catch (e) {
       section.classList.add('hidden')
     }
+  }
+
+  function initSidebarFavorites() {
+    document.querySelectorAll('[data-favorites-section]').forEach(updateFavoritesSection)
   }
 
   initSidebarFavorites()
