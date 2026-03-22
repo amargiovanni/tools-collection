@@ -52,6 +52,14 @@ describe('parseCsv', () => {
     expect(parseCsv('').ok).toBe(false)
     expect(parseCsv('   ').ok).toBe(false)
   })
+
+  it('handles quoted fields containing newlines (RFC 4180)', () => {
+    const result = parseCsv('id,comment\n1,"This is a\nmultiline comment."')
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    expect(result.rowCount).toBe(1)
+    expect(result.rows[0]!).toEqual(['1', 'This is a\nmultiline comment.'])
+  })
 })
 
 describe('sortRows', () => {

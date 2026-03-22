@@ -46,24 +46,60 @@ export function parseCsv(input: string): CsvResult {
   const text = input.trim()
   if (!text) return { ok: false, error: 'Empty input' }
 
-  const lines = text.split(/\r?\n/).filter((l) => l.trim() !== '')
-  if (lines.length < 1) return { ok: false, error: 'No data found' }
+  const firstNewlineIdx = text.indexOf('\n')
+  const firstLine = firstNewlineIdx === -1 ? text : text.slice(0, firstNewlineIdx)
+  const delimiter = detectDelimiter(firstLine)
 
-  const delimiter = detectDelimiter(lines[0]!)
-  const headers = parseLine(lines[0]!, delimiter)
+  // Character-by-character scan so quoted fields containing newlines are handled correctly
+  const rows: string[][] = []
+  let cells: string[] = []
+  let current = ''
+  let inQuotes = false
 
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]!
+    if (ch === '"') {
+      if (inQuotes && text[i + 1] === '"') {
+        current += '"'
+        i++
+      } else {
+        inQuotes = !inQuotes
+      }
+    } else if (ch === delimiter && !inQuotes) {
+      cells.push(current)
+      current = ''
+    } else if (ch === '\r' && !inQuotes) {
+      if (text[i + 1] === '\n') i++
+      cells.push(current)
+      current = ''
+      if (cells.some((c) => c.trim() !== '')) rows.push(cells)
+      cells = []
+    } else if (ch === '\n' && !inQuotes) {
+      cells.push(current)
+      current = ''
+      if (cells.some((c) => c.trim() !== '')) rows.push(cells)
+      cells = []
+    } else {
+      current += ch
+    }
+  }
+
+  cells.push(current)
+  if (cells.some((c) => c.trim() !== '')) rows.push(cells)
+
+  if (rows.length < 1) return { ok: false, error: 'No data found' }
+
+  const headers = rows[0]!
   if (headers.length === 0 || (headers.length === 1 && headers[0] === '')) {
     return { ok: false, error: 'Could not detect columns' }
   }
 
-  const rows = lines.slice(1).map((line) => {
-    const cells = parseLine(line, delimiter)
-    // Pad short rows, trim long ones
-    while (cells.length < headers.length) cells.push('')
-    return cells.slice(0, headers.length) as string[]
+  const dataRows = rows.slice(1).map((rowCells) => {
+    while (rowCells.length < headers.length) rowCells.push('')
+    return rowCells.slice(0, headers.length) as string[]
   })
 
-  return { ok: true, headers, rows, rowCount: rows.length }
+  return { ok: true, headers, rows: dataRows, rowCount: dataRows.length }
 }
 
 export type SortDirection = 'asc' | 'desc' | null
