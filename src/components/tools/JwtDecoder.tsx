@@ -83,6 +83,7 @@ export default function JwtDecoder(props: Props) {
                     : t(props.lang, 'jwt_expiredAgo').replace('{time}', timeStr)
                   return (
                     <div
+                      data-testid="expiry-badge"
                       class={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold w-fit ${
                         isValid
                           ? 'bg-green-500/10 text-green-600 dark:text-green-400'

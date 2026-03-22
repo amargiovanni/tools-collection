@@ -85,10 +85,11 @@ export default function NumberBaseConverter(props: Props) {
         const hasError = () => errors().has(field.base)
         return (
           <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-text-primary">
+            <label for={`base-${field.base}`} class="text-sm font-medium text-text-primary">
               {t(props.lang, field.labelKey)}
             </label>
             <input
+              id={`base-${field.base}`}
               type="text"
               value={field.signal()}
               placeholder={t(props.lang, field.hintKey)}
