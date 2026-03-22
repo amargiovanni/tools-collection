@@ -286,6 +286,16 @@
   "tools_xmlBeautifier_valid": "XML válido",
   "tools_xmlBeautifier_invalid": "XML no válido",
 
+  "tools_cronExpression_name": "Analizador de expresiones cron",
+  "tools_cronExpression_description": "Explica expresiones cron de 5 campos y atajos comunes",
+  "tools_cronExpression_inputLabel": "Expresion cron:",
+  "tools_cronExpression_placeholder": "*/15 * * * *",
+  "tools_cronExpression_fieldMinute": "Minuto",
+  "tools_cronExpression_fieldHour": "Hora",
+  "tools_cronExpression_fieldDayOfMonth": "Dia del mes",
+  "tools_cronExpression_fieldMonth": "Mes",
+  "tools_cronExpression_fieldDayOfWeek": "Dia de la semana",
+
   "tools_colorPicker_name": "Selector/Conversor de colores",
   "tools_colorPicker_description": "Selecciona colores y convierte entre formatos",
   "tools_colorPicker_inputLabel": "O introduce un color:",
@@ -396,6 +406,7 @@
   "errors_INVALID_COLOR": "Formato de color no válido",
   "errors_INVALID_TIMESTAMP": "Marca de tiempo no válida",
   "errors_INVALID_TIME_VALUE": "Valor de tiempo no válido",
+  "errors_INVALID_CRON": "Expresión cron no válida",
   "errors_INVALID_SIZE_VALUE": "Valor de tamaño de datos no válido",
   "errors_INVALID_REG_FILE": "Archivo de registro no válido",
   "errors_NO_CHARSET": "Selecciona al menos un conjunto de caracteres",
@@ -409,4 +420,3 @@
   "favorites_add": "Agregar a favoritos",
   "favorites_remove": "Quitar de favoritos"
 }
-
