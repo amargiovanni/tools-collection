@@ -1,4 +1,5 @@
-import { createSignal, Show } from 'solid-js'
+import { createSignal, Show, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { TextArea } from '../ui/TextArea'
 import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -17,6 +18,20 @@ export default function HashGenerator(props: Props) {
   const [result, setResult] = createSignal<HashResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
   const [loading, setLoading] = createSignal(false)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.input === 'string') setInput(saved.input)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { input: input() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const handleGenerate = async () => {
     if (input().trim() === '') {
