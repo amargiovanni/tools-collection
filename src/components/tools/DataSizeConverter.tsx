@@ -1,4 +1,5 @@
-import { createSignal, Show } from 'solid-js'
+import { createSignal, Show, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
@@ -18,6 +19,21 @@ export default function DataSizeConverter(props: Props) {
   const [unit, setUnit] = createSignal<DataSizeUnit>('GiB')
   const [result, setResult] = createSignal<DataSizeResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.input === 'string') setInput(saved.input)
+      if (typeof saved.unit === 'string') setUnit(saved.unit as DataSizeUnit)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { input: input(), unit: unit() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const unitOptions = () => [
     { value: 'b', label: t(props.lang, 'tools_dataSizeConverter_unitBit') },

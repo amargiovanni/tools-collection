@@ -1,4 +1,5 @@
-import { createSignal } from 'solid-js'
+import { createSignal, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Select } from '../ui/Select'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
@@ -18,6 +19,21 @@ export default function UsernameGenerator(props: Props) {
   const [count, setCount] = createSignal(10)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.style === 'string') setStyle(saved.style as UsernameStyle)
+      if (typeof saved.count === 'number') setCount(saved.count)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { style: style(), count: count() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const styleOptions = () => [
     { value: 'random', label: t(props.lang, 'tools_usernameGenerator_styleRandom') },

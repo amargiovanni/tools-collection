@@ -1,4 +1,5 @@
-import { For, Show, createSignal } from 'solid-js'
+import { For, Show, createSignal, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { Select } from '../ui/Select'
@@ -325,6 +326,26 @@ export default function CronExpression(props: Props) {
   const [builderStep, setBuilderStep] = createSignal('15')
   const [builderDayOfWeek, setBuilderDayOfWeek] = createSignal('1')
   const [builderDayOfMonth, setBuilderDayOfMonth] = createSignal('1')
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.input === 'string') setInput(saved.input)
+      if (typeof saved.builderMode === 'string') setBuilderMode(saved.builderMode as BuilderMode)
+      if (typeof saved.builderMinute === 'string') setBuilderMinute(saved.builderMinute)
+      if (typeof saved.builderHour === 'string') setBuilderHour(saved.builderHour)
+      if (typeof saved.builderStep === 'string') setBuilderStep(saved.builderStep)
+      if (typeof saved.builderDayOfWeek === 'string') setBuilderDayOfWeek(saved.builderDayOfWeek)
+      if (typeof saved.builderDayOfMonth === 'string') setBuilderDayOfMonth(saved.builderDayOfMonth)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { input: input(), builderMode: builderMode(), builderMinute: builderMinute(), builderHour: builderHour(), builderStep: builderStep(), builderDayOfWeek: builderDayOfWeek(), builderDayOfMonth: builderDayOfMonth() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const explainExpression = (expression: string) => {
     const parsed = parseCronExpression(expression)

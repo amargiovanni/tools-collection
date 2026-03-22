@@ -1,4 +1,5 @@
-import { createSignal, Show } from 'solid-js'
+import { createSignal, Show, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -23,6 +24,23 @@ export default function ColorPicker(props: Props) {
   const [pickerValue, setPickerValue] = createSignal('#3B82F6')
   const [result, setResult] = createSignal<ColorResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.colorInput === 'string') {
+        setColorInput(saved.colorInput)
+        setPickerValue(saved.colorInput)
+      }
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { colorInput: colorInput() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const handleConvert = (value?: string) => {
     const input = value ?? colorInput()

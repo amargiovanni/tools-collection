@@ -1,4 +1,5 @@
-import { createSignal, createEffect, Show, For } from 'solid-js'
+import { createSignal, createEffect, Show, For, onMount, onCleanup } from 'solid-js'
+import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Badge } from '../ui/Badge'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -28,6 +29,20 @@ export default function PasswordStrength(props: Props) {
   const [showPassword, setShowPassword] = createSignal(false)
   const [result, setResult] = createSignal<StrengthResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
+
+  onMount(async () => {
+    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    if (saved) {
+      if (typeof saved.password === 'string') setPassword(saved.password)
+    }
+    const handler = () => {
+      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
+        detail: { state: { password: password() } },
+      }))
+    }
+    window.addEventListener(TOOL_STATE_REQUEST, handler)
+    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+  })
 
   const levelLabel = (level: string): string => {
     if (level === 'weak') return t(props.lang, 'tools_passwordStrength_weak')
