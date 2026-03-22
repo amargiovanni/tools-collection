@@ -2,8 +2,8 @@
 import BaseLayout from './BaseLayout.astro'
 import Sidebar from '../components/Sidebar.astro'
 import BrandMark from '../components/BrandMark.astro'
-import { t, getOtherLanguages, languageNames } from '../i18n'
-import type { Language, MessageKey } from '../i18n'
+import { t, getOtherLanguages, languageNames, getToolNameKey, getToolDescKey } from '../i18n'
+import type { Language } from '../i18n'
 import type { ToolMeta } from '../config/tools'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
 
@@ -14,10 +14,8 @@ interface Props {
 
 const { tool, lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
-const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
-const toolName = t(lang, nameKey)
-const toolDesc = t(lang, descKey)
+const toolName = t(lang, getToolNameKey(tool.id))
+const toolDesc = t(lang, getToolDescKey(tool.id))
 const currentPath = Astro.url.pathname
 ---
 
@@ -59,6 +57,24 @@ const currentPath = Astro.url.pathname
           <h1 class="text-lg font-semibold text-text-primary" tabindex="-1" id="tool-heading">
             {toolName}
           </h1>
+          <button
+            type="button"
+            id="favorite-toggle"
+            data-tool-id={tool.id}
+            data-add-label={t(lang, 'favorites_add')}
+            data-remove-label={t(lang, 'favorites_remove')}
+            class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:text-amber-500 cursor-pointer"
+            aria-label={t(lang, 'favorites_add')}
+          >
+            <!-- Empty star (not favorite) -->
+            <svg id="fav-icon-empty" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+            <!-- Filled star (favorite) -->
+            <svg id="fav-icon-filled" class="h-5 w-5 hidden text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+          </button>
         </div>
 
         <div class="ml-auto flex items-center gap-2">
@@ -140,7 +156,7 @@ const currentPath = Astro.url.pathname
               ✕
             </button>
           </div>
-          <Sidebar lang={lang} currentPath={currentPath} />
+          <Sidebar lang={lang} currentPath={currentPath} mobile />
         </aside>
       </div>
 
@@ -167,6 +183,8 @@ const currentPath = Astro.url.pathname
 
   <!-- Mobile menu + focus management -->
   <script>
+    import { isFavorite, toggleFavorite } from '../lib/favorites'
+
     function initToolLayout() {
       // Mobile menu
       const toggle = document.getElementById('mobile-menu-toggle')
@@ -189,6 +207,36 @@ const currentPath = Astro.url.pathname
       // Focus tool heading on navigation
       const heading = document.getElementById('tool-heading')
       if (heading) heading.focus()
+
+      // Favorite toggle
+      const favBtn = document.getElementById('favorite-toggle')
+      if (favBtn) {
+        const toolId = favBtn.dataset.toolId ?? ''
+        const addLabel = favBtn.dataset.addLabel ?? ''
+        const removeLabel = favBtn.dataset.removeLabel ?? ''
+        const iconEmpty = document.getElementById('fav-icon-empty')
+        const iconFilled = document.getElementById('fav-icon-filled')
+
+        function updateFavIcon() {
+          const isFav = isFavorite(toolId)
+          if (iconEmpty && iconFilled) {
+            iconEmpty.classList.toggle('hidden', isFav)
+            iconFilled.classList.toggle('hidden', !isFav)
+          }
+          favBtn!.setAttribute('aria-label', isFav ? removeLabel : addLabel)
+          favBtn!.setAttribute('title', isFav ? removeLabel : addLabel)
+        }
+
+        updateFavIcon()
+
+        if (favBtn.dataset['favBound'] !== 'true') {
+          favBtn.dataset['favBound'] = 'true'
+          favBtn.addEventListener('click', () => {
+            toggleFavorite(toolId)
+            updateFavIcon()
+          })
+        }
+      }
 
       const searchTrigger = document.getElementById('tool-search-trigger')
       if (searchTrigger && searchTrigger.dataset.bound !== 'true') {

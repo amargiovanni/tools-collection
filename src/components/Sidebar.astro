@@ -1,17 +1,34 @@
 ---
-import { categories, getToolsByCategory } from '../config/tools'
-import { t, getCategoryName } from '../i18n'
-import type { Language, MessageKey } from '../i18n'
+import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
+import { t, getCategoryName, getToolNameKey } from '../i18n'
+import type { Language } from '../i18n'
 
 interface Props {
   lang: Language
   currentPath?: string
+  mobile?: boolean
 }
 
-const { lang, currentPath } = Astro.props
+const { lang, currentPath, mobile = false } = Astro.props
+
+const toolNames: Record<string, string> = {}
+const toolIcons: Record<string, string> = {}
+for (const tool of toolRegistry) {
+  toolNames[tool.id] = t(lang, getToolNameKey(tool.id))
+  toolIcons[tool.id] = tool.icon
+}
 ---
 
 <nav class="flex flex-col gap-4 py-4" aria-label="Tool navigation">
+  <!-- Favorites section (populated client-side) -->
+  <div id={!mobile ? 'sidebar-favorites' : undefined} data-favorites-section class="hidden" data-lang={lang} data-current-path={currentPath}>
+    <h3 class="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-amber-500 dark:text-amber-400">
+      ⭐ {t(lang, 'favorites_title')}
+    </h3>
+    <ul id={!mobile ? 'sidebar-favorites-list' : undefined} data-favorites-list class="flex flex-col gap-0.5"></ul>
+    <div class="mb-2 border-b border-border"></div>
+  </div>
+
   {categories.map((cat) => {
     const tools = getToolsByCategory(cat)
     return (
@@ -23,7 +40,6 @@ const { lang, currentPath } = Astro.props
           {tools.map((tool) => {
             const href = `/${lang}/tools/${tool.id}/`
             const isActive = currentPath === href
-            const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
             return (
               <li>
                 <a
@@ -37,7 +53,7 @@ const { lang, currentPath } = Astro.props
                   aria-current={isActive ? 'page' : undefined}
                 >
                   <span class="text-base" aria-hidden="true">{tool.icon}</span>
-                  {t(lang, nameKey)}
+                  {t(lang, getToolNameKey(tool.id))}
                 </a>
               </li>
             )
@@ -47,3 +63,65 @@ const { lang, currentPath } = Astro.props
     )
   })}
 </nav>
+
+<!-- Sidebar favorites hydration -->
+<script define:vars={{ toolNames, toolIcons }} is:inline>
+  function updateFavoritesSection(section) {
+    var lang = section.dataset.lang
+    var currentPath = section.dataset.currentPath
+    var list = section.querySelector('[data-favorites-list]')
+    if (!list) return
+
+    var raw = localStorage.getItem('favorite-tools')
+    if (!raw) { section.classList.add('hidden'); return }
+
+    try {
+      var favIds = JSON.parse(raw)
+      if (!Array.isArray(favIds) || favIds.length === 0) { section.classList.add('hidden'); return }
+
+      list.innerHTML = ''
+      var count = 0
+      for (var i = 0; i < favIds.length; i++) {
+        var id = favIds[i]
+        if (typeof id !== 'string') continue
+        var name = toolNames[id]
+        var icon = toolIcons[id]
+        if (!name) continue
+        count++
+        var href = '/' + lang + '/tools/' + id + '/'
+        var isActive = currentPath === href
+        var li = document.createElement('li')
+        var a = document.createElement('a')
+        a.href = href
+        a.className = isActive
+          ? 'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors bg-accent-light text-accent font-medium'
+          : 'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+        if (isActive) a.setAttribute('aria-current', 'page')
+        var span = document.createElement('span')
+        span.className = 'text-base'
+        span.setAttribute('aria-hidden', 'true')
+        span.textContent = icon
+        a.appendChild(span)
+        a.appendChild(document.createTextNode(name))
+        li.appendChild(a)
+        list.appendChild(li)
+      }
+
+      if (count > 0) {
+        section.classList.remove('hidden')
+      } else {
+        section.classList.add('hidden')
+      }
+    } catch (e) {
+      section.classList.add('hidden')
+    }
+  }
+
+  function initSidebarFavorites() {
+    document.querySelectorAll('[data-favorites-section]').forEach(updateFavoritesSection)
+  }
+
+  initSidebarFavorites()
+  document.addEventListener('astro:page-load', initSidebarFavorites)
+  window.addEventListener('favorites-updated', initSidebarFavorites)
+</script>

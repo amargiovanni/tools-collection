@@ -1,8 +1,8 @@
 import { createSignal, createEffect, For, Show, onMount, onCleanup } from 'solid-js'
 import Fuse from 'fuse.js'
 import { toolRegistry } from '../config/tools'
-import { t, getCategoryName } from '../i18n'
-import type { Language, MessageKey } from '../i18n'
+import { t, getCategoryName, getToolNameKey, getToolDescKey } from '../i18n'
+import type { Language } from '../i18n'
 import type { ToolMeta } from '../config/tools'
 
 interface Props {
@@ -21,12 +21,10 @@ interface SearchItem {
 
 function buildSearchItems(lang: Language): SearchItem[] {
   return toolRegistry.map((tool) => {
-    const nameKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_name` as MessageKey
-    const descKey = `tools_${tool.id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())}_description` as MessageKey
     return {
       id: tool.id,
-      name: t(lang, nameKey),
-      description: t(lang, descKey),
+      name: t(lang, getToolNameKey(tool.id)),
+      description: t(lang, getToolDescKey(tool.id)),
       category: getCategoryName(lang, tool.category),
       icon: tool.icon,
       path: `/${lang}/tools/${tool.id}/`,

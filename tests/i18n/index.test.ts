@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { t, translateError, getLanguageFromPath, getOtherLanguages, getCategoryName, languages, defaultLanguage, languageNames } from '../../src/i18n'
+import { t, translateError, getLanguageFromPath, getOtherLanguages, getCategoryName, getToolNameKey, getToolDescKey, languages, defaultLanguage, languageNames } from '../../src/i18n'
 import type { Language } from '../../src/i18n'
 import enMessages from '../../src/i18n/messages/en.json'
 import itMessages from '../../src/i18n/messages/it.json'
@@ -144,5 +144,33 @@ describe('getCategoryName', () => {
 
   it('returns category ID for unknown category', () => {
     expect(getCategoryName('en', 'unknown-category')).toBe('unknown-category')
+  })
+})
+
+describe('getToolNameKey / getToolDescKey', () => {
+  it('converts kebab-case tool ID to camelCase name key', () => {
+    expect(getToolNameKey('json-formatter')).toBe('tools_jsonFormatter_name')
+  })
+
+  it('converts kebab-case tool ID to camelCase description key', () => {
+    expect(getToolDescKey('json-formatter')).toBe('tools_jsonFormatter_description')
+  })
+
+  it('handles single-word tool IDs', () => {
+    expect(getToolNameKey('base64')).toBe('tools_base64_name')
+    expect(getToolDescKey('base64')).toBe('tools_base64_description')
+  })
+
+  it('handles multi-hyphen tool IDs', () => {
+    expect(getToolNameKey('add-text-to-lines')).toBe('tools_addTextToLines_name')
+  })
+
+  it('returns keys that resolve to valid translations', () => {
+    for (const lang of languages) {
+      const name = t(lang, getToolNameKey('json-formatter'))
+      const desc = t(lang, getToolDescKey('json-formatter'))
+      expect(name.length).toBeGreaterThan(0)
+      expect(desc.length).toBeGreaterThan(0)
+    }
   })
 })
