@@ -23,8 +23,8 @@ export default function JsonFormatter(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      const indentVal = saved.indent
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      const indentVal = saved['indent']
       if (indentVal === 2 || indentVal === 4 || indentVal === 'tab' || indentVal === 'compact') {
         setIndent(indentVal)
       }

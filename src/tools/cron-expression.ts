@@ -95,14 +95,14 @@ export function parseCronExpression(input: string): Result<CronExpressionResult>
       })
     }
 
-    const parsed = parseExpandedExpression(expansion)
+    const parsed = parseExpandedExpression(expansion!)
     if (!parsed.ok) {
       return parsed
     }
 
     return ok({
       input: trimmed,
-      normalizedExpression: expansion,
+      normalizedExpression: expansion!,
       shortcut: lowered,
       fields: parsed.value.fields,
     })

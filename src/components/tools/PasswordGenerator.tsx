@@ -26,12 +26,12 @@ export default function PasswordGenerator(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.length === 'number') setLength(saved.length)
-      if (typeof saved.count === 'number') setCount(saved.count)
-      if (typeof saved.uppercase === 'boolean') setUppercase(saved.uppercase)
-      if (typeof saved.lowercase === 'boolean') setLowercase(saved.lowercase)
-      if (typeof saved.numbers === 'boolean') setNumbers(saved.numbers)
-      if (typeof saved.symbols === 'boolean') setSymbols(saved.symbols)
+      if (typeof saved['length'] === 'number') setLength(saved['length'])
+      if (typeof saved['count'] === 'number') setCount(saved['count'])
+      if (typeof saved['uppercase'] === 'boolean') setUppercase(saved['uppercase'])
+      if (typeof saved['lowercase'] === 'boolean') setLowercase(saved['lowercase'])
+      if (typeof saved['numbers'] === 'boolean') setNumbers(saved['numbers'])
+      if (typeof saved['symbols'] === 'boolean') setSymbols(saved['symbols'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

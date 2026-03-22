@@ -24,9 +24,9 @@ export default function AddTextToLines(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (typeof saved.addition === 'string') setAddition(saved.addition)
-      if (saved.position === 'start' || saved.position === 'end') setPosition(saved.position)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (typeof saved['addition'] === 'string') setAddition(saved['addition'])
+      if (saved['position'] === 'start' || saved['position'] === 'end') setPosition(saved['position'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

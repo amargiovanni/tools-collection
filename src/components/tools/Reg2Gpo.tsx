@@ -26,8 +26,8 @@ export default function Reg2Gpo(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.regContent === 'string') setRegContent(saved.regContent)
-      if (typeof saved.collectionName === 'string') setCollectionName(saved.collectionName)
+      if (typeof saved['regContent'] === 'string') setRegContent(saved['regContent'])
+      if (typeof saved['collectionName'] === 'string') setCollectionName(saved['collectionName'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

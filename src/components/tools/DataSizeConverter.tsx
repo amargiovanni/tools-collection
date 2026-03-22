@@ -23,8 +23,8 @@ export default function DataSizeConverter(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (typeof saved.unit === 'string') setUnit(saved.unit as DataSizeUnit)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (typeof saved['unit'] === 'string') setUnit(saved['unit'] as DataSizeUnit)
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

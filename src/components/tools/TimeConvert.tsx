@@ -23,8 +23,8 @@ export default function TimeConvert(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (typeof saved.unit === 'string') setUnit(saved.unit as TimeUnit)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (typeof saved['unit'] === 'string') setUnit(saved['unit'] as TimeUnit)
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

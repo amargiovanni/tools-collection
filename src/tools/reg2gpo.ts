@@ -231,8 +231,8 @@ function parseRegistry(text: string): {
 
     const keyMatch = line.match(KEY_LINE_RE)
     if (keyMatch) {
-      currentKey = keyMatch[1]
-      if (currentKey.startsWith('-')) {
+      currentKey = keyMatch[1] ?? null
+      if (currentKey && currentKey.startsWith('-')) {
         currentKey = null
         skippedLines += 1
       }

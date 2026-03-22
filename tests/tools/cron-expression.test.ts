@@ -8,7 +8,7 @@ describe('parseCronExpression', () => {
     if (result.ok) {
       expect(result.value.normalizedExpression).toBe('*/15 * * * *')
       expect(result.value.fields).toHaveLength(5)
-      expect(result.value.fields[0].expression).toBe('*/15')
+      expect(result.value.fields[0]!.expression).toBe('*/15')
     }
   })
 

@@ -34,8 +34,8 @@ export default function QrCode(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.text === 'string') setText(saved.text)
-      if (typeof saved.size === 'number') setSize(saved.size as QrSize)
+      if (typeof saved['text'] === 'string') setText(saved['text'])
+      if (typeof saved['size'] === 'number') setSize(saved['size'] as QrSize)
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
@@ -79,7 +79,7 @@ export default function QrCode(props: Props) {
         return
       }
 
-      setDecodedText(barcodes[0].rawValue)
+      setDecodedText(barcodes[0]!.rawValue)
     } catch {
       setReadError(t(props.lang, 'tools_qrCode_readError'))
     }

@@ -40,4 +40,8 @@ export const toolComponents: Record<string, ToolComponent> = {
   'time-convert': lazy(() => import('../components/tools/TimeConvert')),
   'reg2gpo': lazy(() => import('../components/tools/Reg2Gpo')),
   'hash-generator': lazy(() => import('../components/tools/HashGenerator')),
+  'jwt-decoder': lazy(() => import('../components/tools/JwtDecoder')),
+  'uuid-generator': lazy(() => import('../components/tools/UuidGenerator')),
+  'number-base-converter': lazy(() => import('../components/tools/NumberBaseConverter')),
+  'csv-viewer': lazy(() => import('../components/tools/CsvViewer')),
 }

@@ -24,8 +24,8 @@ export default function EmailExtractor(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (typeof saved.removeDuplicates === 'boolean') setRemoveDuplicates(saved.removeDuplicates)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (typeof saved['removeDuplicates'] === 'boolean') setRemoveDuplicates(saved['removeDuplicates'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

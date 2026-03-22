@@ -25,9 +25,9 @@ export default function RemoveLineBreaks(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (saved.replaceType === 'space' || saved.replaceType === 'none' || saved.replaceType === 'custom') setReplaceType(saved.replaceType)
-      if (typeof saved.customValue === 'string') setCustomValue(saved.customValue)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (saved['replaceType'] === 'space' || saved['replaceType'] === 'none' || saved['replaceType'] === 'custom') setReplaceType(saved['replaceType'])
+      if (typeof saved['customValue'] === 'string') setCustomValue(saved['customValue'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
