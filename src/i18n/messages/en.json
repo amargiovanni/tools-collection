@@ -418,5 +418,9 @@
 
   "favorites_title": "Favorites",
   "favorites_add": "Add to favorites",
-  "favorites_remove": "Remove from favorites"
+  "favorites_remove": "Remove from favorites",
+
+  "share_copy": "Share",
+  "share_copied": "Copied!",
+  "share_unavailable": "Not available"
 }
