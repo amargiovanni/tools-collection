@@ -81,7 +81,7 @@ test.describe('Data Size Converter', () => {
     await page.getByRole('button', { name: 'Convert Size' }).click()
     await expect(page.locator('[data-testid="result-card"]')).toHaveCount(10, { timeout: 5000 })
     // 0 of anything = 0 everywhere
-    await expect(page.getByText('0').first()).toBeVisible()
+    await expect(page.locator('[data-testid="result-card"] p').first()).toHaveText('0')
   })
 
   test('result labels include Bits, Bytes, Megabytes', async ({ page }) => {
