@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@astrojs/solid-js": "^6.0.0",
-    "@tailwindcss/vite": "^4.2.1",
+    "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.0.4",
     "class-variance-authority": "^0.7.1",
     "fuse.js": "^7.1.0",
