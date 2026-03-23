@@ -330,13 +330,13 @@ export default function CronExpression(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (typeof saved.builderMode === 'string') setBuilderMode(saved.builderMode as BuilderMode)
-      if (typeof saved.builderMinute === 'string') setBuilderMinute(saved.builderMinute)
-      if (typeof saved.builderHour === 'string') setBuilderHour(saved.builderHour)
-      if (typeof saved.builderStep === 'string') setBuilderStep(saved.builderStep)
-      if (typeof saved.builderDayOfWeek === 'string') setBuilderDayOfWeek(saved.builderDayOfWeek)
-      if (typeof saved.builderDayOfMonth === 'string') setBuilderDayOfMonth(saved.builderDayOfMonth)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (typeof saved['builderMode'] === 'string') setBuilderMode(saved['builderMode'] as BuilderMode)
+      if (typeof saved['builderMinute'] === 'string') setBuilderMinute(saved['builderMinute'])
+      if (typeof saved['builderHour'] === 'string') setBuilderHour(saved['builderHour'])
+      if (typeof saved['builderStep'] === 'string') setBuilderStep(saved['builderStep'])
+      if (typeof saved['builderDayOfWeek'] === 'string') setBuilderDayOfWeek(saved['builderDayOfWeek'])
+      if (typeof saved['builderDayOfMonth'] === 'string') setBuilderDayOfMonth(saved['builderDayOfMonth'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
@@ -631,7 +631,7 @@ function formatSummary(result: CronExpressionResult, lang: Language): string {
 function describeField(field: CronField, lang: Language): string {
   const phrases = phraseSets[lang]
   if (field.segments.length === 1) {
-    return describeSegment(field.type, field.segments[0], lang)
+    return describeSegment(field.type, field.segments[0]!, lang)
   }
 
   return phrases.join(field.segments.map((segment) => describeSegment(field.type, segment, lang)))

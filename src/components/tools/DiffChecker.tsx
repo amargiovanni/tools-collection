@@ -37,10 +37,10 @@ export default function DiffChecker(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.left === 'string') setLeft(saved.left)
-      if (typeof saved.right === 'string') setRight(saved.right)
-      if (typeof saved.ignoreCase === 'boolean') setIgnoreCase(saved.ignoreCase)
-      if (typeof saved.ignoreWhitespace === 'boolean') setIgnoreWhitespace(saved.ignoreWhitespace)
+      if (typeof saved['left'] === 'string') setLeft(saved['left'])
+      if (typeof saved['right'] === 'string') setRight(saved['right'])
+      if (typeof saved['ignoreCase'] === 'boolean') setIgnoreCase(saved['ignoreCase'])
+      if (typeof saved['ignoreWhitespace'] === 'boolean') setIgnoreWhitespace(saved['ignoreWhitespace'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

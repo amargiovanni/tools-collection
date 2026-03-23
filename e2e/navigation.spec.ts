@@ -4,7 +4,7 @@ test.describe('Navigation', () => {
   test('home page shows all tool cards', async ({ page }) => {
     await page.goto('/en/', { waitUntil: 'networkidle' })
     const toolLinks = page.locator('a[href*="/en/tools/"]')
-    await expect(toolLinks).toHaveCount(29)
+    await expect(toolLinks).toHaveCount(33)
   })
 
   test('clicking a tool card opens the tool', async ({ page }) => {

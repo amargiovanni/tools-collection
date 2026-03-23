@@ -23,8 +23,8 @@ export default function UsernameGenerator(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.style === 'string') setStyle(saved.style as UsernameStyle)
-      if (typeof saved.count === 'number') setCount(saved.count)
+      if (typeof saved['style'] === 'string') setStyle(saved['style'] as UsernameStyle)
+      if (typeof saved['count'] === 'number') setCount(saved['count'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

@@ -25,7 +25,7 @@ describe('i18n', () => {
   it('all locales have the same number of keys as en', () => {
     const enKeys = Object.keys(enMessages)
     for (const lang of languages) {
-      const keys = Object.keys(allMessages[lang])
+      const keys = Object.keys(allMessages[lang]!)
       expect(keys.length, `${lang}.json has ${keys.length} keys, en.json has ${enKeys.length}`).toBe(enKeys.length)
     }
   })
@@ -34,7 +34,7 @@ describe('i18n', () => {
     const enKeys = new Set(Object.keys(enMessages))
     for (const lang of languages) {
       if (lang === 'en') continue
-      const langKeys = new Set(Object.keys(allMessages[lang]))
+      const langKeys = new Set(Object.keys(allMessages[lang]!))
       for (const key of enKeys) {
         expect(langKeys.has(key), `Key "${key}" missing in ${lang}.json`).toBe(true)
       }
@@ -46,7 +46,7 @@ describe('i18n', () => {
 
   it('no values are empty strings in any locale', () => {
     for (const lang of languages) {
-      for (const [key, value] of Object.entries(allMessages[lang])) {
+      for (const [key, value] of Object.entries(allMessages[lang]!)) {
         expect(value.length, `${lang}.json key "${key}" is empty`).toBeGreaterThan(0)
       }
     }

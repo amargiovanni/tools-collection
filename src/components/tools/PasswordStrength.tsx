@@ -33,7 +33,7 @@ export default function PasswordStrength(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.password === 'string') setPassword(saved.password)
+      if (typeof saved['password'] === 'string') setPassword(saved['password'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

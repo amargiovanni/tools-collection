@@ -38,7 +38,7 @@ export async function inspectPem(pem: string): Promise<Result<CertInfo>> {
 
   try {
     const der = pemToDer(trimmed)
-    const hashBuffer = await crypto.subtle.digest('SHA-256', der)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', der as unknown as ArrayBuffer)
     const hashArray = new Uint8Array(hashBuffer)
     const fingerprint = bytesToHex(hashArray)
     const derHex = bytesToHex(der.slice(0, 20))

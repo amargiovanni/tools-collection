@@ -84,7 +84,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     category: 'generators',
     icon: '🔢',
     keywords: ['pin', 'code', 'numeric', 'generate', 'random'],
-    path: '/tools/pin-generator',
+    path: '/tools/pin-generator',  },
+  {
+    id: 'uuid-generator',
+    category: 'generators',
+    icon: '🆔',
+    keywords: ['uuid', 'ulid', 'guid', 'generate', 'random', 'unique', 'identifier', 'v4', 'v7'],
+    path: '/tools/uuid-generator',
   },
 
   // Extraction
@@ -100,7 +106,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     category: 'extraction',
     icon: '📧',
     keywords: ['email', 'extract', 'address', 'find', 'parse'],
-    path: '/tools/email-extractor',
+    path: '/tools/email-extractor',  },
+  {
+    id: 'csv-viewer',
+    category: 'utilities',
+    icon: '📊',
+    keywords: ['csv', 'table', 'spreadsheet', 'data', 'viewer', 'sort', 'tsv'],
+    path: '/tools/csv-viewer',
   },
 
   // Analysis
@@ -162,7 +174,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     category: 'converters',
     icon: '💾',
     keywords: ['data', 'size', 'bit', 'byte', 'kb', 'mb', 'gb', 'tb', 'kib', 'mib', 'gib', 'tib'],
-    path: '/tools/data-size-converter',
+    path: '/tools/data-size-converter',  },
+  {
+    id: 'number-base-converter',
+    category: 'converters',
+    icon: '🔢',
+    keywords: ['number', 'base', 'decimal', 'hex', 'hexadecimal', 'binary', 'octal', 'convert'],
+    path: '/tools/number-base-converter',
   },
 
   // Development
@@ -199,7 +217,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     category: 'development',
     icon: '🗓️',
     keywords: ['cron', 'schedule', 'expression', 'crontab', 'parser', 'jobs'],
-    path: '/tools/cron-expression',
+    path: '/tools/cron-expression',  },
+  {
+    id: 'jwt-decoder',
+    category: 'development',
+    icon: '🔑',
+    keywords: ['jwt', 'json', 'web', 'token', 'decode', 'inspect', 'auth', 'bearer'],
+    path: '/tools/jwt-decoder',
   },
 
   // Utilities

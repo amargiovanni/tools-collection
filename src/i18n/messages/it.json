@@ -10,14 +10,12 @@
   "app_themeDark": "Scuro",
   "app_themeSystem": "Sistema",
   "app_themeToggleAria": "Cambia tema",
-
   "home_eyebrow": "Collezione",
   "home_title": "Strumenti Online per il Lavoro di Tutti i Giorni",
   "home_description": "Scegli uno strumento dal catalogo qui sotto o premi Ctrl+K per cercare.",
   "home_openTool": "Apri tool",
   "home_footerName": "Tools Collection",
   "home_footerGithub": "GitHub",
-
   "categories_textProcessing": "Elaborazione Testo",
   "categories_generators": "Generatori",
   "categories_extraction": "Estrazione",
@@ -26,7 +24,6 @@
   "categories_converters": "Convertitori",
   "categories_development": "Sviluppo",
   "categories_utilities": "Utilità",
-
   "common_inputText": "Testo di Input:",
   "common_inputPlaceholder": "Inserisci il tuo testo qui...",
   "common_caseSensitive": "Sensibile alle maiuscole/minuscole",
@@ -38,7 +35,6 @@
   "common_error": "Errore",
   "common_clear": "Cancella",
   "common_download": "Scarica",
-
   "tools_listGenerator_name": "List Generator",
   "tools_listGenerator_description": "Converti il testo in diversi formati di lista",
   "tools_listGenerator_placeholder": "Inserisci il tuo testo qui, una voce per riga...",
@@ -47,7 +43,6 @@
   "tools_listGenerator_formatBulleted": "Lista con Punti",
   "tools_listGenerator_formatComma": "Separato da Virgole",
   "tools_listGenerator_formatPipe": "Separato da Pipe",
-
   "tools_addTextToLines_name": "Aggiungi Testo alle Righe",
   "tools_addTextToLines_description": "Aggiungi testo all'inizio o alla fine di ogni riga",
   "tools_addTextToLines_originalText": "Testo Originale:",
@@ -55,7 +50,6 @@
   "tools_addTextToLines_additionPlaceholder": "es. - , * , >",
   "tools_addTextToLines_positionStart": "Aggiungi all'inizio",
   "tools_addTextToLines_positionEnd": "Aggiungi alla fine",
-
   "tools_convertCase_name": "Converti Maiuscole/Minuscole",
   "tools_convertCase_description": "Converti il testo in diversi formati",
   "tools_convertCase_upper": "MAIUSCOLO",
@@ -64,13 +58,11 @@
   "tools_convertCase_camel": "camelCase",
   "tools_convertCase_snake": "snake_case",
   "tools_convertCase_constant": "CONSTANT_CASE",
-
   "tools_removeDuplicateLines_name": "Rimuovi Righe Duplicate",
   "tools_removeDuplicateLines_description": "Rimuovi le righe duplicate da una lista",
   "tools_removeDuplicateLines_placeholder": "Inserisci il tuo testo qui, una riga per voce...",
   "tools_removeDuplicateLines_preserveOrder": "Mantieni ordine originale",
   "tools_removeDuplicateLines_action": "Rimuovi Duplicati",
-
   "tools_removeLineBreaks_name": "Rimuovi Interruzioni di Riga",
   "tools_removeLineBreaks_description": "Rimuovi tutte le interruzioni di riga dal testo",
   "tools_removeLineBreaks_placeholder": "Inserisci il tuo testo con interruzioni di riga...",
@@ -79,7 +71,6 @@
   "tools_removeLineBreaks_nothing": "Niente",
   "tools_removeLineBreaks_custom": "Custom:",
   "tools_removeLineBreaks_action": "Rimuovi Interruzioni",
-
   "tools_removeLinesContaining_name": "Rimuovi Righe che Contengono",
   "tools_removeLinesContaining_description": "Elimina le righe che contengono parole specifiche",
   "tools_removeLinesContaining_termsLabel": "Parole/frasi da cercare (separate da virgole):",
@@ -88,7 +79,6 @@
   "tools_removeLinesContaining_noTerms": "Nessuna parola/frase configurata.",
   "tools_removeLinesContaining_removedLines": "Righe rimosse",
   "tools_removeLinesContaining_keptLines": "Righe mantenute",
-
   "tools_passwordGenerator_name": "Password Generator",
   "tools_passwordGenerator_description": "Genera password forti e casuali",
   "tools_passwordGenerator_lengthLabel": "Lunghezza:",
@@ -101,7 +91,6 @@
   "tools_passwordGenerator_outputLabel": "Password generate:",
   "tools_passwordGenerator_copyAll": "Copia Tutte",
   "tools_passwordGenerator_selectOneCharset": "Seleziona almeno un tipo di carattere!",
-
   "tools_usernameGenerator_name": "Username Generator",
   "tools_usernameGenerator_description": "Genera username unici",
   "tools_usernameGenerator_style": "Stile:",
@@ -113,7 +102,6 @@
   "tools_usernameGenerator_generate": "Genera Username",
   "tools_usernameGenerator_outputLabel": "Username Generati:",
   "tools_usernameGenerator_copyAll": "Copia Tutti",
-
   "tools_pinGenerator_name": "PIN Generator",
   "tools_pinGenerator_description": "Genera codici PIN numerici con lunghezza e quantità configurabili",
   "tools_pinGenerator_lengthLabel": "Lunghezza PIN:",
@@ -122,7 +110,6 @@
   "tools_pinGenerator_generate": "Genera PIN",
   "tools_pinGenerator_outputLabel": "PIN generati:",
   "tools_pinGenerator_copyAll": "Copia Tutti",
-
   "tools_domainExtractor_name": "Estrattore Domini",
   "tools_domainExtractor_description": "Estrai domini da una lista di URL",
   "tools_domainExtractor_inputLabel": "URL (uno per riga):",
@@ -130,7 +117,6 @@
   "tools_domainExtractor_includeSubdomains": "Includi sottodomini",
   "tools_domainExtractor_extract": "Estrai Domini",
   "tools_domainExtractor_outputLabel": "Domini estratti:",
-
   "tools_emailExtractor_name": "Estrattore Email",
   "tools_emailExtractor_description": "Estrai tutte le email da un testo",
   "tools_emailExtractor_placeholder": "Inserisci il testo contenente email...",
@@ -138,7 +124,6 @@
   "tools_emailExtractor_extract": "Estrai Email",
   "tools_emailExtractor_outputLabel": "Email estratte:",
   "tools_emailExtractor_found": "Email trovate",
-
   "tools_countDuplicates_name": "Conta Duplicati",
   "tools_countDuplicates_description": "Conta i duplicati in una lista",
   "tools_countDuplicates_inputLabel": "Lista (una voce per riga):",
@@ -146,7 +131,6 @@
   "tools_countDuplicates_sortByCount": "Ordina per numero di occorrenze",
   "tools_countDuplicates_analyze": "Analizza",
   "tools_countDuplicates_noEntries": "Inserisci almeno una voce.",
-
   "tools_pemInspector_name": "PEM Certificate Inspector",
   "tools_pemInspector_description": "Valida il PEM e calcola fingerprint locali",
   "tools_pemInspector_inputLabel": "Certificato PEM:",
@@ -163,7 +147,6 @@
   "tools_pemInspector_requiresAsn1": "Richiede parser ASN.1 completo",
   "tools_pemInspector_fingerprint": "Fingerprint SHA-256",
   "tools_pemInspector_parseError": "Errore nel parsing del certificato",
-
   "tools_passwordStrength_name": "Password Strength Checker",
   "tools_passwordStrength_description": "Analizza la robustezza delle password e fornisce suggerimenti",
   "tools_passwordStrength_inputLabel": "Password da Analizzare:",
@@ -188,7 +171,6 @@
   "tools_passwordStrength_suggestionLonger": "Considera di usare almeno 12 caratteri",
   "tools_passwordStrength_suggestions": "Suggerimenti",
   "tools_passwordStrength_goodPassword": "Password robusta!",
-
   "tools_qrCode_name": "QR Code Generator/Reader",
   "tools_qrCode_description": "Genera QR code e leggi immagini QR",
   "tools_qrCode_inputLabel": "Testo da Convertire in QR:",
@@ -204,14 +186,12 @@
   "tools_qrCode_barcodeUnsupported": "Questo browser non supporta BarcodeDetector per la lettura locale dei QR.",
   "tools_qrCode_noQrFound": "Nessun QR code rilevato nell'immagine.",
   "tools_qrCode_readError": "Errore nella lettura del QR",
-
   "tools_emojiShortcode_name": "Emoji Shortcode Converter",
   "tools_emojiShortcode_description": "Converti gli shortcode emoji in emoji reali",
   "tools_emojiShortcode_placeholder": ":smile: :heart: :thumbsup: ciao :wave:",
   "tools_emojiShortcode_toEmoji": "Shortcode → Emoji",
   "tools_emojiShortcode_toShortcode": "Emoji → Shortcode",
   "tools_emojiShortcode_referenceTitle": "Shortcode comuni:",
-
   "tools_base64_name": "Base64 Encoder/Decoder",
   "tools_base64_description": "Codifica e decodifica testo in Base64",
   "tools_base64_placeholder": "Inserisci il testo da codificare o decodificare...",
@@ -219,7 +199,6 @@
   "tools_base64_decode": "Decode Base64",
   "tools_base64_encodeError": "Errore: impossibile codificare il testo",
   "tools_base64_decodeError": "Errore: input non valido Base64",
-
   "tools_urlEncoder_name": "URL Encoder/Decoder",
   "tools_urlEncoder_description": "Codifica e decodifica URL e parametri",
   "tools_urlEncoder_placeholder": "https://example.com?param=value with spaces",
@@ -227,7 +206,6 @@
   "tools_urlEncoder_decode": "Decode URL",
   "tools_urlEncoder_encodeComponent": "Encode Component",
   "tools_urlEncoder_decodeError": "Errore: URL non valido",
-
   "tools_jsonFormatter_name": "JSON Formatter/Validator",
   "tools_jsonFormatter_description": "Formatta e valida JSON con evidenziazione errori",
   "tools_jsonFormatter_inputLabel": "JSON di Input:",
@@ -240,7 +218,6 @@
   "tools_jsonFormatter_format": "Formatta JSON",
   "tools_jsonFormatter_outputLabel": "JSON Formattato:",
   "tools_jsonFormatter_valid": "JSON valido",
-
   "tools_diffChecker_name": "Diff Checker",
   "tools_diffChecker_description": "Confronta due testi e trova le differenze",
   "tools_diffChecker_originalText": "Testo Originale:",
@@ -256,7 +233,6 @@
   "tools_diffChecker_additions": "Aggiunte",
   "tools_diffChecker_deletions": "Rimosse",
   "tools_diffChecker_unchanged": "Invariate",
-
   "tools_regexTester_name": "Regex Tester",
   "tools_regexTester_description": "Testa e debugga espressioni regolari in tempo reale",
   "tools_regexTester_patternLabel": "Pattern Regex:",
@@ -272,7 +248,6 @@
   "tools_regexTester_noMatches": "Nessuna corrispondenza trovata",
   "tools_regexTester_foundMatches": "Corrispondenze trovate",
   "tools_regexTester_error": "Errore regex",
-
   "tools_xmlBeautifier_name": "XML Beautifier",
   "tools_xmlBeautifier_description": "Formatta e valida documenti XML",
   "tools_xmlBeautifier_inputLabel": "XML di Input:",
@@ -285,7 +260,6 @@
   "tools_xmlBeautifier_outputLabel": "XML Formattato:",
   "tools_xmlBeautifier_valid": "XML valido",
   "tools_xmlBeautifier_invalid": "XML non valido",
-
   "tools_cronExpression_name": "Cron Expression Parser",
   "tools_cronExpression_description": "Spiega le espressioni cron a 5 campi e gli shortcut più comuni",
   "tools_cronExpression_inputLabel": "Espressione cron:",
@@ -295,7 +269,6 @@
   "tools_cronExpression_fieldDayOfMonth": "Giorno del mese",
   "tools_cronExpression_fieldMonth": "Mese",
   "tools_cronExpression_fieldDayOfWeek": "Giorno della settimana",
-
   "tools_colorPicker_name": "Color Picker/Converter",
   "tools_colorPicker_description": "Seleziona colori e converti tra diversi formati",
   "tools_colorPicker_inputLabel": "O inserisci un colore:",
@@ -303,7 +276,6 @@
   "tools_colorPicker_convert": "Converti Colore",
   "tools_colorPicker_outputLabel": "Formati Colore:",
   "tools_colorPicker_preview": "Preview:",
-
   "tools_timestampConverter_name": "Timestamp Converter",
   "tools_timestampConverter_description": "Converti tra timestamp Unix e date leggibili",
   "tools_timestampConverter_inputLabel": "Timestamp Unix (secondi o millisecondi):",
@@ -314,7 +286,6 @@
   "tools_timestampConverter_unixMilliseconds": "Unix (millisecondi):",
   "tools_timestampConverter_locale": "Locale:",
   "tools_timestampConverter_invalidDate": "Data non valida",
-
   "tools_timeConvert_name": "Time Convert",
   "tools_timeConvert_description": "Converte durate tra unità di tempo comuni e formato leggibile",
   "tools_timeConvert_inputLabel": "Valore tempo:",
@@ -334,7 +305,6 @@
   "tools_timeConvert_days": "Giorni:",
   "tools_timeConvert_formatted": "HH:MM:SS:",
   "tools_timeConvert_invalid": "Inserisci un valore tempo valido e non negativo",
-
   "tools_dataSizeConverter_name": "Convertitore Dimensione Dati",
   "tools_dataSizeConverter_description": "Converte dimensioni dati tra unità decimali e binarie",
   "tools_dataSizeConverter_inputLabel": "Valore dimensione dati:",
@@ -365,7 +335,6 @@
   "tools_dataSizeConverter_invalid": "Inserisci una dimensione dati valida e non negativa",
   "tools_dataSizeConverter_unitHint": "In questo tool KB/MB/GB/TB sono interpretati in base 1024 (uso informatico comune). Anche KiB/MiB/GiB/TiB usano base 1024.",
   "tools_dataSizeConverter_exampleHint": "Esempio: 4 GB = 4096 MB.",
-
   "tools_reg2gpo_name": "Reg2GPO",
   "tools_reg2gpo_description": "Converte export del Registro di Windows in XML per Group Policy Preferences",
   "tools_reg2gpo_inputLabel": "Export del Registro (.reg):",
@@ -383,7 +352,6 @@
   "tools_reg2gpo_defaultValue": "(Predefinito)",
   "tools_reg2gpo_downloadFilename": "reg2gpo.xml",
   "tools_reg2gpo_downloadError": "Genera prima l'output XML prima di scaricarlo.",
-
   "tools_hashGenerator_name": "Hash Generator",
   "tools_hashGenerator_description": "Genera hash crittografici del testo",
   "tools_hashGenerator_inputLabel": "Testo da Hash:",
@@ -392,10 +360,8 @@
   "tools_hashGenerator_outputLabel": "Hash Generati:",
   "tools_hashGenerator_md5Unsupported": "MD5 non supportato nel browser",
   "tools_hashGenerator_error": "Errore nella generazione hash",
-
   "commandPalette_placeholder": "Cerca strumenti...",
   "commandPalette_noResults": "Nessuno strumento trovato",
-
   "errors_EMPTY_INPUT": "Inserisci un input",
   "errors_INVALID_JSON": "JSON non valido",
   "errors_INVALID_XML": "XML non valido",
@@ -415,12 +381,48 @@
   "errors_QR_UNSUPPORTED": "BarcodeDetector non supportato in questo browser",
   "errors_QR_NOT_FOUND": "Nessun QR code rilevato nell'immagine",
   "errors_UNIQUE_IMPOSSIBLE": "Impossibile generare abbastanza valori unici con i vincoli dati",
-
   "favorites_title": "Preferiti",
   "favorites_add": "Aggiungi ai preferiti",
   "favorites_remove": "Rimuovi dai preferiti",
-
   "share_copy": "Condividi",
   "share_copied": "Copiato!",
-  "share_unavailable": "Non disponibile"
+  "share_unavailable": "Non disponibile",
+  "tools_jwtDecoder_name": "JWT Decoder",
+  "tools_jwtDecoder_description": "Decodifica e ispeziona JSON Web Token",
+  "jwt_header": "Header",
+  "jwt_payload": "Payload",
+  "jwt_signature": "Firma",
+  "jwt_notVerified": "non verificata — solo lato client",
+  "jwt_valid": "VALIDO",
+  "jwt_expired": "SCADUTO",
+  "jwt_expiresIn": "scade tra {time}",
+  "jwt_expiredAgo": "scaduto {time} fa",
+  "jwt_placeholder": "Incolla il tuo JWT qui...",
+  "tools_uuidGenerator_name": "Generatore UUID / ULID",
+  "tools_uuidGenerator_description": "Genera identificatori UUID v4, UUID v7 e ULID",
+  "uuid_v4Label": "UUID v4",
+  "uuid_v7Label": "UUID v7",
+  "uuid_ulidLabel": "ULID",
+  "uuid_generate": "Genera",
+  "uuid_generateTen": "Genera 10",
+  "uuid_copyAll": "Copia tutti",
+  "uuid_v4Description": "Casuale, conforme RFC 4122",
+  "uuid_v7Description": "Ordinato per tempo, conforme RFC 9562",
+  "uuid_ulidDescription": "Ordinabile lessicograficamente, Crockford Base32",
+  "tools_numberBaseConverter_name": "Convertitore di Basi Numeriche",
+  "tools_numberBaseConverter_description": "Converti numeri tra decimale, esadecimale, binario e ottale",
+  "base_decimal": "Decimale",
+  "base_hex": "Esadecimale",
+  "base_binary": "Binario",
+  "base_octal": "Ottale",
+  "base_decimalHint": "es. 255",
+  "base_hexHint": "es. ff",
+  "base_binaryHint": "es. 11111111",
+  "base_octalHint": "es. 377",
+  "tools_csvViewer_name": "Visualizzatore CSV",
+  "tools_csvViewer_description": "Incolla dati CSV e visualizzali come tabella ordinabile",
+  "csv_placeholder": "Incolla i dati CSV qui...",
+  "csv_rowCount": "{n} righe",
+  "csv_noData": "Nessun dato da visualizzare",
+  "csv_exportJson": "Esporta come JSON"
 }

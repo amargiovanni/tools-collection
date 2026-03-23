@@ -27,9 +27,9 @@ export default function RemoveLinesContaining(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.input === 'string') setInput(saved.input)
-      if (typeof saved.termsInput === 'string') setTermsInput(saved.termsInput)
-      if (typeof saved.caseSensitive === 'boolean') setCaseSensitive(saved.caseSensitive)
+      if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (typeof saved['termsInput'] === 'string') setTermsInput(saved['termsInput'])
+      if (typeof saved['caseSensitive'] === 'boolean') setCaseSensitive(saved['caseSensitive'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

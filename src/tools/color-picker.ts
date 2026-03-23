@@ -38,9 +38,9 @@ export function hexToRgb(hex: string): Result<RgbColor> {
   }
 
   return ok({
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
+    r: parseInt(result[1]!, 16),
+    g: parseInt(result[2]!, 16),
+    b: parseInt(result[3]!, 16),
   })
 }
 
@@ -119,9 +119,9 @@ export function parseColor(
     const match = input.match(/(\d+),\s*(\d+),\s*(\d+)/)
     if (match) {
       rgb = {
-        r: parseInt(match[1], 10),
-        g: parseInt(match[2], 10),
-        b: parseInt(match[3], 10),
+        r: parseInt(match[1]!, 10),
+        g: parseInt(match[2]!, 10),
+        b: parseInt(match[3]!, 10),
       }
     }
   }

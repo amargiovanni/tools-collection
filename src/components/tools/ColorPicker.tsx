@@ -28,9 +28,9 @@ export default function ColorPicker(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.colorInput === 'string') {
-        setColorInput(saved.colorInput)
-        setPickerValue(saved.colorInput)
+      if (typeof saved['colorInput'] === 'string') {
+        setColorInput(saved['colorInput'])
+        setPickerValue(saved['colorInput'])
       }
     }
     const handler = () => {

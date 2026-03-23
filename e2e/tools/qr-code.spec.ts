@@ -1,36 +1,58 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
+
+async function waitForHydration(page: Page) {
+  await page.waitForFunction(() => {
+    const island = document.querySelector('astro-island')
+    return island !== null && island.children.length > 0
+  }, undefined, { timeout: 10000 })
+  await page.waitForTimeout(300)
+}
 
 test.describe('QR Code', () => {
-  test('generates a QR code from a URL', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/en/tools/qr-code/', { waitUntil: 'networkidle' })
-    await page.waitForFunction(() => {
-      const island = document.querySelector('astro-island')
-      return island !== null && island.children.length > 0
-    }, undefined, { timeout: 10000 })
-    await page.waitForTimeout(300)
+    await waitForHydration(page)
+  })
 
-    const textarea = page.locator('[data-testid="textarea"]').first()
-    await textarea.fill('https://example.com')
-
-    const button = page.getByRole('button', { name: 'Generate QR Code' })
-    await button.click()
-
-    const qrImage = page.locator('img[alt="QR Code"]')
-    await expect(qrImage).toBeVisible()
+  test('generates a QR code from a URL', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('https://example.com')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(page.locator('img[alt="QR Code"]')).toBeVisible({ timeout: 5000 })
   })
 
   test('shows error on empty input', async ({ page }) => {
-    await page.goto('/en/tools/qr-code/', { waitUntil: 'networkidle' })
-    await page.waitForFunction(() => {
-      const island = document.querySelector('astro-island')
-      return island !== null && island.children.length > 0
-    }, undefined, { timeout: 10000 })
-    await page.waitForTimeout(300)
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(page.locator('[data-testid="status-message"]')).toBeVisible({ timeout: 5000 })
+  })
 
-    const button = page.getByRole('button', { name: 'Generate QR Code' })
-    await button.click()
+  test('generates QR code from plain text', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('Hello World')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(page.locator('img[alt="QR Code"]')).toBeVisible({ timeout: 5000 })
+  })
 
-    const statusMessage = page.locator('[data-testid="status-message"]')
-    await expect(statusMessage).toBeVisible()
+  test('QR code is an actual image element', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('https://example.com')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    const img = page.locator('img[alt="QR Code"]')
+    await expect(img).toBeVisible({ timeout: 5000 })
+    // Verify it has a src attribute
+    const src = await img.getAttribute('src')
+    expect(src).toBeTruthy()
+  })
+
+  test('different inputs generate different QR codes', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('https://alpha.com')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    const img = page.locator('img[alt="QR Code"]')
+    await expect(img).toBeVisible({ timeout: 5000 })
+    const src1 = await img.getAttribute('src')
+
+    await page.locator('[data-testid="textarea"]').first().fill('https://beta.com')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(img).toBeVisible({ timeout: 5000 })
+    const src2 = await img.getAttribute('src')
+
+    expect(src1).not.toBe(src2)
   })
 })

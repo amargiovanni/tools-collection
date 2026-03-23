@@ -26,11 +26,11 @@ export default function RegexTester(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.pattern === 'string') setPattern(saved.pattern)
-      if (typeof saved.testText === 'string') setTestText(saved.testText)
-      if (typeof saved.flagGlobal === 'boolean') setFlagGlobal(saved.flagGlobal)
-      if (typeof saved.flagCase === 'boolean') setFlagCase(saved.flagCase)
-      if (typeof saved.flagMultiline === 'boolean') setFlagMultiline(saved.flagMultiline)
+      if (typeof saved['pattern'] === 'string') setPattern(saved['pattern'])
+      if (typeof saved['testText'] === 'string') setTestText(saved['testText'])
+      if (typeof saved['flagGlobal'] === 'boolean') setFlagGlobal(saved['flagGlobal'])
+      if (typeof saved['flagCase'] === 'boolean') setFlagCase(saved['flagCase'])
+      if (typeof saved['flagMultiline'] === 'boolean') setFlagMultiline(saved['flagMultiline'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {

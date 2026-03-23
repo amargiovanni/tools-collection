@@ -23,9 +23,9 @@ export default function PinGenerator(props: Props) {
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
-      if (typeof saved.length === 'number') setLength(saved.length)
-      if (typeof saved.count === 'number') setCount(saved.count)
-      if (typeof saved.unique === 'boolean') setUnique(saved.unique)
+      if (typeof saved['length'] === 'number') setLength(saved['length'])
+      if (typeof saved['count'] === 'number') setCount(saved['count'])
+      if (typeof saved['unique'] === 'boolean') setUnique(saved['unique'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
