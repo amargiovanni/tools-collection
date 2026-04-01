@@ -121,7 +121,7 @@
   "tools_bittorrentMagnetLinkGenerator_namePlaceholder": "Optional. Standard ist der Info-Hash",
   "tools_bittorrentMagnetLinkGenerator_trackersLabel": "Tracker",
   "tools_bittorrentMagnetLinkGenerator_trackersPlaceholder": "Ein Tracker pro Zeile",
-  "tools_bittorrentMagnetLinkGenerator_trackersHint": "Jede gueltige Tracker-URL in einer eigenen Zeile wird als tr-Parameter angehaengt.",
+  "tools_bittorrentMagnetLinkGenerator_trackersHint": "Jede gültige Tracker-URL in einer eigenen Zeile wird als tr-Parameter angehängt.",
   "tools_bittorrentMagnetLinkGenerator_generate": "Magnet-Link generieren",
   "tools_bittorrentMagnetLinkGenerator_openLink": "Magnet-Link oeffnen",
   "tools_bittorrentMagnetLinkGenerator_outputLabel": "Generierter Magnet-Link:",
