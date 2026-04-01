@@ -1,6 +1,6 @@
 # Tools Collection
 
-Una raccolta modulare e type-safe di 29 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
+Una raccolta modulare e type-safe di 34 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,22 +9,22 @@ Una raccolta modulare e type-safe di 29 strumenti per sviluppatori che funzionan
 
 ## Cosa Fa
 
-29 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+34 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-Tra le novita della `1.2.2`: `Cron Expression Parser` con builder visuale per gli schedule piu comuni, oltre all'allineamento completo di metadata e documentazione al catalogo da 29 tool.
+Tra le novita della `1.3.2`: `BitTorrent Magnet Link Generator`, oltre ai miglioramenti del password generator come `Simple mode` e `Avoid ambiguous characters`.
 
 ## Strumenti
 
 | Categoria | Strumenti |
 |---|---|
 | **Elaborazione Testo** | List Generator, Add Text to Lines, Convert Case, Remove Duplicate Lines, Remove Line Breaks, Remove Lines Containing |
-| **Generatori** | Password Generator (crypto API), Username Generator, PIN Generator |
+| **Generatori** | Password Generator (crypto API), Username Generator, PIN Generator, UUID Generator, BitTorrent Magnet Link Generator |
 | **Estrazione** | Domain Extractor, Email Extractor |
 | **Analisi** | Count Duplicates |
 | **Sicurezza** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
-| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter |
-| **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser |
-| **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator |
+| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
+| **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
+| **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 
 ## Stack Tecnologico
 
@@ -36,7 +36,7 @@ Tra le novita della `1.2.2`: `Cron Expression Parser` con builder visuale per gl
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
 | i18n | Messaggi JSON type-safe con validazione compile-time delle chiavi |
 | Ricerca | [Fuse.js](https://www.fusejs.io/) — fuzzy search nella command palette |
-| Test | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — 300+ test unitari, 57 test e2e nel browser |
+| Test | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — copertura unit ed end-to-end su tool, componenti condivisi e navigazione |
 | Varianti | [cva](https://cva.style/) — varianti componenti type-safe |
 
 ## Architettura
@@ -53,15 +53,15 @@ src/pages/en/tools/[tool].astro        ← Pagina Astro (monta l'island con clie
 src/
 ├── components/
 │   ├── ui/                # 13 componenti Solid riutilizzabili (Button, TextArea, OutputPanel, ...)
-│   ├── tools/             # 29 componenti UI tool (uno per tool)
+│   ├── tools/             # 34 componenti UI tool (uno per tool)
 │   ├── Sidebar.astro      # Navigazione per categorie
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts           # Registry tool (29 voci con metadati)
+│   ├── tools.ts           # Registry tool (34 voci con metadati)
 │   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
-│   └── messages/          # en/it/es/fr/de.json (382 chiavi per file)
+│   └── messages/          # en/it/es/fr/de.json
 ├── islands/
 │   ├── CommandPalette.tsx # Fuzzy search via Ctrl/Cmd+K
 │   └── ToolRenderer.tsx   # Dispatcher dinamico componenti tool
@@ -81,7 +81,7 @@ src/
 │   └── de/                # Pagine tedesche
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 29 moduli di logica pura (zero DOM)
+└── tools/                 # 34 moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -109,7 +109,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 146 pagine HTML statiche (29 per lingua x 5, piu redirect root) pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: 171 pagine HTML statiche (34 per lingua x 5, piu redirect root) pronte per qualsiasi hosting.
 
 ### Docker
 
@@ -160,7 +160,7 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 | Comando | Descrizione |
 |---|---|
 | `npm run dev` | Avvia il server di sviluppo con HMR |
-| `npm run build` | Build di produzione (146 pagine) |
+| `npm run build` | Build di produzione (171 pagine) |
 | `npm run preview` | Anteprima della build di produzione |
 | `npm run test` | Esegue i test unitari |
 | `npm run test:watch` | Esegue i test unitari in watch mode |
@@ -171,13 +171,13 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 
 ### Test
 
-300+ test unitari (Vitest) coprono tutti i 29 moduli di logica pura, i18n e componenti condivisi:
+Vitest copre i moduli di logica dei tool, gli helper i18n e i componenti condivisi:
 
 ```bash
 npm test
 ```
 
-57 test end-to-end nel browser (Playwright) coprono ogni tool e la navigazione:
+Playwright copre i flussi dei tool e la navigazione nel browser:
 
 ```bash
 npm run build && npm run test:e2e

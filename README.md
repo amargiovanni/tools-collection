@@ -1,6 +1,6 @@
 # Tools Collection
 
-A modular, type-safe collection of 29 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
+A modular, type-safe collection of 34 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,22 +9,22 @@ A modular, type-safe collection of 29 browser-based developer tools. Built with 
 
 ## What it does
 
-29 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
+34 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable additions in `1.2.2`: a `Cron Expression Parser` with a visual builder for common schedules, plus the full release metadata/docs refresh for the expanded 29-tool catalog.
+Notable additions in `1.3.2`: a `BitTorrent Magnet Link Generator`, plus password generator refinements such as `Simple mode` and `Avoid ambiguous characters`.
 
 ## Tools
 
 | Category | Tools |
 |---|---|
 | **Text Processing** | List Generator, Add Text to Lines, Convert Case, Remove Duplicate Lines, Remove Line Breaks, Remove Lines Containing |
-| **Generators** | Password Generator (crypto API), Username Generator, PIN Generator |
+| **Generators** | Password Generator (crypto API), Username Generator, PIN Generator, UUID Generator, BitTorrent Magnet Link Generator |
 | **Extraction** | Domain Extractor, Email Extractor |
 | **Analysis** | Count Duplicates |
 | **Security** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
-| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter |
-| **Development** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser |
-| **Utilities** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator |
+| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
+| **Development** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
+| **Utilities** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 
 ## Tech Stack
 
@@ -36,7 +36,7 @@ Notable additions in `1.2.2`: a `Cron Expression Parser` with a visual builder f
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
 | i18n | Type-safe JSON messages, compile-time key validation |
 | Search | [Fuse.js](https://www.fusejs.io/) — fuzzy search in command palette |
-| Testing | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — 300+ unit tests, 57 e2e browser tests |
+| Testing | [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) — unit and end-to-end coverage across all tools, shared components, and navigation |
 | Variants | [cva](https://cva.style/) — type-safe component variants |
 
 ## Architecture
@@ -53,15 +53,15 @@ src/pages/en/tools/[tool].astro    ← Astro page (mounts island via client:load
 src/
 ├── components/
 │   ├── ui/              # 13 reusable Solid components (Button, TextArea, OutputPanel, ...)
-│   ├── tools/           # 29 tool UI components (one per tool)
+│   ├── tools/           # 34 tool UI components (one per tool)
 │   ├── Sidebar.astro    # Category navigation
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts         # Tool registry (29 entries with metadata)
+│   ├── tools.ts         # Tool registry (34 entries with metadata)
 │   └── tool-components.ts # Lazy component mapping (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts         # Type-safe t(lang, key) helper
-│   └── messages/        # en/it/es/fr/de.json (382 keys each)
+│   └── messages/        # en/it/es/fr/de.json
 ├── islands/
 │   ├── CommandPalette.tsx # Ctrl/Cmd+K fuzzy search
 │   └── ToolRenderer.tsx   # Dynamic tool component dispatcher
@@ -81,7 +81,7 @@ src/
 │   └── de/              # German pages
 ├── styles/
 │   └── global.css       # Tailwind 4 @theme tokens + dark mode
-└── tools/               # 29 pure logic modules (zero DOM)
+└── tools/               # 34 pure logic modules (zero DOM)
 ```
 
 ## Getting Started
@@ -109,7 +109,7 @@ npm run build
 npm run preview
 ```
 
-Output goes to `dist/` — 146 static HTML pages (29 per language x 5, plus root redirect) ready for any hosting.
+Output goes to `dist/` — 171 static HTML pages (34 per language x 5, plus root redirect) ready for any hosting.
 
 ### Docker
 
@@ -160,7 +160,7 @@ No adapter needed — Astro's default static output works directly:
 | Command | Description |
 |---|---|
 | `npm run dev` | Start dev server with HMR |
-| `npm run build` | Build for production (146 pages) |
+| `npm run build` | Build for production (171 pages) |
 | `npm run preview` | Preview production build |
 | `npm run test` | Run unit tests |
 | `npm run test:watch` | Run unit tests in watch mode |
@@ -171,13 +171,13 @@ No adapter needed — Astro's default static output works directly:
 
 ### Testing
 
-300+ unit tests (Vitest) covering all 29 pure logic modules, i18n, and shared components:
+Vitest covers the tool logic modules, i18n helpers, and shared components:
 
 ```bash
 npm test
 ```
 
-57 end-to-end browser tests (Playwright) covering every tool and navigation:
+Playwright covers tool flows and cross-site navigation in the browser:
 
 ```bash
 npm run build && npm run test:e2e
