@@ -10,6 +10,8 @@ describe('generatePasswords', () => {
       lowercase: false,
       numbers: false,
       symbols: false,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(false)
     if (!result.ok) {
@@ -25,6 +27,8 @@ describe('generatePasswords', () => {
       lowercase: true,
       numbers: true,
       symbols: false,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(false)
     if (!result.ok) {
@@ -40,6 +44,8 @@ describe('generatePasswords', () => {
       lowercase: true,
       numbers: true,
       symbols: false,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(true)
     if (result.ok) {
@@ -55,6 +61,8 @@ describe('generatePasswords', () => {
       lowercase: true,
       numbers: false,
       symbols: false,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(true)
     if (result.ok) {
@@ -72,6 +80,8 @@ describe('generatePasswords', () => {
       lowercase: true,
       numbers: true,
       symbols: true,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(true)
     if (result.ok) {
@@ -92,6 +102,8 @@ describe('generatePasswords', () => {
       lowercase: true,
       numbers: false,
       symbols: false,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(true)
     if (result.ok) {
@@ -107,11 +119,51 @@ describe('generatePasswords', () => {
       lowercase: true,
       numbers: false,
       symbols: false,
+      simple: false,
+      avoidAmbiguous: false,
     })
     expect(result.ok).toBe(true)
     if (result.ok) {
       result.value.forEach(pw => {
         expect(pw).toMatch(/^[a-z]+$/)
+      })
+    }
+  })
+
+  it('limits symbols in simple mode to the Nebula.Tools subset', () => {
+    const result = generatePasswords({
+      length: 32,
+      count: 10,
+      uppercase: false,
+      lowercase: false,
+      numbers: false,
+      symbols: true,
+      simple: true,
+      avoidAmbiguous: false,
+    })
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      result.value.forEach(pw => {
+        expect(pw).toMatch(/^[!.@#$_-]+$/)
+      })
+    }
+  })
+
+  it('omits ambiguous characters when avoidAmbiguous is enabled', () => {
+    const result = generatePasswords({
+      length: 32,
+      count: 10,
+      uppercase: true,
+      lowercase: true,
+      numbers: true,
+      symbols: false,
+      simple: false,
+      avoidAmbiguous: true,
+    })
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      result.value.forEach(pw => {
+        expect(pw).not.toMatch(/[O0oIl1]/)
       })
     }
   })

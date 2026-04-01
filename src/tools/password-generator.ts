@@ -8,12 +8,25 @@ export interface PasswordOptions {
   lowercase: boolean
   numbers: boolean
   symbols: boolean
+  simple?: boolean
+  avoidAmbiguous?: boolean
 }
 
 const CHARSETS = {
   uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   lowercase: 'abcdefghijklmnopqrstuvwxyz',
   numbers: '0123456789',
+  symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
+} as const
+
+const SIMPLE_SYMBOLS = {
+  symbols: '!.@#$_-',
+} as const
+
+const READABLE_CHARSETS = {
+  uppercase: 'ABCDEFGHJKLMNPQRSTUVWXYZ',
+  lowercase: 'abcdefghijkmnpqrstuvwxyz',
+  numbers: '23456789',
   symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
 } as const
 
@@ -49,11 +62,16 @@ function generateSinglePassword(length: number, selectedCharsets: string[], full
 }
 
 export function generatePasswords(options: PasswordOptions): Result<string[]> {
+  const baseCharsets = options.avoidAmbiguous ? READABLE_CHARSETS : CHARSETS
+  const charsets = {
+    ...baseCharsets,
+    symbols: options.simple ? SIMPLE_SYMBOLS.symbols : baseCharsets.symbols,
+  }
   const selectedCharsets: string[] = []
-  if (options.uppercase) selectedCharsets.push(CHARSETS.uppercase)
-  if (options.lowercase) selectedCharsets.push(CHARSETS.lowercase)
-  if (options.numbers) selectedCharsets.push(CHARSETS.numbers)
-  if (options.symbols) selectedCharsets.push(CHARSETS.symbols)
+  if (options.uppercase) selectedCharsets.push(charsets.uppercase)
+  if (options.lowercase) selectedCharsets.push(charsets.lowercase)
+  if (options.numbers) selectedCharsets.push(charsets.numbers)
+  if (options.symbols) selectedCharsets.push(charsets.symbols)
 
   if (selectedCharsets.length === 0) {
     return err('NO_CHARSET', 'Select at least one character set')

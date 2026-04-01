@@ -3,8 +3,8 @@ import { toolRegistry, getToolMeta, getToolsByCategory, categories } from '../..
 import type { Category } from '../../src/config/tools'
 
 describe('toolRegistry', () => {
-  it('has exactly 33 tools', () => {
-    expect(toolRegistry).toHaveLength(33)
+  it('has exactly 34 tools', () => {
+    expect(toolRegistry).toHaveLength(34)
   })
 
   it('all tools have unique IDs', () => {
@@ -67,6 +67,6 @@ describe('getToolsByCategory', () => {
     for (const cat of categories) {
       totalTools += getToolsByCategory(cat).length
     }
-    expect(totalTools).toBe(33)
+    expect(totalTools).toBe(34)
   })
 })
