@@ -36,7 +36,7 @@ describe('generateMagnetLink', () => {
 
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.magnetLink).toContain('xt=urn%3Abtih%3A0123456789ABCDEF0123456789ABCDEF01234567')
+      expect(result.value.magnetLink).toContain('xt=urn:btih:0123456789ABCDEF0123456789ABCDEF01234567')
       expect(result.value.magnetLink).toContain('dn=Ubuntu+ISO')
       expect(result.value.magnetLink).toContain('tr=udp%3A%2F%2Ftracker.example%3A1337%2Fannounce')
       expect(result.value.magnetLink).toContain('tr=http%3A%2F%2Ftracker.example%2Fannounce')

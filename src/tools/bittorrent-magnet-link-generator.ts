@@ -68,14 +68,13 @@ export function generateMagnetLink(options: MagnetLinkOptions): Result<MagnetLin
   const trackers = normalizeTrackers(options.trackers)
   const resourceName = (options.name ?? '').trim() || normalizedHash
   const params = new URLSearchParams({
-    xt: `urn:btih:${normalizedHash}`,
     dn: resourceName,
   })
 
   trackers.forEach((tracker) => params.append('tr', tracker))
 
   return ok({
-    magnetLink: `magnet:?${params.toString()}`,
+    magnetLink: `magnet:?xt=urn:btih:${normalizedHash}&${params.toString()}`,
     normalizedHash,
     resourceName,
     trackers,
