@@ -20,6 +20,8 @@ export default function PasswordGenerator(props: Props) {
   const [lowercase, setLowercase] = createSignal(true)
   const [numbers, setNumbers] = createSignal(true)
   const [symbols, setSymbols] = createSignal(true)
+  const [simple, setSimple] = createSignal(false)
+  const [avoidAmbiguous, setAvoidAmbiguous] = createSignal(true)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 
@@ -32,10 +34,12 @@ export default function PasswordGenerator(props: Props) {
       if (typeof saved['lowercase'] === 'boolean') setLowercase(saved['lowercase'])
       if (typeof saved['numbers'] === 'boolean') setNumbers(saved['numbers'])
       if (typeof saved['symbols'] === 'boolean') setSymbols(saved['symbols'])
+      if (typeof saved['simple'] === 'boolean') setSimple(saved['simple'])
+      if (typeof saved['avoidAmbiguous'] === 'boolean') setAvoidAmbiguous(saved['avoidAmbiguous'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { length: length(), count: count(), uppercase: uppercase(), lowercase: lowercase(), numbers: numbers(), symbols: symbols() } },
+        detail: { state: { length: length(), count: count(), uppercase: uppercase(), lowercase: lowercase(), numbers: numbers(), symbols: symbols(), simple: simple(), avoidAmbiguous: avoidAmbiguous() } },
       }))
     }
     window.addEventListener(TOOL_STATE_REQUEST, handler)
@@ -50,6 +54,8 @@ export default function PasswordGenerator(props: Props) {
       lowercase: lowercase(),
       numbers: numbers(),
       symbols: symbols(),
+      simple: simple(),
+      avoidAmbiguous: avoidAmbiguous(),
     })
 
     if (result.ok) {
@@ -58,6 +64,13 @@ export default function PasswordGenerator(props: Props) {
     } else {
       setError(translateError(props.lang, result.error))
       setOutput('')
+    }
+  }
+
+  const handleSimpleChange = (checked: boolean) => {
+    setSimple(checked)
+    if (checked) {
+      setAvoidAmbiguous(true)
     }
   }
 
@@ -105,7 +118,18 @@ export default function PasswordGenerator(props: Props) {
           checked={symbols()}
           onChange={(e) => setSymbols(e.currentTarget.checked)}
         />
+        <Checkbox
+          label={t(props.lang, 'tools_passwordGenerator_simpleMode')}
+          checked={simple()}
+          onChange={(e) => handleSimpleChange(e.currentTarget.checked)}
+        />
+        <Checkbox
+          label={t(props.lang, 'tools_passwordGenerator_avoidAmbiguous')}
+          checked={avoidAmbiguous()}
+          onChange={(e) => setAvoidAmbiguous(e.currentTarget.checked)}
+        />
       </div>
+      <p class="text-sm text-text-muted">{t(props.lang, 'tools_passwordGenerator_simpleModeHint')}</p>
       <Button variant="primary" onClick={handleGenerate}>
         {t(props.lang, 'tools_passwordGenerator_generate')}
       </Button>

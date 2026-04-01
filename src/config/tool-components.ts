@@ -20,6 +20,7 @@ export const toolComponents: Record<string, ToolComponent> = {
   'password-generator': lazy(() => import('../components/tools/PasswordGenerator')),
   'username-generator': lazy(() => import('../components/tools/UsernameGenerator')),
   'pin-generator': lazy(() => import('../components/tools/PinGenerator')),
+  'bittorrent-magnet-link-generator': lazy(() => import('../components/tools/BittorrentMagnetLinkGenerator')),
   'domain-extractor': lazy(() => import('../components/tools/DomainExtractor')),
   'email-extractor': lazy(() => import('../components/tools/EmailExtractor')),
   'count-duplicates': lazy(() => import('../components/tools/CountDuplicates')),

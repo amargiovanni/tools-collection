@@ -57,6 +57,8 @@ test.describe('Password Generator', () => {
     await expect(page.getByLabel('Lowercase (a-z)')).toBeVisible()
     await expect(page.getByLabel('Numbers (0-9)')).toBeVisible()
     await expect(page.getByLabel('Symbols (!@#$%)')).toBeVisible()
+    await expect(page.getByLabel('Simple mode')).toBeVisible()
+    await expect(page.getByLabel('Avoid ambiguous characters')).toBeVisible()
   })
 
   test('shows error when all character sets unchecked', async ({ page }) => {
@@ -72,5 +74,19 @@ test.describe('Password Generator', () => {
     await page.getByRole('button', { name: 'Generate Password' }).click()
     await expect(page.locator('[data-testid="output-panel"] textarea')).not.toBeEmpty({ timeout: 5000 })
     await expect(page.locator('[data-testid="output-panel"] button')).toBeVisible()
+  })
+
+  test('simple mode enables avoid ambiguous characters by default', async ({ page }) => {
+    await page.getByLabel('Simple mode').check()
+    await expect(page.getByLabel('Avoid ambiguous characters')).toBeChecked()
+  })
+
+  test('avoid ambiguous characters removes confusing characters', async ({ page }) => {
+    await page.getByLabel('Symbols (!@#$%)').uncheck()
+    await page.getByLabel('Avoid ambiguous characters').check()
+    await page.getByRole('button', { name: 'Generate Password' }).click()
+
+    const value = await page.locator('[data-testid="output-panel"] textarea').inputValue()
+    expect(value).not.toMatch(/[O0oIl1]/)
   })
 })

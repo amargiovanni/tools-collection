@@ -92,6 +92,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['uuid', 'ulid', 'guid', 'generate', 'random', 'unique', 'identifier', 'v4', 'v7'],
     path: '/tools/uuid-generator',
   },
+  {
+    id: 'bittorrent-magnet-link-generator',
+    category: 'generators',
+    icon: '🧲',
+    keywords: ['magnet', 'bittorrent', 'torrent', 'infohash', 'tracker', 'link'],
+    path: '/tools/bittorrent-magnet-link-generator',
+  },
 
   // Extraction
   {
