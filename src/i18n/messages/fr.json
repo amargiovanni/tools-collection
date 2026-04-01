@@ -89,7 +89,7 @@
   "tools_passwordGenerator_includeSymbols": "Symboles (!@#$%)",
   "tools_passwordGenerator_simpleMode": "Mode simple",
   "tools_passwordGenerator_avoidAmbiguous": "Éviter les caractères ambigus",
-  "tools_passwordGenerator_simpleModeHint": "Le mode simple limite les symboles au sous-ensemble Nebula.Tools et active par défaut des caractères plus lisibles.",
+  "tools_passwordGenerator_simpleModeHint": "Le mode simple utilise un ensemble réduit de caractères spéciaux et active par défaut des caractères plus lisibles.",
   "tools_passwordGenerator_generate": "Générer un mot de passe",
   "tools_passwordGenerator_outputLabel": "Mots de passe générés :",
   "tools_passwordGenerator_copyAll": "Tout copier",

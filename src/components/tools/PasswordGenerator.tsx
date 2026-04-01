@@ -21,7 +21,7 @@ export default function PasswordGenerator(props: Props) {
   const [numbers, setNumbers] = createSignal(true)
   const [symbols, setSymbols] = createSignal(true)
   const [simple, setSimple] = createSignal(false)
-  const [avoidAmbiguous, setAvoidAmbiguous] = createSignal(false)
+  const [avoidAmbiguous, setAvoidAmbiguous] = createSignal(true)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 
