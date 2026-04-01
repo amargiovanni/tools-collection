@@ -15,8 +15,26 @@ export interface MagnetLinkResult {
 }
 
 export const DEFAULT_MAGNET_TRACKERS = [
-  'http://tracker.opentrackr.org:1337/announce',
+  'udp://tracker.opentrackr.org:1337/announce',
+  'udp://open.stealth.si:80/announce',
+  'udp://wepzone.net:6969/announce',
+  'udp://utracker.ghostchu-services.top:6969/announce',
+  'udp://tracker.tryhackx.org:6969/announce',
   'udp://tracker.torrent.eu.org:451/announce',
+  'udp://tracker.theoks.net:6969/announce',
+  'udp://tracker.srv00.com:6969/announce',
+  'udp://tracker.qu.ax:6969/announce',
+  'udp://tracker.gmi.gd:6969/announce',
+  'udp://tracker.darkness.services:6969/announce',
+  'udp://tracker.004430.xyz:1337/announce',
+  'udp://tracker-udp.gbitt.info:80/announce',
+  'udp://tr4ck3r.duckdns.org:6969/announce',
+  'udp://t.overflow.biz:6969/announce',
+  'udp://seedpeer.net:6969/announce',
+  'udp://open.dstud.io:6969/announce',
+  'udp://martin-gebhardt.eu:25/announce',
+  'udp://leet-tracker.moe:1337/announce',
+  'udp://ipv4announce.sktorrent.eu:6969/announce',
 ] as const
 
 const TRACKER_PATTERN = /^[a-z][a-z0-9+.-]*:\/\/\S+$/i
