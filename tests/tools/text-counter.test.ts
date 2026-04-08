@@ -49,4 +49,10 @@ describe('analyzeText', () => {
       { term: "l'été", count: 1 },
     ])
   })
+
+  it('does not split common abbreviations into separate sentences', () => {
+    const result = analyzeText('Dr. Smith arrived at 3.14 p.m. He said i.e. this is fine.')
+
+    expect(result.sentences).toBe(2)
+  })
 })

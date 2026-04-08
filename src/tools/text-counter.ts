@@ -15,7 +15,14 @@ export interface TextCounterStats {
 }
 
 const WORD_REGEX = /[\p{L}\p{N}]+(?:['’-][\p{L}\p{N}]+)*/gu
-const SENTENCE_REGEX = /[^.!?]+[.!?]*\s*/gu
+const SENTENCE_REGEX = /.+?(?:[.!?]+(?=\s|$)|$)/gu
+const DOT_PLACEHOLDER = '__DOT__'
+const SENTENCE_PROTECTED_PATTERNS = [
+  /\b(?:mr|mrs|ms|dr|prof|sr|jr|st|vs|etc|fig|no)\./giu,
+  /\b(?:e\.g|i\.e|p\.s|a\.k\.a|a\.m|p\.m)\./giu,
+  /\b(?:[A-Z]\.){2,}/g,
+  /\b\d+\.\d+\b/g,
+] as const
 const MULTILINGUAL_STOPWORDS = new Set([
   'a', 'ad', 'ai', 'al', 'alla', 'alle', 'allo', 'also', 'am', 'an', 'and', 'are', 'as', 'at',
   'au', 'auf', 'aux', 'avec', 'by', 'che', 'chi', 'ci', 'con', 'come', 'como', 'da', 'das', 'de',
@@ -34,7 +41,12 @@ function getWords(input: string): string[] {
 function countSentences(input: string): number {
   if (!input.trim()) return 0
 
-  return (input.match(SENTENCE_REGEX) ?? [])
+  let normalized = input.trim()
+  for (const pattern of SENTENCE_PROTECTED_PATTERNS) {
+    normalized = normalized.replace(pattern, (match) => match.replace(/\./g, DOT_PLACEHOLDER))
+  }
+
+  return (normalized.match(SENTENCE_REGEX) ?? [])
     .map((sentence) => sentence.trim())
     .filter(Boolean)
     .length

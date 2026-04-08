@@ -5,7 +5,6 @@ async function waitForHydration(page: Page) {
     const island = document.querySelector('astro-island')
     return island !== null && island.children.length > 0
   }, undefined, { timeout: 10000 })
-  await page.waitForTimeout(300)
 }
 
 test.describe('Text Counter', () => {
@@ -15,11 +14,11 @@ test.describe('Text Counter', () => {
 
     await page.locator('[data-testid="textarea"]').first().fill('Hello world. Hello again!')
 
-    await expect(page.getByText('Characters').locator('..')).toContainText('25')
-    await expect(page.getByText('Words').locator('..')).toContainText('4')
-    await expect(page.getByText('Sentences').locator('..')).toContainText('2')
-    await expect(page.getByText('Reading time').locator('..')).toContainText('2 sec')
-    await expect(page.getByText('Keywords').locator('..')).toContainText('hello x2')
+    await expect(page.locator('[data-testid="text-counter-stat-characters"]')).toContainText('25')
+    await expect(page.locator('[data-testid="text-counter-stat-words"]')).toContainText('4')
+    await expect(page.locator('[data-testid="text-counter-stat-sentences"]')).toContainText('2')
+    await expect(page.locator('[data-testid="text-counter-stat-reading-time"]')).toContainText('2 sec')
+    await expect(page.locator('[data-testid="text-counter-keywords"]')).toContainText('hello x2')
   })
 
   test('supports quick text actions', async ({ page }) => {
