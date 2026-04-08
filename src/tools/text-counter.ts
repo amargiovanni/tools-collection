@@ -78,6 +78,10 @@ function countSentences(input: string): number {
     const nextVisibleChar = getNextNonSpaceChar(text, index)
     const previousToken = getPreviousToken(text, index)
 
+    if (/\p{L}/u.test(previousChar) && /\p{L}/u.test(nextChar)) {
+      continue
+    }
+
     if (/\d/u.test(previousChar) && /\d/u.test(nextChar)) {
       continue
     }
