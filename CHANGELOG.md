@@ -2,9 +2,9 @@
 
 All notable changes to this project are documented in this file.
 
-This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
+This changelog tracks the recent evolution of the project by published release and notable published commits.
 
-## Upcoming release (`1.3.3`)
+## Published: `1.3.3`
 
 ### Added
 - Added a new `Text Counter` tool modeled on `contacaratteri.it`, with live counts for characters, words, sentences, paragraphs, reading/speaking time, top keywords, and quick text actions.
@@ -15,7 +15,7 @@ This changelog currently tracks the recent evolution of the project by published
 - Added a new `Data Size Converter` tool with bit/byte conversion and support for `KB/MB/GB/TB` plus `KiB/MiB/GiB/TiB`.
 - Added Spanish, French, and German translations (382 keys each) with full i18n support for 5 languages.
 - Added a language switcher dropdown menu replacing the single-language toggle, showing all available languages.
-- Added Playwright end-to-end browser tests covering all 29 tools and navigation (57 tests across 29 spec files).
+- Added Playwright end-to-end browser tests covering the tool catalog and cross-site navigation.
 - Added `data-testid` attributes to shared UI components for stable e2e test selectors.
 - Added shared `ResultCard` component used by HashGenerator, TimestampConverter, TimeConvert, and ColorPicker.
 - Added `translateError()` helper with dedicated unit tests for localized error messages.
@@ -30,7 +30,7 @@ This changelog currently tracks the recent evolution of the project by published
 - Updated root redirect and hash redirect scripts to recognize all 5 supported languages.
 - Updated `hreflang` alternate links in `BaseLayout` to include all 5 languages.
 - Updated Docker `default-language.sh` to accept `es`, `fr`, and `de` in addition to `en` and `it`.
-- Updated CI workflow to run Playwright e2e tests after build and verify 146 generated pages.
+- Updated CI workflow to run Playwright e2e tests after build and verify the generated page output.
 - Hoisted regex patterns to module scope in `xml-beautifier`, `reg2gpo`, and `email-extractor` for better performance.
 - Batched `crypto.getRandomValues()` calls in password and PIN generators instead of one syscall per character.
 - Extracted `isValidRgb()` helper in `color-picker` to deduplicate RGB range validation.
