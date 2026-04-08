@@ -4,9 +4,10 @@ All notable changes to this project are documented in this file.
 
 This changelog currently tracks the recent evolution of the project by published commit and keeps the next pending rollout grouped under `Upcoming release`.
 
-## Upcoming release (`1.3.2`)
+## Upcoming release (`1.3.3`)
 
 ### Added
+- Added a new `Text Counter` tool modeled on `contacaratteri.it`, with live counts for characters, words, sentences, paragraphs, reading/speaking time, top keywords, and quick text actions.
 - Added a new `BitTorrent Magnet Link Generator` tool for building magnet URIs from an info hash, optional resource name, and tracker list.
 - Added unit and Playwright end-to-end coverage for the new magnet generator workflow.
 - Added a new `Cron Expression Parser` tool that explains standard 5-field cron schedules plus common shortcuts like `@daily` and `@reboot`.
@@ -21,7 +22,7 @@ This changelog currently tracks the recent evolution of the project by published
 - Added SolidJS component testing infrastructure (`@solidjs/testing-library`, `jsdom`).
 
 ### Changed
-- Bumped the product version to `1.3.2`.
+- Bumped the product version to `1.3.3`.
 - Updated the password generator with a Nebula.Tools-aligned `Simple mode` for reduced special characters plus a separate `Avoid ambiguous characters` option that `Simple mode` enables by default.
 - Updated catalog metadata, lazy tool loading, translations, and automated tests to account for the new tool count.
 - Replaced eager static imports of all 29 tool components with SolidJS `lazy()` dynamic imports for code splitting (44 separate JS chunks instead of 1 monolithic bundle).

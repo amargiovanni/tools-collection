@@ -130,6 +130,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['count', 'duplicate', 'frequency', 'occurrences', 'analyze'],
     path: '/tools/count-duplicates',
   },
+  {
+    id: 'text-counter',
+    category: 'analysis',
+    icon: '📝',
+    keywords: ['text', 'counter', 'characters', 'words', 'sentences', 'paragraphs', 'keywords'],
+    path: '/tools/text-counter',
+  },
 
   // Security
   {

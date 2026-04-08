@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test'
+import { toolRegistry } from '../src/config/tools'
 
 test.describe('Navigation', () => {
   test('home page shows all tool cards', async ({ page }) => {
     await page.goto('/en/', { waitUntil: 'networkidle' })
     const toolLinks = page.locator('a[href*="/en/tools/"]')
-    await expect(toolLinks).toHaveCount(34)
+    await expect(toolLinks).toHaveCount(toolRegistry.length)
   })
 
   test('clicking a tool card opens the tool', async ({ page }) => {
