@@ -1,6 +1,6 @@
 # Tools Collection
 
-A modular, type-safe collection of 34 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
+A modular, type-safe collection of 35 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,9 +9,9 @@ A modular, type-safe collection of 34 browser-based developer tools. Built with 
 
 ## What it does
 
-34 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
+35 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable additions in `1.3.2`: a `BitTorrent Magnet Link Generator`, plus password generator refinements such as `Simple mode` and `Avoid ambiguous characters`.
+Notable additions in `1.3.3`: a `BitTorrent Magnet Link Generator`, plus password generator refinements such as `Simple mode` and `Avoid ambiguous characters`.
 
 ## Tools
 
@@ -53,11 +53,11 @@ src/pages/en/tools/[tool].astro    ← Astro page (mounts island via client:load
 src/
 ├── components/
 │   ├── ui/              # 13 reusable Solid components (Button, TextArea, OutputPanel, ...)
-│   ├── tools/           # 34 tool UI components (one per tool)
+│   ├── tools/           # 35 tool UI components (one per tool)
 │   ├── Sidebar.astro    # Category navigation
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts         # Tool registry (34 entries with metadata)
+│   ├── tools.ts         # Tool registry (35 entries with metadata)
 │   └── tool-components.ts # Lazy component mapping (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts         # Type-safe t(lang, key) helper
@@ -81,7 +81,7 @@ src/
 │   └── de/              # German pages
 ├── styles/
 │   └── global.css       # Tailwind 4 @theme tokens + dark mode
-└── tools/               # 34 pure logic modules (zero DOM)
+└── tools/               # 35 pure logic modules (zero DOM)
 ```
 
 ## Getting Started
@@ -109,7 +109,7 @@ npm run build
 npm run preview
 ```
 
-Output goes to `dist/` — 171 static HTML pages (34 per language x 5, plus root redirect) ready for any hosting.
+Output goes to `dist/` — 176 static HTML pages (35 per language x 5, plus root redirect) ready for any hosting.
 
 ### Docker
 
