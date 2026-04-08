@@ -160,7 +160,7 @@ No adapter needed — Astro's default static output works directly:
 | Command | Description |
 |---|---|
 | `npm run dev` | Start dev server with HMR |
-| `npm run build` | Build for production (171 pages) |
+| `npm run build` | Build for production |
 | `npm run preview` | Preview production build |
 | `npm run test` | Run unit tests |
 | `npm run test:watch` | Run unit tests in watch mode |
