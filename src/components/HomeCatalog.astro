@@ -3,6 +3,7 @@ import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
 import { t, getCategoryName, getOtherLanguages, languageNames, getToolNameKey, getToolDescKey } from '../i18n'
 import type { Language } from '../i18n'
 import BrandMark from './BrandMark.astro'
+import { sortToolsByLocalizedName } from '../lib/tool-order'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
 
 interface Props {
@@ -177,7 +178,7 @@ const categoryAccents: Record<string, string> = {
     </section>
 
     {categories.map((cat) => {
-      const tools = getToolsByCategory(cat)
+      const tools = sortToolsByLocalizedName(lang, getToolsByCategory(cat))
       const colorClass = categoryColors[cat] ?? ''
       const accentClass = categoryAccents[cat] ?? 'text-accent'
       return (
