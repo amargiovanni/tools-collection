@@ -188,7 +188,7 @@
   "tools_rclonePassword_placeholder": "Collez ici le mot de passe obfusqué de rclone...",
   "tools_rclonePassword_reveal": "Révéler le mot de passe",
   "tools_rclonePassword_outputLabel": "Mot de passe récupéré :",
-  "tools_rclonePassword_credit": "Credit: Original PowerShell script, available on PowerShell Gallery.",
+  "tools_rclonePassword_credit": "Crédit : script PowerShell d'origine, disponible sur PowerShell Gallery.",
   "tools_passwordStrength_name": "Vérificateur de robustesse de mot de passe",
   "tools_passwordStrength_description": "Analyser la robustesse d'un mot de passe et obtenir des suggestions",
   "tools_passwordStrength_inputLabel": "Mot de passe à analyser :",

@@ -188,7 +188,7 @@
   "tools_rclonePassword_placeholder": "Incolla qui la password offuscata di rclone...",
   "tools_rclonePassword_reveal": "Rivela Password",
   "tools_rclonePassword_outputLabel": "Password recuperata:",
-  "tools_rclonePassword_credit": "Credit: Original PowerShell script, available on PowerShell Gallery.",
+  "tools_rclonePassword_credit": "Credito: script PowerShell originale, disponibile su PowerShell Gallery.",
   "tools_passwordStrength_name": "Password Strength Checker",
   "tools_passwordStrength_description": "Analizza la robustezza delle password e fornisce suggerimenti",
   "tools_passwordStrength_inputLabel": "Password da Analizzare:",
