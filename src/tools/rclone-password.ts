@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { fromBase64Url } from '../lib/base64url'
 
 const RCLONE_KEY = new Uint8Array([
   0x9c, 0x93, 0x5b, 0x48, 0x73, 0x0a, 0x55, 0x4d,
@@ -8,30 +9,21 @@ const RCLONE_KEY = new Uint8Array([
   0xf4, 0xde, 0x16, 0x2b, 0x8b, 0x95, 0xf6, 0x38,
 ])
 
-function base64UrlToBytes(input: string): Uint8Array {
-  const base64 = input.replace(/-/g, '+').replace(/_/g, '/')
+let cachedKey: CryptoKey | null = null
 
-  switch (base64.length % 4) {
-    case 0:
-      break
-    case 2:
-      return Uint8Array.from(atob(base64 + '=='), (char) => char.charCodeAt(0))
-    case 3:
-      return Uint8Array.from(atob(base64 + '='), (char) => char.charCodeAt(0))
-    default:
-      throw new Error('Invalid Base64URL string length.')
-  }
-
-  return Uint8Array.from(atob(base64), (char) => char.charCodeAt(0))
-}
-
-async function decryptRclonePayload(ciphertext: Uint8Array, iv: Uint8Array): Promise<Uint8Array> {
-  const subtle = globalThis.crypto?.subtle
-  if (!subtle) {
-    throw new Error('Web Crypto is not available in this environment.')
+async function getRcloneKey(subtle: SubtleCrypto): Promise<CryptoKey> {
+  if (cachedKey) {
+    return cachedKey
   }
 
   const key = await subtle.importKey('raw', RCLONE_KEY, 'AES-CTR', false, ['decrypt'])
+  cachedKey = key
+  return key
+}
+
+async function decryptRclonePayload(ciphertext: Uint8Array, iv: Uint8Array): Promise<Uint8Array> {
+  const subtle = globalThis.crypto!.subtle
+  const key = await getRcloneKey(subtle)
   const plainBuffer = await subtle.decrypt(
     {
       name: 'AES-CTR',
@@ -57,7 +49,7 @@ export async function revealRclonePassword(obscuredText: string): Promise<Result
 
   let ciphertext: Uint8Array
   try {
-    ciphertext = base64UrlToBytes(trimmed)
+    ciphertext = fromBase64Url(trimmed)
   } catch (cause) {
     const message = cause instanceof Error ? cause.message : 'Unable to decode Base64URL input.'
     return err('INVALID_BASE64URL', `Base64 decode failed while revealing the password. ${message}`)

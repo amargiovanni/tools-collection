@@ -49,6 +49,19 @@ export default function RclonePassword(props: Props) {
 
   return (
     <div class="flex flex-col gap-4">
+      <p class="text-sm text-text-secondary">
+        {t(props.lang, 'tools_rclonePassword_originalScriptPrefix')}{' '}
+        <a
+          href="https://www.powershellgallery.com/packages/Get-RclonePassword"
+          target="_blank"
+          rel="noreferrer"
+          class="font-medium text-accent underline-offset-4 hover:underline"
+        >
+          Get-RclonePassword
+        </a>
+        {t(props.lang, 'tools_rclonePassword_originalScriptSuffix')}
+      </p>
+
       <TextArea
         label={t(props.lang, 'tools_rclonePassword_inputLabel')}
         placeholder={t(props.lang, 'tools_rclonePassword_placeholder')}

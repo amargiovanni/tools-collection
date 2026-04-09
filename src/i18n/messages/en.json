@@ -188,6 +188,8 @@
   "tools_rclonePassword_placeholder": "Paste the rclone obscured password here...",
   "tools_rclonePassword_reveal": "Reveal Password",
   "tools_rclonePassword_outputLabel": "Recovered password:",
+  "tools_rclonePassword_originalScriptPrefix": "Original PowerShell script:",
+  "tools_rclonePassword_originalScriptSuffix": " available on PowerShell Gallery.",
   "tools_passwordStrength_name": "Password Strength Checker",
   "tools_passwordStrength_description": "Analyze password strength and get suggestions",
   "tools_passwordStrength_inputLabel": "Password to Analyze:",

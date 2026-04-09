@@ -1,25 +1,9 @@
+import { fromBase64Url, toBase64Url } from './base64url'
+
 export const TOOL_STATE_REQUEST = 'tool-state-request'
 export const TOOL_STATE_RESPONSE = 'tool-state-response'
 
 type ShareEnvelope = { v: 1; state: Record<string, unknown> }
-
-function toBase64Url(buffer: ArrayBuffer): string {
-  return btoa(String.fromCharCode(...new Uint8Array(buffer)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '')
-}
-
-function fromBase64Url(str: string): Uint8Array {
-  const base64 = str.replace(/-/g, '+').replace(/_/g, '/')
-  const padded = base64 + '=='.slice(0, (4 - (base64.length % 4)) % 4)
-  const binary = atob(padded)
-  const result = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) {
-    result[i] = binary.charCodeAt(i)
-  }
-  return result
-}
 
 export async function encodeState(state: Record<string, unknown>): Promise<string> {
   const envelope: ShareEnvelope = { v: 1, state }
