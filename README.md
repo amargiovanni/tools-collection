@@ -1,6 +1,6 @@
 # Tools Collection
 
-A modular, type-safe collection of 35 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
+A modular, type-safe collection of more than 30 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,9 +9,9 @@ A modular, type-safe collection of 35 browser-based developer tools. Built with 
 
 ## What it does
 
-35 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
+More than 30 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable additions in `1.3.3`: a `BitTorrent Magnet Link Generator`, plus password generator refinements such as `Simple mode` and `Avoid ambiguous characters`.
+Notable additions in `1.3.4`: the `Rclone Password Revealer`, plus password generator refinements such as `Simple mode` and `Avoid ambiguous characters`.
 
 ## Tools
 
@@ -53,11 +53,11 @@ src/pages/en/tools/[tool].astro    ← Astro page (mounts island via client:load
 src/
 ├── components/
 │   ├── ui/              # 13 reusable Solid components (Button, TextArea, OutputPanel, ...)
-│   ├── tools/           # 35 tool UI components (one per tool)
+│   ├── tools/           # more than 30 tool UI components (one per tool)
 │   ├── Sidebar.astro    # Category navigation
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts         # Tool registry (35 entries with metadata)
+│   ├── tools.ts         # Tool registry (more than 30 entries with metadata)
 │   └── tool-components.ts # Lazy component mapping (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts         # Type-safe t(lang, key) helper

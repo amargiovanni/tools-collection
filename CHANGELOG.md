@@ -4,6 +4,15 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.3.4`
+
+### Added
+- Added a new `Rclone Password Revealer` tool for revealing passwords stored in rclone's obscured Base64URL format.
+
+### Changed
+- Bumped the product version to `1.3.4`.
+- Updated the README files to describe the catalog as containing more than 30 tools instead of a fixed count.
+
 ## Published: `1.3.3`
 
 ### Added
