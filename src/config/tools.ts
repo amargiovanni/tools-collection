@@ -147,6 +147,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     path: '/tools/pem-inspector',
   },
   {
+    id: 'rclone-password',
+    category: 'security',
+    icon: '🔓',
+    keywords: ['rclone', 'password', 'decrypt', 'obscure', 'base64url', 'aes'],
+    path: '/tools/rclone-password',
+  },
+  {
     id: 'password-strength',
     category: 'security',
     icon: '🔒',

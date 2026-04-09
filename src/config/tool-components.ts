@@ -26,6 +26,7 @@ export const toolComponents: Record<string, ToolComponent> = {
   'count-duplicates': lazy(() => import('../components/tools/CountDuplicates')),
   'text-counter': lazy(() => import('../components/tools/TextCounter')),
   'pem-inspector': lazy(() => import('../components/tools/PemInspector')),
+  'rclone-password': lazy(() => import('../components/tools/RclonePassword')),
   'password-strength': lazy(() => import('../components/tools/PasswordStrength')),
   'qr-code': lazy(() => import('../components/tools/QrCode')),
   'emoji-shortcode': lazy(() => import('../components/tools/EmojiShortcode')),
