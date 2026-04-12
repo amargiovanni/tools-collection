@@ -28,26 +28,26 @@ const reverseMap: ReadonlyMap<string, string> = new Map(
   [...emojiMap.entries()].map(([shortcode, emoji]) => [emoji, shortcode]),
 )
 
+const shortcodeRegex = new RegExp(
+  [...emojiMap.keys()].map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'),
+  'g',
+)
+
+const emojiRegex = new RegExp(
+  [...reverseMap.keys()].map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'),
+  'gu',
+)
+
 export function toEmoji(input: string): Result<string> {
   if (!input.trim()) {
     return err('EMPTY_INPUT', 'Please enter some input')
   }
-
-  let result = input
-  for (const [shortcode, emoji] of emojiMap) {
-    result = result.split(shortcode).join(emoji)
-  }
-  return ok(result)
+  return ok(input.replace(shortcodeRegex, (match) => emojiMap.get(match) ?? match))
 }
 
 export function toShortcode(input: string): Result<string> {
   if (!input.trim()) {
     return err('EMPTY_INPUT', 'Please enter some input')
   }
-
-  let result = input
-  for (const [emoji, shortcode] of reverseMap) {
-    result = result.split(emoji).join(shortcode)
-  }
-  return ok(result)
+  return ok(input.replace(emojiRegex, (match) => reverseMap.get(match) ?? match))
 }
