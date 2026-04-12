@@ -1,4 +1,4 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, onMount, onCleanup } from 'solid-js'
 import { TextArea } from '../ui/TextArea'
 import { StatusMessage } from '../ui/StatusMessage'
 import { ResultCard } from '../ui/ResultCard'
@@ -39,17 +39,17 @@ export default function JwtDecoder(props: Props) {
     onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
   })
 
-  const parsed = () => {
+  const parsed = createMemo(() => {
     const val = input().trim()
     if (!val) return null
     return parseJwt(val)
-  }
+  })
 
-  const expiry = () => {
+  const expiry = createMemo(() => {
     const p = parsed()
     if (!p || !p.ok) return null
     return getExpiryStatus(p.payload)
-  }
+  })
 
   return (
     <div class="flex flex-col gap-4">
