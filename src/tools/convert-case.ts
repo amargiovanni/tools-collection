@@ -1,12 +1,12 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type CaseType = 'upper' | 'lower' | 'title' | 'camel' | 'snake' | 'constant'
 
 export function convertCase(input: string, caseType: CaseType): Result<string> {
-  if (input === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   switch (caseType) {
     case 'upper':

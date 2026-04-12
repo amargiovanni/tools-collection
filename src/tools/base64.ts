@@ -1,10 +1,10 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export function encodeBase64(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
     const bytes = new TextEncoder().encode(input)
@@ -19,9 +19,8 @@ export function encodeBase64(input: string): Result<string> {
 }
 
 export function decodeBase64(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
     const binary = atob(input)

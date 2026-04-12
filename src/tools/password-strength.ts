@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface StrengthCheck {
   name: string
@@ -14,9 +15,8 @@ export interface StrengthResult {
 }
 
 export function checkPasswordStrength(password: string): Result<StrengthResult> {
-  if (!password) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(password)
+  if (!validated.ok) return validated
 
   let score = 0
 

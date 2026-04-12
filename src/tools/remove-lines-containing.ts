@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface FilterOptions {
   terms: string[]
@@ -13,9 +14,8 @@ export interface FilterResult {
 }
 
 export function removeLinesContaining(input: string, options: FilterOptions): Result<FilterResult> {
-  if (input === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   if (options.terms.length === 0) {
     const lines = input.split('\n')

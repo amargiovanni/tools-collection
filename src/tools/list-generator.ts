@@ -1,9 +1,13 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type ListFormat = 'numbered' | 'bulleted' | 'comma' | 'pipe'
 
 export function generateList(input: string, format: ListFormat): Result<string> {
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
+
   const lines = input.split('\n').filter(line => line.trim())
 
   if (lines.length === 0) {

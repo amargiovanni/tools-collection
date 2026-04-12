@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type XmlIndent = 2 | 4 | 'tab'
 
@@ -10,9 +11,8 @@ const OPENING_TAG_RE = /^<\w[^>]*[^/]>.*$/
 const SIMPLE_OPENING_TAG_RE = /^<\w+>/
 
 export function formatXml(input: string, indent: XmlIndent): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   const padding = indent === 'tab' ? '\t' : ' '.repeat(indent)
 

@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 const emojiMap: ReadonlyMap<string, string> = new Map([
   [':smile:', '\u{1F604}'],
@@ -39,15 +40,13 @@ const emojiRegex = new RegExp(
 )
 
 export function toEmoji(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   return ok(input.replace(shortcodeRegex, (match) => emojiMap.get(match) ?? match))
 }
 
 export function toShortcode(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   return ok(input.replace(emojiRegex, (match) => reverseMap.get(match) ?? match))
 }

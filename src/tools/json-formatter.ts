@@ -1,12 +1,12 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type JsonIndent = 2 | 4 | 'tab' | 'compact'
 
 export function formatJson(input: string, indent: JsonIndent): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
     const parsed: unknown = JSON.parse(input)
@@ -25,9 +25,8 @@ export function formatJson(input: string, indent: JsonIndent): Result<string> {
 }
 
 export function validateJson(input: string): Result<boolean> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
     JSON.parse(input)

@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 function normalizeDomain(hostname: string, includeSubdomains: boolean): string {
   if (includeSubdomains) return hostname
@@ -8,9 +9,8 @@ function normalizeDomain(hostname: string, includeSubdomains: boolean): string {
 }
 
 export function extractDomains(input: string, includeSubdomains: boolean): Result<string[]> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   const lines = input.split('\n').map(line => line.trim()).filter(Boolean)
   const domains: string[] = []

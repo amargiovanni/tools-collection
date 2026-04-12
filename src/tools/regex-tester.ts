@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface RegexFlags {
   global: boolean
@@ -18,7 +19,9 @@ export function testRegex(
   text: string,
   flags: RegexFlags,
 ): Result<RegexMatch[]> {
-  if (pattern.trim() === '' || text === '') {
+  const validatedPattern = validateNonEmpty(pattern)
+  const validatedText = validateNonEmpty(text)
+  if (!validatedPattern.ok || !validatedText.ok) {
     return err('EMPTY_INPUT', 'Enter both the pattern and the text')
   }
 

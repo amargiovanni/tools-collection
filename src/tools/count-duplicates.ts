@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface DuplicateEntry {
   value: string
@@ -13,9 +14,8 @@ export interface CountOptions {
 }
 
 export function countDuplicates(input: string, options: CountOptions): Result<DuplicateEntry[]> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   const lines = input.split('\n').map(line => line.trim()).filter(Boolean)
 

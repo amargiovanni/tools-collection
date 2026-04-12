@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface CertInfo {
   readonly fingerprint: string
@@ -27,10 +28,10 @@ function bytesToHex(bytes: Uint8Array): string {
 }
 
 export async function inspectPem(pem: string): Promise<Result<CertInfo>> {
-  const trimmed = pem.trim()
-  if (!trimmed) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(pem)
+  if (!validated.ok) return validated
+
+  const trimmed = validated.value
 
   if (!trimmed.includes('-----BEGIN CERTIFICATE-----')) {
     return err('INVALID_PEM', 'Invalid certificate format. Please enter a PEM certificate.')
