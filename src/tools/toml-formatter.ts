@@ -49,6 +49,7 @@ function charAt(s: string, i: number): string {
 class TomlParser {
   private readonly lines: string[]
   private pos = 0
+  private readonly explicitTables = new Set<string>()
 
   constructor(input: string) {
     this.lines = input.split(/\r?\n/)
@@ -216,11 +217,14 @@ class TomlParser {
     const valueResult = this.parseValue(line, i, lineNum)
     const value = valueResult.value
 
-    // Check for trailing content
-    let trailing = line.slice(valueResult.end).trim()
-    if (trailing.startsWith('#')) trailing = ''
-    if (trailing !== '') {
-      throw new TomlParseError(`Unexpected content after value: '${trailing}'`, lineNum)
+    // Check for trailing content (skip when value spanned multiple lines,
+    // since `end` is a column offset on the closing line, not the opening line)
+    if (!valueResult.multiline) {
+      let trailing = line.slice(valueResult.end).trim()
+      if (trailing.startsWith('#')) trailing = ''
+      if (trailing !== '') {
+        throw new TomlParseError(`Unexpected content after value: '${trailing}'`, lineNum)
+      }
     }
 
     // Navigate to target table for dotted keys
@@ -244,7 +248,7 @@ class TomlParser {
     target[finalKey] = value
   }
 
-  private parseValue(line: string, start: number, lineNum: number): { value: TomlValue; end: number } {
+  private parseValue(line: string, start: number, lineNum: number): { value: TomlValue; end: number; multiline?: boolean } {
     if (start >= line.length) {
       throw new TomlParseError('Expected value', lineNum)
     }
@@ -355,20 +359,30 @@ class TomlParser {
     throw new TomlParseError('Unterminated literal string', line)
   }
 
-  private readMultilineBasicString(start: number, startLine: number): { value: TomlValue; end: number } {
+  private readMultilineBasicString(start: number, startLine: number): { value: TomlValue; end: number; multiline: boolean } {
     // Start after the """
     let lineIdx = this.pos - 1 // current line index
     const firstLine = this.getLine(lineIdx)
     const i = start + 3
     let result = ''
 
-    // If there's a newline right after """, skip it
+    // Check if closing """ is on the same line (after the opening """)
     const restOfFirstLine = firstLine.slice(i)
+    const sameLineClose = restOfFirstLine.indexOf('"""')
+    if (sameLineClose !== -1) {
+      // Closing delimiter on same line: """content"""
+      result = restOfFirstLine.slice(0, sameLineClose)
+      const endCol = i + sameLineClose + 3
+      // No need to advance this.pos since we stay on the same line
+      return { value: this.processBasicStringEscapes(result, startLine), end: endCol, multiline: false }
+    }
+
+    // If there's a newline right after """, skip it
     if (restOfFirstLine.trim() === '') {
       // Content starts on next line
       lineIdx++
     } else {
-      // Content on same line
+      // Content on same line continues to subsequent lines
       result += restOfFirstLine + '\n'
       lineIdx++
     }
@@ -380,7 +394,7 @@ class TomlParser {
         result += currentLine.slice(0, tripleIdx)
         this.pos = lineIdx + 1
         const endCol = tripleIdx + 3
-        return { value: this.processBasicStringEscapes(result, startLine), end: endCol }
+        return { value: this.processBasicStringEscapes(result, startLine), end: endCol, multiline: true }
       }
       result += currentLine + '\n'
       lineIdx++
@@ -413,12 +427,18 @@ class TomlParser {
           case '\\': result += '\\'; break
           case 'u': {
             const hex = s.slice(i + 1, i + 5)
+            if (hex.length < 4 || !/^[0-9a-fA-F]{4}$/.test(hex)) {
+              throw new TomlParseError('Invalid unicode escape in multiline string', line)
+            }
             result += String.fromCodePoint(parseInt(hex, 16))
             i += 4
             break
           }
           case 'U': {
             const hex = s.slice(i + 1, i + 9)
+            if (hex.length < 8 || !/^[0-9a-fA-F]{8}$/.test(hex)) {
+              throw new TomlParseError('Invalid unicode escape in multiline string', line)
+            }
             result += String.fromCodePoint(parseInt(hex, 16))
             i += 8
             break
@@ -435,13 +455,21 @@ class TomlParser {
     return result
   }
 
-  private readMultilineLiteralString(start: number, startLine: number): { value: TomlValue; end: number } {
+  private readMultilineLiteralString(start: number, startLine: number): { value: TomlValue; end: number; multiline: boolean } {
     let lineIdx = this.pos - 1
     const firstLine = this.getLine(lineIdx)
     const i = start + 3
     let result = ''
 
+    // Check if closing ''' is on the same line (after the opening ''')
     const restOfFirstLine = firstLine.slice(i)
+    const sameLineClose = restOfFirstLine.indexOf("'''")
+    if (sameLineClose !== -1) {
+      result = restOfFirstLine.slice(0, sameLineClose)
+      const endCol = i + sameLineClose + 3
+      return { value: result, end: endCol, multiline: false }
+    }
+
     if (restOfFirstLine.trim() === '') {
       lineIdx++
     } else {
@@ -456,7 +484,7 @@ class TomlParser {
         result += currentLine.slice(0, tripleIdx)
         this.pos = lineIdx + 1
         const endCol = tripleIdx + 3
-        return { value: result, end: endCol }
+        return { value: result, end: endCol, multiline: true }
       }
       result += currentLine + '\n'
       lineIdx++
@@ -464,11 +492,12 @@ class TomlParser {
     throw new TomlParseError('Unterminated multiline literal string', startLine)
   }
 
-  private readArray(line: string, start: number, lineNum: number): { value: TomlValue[]; end: number } {
+  private readArray(line: string, start: number, lineNum: number): { value: TomlValue[]; end: number; multiline?: boolean } {
     const arr: TomlValue[] = []
     let i = start + 1 // skip [
     let currentLine = line
     let currentLineNum = lineNum
+    const startingLineNum = lineNum
 
     const skipWsAndComments = () => {
       while (true) {
@@ -491,7 +520,7 @@ class TomlParser {
     skipWsAndComments()
 
     if (i < currentLine.length && currentLine[i] === ']') {
-      return { value: arr, end: i + 1 }
+      return { value: arr, end: i + 1, multiline: currentLineNum !== startingLineNum ? true : undefined }
     }
 
     while (true) {
@@ -511,13 +540,13 @@ class TomlParser {
         skipWsAndComments()
         // Allow trailing comma
         if (i < currentLine.length && currentLine[i] === ']') {
-          return { value: arr, end: i + 1 }
+          return { value: arr, end: i + 1, multiline: currentLineNum !== startingLineNum ? true : undefined }
         }
         continue
       }
 
       if (i < currentLine.length && currentLine[i] === ']') {
-        return { value: arr, end: i + 1 }
+        return { value: arr, end: i + 1, multiline: currentLineNum !== startingLineNum ? true : undefined }
       }
 
       throw new TomlParseError('Expected comma or closing bracket in array', currentLineNum)
@@ -632,18 +661,21 @@ class TomlParser {
 
     // Hex
     if (clean.startsWith('0x') || clean.startsWith('0X')) {
+      if (clean.startsWith('0X')) throw new TomlParseError(`Uppercase prefix '0X' is not allowed; use '0x'`, lineNum)
       const n = parseInt(clean, 16)
       if (isNaN(n)) throw new TomlParseError(`Invalid hex number '${token}'`, lineNum)
       return { value: n, end: i }
     }
     // Octal
     if (clean.startsWith('0o') || clean.startsWith('0O')) {
+      if (clean.startsWith('0O')) throw new TomlParseError(`Uppercase prefix '0O' is not allowed; use '0o'`, lineNum)
       const n = parseInt(clean.slice(2), 8)
       if (isNaN(n)) throw new TomlParseError(`Invalid octal number '${token}'`, lineNum)
       return { value: n, end: i }
     }
     // Binary
     if (clean.startsWith('0b') || clean.startsWith('0B')) {
+      if (clean.startsWith('0B')) throw new TomlParseError(`Uppercase prefix '0B' is not allowed; use '0b'`, lineNum)
       const n = parseInt(clean.slice(2), 2)
       if (isNaN(n)) throw new TomlParseError(`Invalid binary number '${token}'`, lineNum)
       return { value: n, end: i }
@@ -657,12 +689,23 @@ class TomlParser {
     }
 
     // Integer
+    // Reject leading zeros per TOML spec (only plain "0" is allowed to start with zero)
+    const intPart = clean.startsWith('+') || clean.startsWith('-') ? clean.slice(1) : clean
+    if (intPart.length > 1 && intPart.startsWith('0')) {
+      throw new TomlParseError(`Leading zeros are not allowed in decimal integers: '${token}'`, lineNum)
+    }
     const n = parseInt(clean, 10)
     if (isNaN(n)) throw new TomlParseError(`Invalid number '${token}'`, lineNum)
     return { value: n, end: i }
   }
 
   private ensureTable(root: TomlTable, keys: string[], line: number): TomlTable {
+    const tablePath = keys.join('.')
+    if (this.explicitTables.has(tablePath)) {
+      throw new TomlParseError(`Duplicate table header '[${tablePath}]'`, line)
+    }
+    this.explicitTables.add(tablePath)
+
     let current = root
     for (let ki = 0; ki < keys.length; ki++) {
       const key = keys[ki]!
@@ -865,7 +908,7 @@ function jsonToTomlValue(value: unknown, line: number): TomlValue {
   if (typeof value === 'number') return value
   if (typeof value === 'boolean') return value
   if (Array.isArray(value)) {
-    return value.map((v, i) => jsonToTomlValue(v, i + 1))
+    return value.map((v) => jsonToTomlValue(v, line))
   }
   if (typeof value === 'object') {
     const table: TomlTable = {}
@@ -884,15 +927,58 @@ function jsonToTomlValue(value: unknown, line: number): TomlValue {
 function minifyToml(input: string): string {
   const lines = input.split(/\r?\n/)
   const result: string[] = []
+  let inMultilineString: '"""' | "'''" | null = null
 
   for (const line of lines) {
     const trimmed = line.trim()
+
+    // If we're inside a multiline string, just pass through until closing delimiter
+    if (inMultilineString !== null) {
+      const closeIdx = line.indexOf(inMultilineString)
+      if (closeIdx !== -1) {
+        inMultilineString = null
+      }
+      result.push(line)
+      continue
+    }
+
     // Skip empty lines and comment-only lines
     if (trimmed === '' || trimmed.startsWith('#')) continue
 
+    // Check if this line opens a multiline string
+    if (trimmed.includes('"""') || trimmed.includes("'''")) {
+      const tripleDoubleIdx = trimmed.indexOf('"""')
+      const tripleSingleIdx = trimmed.indexOf("'''")
+      let delimiter: '"""' | "'''" | null = null
+
+      if (tripleDoubleIdx !== -1 && (tripleSingleIdx === -1 || tripleDoubleIdx < tripleSingleIdx)) {
+        delimiter = '"""'
+      } else if (tripleSingleIdx !== -1) {
+        delimiter = "'''"
+      }
+
+      if (delimiter !== null) {
+        // Check if there's a closing delimiter on the same line (after the opening one)
+        const afterOpen = trimmed.indexOf(delimiter) + 3
+        const closeOnSameLine = trimmed.indexOf(delimiter, afterOpen)
+        if (closeOnSameLine === -1) {
+          // Multiline string opens but doesn't close on this line
+          inMultilineString = delimiter
+        }
+      }
+    }
+
     // For table headers, strip inline comments
-    if (trimmed.startsWith('[')) {
-      const headerEnd = trimmed.lastIndexOf(']')
+    if (trimmed.startsWith('[') && inMultilineString === null) {
+      // Find the matching close bracket(s) properly
+      const isArrayOfTables = trimmed.startsWith('[[')
+      let headerEnd = -1
+      if (isArrayOfTables) {
+        headerEnd = trimmed.indexOf(']]')
+        if (headerEnd !== -1) headerEnd += 1 // point to the second ']'
+      } else {
+        headerEnd = trimmed.indexOf(']')
+      }
       if (headerEnd !== -1) {
         result.push(trimmed.slice(0, headerEnd + 1))
         continue
@@ -900,7 +986,11 @@ function minifyToml(input: string): string {
     }
 
     // For key=value lines, strip trailing comments (respecting strings)
-    result.push(stripTrailingComment(trimmed))
+    if (inMultilineString === null) {
+      result.push(stripTrailingComment(trimmed))
+    } else {
+      result.push(trimmed)
+    }
   }
 
   return result.join('\n') + '\n'

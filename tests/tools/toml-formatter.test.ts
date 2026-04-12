@@ -468,3 +468,267 @@ describe('jsonToToml', () => {
     }
   })
 })
+
+describe('multiline strings', () => {
+  it('handles multiline basic strings spanning multiple lines', () => {
+    const input = 'desc = """\nHello\nWorld"""'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('desc = "Hello\\nWorld"')
+    }
+  })
+
+  it('handles multiline basic strings on same line', () => {
+    const input = 'desc = """Hello World"""'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('desc = "Hello World"')
+    }
+  })
+
+  it('handles multiline literal strings spanning multiple lines', () => {
+    const input = "desc2 = '''\nHello\nWorld'''"
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('desc2 = "Hello\\nWorld"')
+    }
+  })
+
+  it('handles multiline literal strings on same line', () => {
+    const input = "desc2 = '''Hello World'''"
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('desc2 = "Hello World"')
+    }
+  })
+
+  it('converts multiline basic strings to JSON', () => {
+    const input = 'desc = """\nHello\nWorld"""'
+    const result = tomlToJson(input)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.desc).toBe('Hello\nWorld')
+    }
+  })
+
+  it('converts multiline literal strings to JSON', () => {
+    const input = "desc = '''\nHello\nWorld'''"
+    const result = tomlToJson(input)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.desc).toBe('Hello\nWorld')
+    }
+  })
+})
+
+describe('multi-line arrays', () => {
+  it('handles arrays spanning multiple lines', () => {
+    const input = 'colors = [\n  "red",\n  "green",\n  "blue"\n]'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('colors = ["red", "green", "blue"]')
+    }
+  })
+
+  it('converts multi-line arrays to JSON', () => {
+    const input = 'colors = [\n  "red",\n  "green",\n  "blue"\n]'
+    const result = tomlToJson(input)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.colors).toEqual(['red', 'green', 'blue'])
+    }
+  })
+
+  it('handles multi-line arrays with trailing comma', () => {
+    const input = 'colors = [\n  "red",\n  "green",\n  "blue",\n]'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('colors = ["red", "green", "blue"]')
+    }
+  })
+})
+
+describe('duplicate table headers', () => {
+  it('rejects duplicate table headers', () => {
+    const input = '[a]\nk = 1\n[a]\nk2 = 2'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_TOML')
+      expect(result.error.message).toContain('Duplicate table header')
+    }
+  })
+
+  it('allows different table headers', () => {
+    const input = '[a]\nk = 1\n[b]\nk = 2'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+  })
+})
+
+describe('TOML spec compliance - integer prefixes', () => {
+  it('accepts lowercase hex prefix 0x', () => {
+    const input = 'val = 0xFF'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = 255')
+    }
+  })
+
+  it('rejects uppercase hex prefix 0X', () => {
+    const input = 'val = 0XFF'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_TOML')
+      expect(result.error.message).toContain('0X')
+    }
+  })
+
+  it('rejects uppercase octal prefix 0O', () => {
+    const input = 'val = 0O755'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_TOML')
+      expect(result.error.message).toContain('0O')
+    }
+  })
+
+  it('rejects uppercase binary prefix 0B', () => {
+    const input = 'val = 0B1010'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_TOML')
+      expect(result.error.message).toContain('0B')
+    }
+  })
+})
+
+describe('TOML spec compliance - leading zeros', () => {
+  it('rejects leading zeros on decimal integers', () => {
+    const input = 'val = 0123'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_TOML')
+      expect(result.error.message).toContain('Leading zeros')
+    }
+  })
+
+  it('accepts plain zero', () => {
+    const input = 'val = 0'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = 0')
+    }
+  })
+
+  it('accepts negative numbers without leading zeros', () => {
+    const input = 'val = -42'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = -42')
+    }
+  })
+})
+
+describe('roundtrip conversion', () => {
+  it('roundtrips TOML -> JSON -> TOML', () => {
+    const input = '[server]\nhost = "localhost"\nport = 8080\nenabled = true'
+    const jsonResult = tomlToJson(input)
+    expect(jsonResult.ok).toBe(true)
+    if (jsonResult.ok) {
+      const tomlResult = jsonToToml(jsonResult.value, 2)
+      expect(tomlResult.ok).toBe(true)
+      if (tomlResult.ok) {
+        expect(tomlResult.value).toContain('[server]')
+        expect(tomlResult.value).toContain('host = "localhost"')
+        expect(tomlResult.value).toContain('port = 8080')
+        expect(tomlResult.value).toContain('enabled = true')
+      }
+    }
+  })
+})
+
+describe('special float values', () => {
+  it('handles +inf', () => {
+    const input = 'val = +inf'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = inf')
+    }
+  })
+
+  it('handles -inf', () => {
+    const input = 'val = -inf'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = -inf')
+    }
+  })
+
+  it('handles nan', () => {
+    const input = 'val = nan'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = nan')
+    }
+  })
+
+  it('handles +nan', () => {
+    const input = 'val = +nan'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = nan')
+    }
+  })
+
+  it('handles -nan', () => {
+    const input = 'val = -nan'
+    const result = formatToml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('val = nan')
+    }
+  })
+
+  it('converts inf to JSON', () => {
+    const input = 'val = inf'
+    const result = tomlToJson(input)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      // JSON doesn't support Infinity, so it becomes null
+      const parsed = JSON.parse(result.value)
+      expect(parsed.val).toBe(null)
+    }
+  })
+
+  it('converts nan to JSON', () => {
+    const input = 'val = nan'
+    const result = tomlToJson(input)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      // JSON doesn't support NaN, so it becomes null
+      const parsed = JSON.parse(result.value)
+      expect(parsed.val).toBe(null)
+    }
+  })
+})
