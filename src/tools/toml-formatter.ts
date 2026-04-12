@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type TomlIndent = 2 | 4 | 'tab'
 
@@ -1038,12 +1039,11 @@ function stripTrailingComment(line: string): string {
 // ──────────────────────────────────────────────
 
 export function formatToml(input: string, indent: TomlIndent): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    const parsed = parseToml(input)
+    const parsed = parseToml(validated.value)
     return ok(serializeToml(parsed, indent))
   } catch (e) {
     if (e instanceof TomlParseError) {
@@ -1055,12 +1055,11 @@ export function formatToml(input: string, indent: TomlIndent): Result<string> {
 }
 
 export function validateToml(input: string): Result<boolean> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    parseToml(input)
+    parseToml(validated.value)
     return ok(true)
   } catch (e) {
     if (e instanceof TomlParseError) {
@@ -1072,14 +1071,13 @@ export function validateToml(input: string): Result<boolean> {
 }
 
 export function minifyTomlStr(input: string): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
     // Validate first by parsing
-    parseToml(input)
-    return ok(minifyToml(input))
+    parseToml(validated.value)
+    return ok(minifyToml(validated.value))
   } catch (e) {
     if (e instanceof TomlParseError) {
       return err('INVALID_TOML', `Line ${e.line}: ${e.message}`)
@@ -1090,12 +1088,11 @@ export function minifyTomlStr(input: string): Result<string> {
 }
 
 export function tomlToJson(input: string): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    const parsed = parseToml(input)
+    const parsed = parseToml(validated.value)
     const jsonObj = tomlToJsonValue(parsed)
     return ok(JSON.stringify(jsonObj, null, 2))
   } catch (e) {
@@ -1108,12 +1105,11 @@ export function tomlToJson(input: string): Result<string> {
 }
 
 export function jsonToToml(input: string, indent: TomlIndent): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    const parsed: unknown = JSON.parse(input)
+    const parsed: unknown = JSON.parse(validated.value)
     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       return err('INVALID_JSON', 'JSON root must be an object to convert to TOML')
     }
