@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.3.5`
+
+### Added
+- Extended the `Cron Expression Parser` with AWS-style 6-field parsing, `cron(...)` wrapper support, and special tokens like `?`, `L`, `W`, and `#`.
+- Added bidirectional Unix/AWS conversion plus upcoming and previous schedule previews for cron expressions.
+
+### Changed
+- Bumped the product version to `1.3.5`.
+- Updated the README files to describe the new cron capabilities in the latest release note blurb.
+
+### Fixed
+- Fixed cron expression validation, conversion, and schedule-evaluator edge cases uncovered during review.
+
 ## Published: `1.3.4`
 
 ### Added

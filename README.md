@@ -11,7 +11,7 @@ A modular, type-safe collection of more than 30 browser-based developer tools. B
 
 More than 30 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable additions in `1.3.4`: the `Rclone Password Revealer`, plus password generator refinements such as `Simple mode` and `Avoid ambiguous characters`.
+Notable additions in `1.3.5`: the `Cron Expression Parser` AWS upgrade with 6-field support, `cron(...)` wrappers, `?`, `L`, `W`, `#`, bidirectional Unix/AWS conversion, and schedule previews.
 
 ## Tools
 
