@@ -105,11 +105,11 @@ export function generateSlug(input: string, options: SlugOptions = defaultSlugOp
   }
 
   // Step 4: replace non-alphanumeric characters (except the separator) with the separator
-  const safePattern = new RegExp(`[^a-zA-Z0-9${sep === '.' ? '\\.' : sep}]+`, 'g')
+  const escapedSep = sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const safePattern = new RegExp(`[^a-zA-Z0-9${escapedSep}]+`, 'g')
   slug = slug.replace(safePattern, sep)
 
   // Step 5: collapse consecutive separators
-  const escapedSep = sep === '.' ? '\\.' : sep
   slug = slug.replace(new RegExp(`${escapedSep}{2,}`, 'g'), sep)
 
   // Step 6: trim leading/trailing separators

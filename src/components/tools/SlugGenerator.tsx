@@ -28,7 +28,7 @@ export default function SlugGenerator(props: Props) {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
-      if (typeof saved['separator'] === 'string') setSeparator(saved['separator'] as SeparatorType)
+      if (saved['separator'] && ['hyphen', 'underscore', 'dot'].includes(saved['separator'])) setSeparator(saved['separator'] as SeparatorType)
       if (typeof saved['lowercase'] === 'boolean') setLowercase(saved['lowercase'])
       if (typeof saved['maxLength'] === 'number') setMaxLength(saved['maxLength'])
       if (typeof saved['transliterate'] === 'boolean') setTransliterate(saved['transliterate'])
