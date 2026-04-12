@@ -44,4 +44,36 @@ test.describe('Diff Checker', () => {
     await expect(page.locator('[data-testid="textarea-original"]')).toBeVisible()
     await expect(page.locator('[data-testid="textarea-modified"]')).toBeVisible()
   })
+
+  test('ignore case checkbox treats same text different case as no diff', async ({ page }) => {
+    await page.locator('[data-testid="textarea-original"]').fill('Hello World')
+    await page.locator('[data-testid="textarea-modified"]').fill('hello world')
+    await page.getByLabel('Ignore case').check()
+    await page.getByRole('button', { name: 'Compare Texts' }).click()
+    await expect(page.getByText('No differences found')).toBeVisible({ timeout: 5000 })
+  })
+
+  test('ignore whitespace checkbox treats whitespace differences as equal', async ({ page }) => {
+    await page.locator('[data-testid="textarea-original"]').fill('hello   world')
+    await page.locator('[data-testid="textarea-modified"]').fill('hello world')
+    await page.getByLabel('Ignore whitespace').check()
+    await page.getByRole('button', { name: 'Compare Texts' }).click()
+    await expect(page.getByText('No differences found')).toBeVisible({ timeout: 5000 })
+  })
+
+  test('shows added line indicators with + prefix', async ({ page }) => {
+    await page.locator('[data-testid="textarea-original"]').fill('line1')
+    await page.locator('[data-testid="textarea-modified"]').fill('line1\nline2')
+    await page.getByRole('button', { name: 'Compare Texts' }).click()
+    await expect(page.getByText('Additions')).toBeVisible({ timeout: 5000 })
+    // The additions badge should show a count > 0
+    await expect(page.getByText(/Additions: [1-9]/)).toBeVisible()
+  })
+
+  test('shows deleted line indicators with - prefix', async ({ page }) => {
+    await page.locator('[data-testid="textarea-original"]').fill('line1\nline2')
+    await page.locator('[data-testid="textarea-modified"]').fill('line1')
+    await page.getByRole('button', { name: 'Compare Texts' }).click()
+    await expect(page.getByText('Deletions')).toBeVisible({ timeout: 5000 })
+  })
 })

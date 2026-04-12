@@ -63,4 +63,49 @@ test.describe('Domain Extractor', () => {
     const lines = value.split('\n').filter((l) => l.includes('example.com'))
     expect(lines.length).toBeLessThanOrEqual(2)
   })
+
+  test('include subdomains toggle preserves full subdomain', async ({ page }) => {
+    await page.goto('/en/tools/domain-extractor/', { waitUntil: 'networkidle' })
+    await waitForHydration(page)
+    await page.getByLabel('Include subdomains').check()
+    await page.locator('[data-testid="textarea"]').first().fill(
+      'https://blog.example.com/post\nhttps://api.example.com/data'
+    )
+    await page.getByRole('button', { name: 'Extract Domains' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    // When subdomains included, should contain the full subdomain
+    expect(value).toContain('blog.example.com')
+    expect(value).toContain('api.example.com')
+  })
+
+  test('duplicate domains are removed from output', async ({ page }) => {
+    await page.goto('/en/tools/domain-extractor/', { waitUntil: 'networkidle' })
+    await waitForHydration(page)
+    await page.locator('[data-testid="textarea"]').first().fill(
+      'https://example.com/a\nhttps://example.com/b\nhttps://example.com/c\nhttps://other.com'
+    )
+    await page.getByRole('button', { name: 'Extract Domains' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    // Should have at most 2 unique domains (example.com and other.com)
+    expect(lines.length).toBeLessThanOrEqual(2)
+  })
+
+  test('URL without protocol still extracts domain', async ({ page }) => {
+    await page.goto('/en/tools/domain-extractor/', { waitUntil: 'networkidle' })
+    await waitForHydration(page)
+    await page.locator('[data-testid="textarea"]').first().fill(
+      'www.example.com/page\nexample.org/path'
+    )
+    await page.getByRole('button', { name: 'Extract Domains' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    // Should extract at least one domain
+    expect(value).toMatch(/example/)
+  })
 })

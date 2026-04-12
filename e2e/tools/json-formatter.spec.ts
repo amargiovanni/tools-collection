@@ -61,4 +61,42 @@ test.describe('JSON Formatter', () => {
     await page.getByRole('button', { name: 'Format JSON' }).click()
     await expect(page.getByText('Valid JSON')).toBeVisible({ timeout: 5000 })
   })
+
+  test('tab indentation uses tab characters', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('{"a":1,"b":2}')
+    await page.locator('select').selectOption('tab')
+    await page.getByRole('button', { name: 'Format JSON' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/\t"a"/, { timeout: 5000 })
+  })
+
+  test('compact/minified output has no whitespace', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('{ "a" : 1 , "b" : 2 }')
+    await page.locator('select').selectOption('compact')
+    await page.getByRole('button', { name: 'Format JSON' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue('{"a":1,"b":2}', { timeout: 5000 })
+  })
+
+  test('deeply nested JSON is preserved after formatting', async ({ page }) => {
+    const deepJson = '{"l1":{"l2":{"l3":{"l4":"deep"}}}}'
+    await page.locator('[data-testid="textarea"]').first().fill(deepJson)
+    await page.getByRole('button', { name: 'Format JSON' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/l1/, { timeout: 5000 })
+    await expect(output).toHaveValue(/l2/)
+    await expect(output).toHaveValue(/l3/)
+    await expect(output).toHaveValue(/l4/)
+    await expect(output).toHaveValue(/deep/)
+    await expect(page.getByText('Valid JSON')).toBeVisible()
+  })
+
+  test('unicode values are preserved in formatted output', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('{"emoji":"\\u2764","name":"caf\\u00e9"}')
+    await page.getByRole('button', { name: 'Format JSON' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/\u2764/, { timeout: 5000 })
+    await expect(output).toHaveValue(/caf\u00e9/)
+    await expect(page.getByText('Valid JSON')).toBeVisible()
+  })
 })

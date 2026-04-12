@@ -104,4 +104,47 @@ test.describe('Cron Expression', () => {
     await page.locator('[data-testid="input"]').fill('0 10 ? * 6#3 *')
     await expect(page.locator('[data-testid="format-badge"]')).toContainText('AWS')
   })
+
+  test('builder mode: clicking Daily updates expression to daily pattern', async ({ page }) => {
+    await page.getByRole('button', { name: 'Daily', exact: true }).click()
+    const inputValue = await page.locator('[data-testid="input"]').inputValue()
+    // Daily cron should have specific minute and hour, with wildcards for day/month/dow
+    expect(inputValue).toMatch(/^\d+ \d+ \* \* \*$/)
+    await expect(page.locator('[data-testid="cron-summary"]')).toBeVisible()
+  })
+
+  test('builder mode: clicking Hourly updates expression', async ({ page }) => {
+    await page.getByRole('button', { name: 'Hourly', exact: true }).click()
+    const inputValue = await page.locator('[data-testid="input"]').inputValue()
+    // Hourly cron: specific minute, wildcard hour
+    expect(inputValue).toMatch(/^\d+ \* \* \* \*$/)
+    await expect(page.locator('[data-testid="cron-summary"]')).toContainText('minute')
+  })
+
+  test('clicking example button updates input and summary', async ({ page }) => {
+    // Click the "0 * * * *" example button (every hour at minute 0)
+    await page.getByRole('button', { name: '0 * * * *' }).click()
+    await expect(page.locator('[data-testid="input"]')).toHaveValue('0 * * * *')
+    await expect(page.locator('[data-testid="cron-summary"]')).toContainText('minute 0')
+  })
+
+  test('schedule preview shows correct number of occurrences', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('0 * * * *')
+    await expect(page.locator('[data-testid="schedule-preview"]')).toBeVisible({ timeout: 5000 })
+    // Default count is 5 occurrences each for upcoming and previous
+    const upcomingItems = page.locator('[data-testid="schedule-preview"] li')
+    const count = await upcomingItems.count()
+    // Should have items (both previous and upcoming lists)
+    expect(count).toBeGreaterThanOrEqual(5)
+  })
+
+  test('changing occurrence count updates the schedule preview', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('0 * * * *')
+    await expect(page.locator('[data-testid="schedule-preview"]')).toBeVisible({ timeout: 5000 })
+    // Change count to 10
+    await page.locator('[data-testid="schedule-preview"] select').selectOption('10')
+    const items = page.locator('[data-testid="schedule-preview"] li')
+    const count = await items.count()
+    expect(count).toBeGreaterThanOrEqual(10)
+  })
 })

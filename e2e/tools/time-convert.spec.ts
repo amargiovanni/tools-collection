@@ -64,4 +64,41 @@ test.describe('Time Convert', () => {
     await expect(page.locator('[data-testid="result-card"]')).toHaveCount(6, { timeout: 5000 })
     await expect(page.getByText('01:00:00')).toBeVisible()
   })
+
+  test('1000 milliseconds = 1 second', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('1000')
+    await page.getByLabel('Unit:').selectOption('ms')
+    await page.getByRole('button', { name: 'Convert Time' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(6, { timeout: 5000 })
+    await expect(page.getByText('00:00:01')).toBeVisible()
+  })
+
+  test('2 hours = 120 minutes = 7200 seconds', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('2')
+    await page.getByLabel('Unit:').selectOption('h')
+    await page.getByRole('button', { name: 'Convert Time' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(6, { timeout: 5000 })
+    await expect(page.getByText('7200', { exact: true })).toBeVisible()
+    await expect(page.getByText('120', { exact: true })).toBeVisible()
+    await expect(page.getByText('02:00:00')).toBeVisible()
+  })
+
+  test('1 day = 24 hours and formatted output includes d prefix', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('1')
+    await page.getByLabel('Unit:').selectOption('d')
+    await page.getByRole('button', { name: 'Convert Time' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(6, { timeout: 5000 })
+    await expect(page.getByText('86400', { exact: true })).toBeVisible()
+    await expect(page.getByText('1440', { exact: true })).toBeVisible()
+    await expect(page.getByText('1d 00:00:00')).toBeVisible()
+  })
+
+  test('decimal input 1.5 hours = 90 minutes', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('1.5')
+    await page.getByLabel('Unit:').selectOption('h')
+    await page.getByRole('button', { name: 'Convert Time' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(6, { timeout: 5000 })
+    await expect(page.getByText('90')).toBeVisible()
+    await expect(page.getByText('01:30:00')).toBeVisible()
+  })
 })

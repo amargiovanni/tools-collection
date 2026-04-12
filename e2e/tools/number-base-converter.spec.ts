@@ -87,4 +87,33 @@ test.describe('Number Base Converter', () => {
     await page.getByLabel('Hexadecimal').fill('FF')
     await expect(page.getByLabel('Decimal', { exact: true })).toHaveValue('255')
   })
+
+  test('hex a1b2 converts to decimal 41394', async ({ page }) => {
+    await page.getByLabel('Hexadecimal').fill('a1b2')
+    await expect(page.getByLabel('Decimal', { exact: true })).toHaveValue('41394')
+    await expect(page.getByLabel('Binary')).toHaveValue('1010000110110010')
+    await expect(page.getByLabel('Octal')).toHaveValue('120662')
+  })
+
+  test('binary 10101010 converts to decimal 170, hex aa, octal 252', async ({ page }) => {
+    await page.getByLabel('Binary').fill('10101010')
+    await expect(page.getByLabel('Decimal', { exact: true })).toHaveValue('170')
+    await expect(page.getByLabel('Hexadecimal')).toHaveValue('aa')
+    await expect(page.getByLabel('Octal')).toHaveValue('252')
+  })
+
+  test('octal 755 converts to decimal 493, hex 1ed, binary 111101101', async ({ page }) => {
+    await page.getByLabel('Octal').fill('755')
+    await expect(page.getByLabel('Decimal', { exact: true })).toHaveValue('493')
+    await expect(page.getByLabel('Hexadecimal')).toHaveValue('1ed')
+    await expect(page.getByLabel('Binary')).toHaveValue('111101101')
+  })
+
+  test('large number beyond MAX_SAFE_INTEGER converts correctly via BigInt', async ({ page }) => {
+    // 2^64 = 18446744073709551616
+    await page.getByLabel('Decimal', { exact: true }).fill('18446744073709551616')
+    await expect(page.getByLabel('Hexadecimal')).toHaveValue('10000000000000000')
+    await expect(page.getByLabel('Octal')).not.toHaveValue('')
+    await expect(page.getByLabel('Binary')).not.toHaveValue('')
+  })
 })

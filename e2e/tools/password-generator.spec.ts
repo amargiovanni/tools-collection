@@ -89,4 +89,43 @@ test.describe('Password Generator', () => {
     const value = await page.locator('[data-testid="output-panel"] textarea').inputValue()
     expect(value).not.toMatch(/[O0oIl1]/)
   })
+
+  test('length slider changes password length to 32', async ({ page }) => {
+    const slider = page.locator('input[type="range"]')
+    await slider.fill('32')
+    await page.getByRole('button', { name: 'Generate Password' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    for (const line of lines) {
+      expect(line.trim().length).toBe(32)
+    }
+  })
+
+  test('count field boundary: setting count to 1 generates exactly 1 password', async ({ page }) => {
+    const countInput = page.getByLabel('Number of passwords:')
+    await countInput.fill('1')
+    await page.getByRole('button', { name: 'Generate Password' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    expect(lines).toHaveLength(1)
+  })
+
+  test('uppercase-only generates only uppercase characters', async ({ page }) => {
+    await page.getByLabel('Lowercase (a-z)').uncheck()
+    await page.getByLabel('Numbers (0-9)').uncheck()
+    await page.getByLabel('Symbols (!@#$%)').uncheck()
+    await page.getByLabel('Uppercase (A-Z)').check()
+    await page.getByRole('button', { name: 'Generate Password' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    for (const line of lines) {
+      expect(line.trim()).toMatch(/^[A-Z]+$/)
+    }
+  })
 })

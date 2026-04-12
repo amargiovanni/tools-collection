@@ -28,4 +28,31 @@ test.describe('URL Encoder', () => {
       expectError: 'Please enter some input',
     })
   })
+
+  test('encodes unicode characters correctly', async ({ page }) => {
+    await toolTest(page, {
+      toolId: 'url-encoder',
+      input: 'café résumé',
+      action: 'Encode URL',
+      expectOutputContains: 'caf%C3%A9',
+    })
+  })
+
+  test('encodes special URL characters with spaces', async ({ page }) => {
+    await toolTest(page, {
+      toolId: 'url-encoder',
+      input: 'hello world & friends',
+      action: 'Encode URL',
+      expectOutputContains: 'hello%20world',
+    })
+  })
+
+  test('decodes already-encoded input correctly', async ({ page }) => {
+    await toolTest(page, {
+      toolId: 'url-encoder',
+      input: 'caf%C3%A9%20r%C3%A9sum%C3%A9',
+      action: 'Decode URL',
+      expectOutput: 'café résumé',
+    })
+  })
 })

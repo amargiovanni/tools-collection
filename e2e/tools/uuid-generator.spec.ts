@@ -75,4 +75,58 @@ test.describe('UUID / ULID Generator', () => {
     const copyAllButtons = page.getByRole('button', { name: /copy all/i })
     await expect(copyAllButtons).toHaveCount(3, { timeout: 5000 })
   })
+
+  test('all generated UUID v4 values match strict v4 regex', async ({ page }) => {
+    await page.getByRole('button', { name: 'Generate 10' }).click()
+    const codes = page.locator('code')
+    await expect(codes).toHaveCount(30, { timeout: 5000 })
+    // First 10 codes are UUID v4
+    for (let i = 0; i < 10; i++) {
+      const text = await codes.nth(i).textContent()
+      expect(text?.trim()).toMatch(UUID_V4_RE)
+    }
+  })
+
+  test('all generated UUID v7 values match strict v7 regex', async ({ page }) => {
+    await page.getByRole('button', { name: 'Generate 10' }).click()
+    const codes = page.locator('code')
+    await expect(codes).toHaveCount(30, { timeout: 5000 })
+    // Codes 10-19 are UUID v7
+    for (let i = 10; i < 20; i++) {
+      const text = await codes.nth(i).textContent()
+      expect(text?.trim()).toMatch(UUID_V7_RE)
+    }
+  })
+
+  test('all generated ULID values match Crockford Base32 regex', async ({ page }) => {
+    await page.getByRole('button', { name: 'Generate 10' }).click()
+    const codes = page.locator('code')
+    await expect(codes).toHaveCount(30, { timeout: 5000 })
+    // Codes 20-29 are ULIDs
+    for (let i = 20; i < 30; i++) {
+      const text = await codes.nth(i).textContent()
+      expect(text?.trim()).toMatch(ULID_RE)
+    }
+  })
+
+  test('Generate 10 button creates exactly 10 entries per section', async ({ page }) => {
+    await page.getByRole('button', { name: 'Generate 10' }).click()
+    const codes = page.locator('code')
+    await expect(codes).toHaveCount(30, { timeout: 5000 })
+    // Verify we have 30 non-empty code elements (10 per section)
+    for (let i = 0; i < 30; i++) {
+      const text = await codes.nth(i).textContent()
+      expect(text?.trim().length).toBeGreaterThan(0)
+    }
+  })
+
+  test('Copy all button is clickable without errors', async ({ page }) => {
+    await page.getByRole('button', { name: 'Generate', exact: true }).click()
+    const copyAllButtons = page.getByRole('button', { name: /copy all/i })
+    await expect(copyAllButtons).toHaveCount(3, { timeout: 5000 })
+    // Click the first Copy all button — should not throw
+    await copyAllButtons.first().click()
+    // The button should still be visible after clicking
+    await expect(copyAllButtons.first()).toBeVisible({ timeout: 5000 })
+  })
 })

@@ -62,4 +62,37 @@ test.describe('Add Text to Lines', () => {
     await textInput.fill('B: ')
     await expect(output).toHaveValue(/B: hello/, { timeout: 5000 })
   })
+
+  test('position toggle switches between start and end', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('line1\nline2')
+    await page.locator('[data-testid="input"]').fill('***')
+
+    const output = page.locator('[data-testid="output-panel"] textarea')
+
+    // Default is "start" — text added at the beginning
+    await expect(output).toHaveValue(/^\*\*\*line1/, { timeout: 5000 })
+
+    // Switch to "end"
+    await page.getByRole('button', { name: 'Add at the end' }).click()
+    await expect(output).toHaveValue(/line1\*\*\*/, { timeout: 5000 })
+
+    // Switch back to "start"
+    await page.getByRole('button', { name: 'Add at the beginning' }).click()
+    await expect(output).toHaveValue(/^\*\*\*line1/, { timeout: 5000 })
+  })
+
+  test('handles unicode input correctly', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('ciao\nhello')
+    await page.locator('[data-testid="input"]').fill('\u2714 ')
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/\u2714 ciao/, { timeout: 5000 })
+    await expect(output).toHaveValue(/\u2714 hello/)
+  })
+
+  test('empty addition field leaves lines unchanged', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('line1\nline2')
+    await page.locator('[data-testid="input"]').fill('')
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue('line1\nline2', { timeout: 5000 })
+  })
 })

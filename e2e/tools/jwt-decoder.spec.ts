@@ -96,4 +96,46 @@ test.describe('JWT Decoder', () => {
     await page.locator('[data-testid="textarea"]').fill(VALID_JWT_PAST_EXP)
     await expect(page.getByText(/expired .+ ago/i)).toBeVisible({ timeout: 5000 })
   })
+
+  test('header card shows alg as HS256 and typ as JWT', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').fill(VALID_JWT_FUTURE_EXP)
+    const headerCard = page.locator('[data-testid="result-card"]').first()
+    await expect(headerCard).toBeVisible({ timeout: 5000 })
+    // Verify the header JSON content includes both alg and typ fields
+    await expect(headerCard).toContainText('"alg"')
+    await expect(headerCard).toContainText('"HS256"')
+    await expect(headerCard).toContainText('"typ"')
+    await expect(headerCard).toContainText('"JWT"')
+  })
+
+  test('payload card shows iat and exp numeric fields', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').fill(VALID_JWT_FUTURE_EXP)
+    const payloadCard = page.locator('[data-testid="result-card"]').nth(1)
+    await expect(payloadCard).toBeVisible({ timeout: 5000 })
+    await expect(payloadCard).toContainText('"iat"')
+    await expect(payloadCard).toContainText('1516239022')
+    await expect(payloadCard).toContainText('"exp"')
+    await expect(payloadCard).toContainText('9999999999')
+  })
+
+  test('JWT without exp claim shows no expiry badge but still decodes', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').fill(VALID_JWT_NO_EXP)
+    // Should still show 3 cards (header, payload, signature)
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(3, { timeout: 5000 })
+    // Payload should contain iat but not exp
+    const payloadCard = page.locator('[data-testid="result-card"]').nth(1)
+    await expect(payloadCard).toContainText('"iat"')
+    await expect(payloadCard).toContainText('1000000000')
+    // No expiry badge should be present
+    await expect(page.locator('[data-testid="expiry-badge"]')).not.toBeAttached()
+  })
+
+  test('signature card shows hex-encoded value', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').fill(VALID_JWT_FUTURE_EXP)
+    const signatureCard = page.locator('[data-testid="result-card"]').nth(2)
+    await expect(signatureCard).toBeVisible({ timeout: 5000 })
+    // Signature hex should be a hex string (lowercase letters and digits)
+    const text = await signatureCard.textContent()
+    expect(text).toMatch(/[0-9a-f]{10,}/)
+  })
 })

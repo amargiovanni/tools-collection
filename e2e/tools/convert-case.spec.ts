@@ -40,4 +40,84 @@ test.describe('Convert Case', () => {
     const output = page.locator('[data-testid="output-panel"] textarea')
     await expect(output).toHaveValue('helloWorld')
   })
+
+  test('converts text to lowercase', async ({ page }) => {
+    await page.goto('/en/tools/convert-case/', { waitUntil: 'networkidle' })
+    await page.waitForFunction(() => {
+      const island = document.querySelector('astro-island')
+      return island !== null && island.children.length > 0
+    }, undefined, { timeout: 10000 })
+    await page.waitForTimeout(300)
+
+    const textarea = page.locator('[data-testid="textarea"]').first()
+    await textarea.fill('HELLO WORLD')
+
+    const select = page.locator('[data-testid="select"]')
+    await select.selectOption('lower')
+
+    await page.getByRole('button', { name: 'Convert' }).click()
+
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue('hello world', { timeout: 5000 })
+  })
+
+  test('converts text to Title Case', async ({ page }) => {
+    await page.goto('/en/tools/convert-case/', { waitUntil: 'networkidle' })
+    await page.waitForFunction(() => {
+      const island = document.querySelector('astro-island')
+      return island !== null && island.children.length > 0
+    }, undefined, { timeout: 10000 })
+    await page.waitForTimeout(300)
+
+    const textarea = page.locator('[data-testid="textarea"]').first()
+    await textarea.fill('hello world')
+
+    const select = page.locator('[data-testid="select"]')
+    await select.selectOption('title')
+
+    await page.getByRole('button', { name: 'Convert' }).click()
+
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue('Hello World', { timeout: 5000 })
+  })
+
+  test('converts text to snake_case', async ({ page }) => {
+    await page.goto('/en/tools/convert-case/', { waitUntil: 'networkidle' })
+    await page.waitForFunction(() => {
+      const island = document.querySelector('astro-island')
+      return island !== null && island.children.length > 0
+    }, undefined, { timeout: 10000 })
+    await page.waitForTimeout(300)
+
+    const textarea = page.locator('[data-testid="textarea"]').first()
+    await textarea.fill('hello world')
+
+    const select = page.locator('[data-testid="select"]')
+    await select.selectOption('snake')
+
+    await page.getByRole('button', { name: 'Convert' }).click()
+
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue('hello_world', { timeout: 5000 })
+  })
+
+  test('converts text to CONSTANT_CASE', async ({ page }) => {
+    await page.goto('/en/tools/convert-case/', { waitUntil: 'networkidle' })
+    await page.waitForFunction(() => {
+      const island = document.querySelector('astro-island')
+      return island !== null && island.children.length > 0
+    }, undefined, { timeout: 10000 })
+    await page.waitForTimeout(300)
+
+    const textarea = page.locator('[data-testid="textarea"]').first()
+    await textarea.fill('hello world')
+
+    const select = page.locator('[data-testid="select"]')
+    await select.selectOption('constant')
+
+    await page.getByRole('button', { name: 'Convert' }).click()
+
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue('HELLO_WORLD', { timeout: 5000 })
+  })
 })
