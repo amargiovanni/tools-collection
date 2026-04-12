@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type SeparatorType = 'hyphen' | 'underscore' | 'dot'
 
@@ -83,13 +84,12 @@ function stripDiacritics(input: string): string {
 }
 
 export function generateSlug(input: string, options: SlugOptions = defaultSlugOptions): Result<string> {
-  if (input === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   const sep = SEPARATOR_CHARS[options.separator]
 
-  let slug = input
+  let slug = validated.value
 
   // Step 1: transliterate known characters (before NFD to handle multi-char mappings like ss, ae)
   if (options.transliterate) {

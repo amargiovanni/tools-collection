@@ -1,5 +1,5 @@
-import { createSignal, createEffect, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, createEffect } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { TextArea } from '../ui/TextArea'
 import { Select } from '../ui/Select'
 import { Checkbox } from '../ui/Checkbox'
@@ -24,30 +24,23 @@ export default function SlugGenerator(props: Props) {
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
-      if (saved['separator'] && ['hyphen', 'underscore', 'dot'].includes(saved['separator'])) setSeparator(saved['separator'] as SeparatorType)
+      if (typeof saved['separator'] === 'string' && ['hyphen', 'underscore', 'dot'].includes(saved['separator'])) {
+        setSeparator(saved['separator'] as SeparatorType)
+      }
       if (typeof saved['lowercase'] === 'boolean') setLowercase(saved['lowercase'])
       if (typeof saved['maxLength'] === 'number') setMaxLength(saved['maxLength'])
       if (typeof saved['transliterate'] === 'boolean') setTransliterate(saved['transliterate'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: {
-          state: {
-            input: input(),
-            separator: separator(),
-            lowercase: lowercase(),
-            maxLength: maxLength(),
-            transliterate: transliterate(),
-          },
-        },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({
+      input: input(),
+      separator: separator(),
+      lowercase: lowercase(),
+      maxLength: maxLength(),
+      transliterate: transliterate(),
+    }),
   })
 
   const separatorOptions = () => [
