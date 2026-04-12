@@ -710,34 +710,35 @@ function matchesDayOfWeekField(field: CronField, date: Date, format: CronFormat)
   return values.some((value) => matchesField(field, value, date))
 }
 
+function matchesDay(result: CronExpressionResult, date: Date): boolean {
+  const dayOfMonth = result.fields.find((f) => f.type === 'dayOfMonth')!
+  const dayOfWeek = result.fields.find((f) => f.type === 'dayOfWeek')!
+
+  const isWild = (f: CronField) =>
+    f.segments.length === 1 && (f.segments[0]!.kind === 'any' || f.segments[0]!.kind === 'unspecified')
+  const domIsWild = isWild(dayOfMonth)
+  const dowIsWild = isWild(dayOfWeek)
+
+  const domMatches = matchesField(dayOfMonth, date.getUTCDate(), date)
+  const dowMatches = matchesDayOfWeekField(dayOfWeek, date, result.format)
+
+  if (domIsWild && dowIsWild) return true
+  if (domIsWild) return dowMatches
+  if (dowIsWild) return domMatches
+  return result.format === 'unix' ? domMatches || dowMatches : domMatches && dowMatches
+}
+
 function matchesCron(result: CronExpressionResult, date: Date): boolean {
   const minute = result.fields.find((f) => f.type === 'minute')!
   const hour = result.fields.find((f) => f.type === 'hour')!
-  const dayOfMonth = result.fields.find((f) => f.type === 'dayOfMonth')!
   const month = result.fields.find((f) => f.type === 'month')!
-  const dayOfWeek = result.fields.find((f) => f.type === 'dayOfWeek')!
   const year = result.fields.find((f) => f.type === 'year')
 
   if (year && !matchesField(year, date.getUTCFullYear(), date)) return false
   if (!matchesField(month, date.getUTCMonth() + 1, date)) return false
   if (!matchesField(hour, date.getUTCHours(), date)) return false
   if (!matchesField(minute, date.getUTCMinutes(), date)) return false
-
-  // Day matching
-  const isWild = (f: CronField) =>
-    f.segments.length === 1 && (f.segments[0]!.kind === 'any' || f.segments[0]!.kind === 'unspecified')
-  const domIsWild = isWild(dayOfMonth)
-  const dowIsWild = isWild(dayOfWeek)
-
-  const domValue = date.getUTCDate()
-  const domMatches = matchesField(dayOfMonth, domValue, date)
-  const dowMatches = matchesDayOfWeekField(dayOfWeek, date, result.format)
-
-  if (domIsWild && dowIsWild) return true
-  if (domIsWild) return dowMatches
-  if (dowIsWild) return domMatches
-  // Both specified: Unix uses OR, AWS (shouldn't happen) uses AND
-  return result.format === 'unix' ? domMatches || dowMatches : domMatches && dowMatches
+  return matchesDay(result, date)
 }
 
 /**
@@ -804,6 +805,129 @@ function findPrevMatchingYear(yearField: CronField, targetYear: number, minYear:
   return null
 }
 
+function findNextMatchingValue(field: CronField, startValue: number, min: number, max: number): number | null {
+  for (let value = Math.max(startValue, min); value <= max; value += 1) {
+    if (matchesField(field, value, new Date(Date.UTC(2024, 0, 1)))) return value
+  }
+  return null
+}
+
+function findPrevMatchingValue(field: CronField, startValue: number, min: number): number | null {
+  for (let value = startValue; value >= min; value -= 1) {
+    if (matchesField(field, value, new Date(Date.UTC(2024, 0, 1)))) return value
+  }
+  return null
+}
+
+function getField(result: CronExpressionResult, type: CronFieldType): CronField | undefined {
+  return result.fields.find((field) => field.type === type)
+}
+
+function advanceNextCandidate(result: CronExpressionResult, current: Date): number {
+  const yearField = getField(result, 'year')
+  const monthField = getField(result, 'month')!
+  const hourField = getField(result, 'hour')!
+  const minuteField = getField(result, 'minute')!
+
+  const year = current.getUTCFullYear()
+  const month = current.getUTCMonth() + 1
+  const day = current.getUTCDate()
+  const hour = current.getUTCHours()
+  const minute = current.getUTCMinutes()
+
+  if (yearField && !matchesField(yearField, year, current)) {
+    const bounds = getYearBounds(yearField)
+    const nextYear = bounds
+      ? findNextMatchingYear(yearField, Math.max(year + 1, bounds.min), bounds.max)
+      : findNextMatchingYear(yearField, year + 1, 2199)
+    if (nextYear === null) return Number.POSITIVE_INFINITY
+    return Date.UTC(nextYear, 0, 1, 0, 0, 0)
+  }
+
+  if (!matchesField(monthField, month, current)) {
+    const nextMonth = findNextMatchingValue(monthField, month + 1, 1, 12)
+    if (nextMonth !== null) return Date.UTC(year, nextMonth - 1, 1, 0, 0, 0)
+    const firstMonth = findNextMatchingValue(monthField, 1, 1, 12)
+    if (firstMonth === null) return Number.POSITIVE_INFINITY
+    return Date.UTC(year + 1, firstMonth - 1, 1, 0, 0, 0)
+  }
+
+  if (!matchesDay(result, current)) {
+    return Date.UTC(year, month - 1, day + 1, 0, 0, 0)
+  }
+
+  if (!matchesField(hourField, hour, current)) {
+    const nextHour = findNextMatchingValue(hourField, hour + 1, 0, 23)
+    if (nextHour !== null) return Date.UTC(year, month - 1, day, nextHour, 0, 0)
+    return Date.UTC(year, month - 1, day + 1, 0, 0, 0)
+  }
+
+  if (!matchesField(minuteField, minute, current)) {
+    const nextMinute = findNextMatchingValue(minuteField, minute + 1, 0, 59)
+    if (nextMinute !== null) return Date.UTC(year, month - 1, day, hour, nextMinute, 0)
+    const nextHour = findNextMatchingValue(hourField, hour + 1, 0, 23)
+    if (nextHour !== null) return Date.UTC(year, month - 1, day, nextHour, 0, 0)
+    return Date.UTC(year, month - 1, day + 1, 0, 0, 0)
+  }
+
+  return current.getTime() + 60000
+}
+
+function advancePreviousCandidate(result: CronExpressionResult, current: Date): number {
+  const yearField = getField(result, 'year')
+  const monthField = getField(result, 'month')!
+  const hourField = getField(result, 'hour')!
+  const minuteField = getField(result, 'minute')!
+
+  const year = current.getUTCFullYear()
+  const month = current.getUTCMonth() + 1
+  const day = current.getUTCDate()
+  const hour = current.getUTCHours()
+  const minute = current.getUTCMinutes()
+
+  if (yearField && !matchesField(yearField, year, current)) {
+    const bounds = getYearBounds(yearField)
+    const prevYear = bounds
+      ? findPrevMatchingYear(yearField, Math.min(year - 1, bounds.max), bounds.min)
+      : findPrevMatchingYear(yearField, year - 1, 1970)
+    if (prevYear === null) return Number.NEGATIVE_INFINITY
+    return Date.UTC(prevYear, 11, 31, 23, 59, 0)
+  }
+
+  if (!matchesField(monthField, month, current)) {
+    const prevMonth = findPrevMatchingValue(monthField, month - 1, 1)
+    if (prevMonth !== null) {
+      const lastDay = getLastDayOfMonth(year, prevMonth - 1)
+      return Date.UTC(year, prevMonth - 1, lastDay, 23, 59, 0)
+    }
+    const lastMonth = findPrevMatchingValue(monthField, 12, 1)
+    if (lastMonth === null) return Number.NEGATIVE_INFINITY
+    const prevYear = year - 1
+    const lastDay = getLastDayOfMonth(prevYear, lastMonth - 1)
+    return Date.UTC(prevYear, lastMonth - 1, lastDay, 23, 59, 0)
+  }
+
+  if (!matchesDay(result, current)) {
+    return Date.UTC(year, month - 1, day - 1, 23, 59, 0)
+  }
+
+  if (!matchesField(hourField, hour, current)) {
+    const prevHour = findPrevMatchingValue(hourField, hour - 1, 0)
+    if (prevHour !== null) return Date.UTC(year, month - 1, day, prevHour, 59, 0)
+    return Date.UTC(year, month - 1, day - 1, 23, 59, 0)
+  }
+
+  if (!matchesField(minuteField, minute, current)) {
+    const prevMinute = findPrevMatchingValue(minuteField, minute - 1, 0)
+    if (prevMinute !== null) return Date.UTC(year, month - 1, day, hour, prevMinute, 0)
+    const prevHour = findPrevMatchingValue(hourField, hour - 1, 0)
+    if (prevHour !== null) return Date.UTC(year, month - 1, day, prevHour, 59, 0)
+    return Date.UTC(year, month - 1, day - 1, 23, 59, 0)
+  }
+
+  return current.getTime() - 60000
+}
+
 const MAX_ITERATIONS = 2629800 // ~5 years in minutes
 
 export function getNextOccurrences(result: CronExpressionResult, count: number, after: Date): Date[] {
@@ -840,20 +964,12 @@ export function getNextOccurrences(result: CronExpressionResult, count: number, 
     const d = new Date(time)
     if (matchesCron(result, d)) {
       results.push(d)
-    } else if (yearField) {
-      // If the current year doesn't match, skip to the next matching year
-      const bounds = getYearBounds(yearField)
-      if (bounds) {
-        const y = d.getUTCFullYear()
-        if (!matchesField(yearField, y, d)) {
-          const nextYear = findNextMatchingYear(yearField, y + 1, bounds.max)
-          if (nextYear === null) break
-          time = Date.UTC(nextYear, 0, 1, 0, 0, 0)
-          continue
-        }
-      }
+      time = d.getTime() + 60000
+    } else {
+      const nextTime = advanceNextCandidate(result, d)
+      if (!Number.isFinite(nextTime)) break
+      time = nextTime
     }
-    time += 60000
   }
   return results
 }
@@ -891,20 +1007,12 @@ export function getPreviousOccurrences(result: CronExpressionResult, count: numb
     const d = new Date(time)
     if (matchesCron(result, d)) {
       results.push(d)
-    } else if (yearField) {
-      // If the current year doesn't match, skip to the previous matching year
-      const bounds = getYearBounds(yearField)
-      if (bounds) {
-        const y = d.getUTCFullYear()
-        if (!matchesField(yearField, y, d)) {
-          const prevYear = findPrevMatchingYear(yearField, y - 1, bounds.min)
-          if (prevYear === null) break
-          time = Date.UTC(prevYear, 11, 31, 23, 59, 0)
-          continue
-        }
-      }
+      time = d.getTime() - 60000
+    } else {
+      const prevTime = advancePreviousCandidate(result, d)
+      if (!Number.isFinite(prevTime)) break
+      time = prevTime
     }
-    time -= 60000
   }
   return results
 }

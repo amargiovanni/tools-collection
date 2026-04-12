@@ -670,6 +670,15 @@ describe('getNextOccurrences', () => {
     expect(results[0]).toEqual(new Date('2027-01-01T00:00:00Z'))
   })
 
+  it('skips directly to leap day for sparse yearly schedules', () => {
+    const parsed = parseCronExpression('0 0 29 2 *')
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    const after = new Date('2026-03-01T00:00:00Z')
+    const results = getNextOccurrences(parsed.value, 1, after)
+    expect(results[0]).toEqual(new Date('2028-02-29T00:00:00Z'))
+  })
+
   it('returns empty for past year', () => {
     const parsed = parseCronExpression('0 0 1 1 ? 2020')
     expect(parsed.ok).toBe(true)
@@ -710,5 +719,14 @@ describe('getPreviousOccurrences', () => {
     const before = new Date('2026-04-11T09:00:00Z')
     const results = getPreviousOccurrences(parsed.value, 1, before)
     expect(results[0]).toEqual(new Date('2026-04-11T09:00:00Z'))
+  })
+
+  it('skips directly back to leap day for sparse yearly schedules', () => {
+    const parsed = parseCronExpression('0 0 29 2 *')
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    const before = new Date('2028-03-01T00:00:00Z')
+    const results = getPreviousOccurrences(parsed.value, 1, before)
+    expect(results[0]).toEqual(new Date('2028-02-29T00:00:00Z'))
   })
 })
