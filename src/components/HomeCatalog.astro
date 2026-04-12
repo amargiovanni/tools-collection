@@ -321,10 +321,14 @@ const categoryAccents: Record<string, string> = {
     const controller = new AbortController()
     globalWindow.__homeBackToTopAbort = controller
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const threshold = 320
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let isVisible = false
+    let ticking = false
 
     function setVisible(visible: boolean) {
+      if (visible === isVisible) return
+      isVisible = visible
       btn.classList.toggle('opacity-0', !visible)
       btn.classList.toggle('translate-y-2', !visible)
       btn.classList.toggle('pointer-events-none', !visible)
@@ -337,7 +341,16 @@ const categoryAccents: Record<string, string> = {
     }
 
     function onScroll() {
-      window.requestAnimationFrame(updateVisibility)
+      if (!btn.isConnected) {
+        controller.abort()
+        return
+      }
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(() => {
+        updateVisibility()
+        ticking = false
+      })
     }
 
     btn.addEventListener('click', () => {
