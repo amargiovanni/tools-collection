@@ -485,5 +485,6 @@
   "tools_loremIpsumGenerator_startWithClassic": "Commencer par \"Lorem ipsum dolor sit amet...\"",
   "tools_loremIpsumGenerator_generate": "G\u00e9n\u00e9rer",
   "tools_loremIpsumGenerator_outputLabel": "Texte G\u00e9n\u00e9r\u00e9 :",
-  "errors_INVALID_COUNT": "Le nombre doit \u00eatre un nombre positif"
+  "errors_INVALID_COUNT": "Le nombre doit \u00eatre un nombre positif",
+  "errors_INVALID_TYPE": "Type de sortie non valide"
 }

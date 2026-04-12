@@ -45,7 +45,7 @@ const WORD_BANK: readonly string[] = [
   'lacus', 'vel', 'tortor', 'cursus', 'risus', 'pretium', 'vulputate',
   'sapien', 'nec', 'sagittis', 'aliquam', 'metus', 'ultrices', 'semper',
   'fusce', 'justo', 'lacinia', 'augue', 'vestibulum', 'arcu', 'bibendum',
-  'porta', 'nisl', 'tincidunt', 'praesent', 'congue', 'erat', 'varius',
+  'porta', 'nisl', 'tincidunt', 'congue', 'erat', 'varius',
   'leo', 'natoque', 'penatibus', 'magnis', 'dis', 'parturient', 'montes',
   'nascetur', 'ridiculus', 'mus', 'donec', 'suscipit', 'ante', 'primis',
   'faucibus', 'orci', 'luctus', 'ullamcorper', 'mattis', 'pulvinar', 'dapibus',
@@ -98,11 +98,11 @@ function generateParagraph(rng: () => number): string {
 }
 
 export function generateLoremIpsum(options: LoremIpsumOptions, seed?: number): Result<string> {
-  const count = Math.max(1, Math.min(100, Math.floor(options.count)))
-
   if (!Number.isFinite(options.count) || options.count < 1) {
     return err('INVALID_COUNT', 'Count must be a positive number')
   }
+
+  const count = Math.max(1, Math.min(100, Math.floor(options.count)))
 
   const rng = createRng(seed)
 
@@ -133,7 +133,7 @@ export function generateLoremIpsum(options: LoremIpsumOptions, seed?: number): R
     case 'words': {
       const words: string[] = []
       if (options.startWithClassic) {
-        const classicWords = CLASSIC_OPENING.replace('.', '').replace(',', '').split(' ')
+        const classicWords = CLASSIC_OPENING.replace(/[.,]/g, '').split(' ')
         for (let i = 0; i < Math.min(count, classicWords.length); i++) {
           words.push(classicWords[i]!.toLowerCase())
         }
