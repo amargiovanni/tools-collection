@@ -1,5 +1,5 @@
-import { createSignal, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { Checkbox } from '../ui/Checkbox'
 import { Button } from '../ui/Button'
@@ -28,20 +28,13 @@ export default function LoremIpsumGenerator(props: Props) {
     { value: 'words', label: t(props.lang, 'tools_loremIpsumGenerator_typeWords') },
   ]
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['outputType'] === 'string') setOutputType(saved['outputType'] as OutputType)
       if (typeof saved['count'] === 'number') setCount(saved['count'])
       if (typeof saved['startWithClassic'] === 'boolean') setStartWithClassic(saved['startWithClassic'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { outputType: outputType(), count: count(), startWithClassic: startWithClassic() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ outputType: outputType(), count: count(), startWithClassic: startWithClassic() }),
   })
 
   const handleGenerate = () => {
