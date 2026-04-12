@@ -1,4 +1,4 @@
-import { For, Show, createSignal, onMount, onCleanup } from 'solid-js'
+import { For, Show, createMemo, createSignal, onMount, onCleanup } from 'solid-js'
 import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
@@ -395,7 +395,7 @@ const phraseSets: Record<Language, PhraseSet> = {
     fieldUnspecified: 'kein bestimmter Wert',
     fieldLast: 'letzter Tag des Monats',
     fieldLastWeekday: (day) => `letzter ${day} des Monats`,
-    fieldNearestWeekday: (day) => `nachster Werktag zum ${day}`,
+    fieldNearestWeekday: (day) => `nächster Werktag zum ${day}.`,
     fieldNthDay: (day, nth) => `${nth}. ${day} des Monats`,
     awsExampleLabels: {
       '0 10 * * ? *': 'Jeden Tag um 10:00 UTC',
@@ -645,21 +645,21 @@ export default function CronExpression(props: Props) {
     return parts.join(' ')
   }
 
-  const scheduleNext = () => {
+  const scheduleNext = createMemo(() => {
     const r = result()
     if (!r) return []
     const refDate = new Date(scheduleRefTime() + ':00Z')
     if (isNaN(refDate.getTime())) return []
     return getNextOccurrences(r, Number(scheduleCount()), refDate)
-  }
+  })
 
-  const schedulePrev = () => {
+  const schedulePrev = createMemo(() => {
     const r = result()
     if (!r) return []
     const refDate = new Date(scheduleRefTime() + ':00Z')
     if (isNaN(refDate.getTime())) return []
     return getPreviousOccurrences(r, Number(scheduleCount()), refDate)
-  }
+  })
 
   return (
     <div class="flex flex-col gap-5">
