@@ -1,4 +1,4 @@
-import { createSignal, Show, For, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, For, onMount, onCleanup } from 'solid-js'
 import { TextArea } from '../ui/TextArea'
 import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -31,11 +31,11 @@ export default function CsvViewer(props: Props) {
     onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
   })
 
-  const parsed = () => {
+  const parsed = createMemo(() => {
     const val = input().trim()
     if (!val) return null
     return parseCsv(val)
-  }
+  })
 
   const handleSort = (colIndex: number) => {
     if (sortCol() === colIndex) {
@@ -47,13 +47,13 @@ export default function CsvViewer(props: Props) {
     }
   }
 
-  const displayRows = () => {
+  const displayRows = createMemo(() => {
     const p = parsed()
     if (!p || !p.ok) return []
     const col = sortCol()
     if (col === null) return p.rows
     return sortRows(p.rows, col, sortDir())
-  }
+  })
 
   const handleExportJson = () => {
     const p = parsed()
