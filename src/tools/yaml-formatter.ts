@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type YamlIndent = 2 | 4 | 8
 
@@ -588,11 +589,10 @@ function minifyValue(value: YamlValue): string {
 // ---------------------------------------------------------------------------
 
 export function validateYaml(input: string): Result<boolean> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   try {
-    parseYamlDocument(input)
+    parseYamlDocument(validated.value)
     return ok(true)
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Invalid YAML'
@@ -601,11 +601,10 @@ export function validateYaml(input: string): Result<boolean> {
 }
 
 export function formatYaml(input: string, indent: YamlIndent): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   try {
-    const parsed = parseYamlDocument(input)
+    const parsed = parseYamlDocument(validated.value)
     const formatted = serializeYaml(parsed, indent, 0)
     return ok(formatted)
   } catch (e) {
@@ -615,11 +614,10 @@ export function formatYaml(input: string, indent: YamlIndent): Result<string> {
 }
 
 export function minifyYaml(input: string): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   try {
-    const parsed = parseYamlDocument(input)
+    const parsed = parseYamlDocument(validated.value)
     return ok(minifyValue(parsed))
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Invalid YAML'
@@ -628,11 +626,10 @@ export function minifyYaml(input: string): Result<string> {
 }
 
 export function yamlToJson(input: string, indent: number = 2): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   try {
-    const parsed = parseYamlDocument(input)
+    const parsed = parseYamlDocument(validated.value)
     const json = yamlValueToJson(parsed)
     return ok(JSON.stringify(json, null, indent))
   } catch (e) {
@@ -642,11 +639,10 @@ export function yamlToJson(input: string, indent: number = 2): Result<string> {
 }
 
 export function jsonToYaml(input: string, indent: YamlIndent = 2): Result<string> {
-  if (input.trim() === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
   try {
-    const parsed: unknown = JSON.parse(input)
+    const parsed: unknown = JSON.parse(validated.value)
     const yamlVal = jsonToYamlValue(parsed)
     return ok(serializeYaml(yamlVal, indent, 0))
   } catch (e) {
