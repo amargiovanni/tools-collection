@@ -224,6 +224,18 @@ function parseAwsExpression(input: string): Result<CronExpressionResult> {
     fields.push(parsedField.value)
   }
 
+  const dayOfMonth = fields[2]!
+  const dayOfWeek = fields[4]!
+  const dayOfMonthIsUnspecified = isUnspecifiedField(dayOfMonth)
+  const dayOfWeekIsUnspecified = isUnspecifiedField(dayOfWeek)
+
+  if (dayOfMonthIsUnspecified === dayOfWeekIsUnspecified) {
+    return err(
+      'INVALID_CRON',
+      'AWS cron expressions must use ? in exactly one of day-of-month or day-of-week',
+    )
+  }
+
   return ok({
     input,
     normalizedExpression: fields.map((field) => field.expression).join(' '),
@@ -422,6 +434,10 @@ function parseValue(raw: string, config: FieldConfig): Result<number> {
 
 export function isAnyField(field: CronField): boolean {
   return field.segments.length === 1 && field.segments[0]!.kind === 'any'
+}
+
+function isUnspecifiedField(field: CronField): boolean {
+  return field.segments.length === 1 && field.segments[0]!.kind === 'unspecified'
 }
 
 function normalizeSegment(segment: CronSegment): string {
@@ -682,6 +698,12 @@ function matchesField(field: CronField, value: number, date: Date): boolean {
   return field.segments.some((s) => matchesSegment(s, value, field.type, date))
 }
 
+function matchesDayOfWeekField(field: CronField, date: Date, format: CronFormat): boolean {
+  const jsDow = date.getUTCDay()
+  const values = format === 'aws' ? [jsDow === 0 ? 1 : jsDow + 1] : jsDow === 0 ? [0, 7] : [jsDow]
+  return values.some((value) => matchesField(field, value, date))
+}
+
 function matchesCron(result: CronExpressionResult, date: Date): boolean {
   const minute = result.fields.find((f) => f.type === 'minute')!
   const hour = result.fields.find((f) => f.type === 'hour')!
@@ -702,12 +724,8 @@ function matchesCron(result: CronExpressionResult, date: Date): boolean {
   const dowIsWild = isWild(dayOfWeek)
 
   const domValue = date.getUTCDate()
-  // DOW value depends on format
-  const jsDow = date.getUTCDay() // 0=SUN
-  const dowValue = result.format === 'aws' ? (jsDow === 0 ? 1 : jsDow + 1) : jsDow
-
   const domMatches = matchesField(dayOfMonth, domValue, date)
-  const dowMatches = matchesField(dayOfWeek, dowValue, date)
+  const dowMatches = matchesDayOfWeekField(dayOfWeek, date, result.format)
 
   if (domIsWild && dowIsWild) return true
   if (domIsWild) return dowMatches
@@ -780,14 +798,14 @@ function findPrevMatchingYear(yearField: CronField, targetYear: number, minYear:
   return null
 }
 
-const MAX_ITERATIONS = 525960 // ~1 year in minutes
+const MAX_ITERATIONS = 2629800 // ~5 years in minutes
 
 export function getNextOccurrences(result: CronExpressionResult, count: number, after: Date): Date[] {
   if (result.shortcut === '@reboot') return []
   const results: Date[] = []
   const current = new Date(after.getTime())
   current.setUTCSeconds(0, 0)
-  let time = current.getTime() + 60000 // advance 1 minute past 'after'
+  let time = current.getTime()
 
   // Year-skip optimization: if there's a year constraint, jump forward
   const yearField = result.fields.find((f) => f.type === 'year')
@@ -839,7 +857,7 @@ export function getPreviousOccurrences(result: CronExpressionResult, count: numb
   const results: Date[] = []
   const current = new Date(before.getTime())
   current.setUTCSeconds(0, 0)
-  let time = current.getTime() - 60000 // go back 1 minute from 'before'
+  let time = current.getTime()
 
   // Year-skip optimization: if there's a year constraint, jump backward
   const yearField = result.fields.find((f) => f.type === 'year')

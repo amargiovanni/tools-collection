@@ -320,6 +320,14 @@ describe('parseAwsCronExpression', () => {
       expect(result.error.code).toBe('INVALID_CRON')
     }
   })
+
+  it('rejects AWS expressions without ? in day-of-month or day-of-week', () => {
+    const result = parseCronExpression('0 0 * * * *')
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_CRON')
+    }
+  })
 })
 
 describe('convertCron', () => {
@@ -570,6 +578,24 @@ describe('getNextOccurrences', () => {
     expect(results[2]).toEqual(new Date('2026-04-15T09:00:00Z'))
   })
 
+  it('treats 7 as Sunday in unix day-of-week matching', () => {
+    const parsed = parseCronExpression('0 9 * * 7')
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    const after = new Date('2026-04-11T08:00:00Z')
+    const results = getNextOccurrences(parsed.value, 1, after)
+    expect(results[0]).toEqual(new Date('2026-04-12T09:00:00Z'))
+  })
+
+  it('includes the reference minute when it matches', () => {
+    const parsed = parseCronExpression('0 9 * * *')
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    const after = new Date('2026-04-11T09:00:00Z')
+    const results = getNextOccurrences(parsed.value, 1, after)
+    expect(results[0]).toEqual(new Date('2026-04-11T09:00:00Z'))
+  })
+
   it('handles monthly on day 1 (AWS)', () => {
     const parsed = parseCronExpression('0 8 1 * ? *')
     expect(parsed.ok).toBe(true)
@@ -663,5 +689,14 @@ describe('getPreviousOccurrences', () => {
     const results = getPreviousOccurrences(parsed.value, 2, before)
     expect(results[0]).toEqual(new Date('2026-04-11T09:00:00Z'))
     expect(results[1]).toEqual(new Date('2026-04-10T09:00:00Z'))
+  })
+
+  it('includes the reference minute when it matches', () => {
+    const parsed = parseCronExpression('0 9 * * *')
+    expect(parsed.ok).toBe(true)
+    if (!parsed.ok) return
+    const before = new Date('2026-04-11T09:00:00Z')
+    const results = getPreviousOccurrences(parsed.value, 1, before)
+    expect(results[0]).toEqual(new Date('2026-04-11T09:00:00Z'))
   })
 })

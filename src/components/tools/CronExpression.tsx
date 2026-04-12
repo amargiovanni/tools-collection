@@ -528,7 +528,6 @@ export default function CronExpression(props: Props) {
 
     setResult(null)
     setError(translateError(props.lang, parsed.error))
-    setConversionError(null)
   }
 
   const handleInput = (value: string) => {
