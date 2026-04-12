@@ -474,5 +474,22 @@
   "csv_placeholder": "Collez les données CSV ici...",
   "csv_rowCount": "{n} lignes",
   "csv_noData": "Aucune donnée à afficher",
-  "csv_exportJson": "Exporter en JSON"
+  "csv_exportJson": "Exporter en JSON",
+  "tools_yamlFormatter_name": "Formateur YAML",
+  "tools_yamlFormatter_description": "Formater, valider et convertir du YAML avec indentation configurable",
+  "tools_yamlFormatter_inputLabel": "YAML/JSON en entree :",
+  "tools_yamlFormatter_placeholder": "name: John\nage: 30\nhobbies:\n  - reading\n  - coding",
+  "tools_yamlFormatter_indentLabel": "Indentation :",
+  "tools_yamlFormatter_indent2": "2 espaces",
+  "tools_yamlFormatter_indent4": "4 espaces",
+  "tools_yamlFormatter_indent8": "8 espaces",
+  "tools_yamlFormatter_actionLabel": "Action :",
+  "tools_yamlFormatter_actionFormat": "Formater le YAML",
+  "tools_yamlFormatter_actionMinify": "Minifier le YAML",
+  "tools_yamlFormatter_actionYamlToJson": "YAML vers JSON",
+  "tools_yamlFormatter_actionJsonToYaml": "JSON vers YAML",
+  "tools_yamlFormatter_execute": "Executer",
+  "tools_yamlFormatter_outputLabel": "Resultat :",
+  "tools_yamlFormatter_valid": "YAML valide",
+  "errors_INVALID_YAML": "YAML invalide"
 }
