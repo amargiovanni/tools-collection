@@ -438,6 +438,8 @@
   "errors_QR_UNSUPPORTED": "BarcodeDetector wird in diesem Browser nicht unterstützt",
   "errors_QR_NOT_FOUND": "Kein QR-Code im Bild erkannt",
   "errors_UNIQUE_IMPOSSIBLE": "Mit den gegebenen Einschränkungen können nicht genügend eindeutige Werte generiert werden",
+  "errors_ENCODE_ERROR": "Kodierung fehlgeschlagen",
+  "errors_DECODE_ERROR": "Dekodierung fehlgeschlagen",
   "favorites_title": "Favoriten",
   "favorites_add": "Zu Favoriten hinzufügen",
   "favorites_remove": "Aus Favoriten entfernen",

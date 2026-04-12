@@ -308,7 +308,7 @@ export function decodeHtmlEntities(input: string): Result<string> {
   }
 
   try {
-    const result = input.replace(/&(#x[0-9a-fA-F]+|#X[0-9a-fA-F]+|#[0-9]+|[a-zA-Z]+);/g, (match) => {
+    const result = input.replace(/&(#x[0-9a-fA-F]+|#X[0-9a-fA-F]+|#[0-9]+|[a-zA-Z][a-zA-Z0-9]*);/g, (match) => {
       // Named entity
       if (entityToChar[match]) {
         return entityToChar[match]

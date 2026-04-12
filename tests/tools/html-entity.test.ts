@@ -148,6 +148,22 @@ describe('decodeHtmlEntities', () => {
     }
   })
 
+  it('decodes named entities containing digits (sup2)', () => {
+    const result = decodeHtmlEntities('&sup2;')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toBe('\u00b2')
+    }
+  })
+
+  it('decodes named entities containing digits (frac12)', () => {
+    const result = decodeHtmlEntities('&frac12;')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toBe('\u00bd')
+    }
+  })
+
   it('decodes high Unicode code points', () => {
     const result = decodeHtmlEntities('&#128512;')
     expect(result.ok).toBe(true)

@@ -23,10 +23,11 @@ export default function HtmlEntity(props: Props) {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
     if (saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
+      if (saved['mode'] && ['minimal', 'all'].includes(saved['mode'])) setMode(saved['mode'])
     }
     const handler = () => {
       window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input() } },
+        detail: { state: { input: input(), mode: mode() } },
       }))
     }
     window.addEventListener(TOOL_STATE_REQUEST, handler)

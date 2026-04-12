@@ -438,6 +438,8 @@
   "errors_QR_UNSUPPORTED": "BarcodeDetector no es compatible con este navegador",
   "errors_QR_NOT_FOUND": "No se detectó ningún código QR en la imagen",
   "errors_UNIQUE_IMPOSSIBLE": "No se pueden generar suficientes valores únicos con las restricciones dadas",
+  "errors_ENCODE_ERROR": "Error de codificación",
+  "errors_DECODE_ERROR": "Error de decodificación",
   "favorites_title": "Favoritos",
   "favorites_add": "Agregar a favoritos",
   "favorites_remove": "Quitar de favoritos",
