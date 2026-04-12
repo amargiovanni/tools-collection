@@ -1,5 +1,5 @@
-import { createSignal, createMemo, Show, For, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, createMemo, Show, For } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { Badge } from '../ui/Badge'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -28,18 +28,11 @@ export default function PasswordStrength(props: Props) {
   const [password, setPassword] = createSignal('')
   const [showPassword, setShowPassword] = createSignal(false)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['password'] === 'string') setPassword(saved['password'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { password: password() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ password: password() }),
   })
 
   const levelLabel = (level: string): string => {

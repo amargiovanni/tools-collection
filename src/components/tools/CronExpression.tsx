@@ -1,5 +1,5 @@
-import { For, Show, createMemo, createSignal, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { For, Show, createMemo, createSignal } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { Select } from '../ui/Select'
@@ -491,9 +491,8 @@ export default function CronExpression(props: Props) {
   const [scheduleRefTime, setScheduleRefTime] = createSignal<string>(formatDateTimeLocal(new Date()))
   const [scheduleCount, setScheduleCount] = createSignal('5')
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
       if (typeof saved['builderMode'] === 'string') setBuilderMode(saved['builderMode'] as BuilderMode)
       if (typeof saved['builderMinute'] === 'string') setBuilderMinute(saved['builderMinute'])
@@ -504,14 +503,8 @@ export default function CronExpression(props: Props) {
       if (typeof saved['builderFormat'] === 'string') setBuilderFormat(saved['builderFormat'] as CronFormat)
       if (typeof saved['builderNthWeek'] === 'string') setBuilderNthWeek(saved['builderNthWeek'])
       if (typeof saved['builderAwsDayOfWeek'] === 'string') setBuilderAwsDayOfWeek(saved['builderAwsDayOfWeek'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input(), builderMode: builderMode(), builderMinute: builderMinute(), builderHour: builderHour(), builderStep: builderStep(), builderDayOfWeek: builderDayOfWeek(), builderDayOfMonth: builderDayOfMonth(), builderFormat: builderFormat(), builderNthWeek: builderNthWeek(), builderAwsDayOfWeek: builderAwsDayOfWeek() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input(), builderMode: builderMode(), builderMinute: builderMinute(), builderHour: builderHour(), builderStep: builderStep(), builderDayOfWeek: builderDayOfWeek(), builderDayOfMonth: builderDayOfMonth(), builderFormat: builderFormat(), builderNthWeek: builderNthWeek(), builderAwsDayOfWeek: builderAwsDayOfWeek() }),
   })
 
   const explainExpression = (expression: string) => {

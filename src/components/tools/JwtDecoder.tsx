@@ -1,9 +1,9 @@
-import { createSignal, createMemo, Show, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show } from 'solid-js'
 import { TextArea } from '../ui/TextArea'
 import { StatusMessage } from '../ui/StatusMessage'
 import { ResultCard } from '../ui/ResultCard'
 import { parseJwt, getExpiryStatus } from '../../tools/jwt-decoder'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { useToolState } from '../../lib/useToolState'
 import { t } from '../../i18n'
 import type { Language } from '../../i18n'
 
@@ -25,18 +25,11 @@ function formatDuration(ms: number): string {
 export default function JwtDecoder(props: Props) {
   const [input, setInput] = createSignal('')
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input() }),
   })
 
   const parsed = createMemo(() => {

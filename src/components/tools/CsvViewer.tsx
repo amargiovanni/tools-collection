@@ -1,10 +1,10 @@
-import { createSignal, createMemo, Show, For, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, For } from 'solid-js'
 import { TextArea } from '../ui/TextArea'
 import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
 import { parseCsv, sortRows } from '../../tools/csv-viewer'
 import type { SortDirection } from '../../tools/csv-viewer'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { useToolState } from '../../lib/useToolState'
 import { t } from '../../i18n'
 import type { Language } from '../../i18n'
 
@@ -17,18 +17,11 @@ export default function CsvViewer(props: Props) {
   const [sortCol, setSortCol] = createSignal<number | null>(null)
   const [sortDir, setSortDir] = createSignal<SortDirection>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input() }),
   })
 
   const parsed = createMemo(() => {

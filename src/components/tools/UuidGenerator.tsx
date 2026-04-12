@@ -1,8 +1,8 @@
-import { createSignal, For, onMount, onCleanup } from 'solid-js'
+import { createSignal, For } from 'solid-js'
 import { Button } from '../ui/Button'
 import { CopyButton } from '../ui/CopyButton'
 import { generateUUIDv4, generateUUIDv7, generateULID } from '../../tools/uuid-generator'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { useToolState } from '../../lib/useToolState'
 import { t } from '../../i18n'
 import type { Language } from '../../i18n'
 
@@ -37,18 +37,11 @@ export default function UuidGenerator(props: Props) {
     ulid: [generateULID()],
   })
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['count'] === 'number') setCount(saved['count'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { count: count() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ count: count() }),
   })
 
   const handleGenerate = (n: number) => {

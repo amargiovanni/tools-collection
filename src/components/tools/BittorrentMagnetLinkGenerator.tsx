@@ -1,5 +1,5 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, Show, onMount } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { TextArea } from '../ui/TextArea'
 import { Button } from '../ui/Button'
@@ -20,18 +20,23 @@ export default function BittorrentMagnetLinkGenerator(props: Props) {
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const params = new URLSearchParams(location.search)
-    const saved = await decodeState(params.get('s'))
-    let shouldAutoGenerate = false
-    if (saved) {
+  let shouldAutoGenerate = false
+
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['hash'] === 'string') {
         setHash(saved['hash'])
         shouldAutoGenerate = saved['hash'].trim().length > 0
       }
       if (typeof saved['name'] === 'string') setName(saved['name'])
       if (typeof saved['trackers'] === 'string') setTrackers(saved['trackers'])
-    } else {
+    },
+    getState: () => ({ hash: hash(), name: name(), trackers: trackers() }),
+  })
+
+  onMount(() => {
+    const params = new URLSearchParams(location.search)
+    if (!params.get('s')) {
       const sharedHash = params.get('hash')
       const sharedName = params.get('name')
       if (sharedHash) {
@@ -40,15 +45,6 @@ export default function BittorrentMagnetLinkGenerator(props: Props) {
       }
       if (sharedName) setName(sharedName)
     }
-
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { hash: hash(), name: name(), trackers: trackers() } },
-      }))
-    }
-
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
 
     if (shouldAutoGenerate) {
       handleGenerate()
