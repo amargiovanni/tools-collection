@@ -1,5 +1,5 @@
-import { createSignal, createEffect, Show, For, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, createMemo, Show, For } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { Badge } from '../ui/Badge'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -27,21 +27,12 @@ const levelColors: Record<string, string> = {
 export default function PasswordStrength(props: Props) {
   const [password, setPassword] = createSignal('')
   const [showPassword, setShowPassword] = createSignal(false)
-  const [result, setResult] = createSignal<StrengthResult | null>(null)
-  const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['password'] === 'string') setPassword(saved['password'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { password: password() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ password: password() }),
   })
 
   const levelLabel = (level: string): string => {
@@ -61,23 +52,15 @@ export default function PasswordStrength(props: Props) {
     return map[name] ?? name
   }
 
-  createEffect(() => {
+  const analysis = createMemo(() => {
     const pw = password()
-    if (!pw) {
-      setResult(null)
-      setError(null)
-      return
-    }
-
+    if (!pw) return null
     const res = checkPasswordStrength(pw)
-    if (res.ok) {
-      setResult(res.value)
-      setError(null)
-    } else {
-      setError(res.error.message)
-      setResult(null)
-    }
+    return res.ok ? { result: res.value, error: null } : { result: null, error: res.error.message }
   })
+
+  const result = () => analysis()?.result ?? null
+  const error = () => analysis()?.error ?? null
 
   return (
     <div class="flex flex-col gap-4">

@@ -38,4 +38,52 @@ test.describe('BitTorrent Magnet Link Generator', () => {
     await expect(page.getByLabel('Info Hash')).toHaveValue('0123456789abcdef0123456789abcdef01234567')
     await expect(page.locator('[data-testid="output-panel"] textarea')).toHaveValue(/dn=Ubuntu\+ISO/)
   })
+
+  test('resource name field populates dn parameter in magnet link', async ({ page }) => {
+    await page.getByLabel('Info Hash').fill('abcdef1234567890abcdef1234567890abcdef12')
+    await page.getByLabel('Resource Name').fill('Test File')
+    await page.getByRole('button', { name: 'Generate Magnet Link' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    expect(value).toContain('dn=Test+File')
+  })
+
+  test('tracker list textarea is pre-filled with defaults', async ({ page }) => {
+    const trackers = page.getByLabel('Trackers')
+    const value = await trackers.inputValue()
+    // Should contain at least one tracker URL
+    expect(value.trim().length).toBeGreaterThan(0)
+    expect(value).toContain('udp://')
+  })
+
+  test('generated magnet link starts with magnet:?xt=urn:btih:', async ({ page }) => {
+    const hash = 'abcdef1234567890abcdef1234567890abcdef12'
+    await page.getByLabel('Info Hash').fill(hash)
+    await page.getByRole('button', { name: 'Generate Magnet Link' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    expect(value).toMatch(/^magnet:\?xt=urn:btih:/)
+    expect(value.toLowerCase()).toContain(hash)
+  })
+
+  test('magnet link includes tracker parameters', async ({ page }) => {
+    await page.getByLabel('Info Hash').fill('abcdef1234567890abcdef1234567890abcdef12')
+    await page.getByRole('button', { name: 'Generate Magnet Link' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    // Should contain &tr= for tracker parameters
+    expect(value).toContain('&tr=')
+  })
+
+  test('open link anchor is visible after generation', async ({ page }) => {
+    await page.getByLabel('Info Hash').fill('abcdef1234567890abcdef1234567890abcdef12')
+    await page.getByRole('button', { name: 'Generate Magnet Link' }).click()
+    await expect(page.locator('[data-testid="output-panel"] textarea')).not.toBeEmpty({ timeout: 5000 })
+    // The "Open magnet link" anchor should be visible
+    const link = page.locator('a[href^="magnet:"]')
+    await expect(link).toBeVisible({ timeout: 5000 })
+  })
 })

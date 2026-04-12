@@ -1,5 +1,5 @@
-import { createSignal, Show, For, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, Show, For } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { TextArea } from '../ui/TextArea'
 import { Checkbox } from '../ui/Checkbox'
 import { Button } from '../ui/Button'
@@ -34,21 +34,14 @@ export default function DiffChecker(props: Props) {
   const [result, setResult] = createSignal<DiffResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['left'] === 'string') setLeft(saved['left'])
       if (typeof saved['right'] === 'string') setRight(saved['right'])
       if (typeof saved['ignoreCase'] === 'boolean') setIgnoreCase(saved['ignoreCase'])
       if (typeof saved['ignoreWhitespace'] === 'boolean') setIgnoreWhitespace(saved['ignoreWhitespace'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { left: left(), right: right(), ignoreCase: ignoreCase(), ignoreWhitespace: ignoreWhitespace() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ left: left(), right: right(), ignoreCase: ignoreCase(), ignoreWhitespace: ignoreWhitespace() }),
   })
 
   const handleCompare = () => {

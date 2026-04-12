@@ -28,4 +28,31 @@ test.describe('Emoji Shortcode', () => {
       expectError: 'Please enter some input',
     })
   })
+
+  test('converts multiple shortcodes in one input', async ({ page }) => {
+    await toolTest(page, {
+      toolId: 'emoji-shortcode',
+      input: ':heart: :smile: :thumbsup:',
+      action: 'Shortcode → Emoji',
+      expectOutputContains: '❤',
+    })
+  })
+
+  test('handles mixed text and shortcodes', async ({ page }) => {
+    await toolTest(page, {
+      toolId: 'emoji-shortcode',
+      input: 'I :heart: coding',
+      action: 'Shortcode → Emoji',
+      expectOutputContains: 'coding',
+    })
+  })
+
+  test('converts emoji back to shortcode (reverse)', async ({ page }) => {
+    await toolTest(page, {
+      toolId: 'emoji-shortcode',
+      input: '\u{1F525}',
+      action: 'Emoji \u2192 Shortcode',
+      expectOutputContains: ':fire:',
+    })
+  })
 })

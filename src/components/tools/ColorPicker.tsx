@@ -1,5 +1,5 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, createMemo, Show } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
@@ -25,21 +25,14 @@ export default function ColorPicker(props: Props) {
   const [result, setResult] = createSignal<ColorResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['colorInput'] === 'string') {
         setColorInput(saved['colorInput'])
         setPickerValue(saved['colorInput'])
       }
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { colorInput: colorInput() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ colorInput: colorInput() }),
   })
 
   const handleConvert = (value?: string) => {
@@ -68,7 +61,7 @@ export default function ColorPicker(props: Props) {
     handleConvert(hex)
   }
 
-  const cards = () => {
+  const cards = createMemo(() => {
     const r = result()
     if (!r) return []
     return [
@@ -77,7 +70,7 @@ export default function ColorPicker(props: Props) {
       { label: 'RGBA', value: r.rgba },
       { label: 'HSL', value: r.hsl },
     ]
-  }
+  })
 
   return (
     <div class="flex flex-col gap-4">

@@ -107,4 +107,39 @@ test.describe('Data Size Converter', () => {
     await expect(select.locator('option[value="GiB"]')).toHaveCount(1)
     await expect(select.locator('option[value="TiB"]')).toHaveCount(1)
   })
+
+  test('decimal input 1.5 GiB produces correct result cards', async ({ page }) => {
+    await page.getByLabel('Data size value:').fill('1.5')
+    await page.getByLabel('Unit:').selectOption('GiB')
+    await page.getByRole('button', { name: 'Convert Size' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(10, { timeout: 5000 })
+    // 1.5 GiB = 1610612736 bytes
+    await expect(page.getByText('1610612736')).toBeVisible()
+  })
+
+  test('result card values are specific and correct for 1 MB', async ({ page }) => {
+    await page.getByLabel('Data size value:').fill('1')
+    await page.getByLabel('Unit:').selectOption('MB')
+    await page.getByRole('button', { name: 'Convert Size' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(10, { timeout: 5000 })
+    // 1 MB = 1048576 bytes (since KB/MB uses base 1024 in this project)
+    await expect(page.getByText('1048576')).toBeVisible()
+    // 1 MB = 8388608 bits
+    await expect(page.getByText('8388608')).toBeVisible()
+  })
+
+  test('all units produce results from TB input', async ({ page }) => {
+    await page.getByLabel('Data size value:').fill('1')
+    await page.getByLabel('Unit:').selectOption('TB')
+    await page.getByRole('button', { name: 'Convert Size' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(10, { timeout: 5000 })
+    // All 10 result cards should have non-empty values
+    const values = page.locator('[data-testid="result-card"] p')
+    const count = await values.count()
+    expect(count).toBe(10)
+    for (let i = 0; i < count; i++) {
+      const text = await values.nth(i).textContent()
+      expect(text?.trim()).not.toBe('')
+    }
+  })
 })

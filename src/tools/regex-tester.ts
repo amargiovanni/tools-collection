@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface RegexFlags {
   global: boolean
@@ -18,7 +19,9 @@ export function testRegex(
   text: string,
   flags: RegexFlags,
 ): Result<RegexMatch[]> {
-  if (pattern.trim() === '' || text === '') {
+  const validatedPattern = validateNonEmpty(pattern)
+  const validatedText = validateNonEmpty(text)
+  if (!validatedPattern.ok || !validatedText.ok) {
     return err('EMPTY_INPUT', 'Enter both the pattern and the text')
   }
 
@@ -28,12 +31,13 @@ export function testRegex(
     if (flags.caseInsensitive) flagStr += 'i'
     if (flags.multiline) flagStr += 'm'
 
-    let regexPattern = pattern
-    if (pattern.startsWith('/')) {
-      const lastSlash = pattern.lastIndexOf('/')
+    let regexPattern = validatedPattern.value
+    if (regexPattern.startsWith('/')) {
+      const lastSlash = regexPattern.lastIndexOf('/')
       if (lastSlash > 0) {
-        regexPattern = pattern.substring(1, lastSlash)
-        flagStr = pattern.substring(lastSlash + 1) || flagStr
+        const inlineFlags = regexPattern.substring(lastSlash + 1)
+        regexPattern = regexPattern.substring(1, lastSlash)
+        if (inlineFlags) flagStr = inlineFlags
       }
     }
 
@@ -41,7 +45,7 @@ export function testRegex(
     const matchRegex = regex.global
       ? regex
       : new RegExp(regex.source, `${regex.flags}g`)
-    const rawMatches = [...text.matchAll(matchRegex)]
+    const rawMatches = [...validatedText.value.matchAll(matchRegex)]
 
     const matches: RegexMatch[] = rawMatches.map(match => ({
       fullMatch: match[0],

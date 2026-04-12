@@ -50,4 +50,39 @@ test.describe('Count Duplicates', () => {
     await page.getByRole('button', { name: 'Analyze' }).click()
     await expect(page.locator('table')).toBeVisible({ timeout: 5000 })
   })
+
+  test('case-insensitive toggle merges different cases', async ({ page }) => {
+    await page.getByLabel('Case sensitive').uncheck()
+    await page.locator('[data-testid="textarea"]').first().fill('Apple\napple\nAPPLE')
+    await page.getByRole('button', { name: 'Analyze' }).click()
+    await expect(page.locator('table')).toBeVisible({ timeout: 5000 })
+    // With case-insensitive, all three should merge into 1 row with count 3
+    const rows = page.locator('tbody tr')
+    await expect(rows).toHaveCount(1, { timeout: 5000 })
+    await expect(page.getByRole('cell', { name: '3' })).toBeVisible()
+  })
+
+  test('sort by count toggle sorts entries by occurrence count', async ({ page }) => {
+    await page.getByLabel('Sort by number of occurrences').check()
+    await page.locator('[data-testid="textarea"]').first().fill('c\na\na\na\nb\nb')
+    await page.getByRole('button', { name: 'Analyze' }).click()
+    await expect(page.locator('table')).toBeVisible({ timeout: 5000 })
+    // First row should have count 3 (the most frequent)
+    const firstRowCount = page.locator('tbody tr').first().locator('td').nth(1)
+    await expect(firstRowCount).toHaveText('3', { timeout: 5000 })
+  })
+
+  test('percentage column displays values with % suffix', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('x\nx\ny')
+    await page.getByRole('button', { name: 'Analyze' }).click()
+    await expect(page.locator('table')).toBeVisible({ timeout: 5000 })
+    // The percentage column (third td) should contain a % sign
+    const percentageCells = page.locator('tbody tr td:nth-child(3)')
+    const count = await percentageCells.count()
+    expect(count).toBeGreaterThan(0)
+    for (let i = 0; i < count; i++) {
+      const text = await percentageCells.nth(i).textContent()
+      expect(text).toContain('%')
+    }
+  })
 })

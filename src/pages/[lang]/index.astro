@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import HomeCatalog from '../../components/HomeCatalog.astro'
+import { t, languages } from '../../i18n'
+import type { Language } from '../../i18n'
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return languages.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }))
+}
+
+const { lang } = Astro.props as { lang: Language }
+---
+
+<BaseLayout title={t(lang, 'app_documentTitle')} description={t(lang, 'app_description')} lang={lang}>
+  <HomeCatalog lang={lang} />
+</BaseLayout>

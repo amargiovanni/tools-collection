@@ -4,16 +4,19 @@ import ToolLayout from '../../../layouts/ToolLayout.astro'
 import ToolRenderer from '../../../islands/ToolRenderer'
 import { toolRegistry } from '../../../config/tools'
 import type { ToolMeta } from '../../../config/tools'
+import { languages } from '../../../i18n'
+import type { Language } from '../../../i18n'
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return toolRegistry.map((tool) => ({
-    params: { tool: tool.id },
-    props: { tool },
-  }))
+  return languages.flatMap((lang) =>
+    toolRegistry.map((tool) => ({
+      params: { lang, tool: tool.id },
+      props: { tool, lang },
+    }))
+  )
 }
 
-const { tool } = Astro.props as { tool: ToolMeta }
-const lang = 'fr' as const
+const { tool, lang } = Astro.props as { tool: ToolMeta; lang: Language }
 ---
 
 <ToolLayout tool={tool} lang={lang}>

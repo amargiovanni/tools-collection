@@ -11,7 +11,7 @@ Una raccolta modulare e type-safe di più di 30 strumenti per sviluppatori che f
 
 Più di 30 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-Tra le novità della `1.3.5`: l'aggiornamento del `Cron Expression Parser` con supporto AWS a 6 campi, wrapper `cron(...)`, `?`, `L`, `W`, `#`, conversione bidirezionale Unix/AWS e anteprima della schedulazione.
+Novità della `1.4.0`: importante ottimizzazione interna — hook condiviso `useToolState()` e utility `validateNonEmpty()` eliminano ~360 righe di boilerplate da tutti i tool, route Astro dinamiche sostituiscono 10 file pagina duplicati, fix `createMemo` in 8 componenti, upgrade perf emoji-shortcode, CronExpression decomposta in moduli focalizzati e 357 test Playwright E2E che coprono ogni tool in profondità.
 
 ## Strumenti
 
@@ -20,8 +20,8 @@ Tra le novità della `1.3.5`: l'aggiornamento del `Cron Expression Parser` con s
 | **Elaborazione Testo** | List Generator, Add Text to Lines, Convert Case, Remove Duplicate Lines, Remove Line Breaks, Remove Lines Containing |
 | **Generatori** | Password Generator (crypto API), Username Generator, PIN Generator, UUID Generator, BitTorrent Magnet Link Generator |
 | **Estrazione** | Domain Extractor, Email Extractor |
-| **Analisi** | Count Duplicates |
-| **Sicurezza** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
+| **Analisi** | Count Duplicates, Text Counter |
+| **Sicurezza** | PEM Certificate Inspector, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
 | **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
 | **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
 | **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
@@ -46,7 +46,7 @@ Ogni tool è separato con chiarezza in tre livelli:
 ```text
 src/tools/json-formatter.ts             ← Logica pura (senza DOM, restituisce Result<T>)
 src/components/tools/JsonFormatter.tsx ← UI Solid.js (compone componenti condivisi)
-src/pages/en/tools/[tool].astro        ← Pagina Astro (monta l'island con client:load)
+src/pages/[lang]/tools/[tool].astro     ← Pagina Astro (monta l'island con client:load)
 ```
 
 ```text
@@ -70,18 +70,16 @@ src/
 │   └── ToolLayout.astro   # Sidebar + header + slot tool
 ├── lib/
 │   ├── result.ts          # Tipo Result<T> per error handling
+│   ├── useToolState.ts    # Hook condiviso per salvataggio/ripristino stato URL
+│   ├── validation.ts      # Validazione input condivisa (validateNonEmpty)
 │   ├── clipboard.ts       # Copia con fallback
 │   └── download.ts        # Utility download file
 ├── pages/
 │   ├── index.astro        # Redirect root → /{lang}/
-│   ├── en/                # Pagine inglesi
-│   ├── it/                # Pagine italiane
-│   ├── es/                # Pagine spagnole
-│   ├── fr/                # Pagine francesi
-│   └── de/                # Pagine tedesche
+│   └── [lang]/            # Route dinamiche per tutte e 5 le lingue
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 35 moduli di logica pura (zero DOM)
+└── tools/                 # 36 moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -109,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 176 pagine HTML statiche (35 per lingua x 5, piu redirect root) pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: 186 pagine HTML statiche (36 tool per lingua x 5 + homepage + redirect root) pronte per qualsiasi hosting.
 
 ### Docker
 
@@ -160,7 +158,7 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 | Comando | Descrizione |
 |---|---|
 | `npm run dev` | Avvia il server di sviluppo con HMR |
-| `npm run build` | Build di produzione (171 pagine) |
+| `npm run build` | Build di produzione (186 pagine) |
 | `npm run preview` | Anteprima della build di produzione |
 | `npm run test` | Esegue i test unitari |
 | `npm run test:watch` | Esegue i test unitari in watch mode |

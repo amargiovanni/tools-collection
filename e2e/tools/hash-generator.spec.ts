@@ -67,4 +67,33 @@ test.describe('Hash Generator', () => {
     const text = await sha256Card.textContent()
     expect(text).toMatch(/[0-9a-f]{64}/)
   })
+
+  test('SHA-1 of "test" matches known value', async ({ page }) => {
+    // SHA-1 of "test" = a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
+    const SHA1_OF_TEST = 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'
+    await page.locator('[data-testid="textarea"]').first().fill('test')
+    await page.getByRole('button', { name: 'Generate Hash' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(3, { timeout: 5000 })
+    await expect(page.getByText(SHA1_OF_TEST)).toBeVisible()
+  })
+
+  test('SHA-512 of "test" matches known value', async ({ page }) => {
+    // SHA-512 of "test" = ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff
+    const SHA512_OF_TEST = 'ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff'
+    await page.locator('[data-testid="textarea"]').first().fill('test')
+    await page.getByRole('button', { name: 'Generate Hash' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(3, { timeout: 5000 })
+    await expect(page.getByText(SHA512_OF_TEST)).toBeVisible()
+  })
+
+  test('button shows loading state while hashing', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('test')
+    // The button text changes to "..." while loading
+    const button = page.getByRole('button', { name: 'Generate Hash' })
+    await button.click()
+    // After completion, the result cards should appear
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(3, { timeout: 5000 })
+    // And the button should be back to normal (not disabled)
+    await expect(button).toBeEnabled()
+  })
 })

@@ -1,5 +1,5 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, Show } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { TextArea } from '../ui/TextArea'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
@@ -31,19 +31,12 @@ export default function QrCode(props: Props) {
   const [readError, setReadError] = createSignal<string | null>(null)
   const [loading, setLoading] = createSignal(false)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['text'] === 'string') setText(saved['text'])
       if (typeof saved['size'] === 'number') setSize(saved['size'] as QrSize)
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { text: text(), size: size() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ text: text(), size: size() }),
   })
 
   const handleGenerate = () => {

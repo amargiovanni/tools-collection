@@ -103,4 +103,42 @@ test.describe('CSV Viewer', () => {
   test('shows no-data message when input is empty', async ({ page }) => {
     await expect(page.getByText('No data to display')).toBeVisible()
   })
+
+  test('column sort ascending then descending toggle', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').fill(SIMPLE_CSV)
+    const ageHeader = page.locator('th').filter({ hasText: 'age' })
+    // First click: ascending
+    await ageHeader.click()
+    const firstAsc = page.locator('tbody tr').first().locator('td').nth(1)
+    await expect(firstAsc).toHaveText('25', { timeout: 5000 })
+    // Second click: descending
+    await ageHeader.click()
+    const firstDesc = page.locator('tbody tr').first().locator('td').nth(1)
+    await expect(firstDesc).toHaveText('35', { timeout: 5000 })
+  })
+
+  test('handles TSV (tab-separated values) input', async ({ page }) => {
+    const tsvInput = 'name\tage\tcity\nAlice\t30\tRome\nBob\t25\tMilan'
+    await page.locator('[data-testid="textarea"]').fill(tsvInput)
+    await expect(page.locator('th').filter({ hasText: 'name' })).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('th').filter({ hasText: 'age' })).toBeVisible()
+    await expect(page.locator('th').filter({ hasText: 'city' })).toBeVisible()
+    await expect(page.locator('td').filter({ hasText: 'Alice' })).toBeVisible()
+    await expect(page.locator('td').filter({ hasText: 'Milan' })).toBeVisible()
+  })
+
+  test('row count display matches actual data rows', async ({ page }) => {
+    const fiveRowCsv = 'id,value\n1,a\n2,b\n3,c\n4,d\n5,e'
+    await page.locator('[data-testid="textarea"]').fill(fiveRowCsv)
+    await expect(page.getByText('5 rows')).toBeVisible({ timeout: 5000 })
+    const rows = page.locator('tbody tr')
+    await expect(rows).toHaveCount(5)
+  })
+
+  test('empty CSV (only header) shows 0 rows', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').fill('name,age,city')
+    await expect(page.getByText('0 rows')).toBeVisible({ timeout: 5000 })
+    const rows = page.locator('tbody tr')
+    await expect(rows).toHaveCount(0)
+  })
 })

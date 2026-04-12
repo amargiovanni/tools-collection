@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface DeduplicateOptions {
   caseSensitive: boolean
@@ -7,9 +8,8 @@ export interface DeduplicateOptions {
 }
 
 export function removeDuplicateLines(input: string, options: DeduplicateOptions): Result<string> {
-  if (input === '') {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   const lines = input.split('\n')
   const seen = new Set<string>()

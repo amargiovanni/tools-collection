@@ -53,4 +53,28 @@ test.describe('Username Generator', () => {
     await page.getByRole('button', { name: 'Generate Usernames' }).click()
     await expect(page.locator('[data-testid="output-panel"] textarea')).not.toBeEmpty({ timeout: 5000 })
   })
+
+  test('each style option produces non-empty output', async ({ page }) => {
+    const styles = ['random', 'tech', 'fantasy', 'cool']
+    for (const style of styles) {
+      await page.getByLabel('Style:').selectOption(style)
+      await page.getByRole('button', { name: 'Generate Usernames' }).click()
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).not.toBeEmpty({ timeout: 5000 })
+      const value = await output.inputValue()
+      const lines = value.split('\n').filter((l) => l.trim() !== '')
+      expect(lines.length).toBeGreaterThan(0)
+    }
+  })
+
+  test('count field changes number of generated usernames', async ({ page }) => {
+    const countInput = page.getByLabel('Number of usernames:')
+    await countInput.fill('3')
+    await page.getByRole('button', { name: 'Generate Usernames' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    expect(lines).toHaveLength(3)
+  })
 })

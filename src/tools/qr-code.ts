@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export type QrSize = 200 | 300 | 400
 
@@ -13,10 +14,10 @@ export interface QrOptions {
  * Returns the image URL string on success.
  */
 export function generateQrUrl(options: QrOptions): Result<string> {
-  const trimmed = options.text.trim()
-  if (!trimmed) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(options.text)
+  if (!validated.ok) return validated
+
+  const trimmed = validated.value
 
   const url = `https://api.qrserver.com/v1/create-qr-code/?size=${options.size}x${options.size}&data=${encodeURIComponent(trimmed)}`
   return ok(url)

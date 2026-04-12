@@ -1,5 +1,5 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, createMemo, Show } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { Input } from '../ui/Input'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
@@ -20,19 +20,12 @@ export default function DataSizeConverter(props: Props) {
   const [result, setResult] = createSignal<DataSizeResult | null>(null)
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
       if (typeof saved['unit'] === 'string') setUnit(saved['unit'] as DataSizeUnit)
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input(), unit: unit() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input(), unit: unit() }),
   })
 
   const unitOptions = () => [
@@ -66,7 +59,7 @@ export default function DataSizeConverter(props: Props) {
     }
   }
 
-  const cards = () => {
+  const cards = createMemo(() => {
     const r = result()
     if (!r) return []
     return [
@@ -81,7 +74,7 @@ export default function DataSizeConverter(props: Props) {
       { label: t(props.lang, 'tools_dataSizeConverter_gibibytes'), value: formatDataSize(r.GiB) },
       { label: t(props.lang, 'tools_dataSizeConverter_tebibytes'), value: formatDataSize(r.TiB) },
     ]
-  }
+  })
 
   return (
     <div class="flex flex-col gap-4">

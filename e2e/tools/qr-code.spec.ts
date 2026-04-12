@@ -55,4 +55,31 @@ test.describe('QR Code', () => {
 
     expect(src1).not.toBe(src2)
   })
+
+  test('size select changes the output image dimensions', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('https://example.com')
+
+    // Generate with 200x200
+    await page.getByLabel('Size:').selectOption('200')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    const img = page.locator('img[alt="QR Code"]')
+    await expect(img).toBeVisible({ timeout: 5000 })
+    const width200 = await img.getAttribute('width')
+    expect(width200).toBe('200')
+
+    // Generate with 400x400
+    await page.getByLabel('Size:').selectOption('400')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(img).toBeVisible({ timeout: 5000 })
+    const width400 = await img.getAttribute('width')
+    expect(width400).toBe('400')
+  })
+
+  test('download button is visible after generating QR code', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('https://example.com')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(page.locator('img[alt="QR Code"]')).toBeVisible({ timeout: 5000 })
+    // The download button should appear after generation
+    await expect(page.getByRole('button', { name: 'Download PNG' })).toBeVisible({ timeout: 5000 })
+  })
 })

@@ -54,4 +54,37 @@ test.describe('Regex Tester', () => {
     await page.getByRole('button', { name: 'Test Regex' }).click()
     await expect(page.locator('[data-testid="status-message"]')).toBeVisible({ timeout: 5000 })
   })
+
+  test('global flag finds multiple matches', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('cat')
+    // Global is checked by default
+    await expect(page.getByLabel('Global (g)')).toBeChecked()
+    await page.locator('[data-testid="textarea"]').fill('cat sat on cat mat cat')
+    await page.getByRole('button', { name: 'Test Regex' }).click()
+    await expect(page.getByText('Matches found: 3')).toBeVisible({ timeout: 5000 })
+  })
+
+  test('case-insensitive flag matches regardless of case', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('ABC')
+    await page.getByLabel('Ignore Case (i)').check()
+    await page.locator('[data-testid="textarea"]').fill('abc ABC Abc')
+    await page.getByRole('button', { name: 'Test Regex' }).click()
+    await expect(page.getByText('Matches found: 3')).toBeVisible({ timeout: 5000 })
+  })
+
+  test('multiline flag makes ^ and $ match line boundaries', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('^start')
+    await page.getByLabel('Multiline (m)').check()
+    await page.locator('[data-testid="textarea"]').fill('start here\nnot here\nstart again')
+    await page.getByRole('button', { name: 'Test Regex' }).click()
+    await expect(page.getByText('Matches found: 2')).toBeVisible({ timeout: 5000 })
+  })
+
+  test('match count is displayed correctly for complex patterns', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('[aeiou]')
+    await page.locator('[data-testid="textarea"]').fill('hello')
+    await page.getByRole('button', { name: 'Test Regex' }).click()
+    // "hello" has vowels: e, o = 2 matches
+    await expect(page.getByText('Matches found: 2')).toBeVisible({ timeout: 5000 })
+  })
 })

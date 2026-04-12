@@ -1,5 +1,6 @@
-import { ok, err } from '../lib/result'
+import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface StrengthCheck {
   name: string
@@ -14,19 +15,19 @@ export interface StrengthResult {
 }
 
 export function checkPasswordStrength(password: string): Result<StrengthResult> {
-  if (!password) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(password)
+  if (!validated.ok) return validated
 
   let score = 0
 
-  const hasLength8 = password.length >= 8
-  const hasUppercase = /[A-Z]/.test(password)
-  const hasLowercase = /[a-z]/.test(password)
-  const hasNumbers = /\d/.test(password)
-  const hasSymbols = /[^A-Za-z0-9]/.test(password)
-  const hasLength12 = password.length >= 12
-  const hasLength16 = password.length >= 16
+  const pw = validated.value
+  const hasLength8 = pw.length >= 8
+  const hasUppercase = /[A-Z]/.test(pw)
+  const hasLowercase = /[a-z]/.test(pw)
+  const hasNumbers = /\d/.test(pw)
+  const hasSymbols = /[^A-Za-z0-9]/.test(pw)
+  const hasLength12 = pw.length >= 12
+  const hasLength16 = pw.length >= 16
 
   // Calculate score
   if (hasLength8) score += 2
@@ -38,9 +39,9 @@ export function checkPasswordStrength(password: string): Result<StrengthResult> 
   if (hasLength16) score += 1
 
   // Penalties for repeated characters
-  if (/(.)\1{3,}/.test(password)) {
+  if (/(.)\1{3,}/.test(pw)) {
     score -= 2
-  } else if (/(.)\1{2,}/.test(password)) {
+  } else if (/(.)\1{2,}/.test(pw)) {
     score -= 1
   }
 

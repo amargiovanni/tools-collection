@@ -1,10 +1,10 @@
-import { createSignal, Show, For, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, For } from 'solid-js'
 import { TextArea } from '../ui/TextArea'
 import { Button } from '../ui/Button'
 import { StatusMessage } from '../ui/StatusMessage'
 import { parseCsv, sortRows } from '../../tools/csv-viewer'
 import type { SortDirection } from '../../tools/csv-viewer'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { useToolState } from '../../lib/useToolState'
 import { t } from '../../i18n'
 import type { Language } from '../../i18n'
 
@@ -17,25 +17,18 @@ export default function CsvViewer(props: Props) {
   const [sortCol, setSortCol] = createSignal<number | null>(null)
   const [sortDir, setSortDir] = createSignal<SortDirection>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input() }),
   })
 
-  const parsed = () => {
+  const parsed = createMemo(() => {
     const val = input().trim()
     if (!val) return null
     return parseCsv(val)
-  }
+  })
 
   const handleSort = (colIndex: number) => {
     if (sortCol() === colIndex) {
@@ -47,13 +40,13 @@ export default function CsvViewer(props: Props) {
     }
   }
 
-  const displayRows = () => {
+  const displayRows = createMemo(() => {
     const p = parsed()
     if (!p || !p.ok) return []
     const col = sortCol()
     if (col === null) return p.rows
     return sortRows(p.rows, col, sortDir())
-  }
+  })
 
   const handleExportJson = () => {
     const p = parsed()

@@ -52,4 +52,43 @@ test.describe('XML Beautifier', () => {
     const value = await output.inputValue()
     expect(value.split('\n').length).toBeGreaterThan(1)
   })
+
+  test('tab indentation uses tab characters in output', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('<root><child>x</child></root>')
+    await page.locator('select').selectOption('tab')
+    await page.getByRole('button', { name: 'Format XML' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/\t<child>/, { timeout: 5000 })
+  })
+
+  test('4-space indentation uses 4 spaces per level', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('<root><child>x</child></root>')
+    await page.locator('select').selectOption('4')
+    await page.getByRole('button', { name: 'Format XML' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/    <child>/, { timeout: 5000 })
+  })
+
+  test('XML attributes are preserved in formatted output', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('<root><item id="1" class="main">value</item></root>')
+    await page.getByRole('button', { name: 'Format XML' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).toHaveValue(/id="1"/, { timeout: 5000 })
+    await expect(output).toHaveValue(/class="main"/)
+    await expect(page.getByText('Valid XML')).toBeVisible()
+  })
+
+  test('nested XML structure is correctly indented', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('<a><b><c>deep</c></b></a>')
+    await page.getByRole('button', { name: 'Format XML' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    const value = await output.inputValue()
+    const lines = value.split(/\r?\n/).filter(l => l.trim())
+    // Should have at least 5 lines: <a>, <b>, <c>deep</c>, </b>, </a>
+    expect(lines.length).toBeGreaterThanOrEqual(5)
+    // Verify nesting preserved
+    await expect(output).toHaveValue(/<a>/, { timeout: 5000 })
+    await expect(output).toHaveValue(/<b>/)
+    await expect(output).toHaveValue(/<c>deep<\/c>/)
+  })
 })

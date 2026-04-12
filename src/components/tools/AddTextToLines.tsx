@@ -1,5 +1,5 @@
-import { createSignal, createEffect, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal, createEffect } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { TextArea } from '../ui/TextArea'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
@@ -21,20 +21,13 @@ export default function AddTextToLines(props: Props) {
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
       if (typeof saved['addition'] === 'string') setAddition(saved['addition'])
       if (saved['position'] === 'start' || saved['position'] === 'end') setPosition(saved['position'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input(), addition: addition(), position: position() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input(), addition: addition(), position: position() }),
   })
 
   const updateOutput = () => {

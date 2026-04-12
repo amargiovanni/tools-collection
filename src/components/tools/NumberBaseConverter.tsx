@@ -1,6 +1,6 @@
-import { createSignal, onMount, onCleanup } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { convertBase } from '../../tools/number-base-converter'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { useToolState } from '../../lib/useToolState'
 import { t } from '../../i18n'
 import type { Language } from '../../i18n'
 
@@ -36,9 +36,8 @@ export default function NumberBaseConverter(props: Props) {
     10: setDecimal, 16: setHex, 2: setBinary, 8: setOctal,
   }
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['decimal'] === 'string' && saved['decimal']) {
         const result = convertBase(saved['decimal'], 10)
         if (result) {
@@ -48,14 +47,8 @@ export default function NumberBaseConverter(props: Props) {
           setOctal(result.octal)
         }
       }
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { decimal: decimal() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ decimal: decimal() }),
   })
 
   const handleInput = (base: Base, value: string) => {

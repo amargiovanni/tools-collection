@@ -67,4 +67,54 @@ test.describe('PIN Generator', () => {
   test('Avoid duplicates checkbox is visible', async ({ page }) => {
     await expect(page.getByLabel('Avoid duplicates')).toBeVisible()
   })
+
+  test('unique toggle produces all-different PINs when checked', async ({ page }) => {
+    await page.getByLabel('Avoid duplicates').check()
+    const countInput = page.getByLabel('Number of PINs:')
+    await countInput.fill('20')
+    await page.getByRole('button', { name: 'Generate PINs' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    const uniqueSet = new Set(lines.map((l) => l.trim()))
+    expect(uniqueSet.size).toBe(lines.length)
+  })
+
+  test('PIN length boundary: minimum length 3 digits', async ({ page }) => {
+    const lengthInput = page.getByLabel('PIN length:')
+    await lengthInput.fill('3')
+    await page.getByRole('button', { name: 'Generate PINs' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    for (const line of lines) {
+      expect(line.trim()).toHaveLength(3)
+    }
+  })
+
+  test('PIN length boundary: maximum length 12 digits', async ({ page }) => {
+    const lengthInput = page.getByLabel('PIN length:')
+    await lengthInput.fill('12')
+    await page.getByRole('button', { name: 'Generate PINs' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    for (const line of lines) {
+      expect(line.trim()).toHaveLength(12)
+    }
+  })
+
+  test('count boundary: setting count to 1 generates exactly 1 PIN', async ({ page }) => {
+    const countInput = page.getByLabel('Number of PINs:')
+    await countInput.fill('1')
+    await page.getByRole('button', { name: 'Generate PINs' }).click()
+    const output = page.locator('[data-testid="output-panel"] textarea')
+    await expect(output).not.toBeEmpty({ timeout: 5000 })
+    const value = await output.inputValue()
+    const lines = value.split('\n').filter((l) => l.trim() !== '')
+    expect(lines).toHaveLength(1)
+  })
 })

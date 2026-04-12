@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface DiffOptions {
   ignoreCase: boolean
@@ -26,12 +27,14 @@ export function computeDiff(
   right: string,
   options: DiffOptions,
 ): Result<DiffResult> {
-  if (left === '' && right === '') {
+  const validatedLeft = validateNonEmpty(left)
+  const validatedRight = validateNonEmpty(right)
+  if (!validatedLeft.ok && !validatedRight.ok) {
     return err('EMPTY_INPUT', 'Please enter text in both fields')
   }
 
-  let content1 = left
-  let content2 = right
+  let content1 = validatedLeft.ok ? validatedLeft.value : left
+  let content2 = validatedRight.ok ? validatedRight.value : right
 
   if (options.ignoreCase) {
     content1 = content1.toLowerCase()

@@ -4,6 +4,27 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.4.0`
+
+### Added
+- Added shared `useToolState()` hook to eliminate state save/restore boilerplate across all 36 tool components.
+- Added shared `validateNonEmpty()` utility for standardized input validation across 19 tool logic modules.
+- Added ~130 new Playwright E2E tests (357 total) covering option toggles, value verification, edge cases, unicode, boundary conditions, and multi-mode interactions for every tool.
+- Added missing `rclone-password.spec.ts` E2E test file.
+
+### Changed
+- Bumped the product version to `1.4.0`.
+- Replaced 10 duplicate language page files with 2 Astro dynamic routes using `getStaticPaths()`, reducing page boilerplate by ~116 lines.
+- Extracted 460 lines of locale data from `CronExpression.tsx` into `src/components/tools/cron/CronPhrases.ts`, reducing the component from 1172 to 707 lines.
+- Converted `cards()` pattern from plain functions to `createMemo` in 5 components (DataSizeConverter, ColorPicker, HashGenerator, TimeConvert, TimestampConverter).
+- Converted `parsed()`/`expiry()` from plain functions to `createMemo` in CsvViewer and JwtDecoder.
+- Replaced `createEffect` with `createMemo` in PasswordStrength for synchronous derived state.
+- Migrated all 36 tool components from manual `onMount`/`onCleanup` boilerplate to the shared `useToolState()` hook (net removal of ~248 lines).
+- Migrated 19 tool logic files from inline empty-input checks to the shared `validateNonEmpty()` utility.
+
+### Performance
+- Replaced O(n*m) `split().join()` loop in emoji-shortcode with single-pass regex replacement.
+
 ## Published: `1.3.5`
 
 ### Added

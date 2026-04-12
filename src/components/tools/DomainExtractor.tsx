@@ -1,5 +1,5 @@
-import { createSignal, onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { createSignal } from 'solid-js'
+import { useToolState } from '../../lib/useToolState'
 import { TextArea } from '../ui/TextArea'
 import { Checkbox } from '../ui/Checkbox'
 import { Button } from '../ui/Button'
@@ -19,19 +19,12 @@ export default function DomainExtractor(props: Props) {
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 
-  onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
-    if (saved) {
+  useToolState({
+    onRestore(saved) {
       if (typeof saved['input'] === 'string') setInput(saved['input'])
       if (typeof saved['includeSubdomains'] === 'boolean') setIncludeSubdomains(saved['includeSubdomains'])
-    }
-    const handler = () => {
-      window.dispatchEvent(new CustomEvent(TOOL_STATE_RESPONSE, {
-        detail: { state: { input: input(), includeSubdomains: includeSubdomains() } },
-      }))
-    }
-    window.addEventListener(TOOL_STATE_REQUEST, handler)
-    onCleanup(() => window.removeEventListener(TOOL_STATE_REQUEST, handler))
+    },
+    getState: () => ({ input: input(), includeSubdomains: includeSubdomains() }),
   })
 
   const handleExtract = () => {

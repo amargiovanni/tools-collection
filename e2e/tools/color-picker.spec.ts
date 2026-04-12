@@ -51,4 +51,44 @@ test.describe('Color Picker', () => {
     await page.getByRole('button', { name: 'Convert Color' }).click()
     await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
   })
+
+  test('shows HSL output for #FF5733', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('#FF5733')
+    await page.getByRole('button', { name: 'Convert Color' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
+    // RGB(255, 87, 51) -> HSL(11, 100%, 60%)
+    await expect(page.getByText(/hsl\(11, 100%, 60%\)/)).toBeVisible()
+  })
+
+  test('shows RGBA output for #FF5733', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('#FF5733')
+    await page.getByRole('button', { name: 'Convert Color' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
+    await expect(page.getByText('rgba(255, 87, 51, 1)')).toBeVisible()
+  })
+
+  test('specific RGB values for pure red #FF0000', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('#FF0000')
+    await page.getByRole('button', { name: 'Convert Color' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
+    await expect(page.getByText('rgb(255, 0, 0)')).toBeVisible()
+    await expect(page.getByText('hsl(0, 100%, 50%)')).toBeVisible()
+    await expect(page.getByText('rgba(255, 0, 0, 1)')).toBeVisible()
+  })
+
+  test('specific RGB values for pure green #00FF00', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('#00FF00')
+    await page.getByRole('button', { name: 'Convert Color' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
+    await expect(page.getByText('rgb(0, 255, 0)')).toBeVisible()
+    await expect(page.getByText('hsl(120, 100%, 50%)')).toBeVisible()
+  })
+
+  test('specific RGB values for pure blue #0000FF', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('#0000FF')
+    await page.getByRole('button', { name: 'Convert Color' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
+    await expect(page.getByText('rgb(0, 0, 255)')).toBeVisible()
+    await expect(page.getByText('hsl(240, 100%, 50%)')).toBeVisible()
+  })
 })

@@ -1,13 +1,13 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export function encodeBase64(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    const bytes = new TextEncoder().encode(input)
+    const bytes = new TextEncoder().encode(validated.value)
     let binary = ''
     for (const byte of bytes) {
       binary += String.fromCharCode(byte)
@@ -19,12 +19,11 @@ export function encodeBase64(input: string): Result<string> {
 }
 
 export function decodeBase64(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    const binary = atob(input)
+    const binary = atob(validated.value)
     const bytes = Uint8Array.from(binary, char => char.charCodeAt(0))
     return ok(new TextDecoder().decode(bytes))
   } catch {
