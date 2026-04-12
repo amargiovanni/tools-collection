@@ -537,6 +537,18 @@ describe('convertCron', () => {
 
       expect(result.value).toBe(parsed.value)
     })
+
+    it('rejects @reboot because it has no AWS equivalent', () => {
+      const parsed = parseCronExpression('@reboot')
+      expect(parsed.ok).toBe(true)
+      if (!parsed.ok) return
+
+      const result = convertCron(parsed.value, 'aws')
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.error.message).toContain('@reboot')
+      }
+    })
   })
 })
 

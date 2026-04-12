@@ -519,7 +519,11 @@ function replaceUnspecifiedWithAny(field: CronField): CronField {
   return field
 }
 
-function convertUnixToAws(source: CronExpressionResult): CronExpressionResult {
+function convertUnixToAws(source: CronExpressionResult): Result<CronExpressionResult> {
+  if (source.shortcut === '@reboot' || source.fields.length < 5) {
+    return err('CONVERSION_ERROR', 'Cannot convert @reboot to AWS cron format')
+  }
+
   const [minute, hour, dayOfMonth, month, dayOfWeek] = source.fields as [CronField, CronField, CronField, CronField, CronField]
 
   const dowIsWildcard = isAnyField(dayOfWeek)
@@ -548,13 +552,13 @@ function convertUnixToAws(source: CronExpressionResult): CronExpressionResult {
   const yearField: CronField = { type: 'year', expression: '*', segments: yearSegments }
 
   const fields = [minute, hour, newDom, month, newDow, yearField]
-  return {
+  return ok({
     input: source.input,
     normalizedExpression: fields.map((f) => f.expression).join(' '),
     shortcut: source.shortcut,
     fields,
     format: 'aws',
-  }
+  })
 }
 
 function hasUnsupportedSegment(field: CronField): string | null {
@@ -611,7 +615,7 @@ export function convertCron(source: CronExpressionResult, targetFormat: CronForm
   }
 
   if (targetFormat === 'aws') {
-    return ok(convertUnixToAws(source))
+    return convertUnixToAws(source)
   }
 
   return convertAwsToUnix(source)
