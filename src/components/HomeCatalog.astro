@@ -226,6 +226,20 @@ const categoryAccents: Record<string, string> = {
     </a>
     &middot; <span class="text-text-muted">v{appVersion}</span>
   </footer>
+
+  <button
+    type="button"
+    id="home-back-to-top"
+    class="fixed bottom-4 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-surface-raised/95 text-accent opacity-0 shadow-lg shadow-black/10 backdrop-blur transition-all duration-300 translate-y-2 pointer-events-none hover:-translate-y-0.5 hover:scale-105 hover:text-accent-hover sm:bottom-6 sm:right-6"
+    aria-label={t(lang, 'home_backToTopAria')}
+    title={t(lang, 'home_backToTopAria')}
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-6 6m6-6 6 6" />
+    </svg>
+  </button>
 </div>
 
 <!-- Trigger command palette from search button + theme toggle -->
@@ -297,11 +311,66 @@ const categoryAccents: Record<string, string> = {
     })
   }
 
+  function initBackToTop() {
+    const btn = document.getElementById('home-back-to-top')
+    if (!btn || btn.dataset.bound === 'true') return
+    btn.dataset.bound = 'true'
+
+    const globalWindow = window as Window & { __homeBackToTopAbort?: AbortController }
+    globalWindow.__homeBackToTopAbort?.abort()
+    const controller = new AbortController()
+    globalWindow.__homeBackToTopAbort = controller
+
+    const threshold = 320
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let isVisible = false
+    let ticking = false
+
+    function setVisible(visible: boolean) {
+      if (visible === isVisible) return
+      isVisible = visible
+      btn.classList.toggle('opacity-0', !visible)
+      btn.classList.toggle('translate-y-2', !visible)
+      btn.classList.toggle('pointer-events-none', !visible)
+      btn.tabIndex = visible ? 0 : -1
+      btn.setAttribute('aria-hidden', visible ? 'false' : 'true')
+    }
+
+    function updateVisibility() {
+      setVisible(window.scrollY > threshold)
+    }
+
+    function onScroll() {
+      if (!btn.isConnected) {
+        controller.abort()
+        return
+      }
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(() => {
+        updateVisibility()
+        ticking = false
+      })
+    }
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: reducedMotion ? 'auto' : 'smooth',
+      })
+    }, { signal: controller.signal })
+
+    window.addEventListener('scroll', onScroll, { passive: true, signal: controller.signal })
+    updateVisibility()
+  }
+
   initHomeSearch()
   initThemeToggle()
+  initBackToTop()
   document.addEventListener('astro:page-load', () => {
     initHomeSearch()
     initThemeToggle()
+    initBackToTop()
   })
 </script>
 

@@ -14,6 +14,7 @@
   "home_title": "Online Tools for Daily Work",
   "home_description": "Pick a tool from the catalog below or press Ctrl+K to search.",
   "home_openTool": "Open tool",
+  "home_backToTopAria": "Back to top",
   "home_footerName": "Tools Collection",
   "home_footerGithub": "GitHub",
   "categories_textProcessing": "Text Processing",

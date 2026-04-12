@@ -33,4 +33,21 @@ test.describe('Navigation', () => {
     await page.keyboard.press('Meta+k')
     await expect(page.getByPlaceholder('Search tools...')).toBeVisible()
   })
+
+  test('back-to-top button appears after scrolling and returns to top', async ({ page }) => {
+    await page.goto('/en/', { waitUntil: 'networkidle' })
+
+    const backToTop = page.locator('#home-back-to-top')
+    await expect(backToTop).toHaveAttribute('aria-hidden', 'true')
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await page.waitForFunction(() => {
+      const btn = document.getElementById('home-back-to-top')
+      return btn?.getAttribute('aria-hidden') === 'false'
+    })
+
+    await expect(backToTop).toBeVisible()
+    await backToTop.click()
+    await page.waitForFunction(() => window.scrollY < 20)
+  })
 })

@@ -14,6 +14,7 @@
   "home_title": "Outils en ligne pour le travail quotidien",
   "home_description": "Choisissez un outil dans le catalogue ci-dessous ou appuyez sur Ctrl+K pour rechercher.",
   "home_openTool": "Ouvrir l'outil",
+  "home_backToTopAria": "Retour en haut",
   "home_footerName": "Tools Collection",
   "home_footerGithub": "GitHub",
   "categories_textProcessing": "Traitement de texte",
