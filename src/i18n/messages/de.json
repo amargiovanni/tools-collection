@@ -14,6 +14,7 @@
   "home_title": "Online-Werkzeuge für den Arbeitsalltag",
   "home_description": "Wähle ein Werkzeug aus dem Katalog oder drücke Strg+K zum Suchen.",
   "home_openTool": "Werkzeug öffnen",
+  "home_backToTopAria": "Nach oben",
   "home_footerName": "Tools Collection",
   "home_footerGithub": "GitHub",
   "categories_textProcessing": "Textverarbeitung",
