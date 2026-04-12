@@ -684,7 +684,9 @@ function matchesSegment(segment: CronSegment, value: number, fieldType: CronFiel
       return false
     }
     case 'last':
-      return value === getLastDayOfMonth(date.getUTCFullYear(), date.getUTCMonth())
+      return fieldType === 'dayOfWeek'
+        ? value === 7
+        : value === getLastDayOfMonth(date.getUTCFullYear(), date.getUTCMonth())
     case 'nearestWeekday':
       return value === getNearestWeekday(date.getUTCFullYear(), date.getUTCMonth(), segment.day)
     case 'lastWeekday':
