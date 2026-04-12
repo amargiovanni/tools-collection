@@ -37,50 +37,49 @@ test.describe('Remove Line Breaks', () => {
     })
   })
 
-  test('removes multiple consecutive line breaks', async ({ page }) => {
-    await page.goto('/en/tools/remove-line-breaks/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-    await page.locator('[data-testid="textarea"]').first().fill('hello\n\nworld')
-    await page.getByRole('button', { name: 'Remove Line Breaks' }).click()
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    const value = await output.inputValue()
-    expect(value).not.toContain('\n')
-    expect(value).toContain('hello')
-    expect(value).toContain('world')
-  })
+  test.describe('replacement options', () => {
+    test.beforeEach(async ({ page }) => {
+      await page.goto('/en/tools/remove-line-breaks/', { waitUntil: 'networkidle' })
+      await waitForHydration(page)
+    })
 
-  test('custom replacement joins lines with a custom string', async ({ page }) => {
-    await page.goto('/en/tools/remove-line-breaks/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
+    test('removes multiple consecutive line breaks', async ({ page }) => {
+      await page.locator('[data-testid="textarea"]').first().fill('hello\n\nworld')
+      await page.getByRole('button', { name: 'Remove Line Breaks' }).click()
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      const value = await output.inputValue()
+      expect(value).not.toContain('\n')
+      expect(value).toContain('hello')
+      expect(value).toContain('world')
+    })
 
-    await page.locator('[data-testid="textarea"]').first().fill('a\nb\nc')
+    test('custom replacement joins lines with a custom string', async ({ page }) => {
+      await page.locator('[data-testid="textarea"]').first().fill('a\nb\nc')
 
-    // Select the "Custom:" option from the replacement dropdown
-    const select = page.locator('[data-testid="select"]')
-    await select.selectOption('custom')
+      // Select the "Custom:" option from the replacement dropdown
+      const select = page.locator('[data-testid="select"]')
+      await select.selectOption('custom')
 
-    // Fill the custom value input that appears
-    const customInput = page.locator('[data-testid="input"]')
-    await customInput.fill(' | ')
+      // Fill the custom value input that appears
+      const customInput = page.locator('[data-testid="input"]')
+      await customInput.fill(' | ')
 
-    await page.getByRole('button', { name: 'Remove Line Breaks' }).click()
+      await page.getByRole('button', { name: 'Remove Line Breaks' }).click()
 
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue('a | b | c', { timeout: 5000 })
-  })
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue('a | b | c', { timeout: 5000 })
+    })
 
-  test('nothing replacement concatenates lines without separator', async ({ page }) => {
-    await page.goto('/en/tools/remove-line-breaks/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
+    test('nothing replacement concatenates lines without separator', async ({ page }) => {
+      await page.locator('[data-testid="textarea"]').first().fill('a\nb\nc')
 
-    await page.locator('[data-testid="textarea"]').first().fill('a\nb\nc')
+      const select = page.locator('[data-testid="select"]')
+      await select.selectOption('none')
 
-    const select = page.locator('[data-testid="select"]')
-    await select.selectOption('none')
+      await page.getByRole('button', { name: 'Remove Line Breaks' }).click()
 
-    await page.getByRole('button', { name: 'Remove Line Breaks' }).click()
-
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue('abc', { timeout: 5000 })
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue('abc', { timeout: 5000 })
+    })
   })
 })

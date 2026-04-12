@@ -8,10 +8,12 @@ async function waitForHydration(page: Page) {
 }
 
 test.describe('Text Counter', () => {
-  test('updates statistics live while typing', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
     await waitForHydration(page)
+  })
 
+  test('updates statistics live while typing', async ({ page }) => {
     await page.locator('[data-testid="textarea"]').first().fill('Hello world. Hello again!')
 
     await expect(page.locator('[data-testid="text-counter-stat-characters"]')).toContainText('25')
@@ -22,9 +24,6 @@ test.describe('Text Counter', () => {
   })
 
   test('supports quick text actions', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     const textarea = page.locator('[data-testid="textarea"]').first()
     await textarea.fill('Mixed Case')
     await page.getByRole('button', { name: 'Uppercase' }).click()
@@ -38,42 +37,27 @@ test.describe('Text Counter', () => {
   })
 
   test('shows correct character count including spaces', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     await page.locator('[data-testid="textarea"]').first().fill('abc def')
     await expect(page.locator('[data-testid="text-counter-stat-characters"]')).toContainText('7', { timeout: 5000 })
     await expect(page.locator('[data-testid="text-counter-stat-characters-no-spaces"]')).toContainText('6', { timeout: 5000 })
   })
 
   test('shows correct word count', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     await page.locator('[data-testid="textarea"]').first().fill('one two three four five')
     await expect(page.locator('[data-testid="text-counter-stat-words"]')).toContainText('5', { timeout: 5000 })
   })
 
   test('shows correct sentence count', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     await page.locator('[data-testid="textarea"]').first().fill('First sentence. Second sentence! Third?')
     await expect(page.locator('[data-testid="text-counter-stat-sentences"]')).toContainText('3', { timeout: 5000 })
   })
 
   test('shows correct paragraph count', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     await page.locator('[data-testid="textarea"]').first().fill('First paragraph.\n\nSecond paragraph.\n\nThird paragraph.')
     await expect(page.locator('[data-testid="text-counter-stat-paragraphs"]')).toContainText('3', { timeout: 5000 })
   })
 
   test('shows reading time for longer text', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     // Generate text with enough words to produce a meaningful reading time
     const words = Array.from({ length: 250 }, (_, i) => `word${i}`)
     await page.locator('[data-testid="textarea"]').first().fill(words.join(' '))
@@ -81,9 +65,6 @@ test.describe('Text Counter', () => {
   })
 
   test('empty input shows zero counts', async ({ page }) => {
-    await page.goto('/en/tools/text-counter/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-
     await expect(page.locator('[data-testid="text-counter-stat-characters"]')).toContainText('0', { timeout: 5000 })
     await expect(page.locator('[data-testid="text-counter-stat-words"]')).toContainText('0', { timeout: 5000 })
     await expect(page.locator('[data-testid="text-counter-stat-sentences"]')).toContainText('0', { timeout: 5000 })

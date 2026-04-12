@@ -46,43 +46,42 @@ test.describe('Remove Duplicate Lines', () => {
     })
   })
 
-  test('handles multiple occurrences of the same line', async ({ page }) => {
-    await page.goto('/en/tools/remove-duplicate-lines/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
-    await page.locator('[data-testid="textarea"]').first().fill('a\na\na\na')
-    await page.getByRole('button', { name: 'Remove Duplicates' }).click()
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue('a', { timeout: 5000 })
-  })
+  test.describe('advanced deduplication options', () => {
+    test.beforeEach(async ({ page }) => {
+      await page.goto('/en/tools/remove-duplicate-lines/', { waitUntil: 'networkidle' })
+      await waitForHydration(page)
+    })
 
-  test('case-insensitive toggle merges lines differing only by case', async ({ page }) => {
-    await page.goto('/en/tools/remove-duplicate-lines/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
+    test('handles multiple occurrences of the same line', async ({ page }) => {
+      await page.locator('[data-testid="textarea"]').first().fill('a\na\na\na')
+      await page.getByRole('button', { name: 'Remove Duplicates' }).click()
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue('a', { timeout: 5000 })
+    })
 
-    await page.locator('[data-testid="textarea"]').first().fill('Hello\nhello\nHELLO')
+    test('case-insensitive toggle merges lines differing only by case', async ({ page }) => {
+      await page.locator('[data-testid="textarea"]').first().fill('Hello\nhello\nHELLO')
 
-    // Uncheck "Case sensitive" so duplicates differing only by case are merged
-    const caseSensitiveCheckbox = page.getByLabel('Case sensitive')
-    await caseSensitiveCheckbox.uncheck()
+      // Uncheck "Case sensitive" so duplicates differing only by case are merged
+      const caseSensitiveCheckbox = page.getByLabel('Case sensitive')
+      await caseSensitiveCheckbox.uncheck()
 
-    await page.getByRole('button', { name: 'Remove Duplicates' }).click()
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    // Only the first occurrence is kept
-    await expect(output).toHaveValue('Hello', { timeout: 5000 })
-  })
+      await page.getByRole('button', { name: 'Remove Duplicates' }).click()
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      // Only the first occurrence is kept
+      await expect(output).toHaveValue('Hello', { timeout: 5000 })
+    })
 
-  test('preserve order toggle sorts output alphabetically when unchecked', async ({ page }) => {
-    await page.goto('/en/tools/remove-duplicate-lines/', { waitUntil: 'networkidle' })
-    await waitForHydration(page)
+    test('preserve order toggle sorts output alphabetically when unchecked', async ({ page }) => {
+      await page.locator('[data-testid="textarea"]').first().fill('cherry\napple\nbanana\napple')
 
-    await page.locator('[data-testid="textarea"]').first().fill('cherry\napple\nbanana\napple')
+      // Uncheck "Preserve original order" to sort alphabetically
+      const preserveOrderCheckbox = page.getByLabel('Preserve original order')
+      await preserveOrderCheckbox.uncheck()
 
-    // Uncheck "Preserve original order" to sort alphabetically
-    const preserveOrderCheckbox = page.getByLabel('Preserve original order')
-    await preserveOrderCheckbox.uncheck()
-
-    await page.getByRole('button', { name: 'Remove Duplicates' }).click()
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue('apple\nbanana\ncherry', { timeout: 5000 })
+      await page.getByRole('button', { name: 'Remove Duplicates' }).click()
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue('apple\nbanana\ncherry', { timeout: 5000 })
+    })
   })
 })

@@ -1,5 +1,13 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { toolTest } from '../helpers/tool-test'
+
+async function waitForHydration(page: Page) {
+  await page.waitForFunction(() => {
+    const island = document.querySelector('astro-island')
+    return island !== null && island.children.length > 0
+  }, undefined, { timeout: 10000 })
+  await page.waitForTimeout(300)
+}
 
 test.describe('List Generator', () => {
   test('converts lines to numbered list', async ({ page }) => {
@@ -20,64 +28,50 @@ test.describe('List Generator', () => {
     })
   })
 
-  test('converts lines to bulleted list', async ({ page }) => {
-    await page.goto('/en/tools/list-generator/', { waitUntil: 'networkidle' })
-    await page.waitForFunction(() => {
-      const island = document.querySelector('astro-island')
-      return island !== null && island.children.length > 0
-    }, undefined, { timeout: 10000 })
-    await page.waitForTimeout(300)
+  test.describe('list format options', () => {
+    test.beforeEach(async ({ page }) => {
+      await page.goto('/en/tools/list-generator/', { waitUntil: 'networkidle' })
+      await waitForHydration(page)
+    })
 
-    const textarea = page.locator('[data-testid="textarea"]').first()
-    await textarea.fill('a\nb\nc')
+    test('converts lines to bulleted list', async ({ page }) => {
+      const textarea = page.locator('[data-testid="textarea"]').first()
+      await textarea.fill('a\nb\nc')
 
-    const select = page.locator('[data-testid="select"]')
-    await select.selectOption('bulleted')
+      const select = page.locator('[data-testid="select"]')
+      await select.selectOption('bulleted')
 
-    const button = page.getByRole('button', { name: 'Convert' })
-    await button.click()
+      const button = page.getByRole('button', { name: 'Convert' })
+      await button.click()
 
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue(/•/)
-  })
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue(/•/)
+    })
 
-  test('converts lines to pipe-separated format', async ({ page }) => {
-    await page.goto('/en/tools/list-generator/', { waitUntil: 'networkidle' })
-    await page.waitForFunction(() => {
-      const island = document.querySelector('astro-island')
-      return island !== null && island.children.length > 0
-    }, undefined, { timeout: 10000 })
-    await page.waitForTimeout(300)
+    test('converts lines to pipe-separated format', async ({ page }) => {
+      const textarea = page.locator('[data-testid="textarea"]').first()
+      await textarea.fill('a\nb\nc')
 
-    const textarea = page.locator('[data-testid="textarea"]').first()
-    await textarea.fill('a\nb\nc')
+      const select = page.locator('[data-testid="select"]')
+      await select.selectOption('pipe')
 
-    const select = page.locator('[data-testid="select"]')
-    await select.selectOption('pipe')
+      await page.getByRole('button', { name: 'Convert' }).click()
 
-    await page.getByRole('button', { name: 'Convert' }).click()
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue('a | b | c', { timeout: 5000 })
+    })
 
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue('a | b | c', { timeout: 5000 })
-  })
+    test('converts lines to comma-separated format', async ({ page }) => {
+      const textarea = page.locator('[data-testid="textarea"]').first()
+      await textarea.fill('a\nb\nc')
 
-  test('converts lines to comma-separated format', async ({ page }) => {
-    await page.goto('/en/tools/list-generator/', { waitUntil: 'networkidle' })
-    await page.waitForFunction(() => {
-      const island = document.querySelector('astro-island')
-      return island !== null && island.children.length > 0
-    }, undefined, { timeout: 10000 })
-    await page.waitForTimeout(300)
+      const select = page.locator('[data-testid="select"]')
+      await select.selectOption('comma')
 
-    const textarea = page.locator('[data-testid="textarea"]').first()
-    await textarea.fill('a\nb\nc')
+      await page.getByRole('button', { name: 'Convert' }).click()
 
-    const select = page.locator('[data-testid="select"]')
-    await select.selectOption('comma')
-
-    await page.getByRole('button', { name: 'Convert' }).click()
-
-    const output = page.locator('[data-testid="output-panel"] textarea')
-    await expect(output).toHaveValue('a, b, c', { timeout: 5000 })
+      const output = page.locator('[data-testid="output-panel"] textarea')
+      await expect(output).toHaveValue('a, b, c', { timeout: 5000 })
+    })
   })
 })
