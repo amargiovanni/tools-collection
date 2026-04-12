@@ -11,7 +11,7 @@ Una raccolta modulare e type-safe di più di 30 strumenti per sviluppatori che f
 
 Più di 30 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-Tra le novità della `1.3.4`: `Rclone Password Revealer`, oltre ai miglioramenti del password generator come `Simple mode` e `Avoid ambiguous characters`.
+Tra le novità della `1.3.5`: l'aggiornamento del `Cron Expression Parser` con supporto AWS a 6 campi, wrapper `cron(...)`, `?`, `L`, `W`, `#`, conversione bidirezionale Unix/AWS e anteprima della schedulazione.
 
 ## Strumenti
 

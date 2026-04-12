@@ -237,7 +237,7 @@ export const toolRegistry: readonly ToolMeta[] = [
     id: 'cron-expression',
     category: 'development',
     icon: '🗓️',
-    keywords: ['cron', 'schedule', 'expression', 'crontab', 'parser', 'jobs'],
+    keywords: ['cron', 'schedule', 'expression', 'crontab', 'parser', 'jobs', 'aws', 'eventbridge', 'cloudwatch', 'lambda'],
     path: '/tools/cron-expression',  },
   {
     id: 'jwt-decoder',
