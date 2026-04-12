@@ -1,4 +1,4 @@
-import { createSignal, createEffect, Show, For, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, For, onMount, onCleanup } from 'solid-js'
 import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Badge } from '../ui/Badge'
@@ -27,8 +27,6 @@ const levelColors: Record<string, string> = {
 export default function PasswordStrength(props: Props) {
   const [password, setPassword] = createSignal('')
   const [showPassword, setShowPassword] = createSignal(false)
-  const [result, setResult] = createSignal<StrengthResult | null>(null)
-  const [error, setError] = createSignal<string | null>(null)
 
   onMount(async () => {
     const saved = await decodeState(new URLSearchParams(location.search).get('s'))
@@ -61,23 +59,15 @@ export default function PasswordStrength(props: Props) {
     return map[name] ?? name
   }
 
-  createEffect(() => {
+  const analysis = createMemo(() => {
     const pw = password()
-    if (!pw) {
-      setResult(null)
-      setError(null)
-      return
-    }
-
+    if (!pw) return null
     const res = checkPasswordStrength(pw)
-    if (res.ok) {
-      setResult(res.value)
-      setError(null)
-    } else {
-      setError(res.error.message)
-      setResult(null)
-    }
+    return res.ok ? { result: res.value, error: null } : { result: null, error: res.error.message }
   })
+
+  const result = () => analysis()?.result ?? null
+  const error = () => analysis()?.error ?? null
 
   return (
     <div class="flex flex-col gap-4">
