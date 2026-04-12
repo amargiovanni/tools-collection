@@ -42,11 +42,11 @@ const emojiRegex = new RegExp(
 export function toEmoji(input: string): Result<string> {
   const validated = validateNonEmpty(input)
   if (!validated.ok) return validated
-  return ok(input.replace(shortcodeRegex, (match) => emojiMap.get(match) ?? match))
+  return ok(validated.value.replace(shortcodeRegex, (match) => emojiMap.get(match) ?? match))
 }
 
 export function toShortcode(input: string): Result<string> {
   const validated = validateNonEmpty(input)
   if (!validated.ok) return validated
-  return ok(input.replace(emojiRegex, (match) => reverseMap.get(match) ?? match))
+  return ok(validated.value.replace(emojiRegex, (match) => reverseMap.get(match) ?? match))
 }

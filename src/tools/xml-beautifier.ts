@@ -19,7 +19,7 @@ export function formatXml(input: string, indent: XmlIndent): Result<string> {
   let formatted = ''
   let pad = 0
 
-  const xml = input.replace(TAG_SPLIT_RE, '$1\r\n$2$3')
+  const xml = validated.value.replace(TAG_SPLIT_RE, '$1\r\n$2$3')
   const lines = xml.split('\r\n')
 
   for (const line of lines) {

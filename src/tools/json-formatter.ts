@@ -9,7 +9,7 @@ export function formatJson(input: string, indent: JsonIndent): Result<string> {
   if (!validated.ok) return validated
 
   try {
-    const parsed: unknown = JSON.parse(input)
+    const parsed: unknown = JSON.parse(validated.value)
 
     if (indent === 'compact') {
       return ok(JSON.stringify(parsed))
@@ -29,7 +29,7 @@ export function validateJson(input: string): Result<boolean> {
   if (!validated.ok) return validated
 
   try {
-    JSON.parse(input)
+    JSON.parse(validated.value)
     return ok(true)
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Invalid JSON'

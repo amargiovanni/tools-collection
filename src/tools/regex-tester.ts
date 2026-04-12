@@ -31,12 +31,13 @@ export function testRegex(
     if (flags.caseInsensitive) flagStr += 'i'
     if (flags.multiline) flagStr += 'm'
 
-    let regexPattern = pattern
-    if (pattern.startsWith('/')) {
-      const lastSlash = pattern.lastIndexOf('/')
+    let regexPattern = validatedPattern.value
+    if (regexPattern.startsWith('/')) {
+      const lastSlash = regexPattern.lastIndexOf('/')
       if (lastSlash > 0) {
-        regexPattern = pattern.substring(1, lastSlash)
-        flagStr = pattern.substring(lastSlash + 1) || flagStr
+        const inlineFlags = regexPattern.substring(lastSlash + 1)
+        regexPattern = regexPattern.substring(1, lastSlash)
+        if (inlineFlags) flagStr = inlineFlags
       }
     }
 
@@ -44,7 +45,7 @@ export function testRegex(
     const matchRegex = regex.global
       ? regex
       : new RegExp(regex.source, `${regex.flags}g`)
-    const rawMatches = [...text.matchAll(matchRegex)]
+    const rawMatches = [...validatedText.value.matchAll(matchRegex)]
 
     const matches: RegexMatch[] = rawMatches.map(match => ({
       fullMatch: match[0],

@@ -33,8 +33,8 @@ export function computeDiff(
     return err('EMPTY_INPUT', 'Please enter text in both fields')
   }
 
-  let content1 = left
-  let content2 = right
+  let content1 = validatedLeft.ok ? validatedLeft.value : left
+  let content2 = validatedRight.ok ? validatedRight.value : right
 
   if (options.ignoreCase) {
     content1 = content1.toLowerCase()

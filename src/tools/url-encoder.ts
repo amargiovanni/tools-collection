@@ -9,10 +9,10 @@ export function encodeUrl(input: string, mode: UrlEncodeMode): Result<string> {
   if (!validated.ok) return validated
 
   if (mode === 'component') {
-    return ok(encodeURIComponent(input))
+    return ok(encodeURIComponent(validated.value))
   }
 
-  return ok(encodeURI(input))
+  return ok(encodeURI(validated.value))
 }
 
 export function decodeUrl(input: string): Result<string> {
@@ -20,7 +20,7 @@ export function decodeUrl(input: string): Result<string> {
   if (!validated.ok) return validated
 
   try {
-    return ok(decodeURI(input))
+    return ok(decodeURI(validated.value))
   } catch {
     return err('DECODE_ERROR', 'Error: invalid URL')
   }

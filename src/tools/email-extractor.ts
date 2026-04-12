@@ -8,7 +8,7 @@ export function extractEmails(input: string, removeDuplicates: boolean): Result<
   const validated = validateNonEmpty(input)
   if (!validated.ok) return validated
 
-  const matches = input.match(EMAIL_RE) ?? []
+  const matches = validated.value.match(EMAIL_RE) ?? []
 
   if (removeDuplicates) {
     return ok([...new Set(matches.map(email => email.toLowerCase()))])
