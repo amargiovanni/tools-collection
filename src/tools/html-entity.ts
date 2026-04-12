@@ -1,5 +1,6 @@
 import { ok, err } from '../lib/result'
 import type { Result } from '../lib/result'
+import { validateNonEmpty } from '../lib/validation'
 
 export interface EncodeOptions {
   /** When true, encode every character to its numeric entity. When false, only encode necessary characters. */
@@ -269,13 +270,12 @@ for (const [char, entity] of Object.entries(charToEntity)) {
 }
 
 export function encodeHtmlEntities(input: string, options: EncodeOptions): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
     let result = ''
-    for (const char of input) {
+    for (const char of validated.value) {
       if (options.mode === 'minimal') {
         if (minimalChars.has(char)) {
           result += charToEntity[char]
@@ -303,12 +303,11 @@ export function encodeHtmlEntities(input: string, options: EncodeOptions): Resul
 }
 
 export function decodeHtmlEntities(input: string): Result<string> {
-  if (!input.trim()) {
-    return err('EMPTY_INPUT', 'Please enter some input')
-  }
+  const validated = validateNonEmpty(input)
+  if (!validated.ok) return validated
 
   try {
-    const result = input.replace(/&(#x[0-9a-fA-F]+|#X[0-9a-fA-F]+|#[0-9]+|[a-zA-Z][a-zA-Z0-9]*);/g, (match) => {
+    const result = validated.value.replace(/&(#x[0-9a-fA-F]+|#X[0-9a-fA-F]+|#[0-9]+|[a-zA-Z][a-zA-Z0-9]*);/g, (match) => {
       // Named entity
       if (entityToChar[match]) {
         return entityToChar[match]
