@@ -1,4 +1,4 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, onMount, onCleanup } from 'solid-js'
 import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
@@ -68,7 +68,7 @@ export default function ColorPicker(props: Props) {
     handleConvert(hex)
   }
 
-  const cards = () => {
+  const cards = createMemo(() => {
     const r = result()
     if (!r) return []
     return [
@@ -77,7 +77,7 @@ export default function ColorPicker(props: Props) {
       { label: 'RGBA', value: r.rgba },
       { label: 'HSL', value: r.hsl },
     ]
-  }
+  })
 
   return (
     <div class="flex flex-col gap-4">

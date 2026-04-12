@@ -1,4 +1,4 @@
-import { createSignal, Show, onMount, onCleanup } from 'solid-js'
+import { createSignal, createMemo, Show, onMount, onCleanup } from 'solid-js'
 import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { Select } from '../ui/Select'
@@ -61,7 +61,7 @@ export default function TimeConvert(props: Props) {
     }
   }
 
-  const cards = () => {
+  const cards = createMemo(() => {
     const r = result()
     if (!r) return []
     return [
@@ -72,7 +72,7 @@ export default function TimeConvert(props: Props) {
       { label: t(props.lang, 'tools_timeConvert_days'), value: formatNumber(r.d) },
       { label: t(props.lang, 'tools_timeConvert_formatted'), value: r.formatted },
     ]
-  }
+  })
 
   return (
     <div class="flex flex-col gap-4">
