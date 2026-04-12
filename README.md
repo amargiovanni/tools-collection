@@ -11,7 +11,7 @@ A modular, type-safe collection of more than 30 browser-based developer tools. B
 
 More than 30 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable additions in `1.3.5`: the `Cron Expression Parser` AWS upgrade with 6-field support, `cron(...)` wrappers, `?`, `L`, `W`, `#`, bidirectional Unix/AWS conversion, and schedule previews.
+Notable in `1.4.0`: major internal optimization — shared `useToolState()` hook and `validateNonEmpty()` utility eliminate ~360 lines of boilerplate across all tools, dynamic Astro routes replace 10 duplicate page files, `createMemo` fixes in 8 components, emoji-shortcode perf upgrade, CronExpression decomposed into focused modules, and 357 Playwright E2E tests covering every tool in depth.
 
 ## Tools
 
@@ -20,8 +20,8 @@ Notable additions in `1.3.5`: the `Cron Expression Parser` AWS upgrade with 6-fi
 | **Text Processing** | List Generator, Add Text to Lines, Convert Case, Remove Duplicate Lines, Remove Line Breaks, Remove Lines Containing |
 | **Generators** | Password Generator (crypto API), Username Generator, PIN Generator, UUID Generator, BitTorrent Magnet Link Generator |
 | **Extraction** | Domain Extractor, Email Extractor |
-| **Analysis** | Count Duplicates |
-| **Security** | PEM Certificate Inspector, Password Strength Checker, QR Code Generator/Reader |
+| **Analysis** | Count Duplicates, Text Counter |
+| **Security** | PEM Certificate Inspector, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
 | **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
 | **Development** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
 | **Utilities** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
@@ -46,7 +46,7 @@ Each tool is cleanly separated into three layers:
 ```
 src/tools/json-formatter.ts        ← Pure logic (no DOM, returns Result<T>)
 src/components/tools/JsonFormatter.tsx  ← Solid.js UI (composes shared components)
-src/pages/en/tools/[tool].astro    ← Astro page (mounts island via client:load)
+src/pages/[lang]/tools/[tool].astro ← Astro page (mounts island via client:load)
 ```
 
 ```
@@ -70,18 +70,16 @@ src/
 │   └── ToolLayout.astro   # Sidebar + header + tool slot
 ├── lib/
 │   ├── result.ts        # Result<T> type for error handling
+│   ├── useToolState.ts  # Shared hook for URL state save/restore
+│   ├── validation.ts    # Shared input validation (validateNonEmpty)
 │   ├── clipboard.ts     # Copy with fallback
 │   └── download.ts      # File download utility
 ├── pages/
 │   ├── index.astro      # Root redirect → /{lang}/
-│   ├── en/              # English pages
-│   ├── it/              # Italian pages
-│   ├── es/              # Spanish pages
-│   ├── fr/              # French pages
-│   └── de/              # German pages
+│   └── [lang]/          # Dynamic routes for all 5 languages
 ├── styles/
 │   └── global.css       # Tailwind 4 @theme tokens + dark mode
-└── tools/               # 35 pure logic modules (zero DOM)
+└── tools/               # 36 pure logic modules (zero DOM)
 ```
 
 ## Getting Started
@@ -109,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-Output goes to `dist/` — 176 static HTML pages (35 per language x 5, plus root redirect) ready for any hosting.
+Output goes to `dist/` — 186 static HTML pages (36 tools per language x 5 + homepages + root redirect) ready for any hosting.
 
 ### Docker
 
