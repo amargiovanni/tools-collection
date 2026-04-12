@@ -474,5 +474,16 @@
   "csv_placeholder": "Pega los datos CSV aquí...",
   "csv_rowCount": "{n} filas",
   "csv_noData": "No hay datos para mostrar",
-  "csv_exportJson": "Exportar como JSON"
+  "csv_exportJson": "Exportar como JSON",
+  "tools_loremIpsumGenerator_name": "Generador Lorem Ipsum",
+  "tools_loremIpsumGenerator_description": "Genera texto de marcador de posici\u00f3n lorem ipsum",
+  "tools_loremIpsumGenerator_typeLabel": "Tipo de salida:",
+  "tools_loremIpsumGenerator_typeParagraphs": "P\u00e1rrafos",
+  "tools_loremIpsumGenerator_typeSentences": "Oraciones",
+  "tools_loremIpsumGenerator_typeWords": "Palabras",
+  "tools_loremIpsumGenerator_countLabel": "Cantidad:",
+  "tools_loremIpsumGenerator_startWithClassic": "Comenzar con \"Lorem ipsum dolor sit amet...\"",
+  "tools_loremIpsumGenerator_generate": "Generar",
+  "tools_loremIpsumGenerator_outputLabel": "Texto Generado:",
+  "errors_INVALID_COUNT": "La cantidad debe ser un n\u00famero positivo"
 }
