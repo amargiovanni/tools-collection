@@ -106,12 +106,18 @@ function parseFlowSequence(raw: string): YamlValue[] {
   if (inner === '') return []
   const items: YamlValue[] = []
   let depth = 0
+  let inSingle = false
+  let inDouble = false
   let current = ''
   for (let i = 0; i < inner.length; i++) {
     const ch = inner.charAt(i)
-    if (ch === '[' || ch === '{') depth++
-    else if (ch === ']' || ch === '}') depth--
-    if (ch === ',' && depth === 0) {
+    if (ch === '"' && !inSingle) inDouble = !inDouble
+    else if (ch === "'" && !inDouble) inSingle = !inSingle
+    if (!inSingle && !inDouble) {
+      if (ch === '[' || ch === '{') depth++
+      else if (ch === ']' || ch === '}') depth--
+    }
+    if (ch === ',' && depth === 0 && !inSingle && !inDouble) {
       items.push(parseInlineValue(current.trim()))
       current = ''
     } else {
@@ -129,13 +135,19 @@ function parseFlowMapping(raw: string): YamlMap {
   if (inner === '') return {}
   const result: YamlMap = {}
   let depth = 0
+  let inSingle = false
+  let inDouble = false
   let current = ''
   const pairs: string[] = []
   for (let i = 0; i < inner.length; i++) {
     const ch = inner.charAt(i)
-    if (ch === '[' || ch === '{') depth++
-    else if (ch === ']' || ch === '}') depth--
-    if (ch === ',' && depth === 0) {
+    if (ch === '"' && !inSingle) inDouble = !inDouble
+    else if (ch === "'" && !inDouble) inSingle = !inSingle
+    if (!inSingle && !inDouble) {
+      if (ch === '[' || ch === '{') depth++
+      else if (ch === ']' || ch === '}') depth--
+    }
+    if (ch === ',' && depth === 0 && !inSingle && !inDouble) {
       pairs.push(current.trim())
       current = ''
     } else {

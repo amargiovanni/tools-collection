@@ -120,6 +120,23 @@ describe('formatYaml', () => {
       expect(result.value).not.toContain('#')
     }
   })
+
+  it('handles flow sequences with commas in quoted strings', () => {
+    const input = 'items: ["city, state", "country"]'
+    const result = formatYaml(input, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      // Should parse as 2 items, not 3
+      const jsonResult = yamlToJson(result.value)
+      expect(jsonResult.ok).toBe(true)
+      if (jsonResult.ok) {
+        const parsed = JSON.parse(jsonResult.value)
+        expect(parsed.items).toHaveLength(2)
+        expect(parsed.items[0]).toBe('city, state')
+        expect(parsed.items[1]).toBe('country')
+      }
+    }
+  })
 })
 
 describe('minifyYaml', () => {

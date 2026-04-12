@@ -98,7 +98,7 @@ export default function YamlFormatter(props: Props) {
         setError(translateError(props.lang, result.error))
       }
     } else if (currentAction === 'yaml-to-json') {
-      const result = yamlToJson(input())
+      const result = yamlToJson(input(), indent())
       if (result.ok) {
         setOutput(result.value)
       } else {
