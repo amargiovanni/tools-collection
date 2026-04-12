@@ -197,6 +197,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['data', 'size', 'bit', 'byte', 'kb', 'mb', 'gb', 'tb', 'kib', 'mib', 'gib', 'tib'],
     path: '/tools/data-size-converter',  },
   {
+    id: 'html-entity',
+    category: 'converters',
+    icon: '🔣',
+    keywords: ['html', 'entity', 'encode', 'decode', 'escape', 'unescape', 'special', 'characters'],
+    path: '/tools/html-entity',
+  },
+  {
     id: 'number-base-converter',
     category: 'converters',
     icon: '🔢',
