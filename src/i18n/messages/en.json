@@ -248,7 +248,7 @@
   "tools_htmlEntity_encode": "Encode",
   "tools_htmlEntity_decode": "Decode",
   "tools_htmlEntity_modeMinimal": "Minimal (only &, <, >, \", ')",
-  "tools_htmlEntity_modeAll": "All characters",
+  "tools_htmlEntity_modeAll": "All non-ASCII",
   "tools_urlEncoder_name": "URL Encoder/Decoder",
   "tools_urlEncoder_description": "Encode and decode URLs and parameters",
   "tools_urlEncoder_placeholder": "https://example.com?param=value with spaces",

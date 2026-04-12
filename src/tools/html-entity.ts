@@ -269,7 +269,7 @@ for (const [char, entity] of Object.entries(charToEntity)) {
 }
 
 export function encodeHtmlEntities(input: string, options: EncodeOptions): Result<string> {
-  if (!input) {
+  if (!input.trim()) {
     return err('EMPTY_INPUT', 'Please enter some input')
   }
 
@@ -303,12 +303,12 @@ export function encodeHtmlEntities(input: string, options: EncodeOptions): Resul
 }
 
 export function decodeHtmlEntities(input: string): Result<string> {
-  if (!input) {
+  if (!input.trim()) {
     return err('EMPTY_INPUT', 'Please enter some input')
   }
 
   try {
-    const result = input.replace(/&(#[xX]?[0-9a-fA-F]+|[a-zA-Z]+);/g, (match) => {
+    const result = input.replace(/&(#x[0-9a-fA-F]+|#X[0-9a-fA-F]+|#[0-9]+|[a-zA-Z]+);/g, (match) => {
       // Named entity
       if (entityToChar[match]) {
         return entityToChar[match]
