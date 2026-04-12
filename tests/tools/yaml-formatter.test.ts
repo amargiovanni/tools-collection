@@ -282,4 +282,157 @@ describe('jsonToYaml', () => {
       expect(result.value).toContain('    name: John')
     }
   })
+
+  it('serializes nested objects inside arrays correctly', () => {
+    const json = '{"users": [{"name": "John", "address": {"city": "NYC"}}]}'
+    const result = jsonToYaml(json, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('users:')
+      expect(result.value).toContain('  - name: John')
+      expect(result.value).toContain('    address:')
+      expect(result.value).toContain('      city: NYC')
+    }
+  })
+
+  it('serializes empty flow collections inline', () => {
+    const json = '{"arr": [], "obj": {}}'
+    const result = jsonToYaml(json, 2)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('arr: []')
+      expect(result.value).toContain('obj: {}')
+    }
+  })
+})
+
+describe('block scalar parsing', () => {
+  it('parses literal block scalar | with multiline content', () => {
+    const yaml = 'text: |\n  line1\n  line2'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.text).toBe('line1\nline2')
+    }
+  })
+
+  it('parses folded block scalar > with multiline content', () => {
+    const yaml = 'text: >\n  line1\n  line2'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.text).toBe('line1 line2')
+    }
+  })
+
+  it('strips indentation correctly from block scalar content', () => {
+    const yaml = 'description: |\n    first line\n    second line'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.description).toBe('first line\nsecond line')
+    }
+  })
+})
+
+describe('escape sequence handling', () => {
+  it('handles literal backslash-n (\\\\n) in double-quoted strings', () => {
+    const yaml = 'val: "hello\\\\nworld"'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.val).toBe('hello\\nworld')
+    }
+  })
+
+  it('handles newline escape (\\n) in double-quoted strings', () => {
+    const yaml = 'val: "hello\\nworld"'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.val).toBe('hello\nworld')
+    }
+  })
+
+  it('handles tab escape (\\t) in double-quoted strings', () => {
+    const yaml = 'val: "col1\\tcol2"'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.val).toBe('col1\tcol2')
+    }
+  })
+})
+
+describe('values with colons', () => {
+  it('handles URLs as values', () => {
+    const yaml = 'url: "https://example.com"'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.url).toBe('https://example.com')
+    }
+  })
+
+  it('handles unquoted values containing colons after a space', () => {
+    const yaml = 'message: "Time: 12:00"'
+    const result = yamlToJson(yaml)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      const parsed = JSON.parse(result.value)
+      expect(parsed.message).toBe('Time: 12:00')
+    }
+  })
+})
+
+describe('roundtrip tests', () => {
+  it('format then re-parse produces same structure for simple mapping', () => {
+    const yaml = 'name: John\nage: 30\nactive: true'
+    const formatResult = formatYaml(yaml, 2)
+    expect(formatResult.ok).toBe(true)
+    if (formatResult.ok) {
+      const reparse = yamlToJson(formatResult.value)
+      expect(reparse.ok).toBe(true)
+      if (reparse.ok) {
+        const original = JSON.parse((yamlToJson(yaml) as { ok: true; value: string }).value)
+        const roundtripped = JSON.parse(reparse.value)
+        expect(roundtripped).toEqual(original)
+      }
+    }
+  })
+
+  it('format then re-parse produces same structure for nested mapping', () => {
+    const yaml = 'person:\n  name: John\n  hobbies:\n    - reading\n    - coding'
+    const formatResult = formatYaml(yaml, 2)
+    expect(formatResult.ok).toBe(true)
+    if (formatResult.ok) {
+      const reparse = yamlToJson(formatResult.value)
+      expect(reparse.ok).toBe(true)
+      if (reparse.ok) {
+        const original = JSON.parse((yamlToJson(yaml) as { ok: true; value: string }).value)
+        const roundtripped = JSON.parse(reparse.value)
+        expect(roundtripped).toEqual(original)
+      }
+    }
+  })
+
+  it('jsonToYaml then yamlToJson produces same structure', () => {
+    const json = '{"users": [{"name": "Alice", "age": 25}, {"name": "Bob", "age": 30}]}'
+    const toYamlResult = jsonToYaml(json, 2)
+    expect(toYamlResult.ok).toBe(true)
+    if (toYamlResult.ok) {
+      const backToJson = yamlToJson(toYamlResult.value)
+      expect(backToJson.ok).toBe(true)
+      if (backToJson.ok) {
+        expect(JSON.parse(backToJson.value)).toEqual(JSON.parse(json))
+      }
+    }
+  })
 })

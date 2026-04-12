@@ -46,12 +46,27 @@ function parseScalar(raw: string): YamlValue {
   if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) {
     const inner = raw.slice(1, -1)
     if (raw.startsWith('"')) {
-      return inner
-        .replace(/\\n/g, '\n')
-        .replace(/\\t/g, '\t')
-        .replace(/\\r/g, '\r')
-        .replace(/\\\\/g, '\\')
-        .replace(/\\"/g, '"')
+      return inner.replace(/\\(n|t|r|\\|"|\/|0|a|b|f|v|e|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})/g, (_, ch: string) => {
+        switch (ch) {
+          case 'n': return '\n'
+          case 't': return '\t'
+          case 'r': return '\r'
+          case '\\': return '\\'
+          case '"': return '"'
+          case '/': return '/'
+          case '0': return '\0'
+          case 'a': return '\x07'
+          case 'b': return '\b'
+          case 'f': return '\f'
+          case 'v': return '\v'
+          case 'e': return '\x1b'
+          default:
+            if (ch.startsWith('x') || ch.startsWith('u') || ch.startsWith('U')) {
+              return String.fromCodePoint(parseInt(ch.slice(1), 16))
+            }
+            return '\\' + ch
+        }
+      })
     }
     return inner
   }
@@ -148,6 +163,7 @@ function parseInlineValue(raw: string): YamlValue {
 
 function collectMultilineScalar(ctx: ParseContext, baseIndent: number, style: '|' | '>'): string {
   const collected: string[] = []
+  let contentIndent = -1
   while (ctx.index < ctx.lines.length) {
     const line = currentLine(ctx)
     if (line.trim() === '') {
@@ -157,7 +173,10 @@ function collectMultilineScalar(ctx: ParseContext, baseIndent: number, style: '|
     }
     const indent = getIndentLevel(line)
     if (indent <= baseIndent) break
-    collected.push(line.slice(baseIndent + 1 > indent ? indent : baseIndent + 1))
+    if (contentIndent === -1) {
+      contentIndent = indent
+    }
+    collected.push(line.slice(contentIndent))
     ctx.index++
   }
   while (collected.length > 0 && collected[collected.length - 1] === '') {
@@ -430,14 +449,15 @@ function serializeArray(arr: YamlValue[], indent: number, currentIndent: number)
   const pad = ' '.repeat(currentIndent)
   const lines: string[] = []
   for (const item of arr) {
-    const serialized = serializeYaml(item, indent, currentIndent + indent)
     if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
-      const objLines = serialized.split('\n')
+      const innerIndent = currentIndent + indent
+      const innerSerialized = serializeYaml(item, indent, innerIndent)
+      const objLines = innerSerialized.split('\n')
       const firstObjLine = objLines[0] ?? ''
-      lines.push(pad + '- ' + firstObjLine.trimStart())
+      lines.push(pad + '- ' + firstObjLine.slice(innerIndent))
       for (let i = 1; i < objLines.length; i++) {
         const ol = objLines[i] ?? ''
-        lines.push(pad + '  ' + ol.trimStart().padStart(ol.trimStart().length))
+        lines.push(pad + '  ' + ol.slice(innerIndent))
       }
     } else if (typeof item === 'string' && item.includes('\n')) {
       lines.push(pad + '- |')
@@ -445,6 +465,7 @@ function serializeArray(arr: YamlValue[], indent: number, currentIndent: number)
         lines.push(pad + '  ' + sLine)
       }
     } else {
+      const serialized = serializeYaml(item, indent, currentIndent + indent)
       lines.push(pad + '- ' + serialized)
     }
   }
@@ -471,9 +492,15 @@ function serializeObject(obj: YamlMap, indent: number, currentIndent: number): s
         lines.push(pad + ' '.repeat(indent) + sLine)
       }
     } else if (typeof value === 'object' && value !== null) {
-      lines.push(pad + keyStr + ':')
-      const nested = serializeYaml(value, indent, currentIndent + indent)
-      lines.push(nested)
+      const isEmpty = Array.isArray(value) ? value.length === 0 : Object.keys(value).length === 0
+      if (isEmpty) {
+        const inline = Array.isArray(value) ? '[]' : '{}'
+        lines.push(pad + keyStr + ': ' + inline)
+      } else {
+        lines.push(pad + keyStr + ':')
+        const nested = serializeYaml(value, indent, currentIndent + indent)
+        lines.push(nested)
+      }
     } else {
       const serialized = serializeYaml(value, indent, currentIndent + indent)
       lines.push(pad + keyStr + ': ' + serialized)
