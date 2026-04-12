@@ -246,6 +246,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['jwt', 'json', 'web', 'token', 'decode', 'inspect', 'auth', 'bearer'],
     path: '/tools/jwt-decoder',
   },
+  {
+    id: 'toml-formatter',
+    category: 'development',
+    icon: '📝',
+    keywords: ['toml', 'format', 'validate', 'beautify', 'minify', 'config', 'convert', 'json'],
+    path: '/tools/toml-formatter',
+  },
 
   // Utilities
   {

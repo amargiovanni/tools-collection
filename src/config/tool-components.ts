@@ -47,4 +47,5 @@ export const toolComponents: Record<string, ToolComponent> = {
   'uuid-generator': lazy(() => import('../components/tools/UuidGenerator')),
   'number-base-converter': lazy(() => import('../components/tools/NumberBaseConverter')),
   'csv-viewer': lazy(() => import('../components/tools/CsvViewer')),
+  'toml-formatter': lazy(() => import('../components/tools/TomlFormatter')),
 }
