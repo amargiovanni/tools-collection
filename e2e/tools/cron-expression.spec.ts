@@ -96,8 +96,8 @@ test.describe('Cron Expression', () => {
   })
 
   test('format toggle switches builder between Unix and AWS', async ({ page }) => {
-    await expect(page.getByRole('button', { name: 'AWS' })).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Unix' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'AWS', exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Unix', exact: true })).toBeVisible()
   })
 
   test('auto-switches format toggle when pasting AWS expression', async ({ page }) => {
