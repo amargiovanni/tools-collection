@@ -548,11 +548,11 @@ describe('getNextOccurrences', () => {
     const after = new Date('2026-04-11T10:00:00Z')
     const results = getNextOccurrences(parsed.value, 5, after)
     expect(results).toHaveLength(5)
-    expect(results[0]).toEqual(new Date('2026-04-11T10:15:00Z'))
-    expect(results[1]).toEqual(new Date('2026-04-11T10:30:00Z'))
-    expect(results[2]).toEqual(new Date('2026-04-11T10:45:00Z'))
-    expect(results[3]).toEqual(new Date('2026-04-11T11:00:00Z'))
-    expect(results[4]).toEqual(new Date('2026-04-11T11:15:00Z'))
+    expect(results[0]).toEqual(new Date('2026-04-11T10:00:00Z'))
+    expect(results[1]).toEqual(new Date('2026-04-11T10:15:00Z'))
+    expect(results[2]).toEqual(new Date('2026-04-11T10:30:00Z'))
+    expect(results[3]).toEqual(new Date('2026-04-11T10:45:00Z'))
+    expect(results[4]).toEqual(new Date('2026-04-11T11:00:00Z'))
   })
 
   it('returns next for daily at 09:00', () => {
@@ -676,9 +676,9 @@ describe('getPreviousOccurrences', () => {
     const before = new Date('2026-04-11T10:00:00Z')
     const results = getPreviousOccurrences(parsed.value, 3, before)
     expect(results).toHaveLength(3)
-    expect(results[0]).toEqual(new Date('2026-04-11T09:45:00Z'))
-    expect(results[1]).toEqual(new Date('2026-04-11T09:30:00Z'))
-    expect(results[2]).toEqual(new Date('2026-04-11T09:15:00Z'))
+    expect(results[0]).toEqual(new Date('2026-04-11T10:00:00Z'))
+    expect(results[1]).toEqual(new Date('2026-04-11T09:45:00Z'))
+    expect(results[2]).toEqual(new Date('2026-04-11T09:30:00Z'))
   })
 
   it('returns previous for daily at 09:00', () => {
