@@ -348,7 +348,7 @@ describe('tomlToJson', () => {
     const result = tomlToJson(input, 4)
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value).toContain('\n    "host": "localhost"')
+      expect(result.value).toContain('\n        "host": "localhost"')
     }
   })
 
