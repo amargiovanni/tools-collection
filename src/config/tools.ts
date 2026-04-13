@@ -267,6 +267,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['jwt', 'json', 'web', 'token', 'decode', 'inspect', 'auth', 'bearer'],
     path: '/tools/jwt-decoder',
   },
+  {
+    id: 'yaml-formatter',
+    category: 'development',
+    icon: '📝',
+    keywords: ['yaml', 'format', 'validate', 'pretty', 'minify', 'beautify', 'json', 'convert'],
+    path: '/tools/yaml-formatter',
+  },
 
   // Utilities
   {
