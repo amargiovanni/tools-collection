@@ -63,6 +63,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['remove', 'filter', 'containing', 'delete', 'lines', 'words'],
     path: '/tools/remove-lines-containing',
   },
+  {
+    id: 'slug-generator',
+    category: 'text-processing',
+    icon: '🔗',
+    keywords: ['slug', 'url', 'friendly', 'permalink', 'seo', 'slugify', 'generate'],
+    path: '/tools/slug-generator',
+  },
 
   // Generators
   {
@@ -203,6 +210,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     icon: '💾',
     keywords: ['data', 'size', 'bit', 'byte', 'kb', 'mb', 'gb', 'tb', 'kib', 'mib', 'gib', 'tib'],
     path: '/tools/data-size-converter',  },
+  {
+    id: 'html-entity',
+    category: 'converters',
+    icon: '🔣',
+    keywords: ['html', 'entity', 'encode', 'decode', 'escape', 'unescape', 'special', 'characters'],
+    path: '/tools/html-entity',
+  },
   {
     id: 'number-base-converter',
     category: 'converters',

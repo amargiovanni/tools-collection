@@ -133,9 +133,9 @@ export function generateLoremIpsum(options: LoremIpsumOptions, seed?: number): R
     case 'words': {
       const words: string[] = []
       if (options.startWithClassic) {
-        const classicWords = CLASSIC_OPENING.replace(/[.,]/g, '').split(' ')
+        const classicWords = CLASSIC_OPENING.toLowerCase().replace(/[.,]/g, '').split(' ')
         for (let i = 0; i < Math.min(count, classicWords.length); i++) {
-          words.push(classicWords[i]!.toLowerCase())
+          words.push(classicWords[i]!)
         }
       }
       while (words.length < count) {
