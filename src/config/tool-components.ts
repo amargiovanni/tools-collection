@@ -45,7 +45,10 @@ export const toolComponents: Record<string, ToolComponent> = {
   'hash-generator': lazy(() => import('../components/tools/HashGenerator')),
   'jwt-decoder': lazy(() => import('../components/tools/JwtDecoder')),
   'uuid-generator': lazy(() => import('../components/tools/UuidGenerator')),
+  'html-entity': lazy(() => import('../components/tools/HtmlEntity')),
   'number-base-converter': lazy(() => import('../components/tools/NumberBaseConverter')),
   'csv-viewer': lazy(() => import('../components/tools/CsvViewer')),
   'toml-formatter': lazy(() => import('../components/tools/TomlFormatter')),
+  'lorem-ipsum-generator': lazy(() => import('../components/tools/LoremIpsumGenerator')),
+  'slug-generator': lazy(() => import('../components/tools/SlugGenerator')),
 }

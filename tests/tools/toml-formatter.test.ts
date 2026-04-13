@@ -343,6 +343,15 @@ describe('tomlToJson', () => {
     }
   })
 
+  it('respects the indent parameter', () => {
+    const input = '[database]\nhost = "localhost"'
+    const result = tomlToJson(input, 4)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toContain('\n    "host": "localhost"')
+    }
+  })
+
   it('converts arrays', () => {
     const input = 'tags = ["web", "api", "rest"]'
     const result = tomlToJson(input)

@@ -94,7 +94,7 @@ export default function TomlFormatter(props: Props) {
         setError(translateError(props.lang, result.error))
       }
     } else if (currentAction === 'toml-to-json') {
-      const result = tomlToJson(currentInput)
+      const result = tomlToJson(currentInput, currentIndent)
       if (result.ok) {
         setOutput(result.value)
         setSuccess(t(props.lang, 'tools_tomlFormatter_converted'))

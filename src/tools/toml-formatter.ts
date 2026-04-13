@@ -836,10 +836,12 @@ function serializeValue(value: TomlValue): string {
   return String(value)
 }
 
-function serializeToml(table: TomlTable, _indent: TomlIndent): string {
+function serializeToml(table: TomlTable, indent: TomlIndent): string {
   const lines: string[] = []
+  const indentUnit = indent === 'tab' ? '\t' : ' '.repeat(indent)
+  const indentForDepth = (depth: number): string => indentUnit.repeat(depth)
 
-  function writeTable(obj: TomlTable, prefix: string[]): void {
+  function writeTable(obj: TomlTable, prefix: string[], depth: number): void {
     // First, write simple key-value pairs at this level
     const simpleKeys: string[] = []
     const tableKeys: string[] = []
@@ -857,15 +859,15 @@ function serializeToml(table: TomlTable, _indent: TomlIndent): string {
     }
 
     for (const key of simpleKeys) {
-      lines.push(quoteKey(key) + ' = ' + serializeValue(obj[key]!))
+      lines.push(indentForDepth(depth) + quoteKey(key) + ' = ' + serializeValue(obj[key]!))
     }
 
     // Write sub-tables
     for (const key of tableKeys) {
       const newPrefix = [...prefix, quoteKey(key)]
       if (lines.length > 0) lines.push('')
-      lines.push('[' + newPrefix.join('.') + ']')
-      writeTable(obj[key] as TomlTable, newPrefix)
+      lines.push(indentForDepth(depth) + '[' + newPrefix.join('.') + ']')
+      writeTable(obj[key] as TomlTable, newPrefix, depth + 1)
     }
 
     // Write arrays of tables
@@ -874,13 +876,13 @@ function serializeToml(table: TomlTable, _indent: TomlIndent): string {
       const newPrefix = [...prefix, quoteKey(key)]
       for (const item of arr) {
         if (lines.length > 0) lines.push('')
-        lines.push('[[' + newPrefix.join('.') + ']]')
-        writeTable(item, newPrefix)
+        lines.push(indentForDepth(depth) + '[[' + newPrefix.join('.') + ']]')
+        writeTable(item, newPrefix, depth + 1)
       }
     }
   }
 
-  writeTable(table, [])
+  writeTable(table, [], 0)
   return lines.join('\n') + '\n'
 }
 
@@ -926,75 +928,8 @@ function jsonToTomlValue(value: unknown, line: number): TomlValue {
 // ──────────────────────────────────────────────
 
 function minifyToml(input: string): string {
-  const lines = input.split(/\r?\n/)
-  const result: string[] = []
-  let inMultilineString: '"""' | "'''" | null = null
-
-  for (const line of lines) {
-    const trimmed = line.trim()
-
-    // If we're inside a multiline string, just pass through until closing delimiter
-    if (inMultilineString !== null) {
-      const closeIdx = line.indexOf(inMultilineString)
-      if (closeIdx !== -1) {
-        inMultilineString = null
-      }
-      result.push(line)
-      continue
-    }
-
-    // Skip empty lines and comment-only lines
-    if (trimmed === '' || trimmed.startsWith('#')) continue
-
-    // Check if this line opens a multiline string
-    if (trimmed.includes('"""') || trimmed.includes("'''")) {
-      const tripleDoubleIdx = trimmed.indexOf('"""')
-      const tripleSingleIdx = trimmed.indexOf("'''")
-      let delimiter: '"""' | "'''" | null = null
-
-      if (tripleDoubleIdx !== -1 && (tripleSingleIdx === -1 || tripleDoubleIdx < tripleSingleIdx)) {
-        delimiter = '"""'
-      } else if (tripleSingleIdx !== -1) {
-        delimiter = "'''"
-      }
-
-      if (delimiter !== null) {
-        // Check if there's a closing delimiter on the same line (after the opening one)
-        const afterOpen = trimmed.indexOf(delimiter) + 3
-        const closeOnSameLine = trimmed.indexOf(delimiter, afterOpen)
-        if (closeOnSameLine === -1) {
-          // Multiline string opens but doesn't close on this line
-          inMultilineString = delimiter
-        }
-      }
-    }
-
-    // For table headers, strip inline comments
-    if (trimmed.startsWith('[') && inMultilineString === null) {
-      // Find the matching close bracket(s) properly
-      const isArrayOfTables = trimmed.startsWith('[[')
-      let headerEnd = -1
-      if (isArrayOfTables) {
-        headerEnd = trimmed.indexOf(']]')
-        if (headerEnd !== -1) headerEnd += 1 // point to the second ']'
-      } else {
-        headerEnd = trimmed.indexOf(']')
-      }
-      if (headerEnd !== -1) {
-        result.push(trimmed.slice(0, headerEnd + 1))
-        continue
-      }
-    }
-
-    // For key=value lines, strip trailing comments (respecting strings)
-    if (inMultilineString === null) {
-      result.push(stripTrailingComment(trimmed))
-    } else {
-      result.push(trimmed)
-    }
-  }
-
-  return result.join('\n') + '\n'
+  const parsed = parseToml(input)
+  return serializeToml(parsed, 2).replace(/\n{2,}/g, '\n')
 }
 
 function stripTrailingComment(line: string): string {
@@ -1087,14 +1022,14 @@ export function minifyTomlStr(input: string): Result<string> {
   }
 }
 
-export function tomlToJson(input: string): Result<string> {
+export function tomlToJson(input: string, indent: TomlIndent = 2): Result<string> {
   const validated = validateNonEmpty(input)
   if (!validated.ok) return validated
 
   try {
     const parsed = parseToml(validated.value)
     const jsonObj = tomlToJsonValue(parsed)
-    return ok(JSON.stringify(jsonObj, null, 2))
+    return ok(JSON.stringify(jsonObj, null, indent === 'tab' ? '\t' : indent))
   } catch (e) {
     if (e instanceof TomlParseError) {
       return err('INVALID_TOML', `Line ${e.line}: ${e.message}`)
