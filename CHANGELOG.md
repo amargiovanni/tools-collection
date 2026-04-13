@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.4.1`
+
+### Changed
+- Bumped the product version to `1.4.1`.
+- Refreshed the Node/Vitest toolchain and Docker build action through Dependabot updates.
+
 ## Published: `1.4.0`
 
 ### Added

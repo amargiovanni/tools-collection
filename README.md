@@ -11,7 +11,7 @@ A modular, type-safe collection of more than 30 browser-based developer tools. B
 
 More than 30 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable in `1.4.0`: major internal optimization — shared `useToolState()` hook and `validateNonEmpty()` utility eliminate ~360 lines of boilerplate across all tools, dynamic Astro routes replace 10 duplicate page files, `createMemo` fixes in 8 components, emoji-shortcode perf upgrade, CronExpression decomposed into focused modules, and 357 Playwright E2E tests covering every tool in depth.
+Notable in `1.4.1`: Dependabot refreshes keep the Node/Vitest toolchain and Docker build action current, while the changelog and product version are rolled forward for the next release cycle.
 
 ## Tools
 
