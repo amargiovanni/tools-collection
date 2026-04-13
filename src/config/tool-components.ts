@@ -48,4 +48,5 @@ export const toolComponents: Record<string, ToolComponent> = {
   'html-entity': lazy(() => import('../components/tools/HtmlEntity')),
   'number-base-converter': lazy(() => import('../components/tools/NumberBaseConverter')),
   'csv-viewer': lazy(() => import('../components/tools/CsvViewer')),
+  'slug-generator': lazy(() => import('../components/tools/SlugGenerator')),
 }

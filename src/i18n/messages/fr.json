@@ -440,6 +440,7 @@
   "errors_UNIQUE_IMPOSSIBLE": "Impossible de générer suffisamment de valeurs uniques avec les contraintes données",
   "errors_ENCODE_ERROR": "Échec de l'encodage",
   "errors_DECODE_ERROR": "Échec du décodage",
+  "errors_EMPTY_RESULT": "Le texte saisi produit un slug vide",
   "favorites_title": "Favoris",
   "favorites_add": "Ajouter aux favoris",
   "favorites_remove": "Retirer des favoris",
@@ -483,5 +484,17 @@
   "csv_placeholder": "Collez les données CSV ici...",
   "csv_rowCount": "{n} lignes",
   "csv_noData": "Aucune donnée à afficher",
-  "csv_exportJson": "Exporter en JSON"
+  "csv_exportJson": "Exporter en JSON",
+  "tools_slugGenerator_name": "Générateur de Slug",
+  "tools_slugGenerator_description": "Convertir du texte en slugs compatibles URL",
+  "tools_slugGenerator_inputLabel": "Texte à convertir en slug :",
+  "tools_slugGenerator_placeholder": "Entrez votre titre ou texte ici...",
+  "tools_slugGenerator_separatorLabel": "Séparateur :",
+  "tools_slugGenerator_separatorHyphen": "Tiret (-)",
+  "tools_slugGenerator_separatorUnderscore": "Underscore (_)",
+  "tools_slugGenerator_separatorDot": "Point (.)",
+  "tools_slugGenerator_lowercase": "Minuscules",
+  "tools_slugGenerator_transliterate": "Translittérer les caractères accentués",
+  "tools_slugGenerator_maxLengthLabel": "Longueur maximale :",
+  "tools_slugGenerator_maxLengthPlaceholder": "0 = sans limite"
 }

@@ -63,6 +63,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['remove', 'filter', 'containing', 'delete', 'lines', 'words'],
     path: '/tools/remove-lines-containing',
   },
+  {
+    id: 'slug-generator',
+    category: 'text-processing',
+    icon: '🔗',
+    keywords: ['slug', 'url', 'friendly', 'permalink', 'seo', 'slugify', 'generate'],
+    path: '/tools/slug-generator',
+  },
 
   // Generators
   {
