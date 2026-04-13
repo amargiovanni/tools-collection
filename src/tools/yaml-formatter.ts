@@ -109,9 +109,20 @@ function parseFlowSequence(raw: string): YamlValue[] {
   let depth = 0
   let inSingle = false
   let inDouble = false
+  let escaped = false
   let current = ''
   for (let i = 0; i < inner.length; i++) {
     const ch = inner.charAt(i)
+    if (escaped) {
+      current += ch
+      escaped = false
+      continue
+    }
+    if (ch === '\\' && inDouble) {
+      current += ch
+      escaped = true
+      continue
+    }
     if (ch === '"' && !inSingle) inDouble = !inDouble
     else if (ch === "'" && !inDouble) inSingle = !inSingle
     if (!inSingle && !inDouble) {
@@ -138,10 +149,21 @@ function parseFlowMapping(raw: string): YamlMap {
   let depth = 0
   let inSingle = false
   let inDouble = false
+  let escaped = false
   let current = ''
   const pairs: string[] = []
   for (let i = 0; i < inner.length; i++) {
     const ch = inner.charAt(i)
+    if (escaped) {
+      current += ch
+      escaped = false
+      continue
+    }
+    if (ch === '\\' && inDouble) {
+      current += ch
+      escaped = true
+      continue
+    }
     if (ch === '"' && !inSingle) inDouble = !inDouble
     else if (ch === "'" && !inDouble) inSingle = !inSingle
     if (!inSingle && !inDouble) {
