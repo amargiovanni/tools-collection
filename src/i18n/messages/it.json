@@ -496,5 +496,17 @@
   "tools_slugGenerator_lowercase": "Minuscolo",
   "tools_slugGenerator_transliterate": "Translittera caratteri accentati",
   "tools_slugGenerator_maxLengthLabel": "Lunghezza massima:",
-  "tools_slugGenerator_maxLengthPlaceholder": "0 = nessun limite"
+  "tools_slugGenerator_maxLengthPlaceholder": "0 = nessun limite",
+  "tools_loremIpsumGenerator_name": "Generatore Lorem Ipsum",
+  "tools_loremIpsumGenerator_description": "Genera testo segnaposto lorem ipsum",
+  "tools_loremIpsumGenerator_typeLabel": "Tipo di output:",
+  "tools_loremIpsumGenerator_typeParagraphs": "Paragrafi",
+  "tools_loremIpsumGenerator_typeSentences": "Frasi",
+  "tools_loremIpsumGenerator_typeWords": "Parole",
+  "tools_loremIpsumGenerator_countLabel": "Quantit\u00e0:",
+  "tools_loremIpsumGenerator_startWithClassic": "Inizia con \"Lorem ipsum dolor sit amet...\"",
+  "tools_loremIpsumGenerator_generate": "Genera",
+  "tools_loremIpsumGenerator_outputLabel": "Testo Generato:",
+  "errors_INVALID_COUNT": "La quantit\u00e0 deve essere un numero positivo",
+  "errors_INVALID_TYPE": "Tipo di output non valido"
 }

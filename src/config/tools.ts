@@ -106,6 +106,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['magnet', 'bittorrent', 'torrent', 'infohash', 'tracker', 'link'],
     path: '/tools/bittorrent-magnet-link-generator',
   },
+  {
+    id: 'lorem-ipsum-generator',
+    category: 'generators',
+    icon: '📝',
+    keywords: ['lorem', 'ipsum', 'placeholder', 'text', 'generate', 'dummy', 'filler'],
+    path: '/tools/lorem-ipsum-generator',
+  },
 
   // Extraction
   {

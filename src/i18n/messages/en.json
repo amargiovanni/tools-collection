@@ -496,5 +496,17 @@
   "tools_slugGenerator_lowercase": "Lowercase",
   "tools_slugGenerator_transliterate": "Transliterate accented characters",
   "tools_slugGenerator_maxLengthLabel": "Max length:",
-  "tools_slugGenerator_maxLengthPlaceholder": "0 = no limit"
+  "tools_slugGenerator_maxLengthPlaceholder": "0 = no limit",
+  "tools_loremIpsumGenerator_name": "Lorem Ipsum Generator",
+  "tools_loremIpsumGenerator_description": "Generate placeholder lorem ipsum text",
+  "tools_loremIpsumGenerator_typeLabel": "Output type:",
+  "tools_loremIpsumGenerator_typeParagraphs": "Paragraphs",
+  "tools_loremIpsumGenerator_typeSentences": "Sentences",
+  "tools_loremIpsumGenerator_typeWords": "Words",
+  "tools_loremIpsumGenerator_countLabel": "Count:",
+  "tools_loremIpsumGenerator_startWithClassic": "Start with \"Lorem ipsum dolor sit amet...\"",
+  "tools_loremIpsumGenerator_generate": "Generate",
+  "tools_loremIpsumGenerator_outputLabel": "Generated Text:",
+  "errors_INVALID_COUNT": "Count must be a positive number",
+  "errors_INVALID_TYPE": "Invalid output type"
 }
