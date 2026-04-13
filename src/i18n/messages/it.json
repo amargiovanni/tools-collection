@@ -431,6 +431,7 @@
   "errors_QR_UNSUPPORTED": "BarcodeDetector non supportato in questo browser",
   "errors_QR_NOT_FOUND": "Nessun QR code rilevato nell'immagine",
   "errors_UNIQUE_IMPOSSIBLE": "Impossibile generare abbastanza valori unici con i vincoli dati",
+  "errors_EMPTY_RESULT": "L'input produce uno slug vuoto",
   "favorites_title": "Preferiti",
   "favorites_add": "Aggiungi ai preferiti",
   "favorites_remove": "Rimuovi dai preferiti",
@@ -474,5 +475,17 @@
   "csv_placeholder": "Incolla i dati CSV qui...",
   "csv_rowCount": "{n} righe",
   "csv_noData": "Nessun dato da visualizzare",
-  "csv_exportJson": "Esporta come JSON"
+  "csv_exportJson": "Esporta come JSON",
+  "tools_slugGenerator_name": "Generatore di Slug",
+  "tools_slugGenerator_description": "Converti il testo in slug compatibili con gli URL",
+  "tools_slugGenerator_inputLabel": "Testo da trasformare in slug:",
+  "tools_slugGenerator_placeholder": "Inserisci il titolo o il testo qui...",
+  "tools_slugGenerator_separatorLabel": "Separatore:",
+  "tools_slugGenerator_separatorHyphen": "Trattino (-)",
+  "tools_slugGenerator_separatorUnderscore": "Underscore (_)",
+  "tools_slugGenerator_separatorDot": "Punto (.)",
+  "tools_slugGenerator_lowercase": "Minuscolo",
+  "tools_slugGenerator_transliterate": "Translittera caratteri accentati",
+  "tools_slugGenerator_maxLengthLabel": "Lunghezza massima:",
+  "tools_slugGenerator_maxLengthPlaceholder": "0 = nessun limite"
 }
