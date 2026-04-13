@@ -273,6 +273,11 @@ export const toolRegistry: readonly ToolMeta[] = [
     icon: '📝',
     keywords: ['toml', 'format', 'validate', 'beautify', 'minify', 'config', 'convert', 'json'],
     path: '/tools/toml-formatter',
+    id: 'yaml-formatter',
+    category: 'development',
+    icon: '📝',
+    keywords: ['yaml', 'format', 'validate', 'pretty', 'minify', 'beautify', 'json', 'convert'],
+    path: '/tools/yaml-formatter',
   },
 
   // Utilities
