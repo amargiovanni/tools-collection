@@ -11,7 +11,7 @@ Una raccolta modulare e type-safe di 44 strumenti per sviluppatori che funzionan
 
 44 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-Novità della `1.6.0`: generatori browser-safe per API key, JWT secret, HMAC key, salt, codici di recupero, passphrase e stringhe casuali; in più il color picker chiarisce i formati supportati (HEX/RGB/HSL) e accetta direttamente `rgb()`, `rgba()`, `hsl()` e `hsla()`.
+Novità della `1.5.0`: generatori browser-safe per API key, JWT secret, HMAC key, salt, codici di recupero, passphrase e stringhe casuali; in più il color picker chiarisce i formati supportati (HEX/RGB/HSL) e accetta direttamente `rgb()`, `rgba()`, `hsl()` e `hsla()`.
 
 ## Strumenti
 

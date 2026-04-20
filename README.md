@@ -11,7 +11,7 @@ A modular, type-safe collection of 44 browser-based developer tools. Built with 
 
 44 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable in `1.6.0`: browser-safe generators now cover API keys, JWT secrets, HMAC keys, salts, recovery codes, passphrases, and random strings, while the color picker makes its HEX/RGB/HSL support explicit and accepts `rgb()`, `rgba()`, `hsl()`, and `hsla()` inputs directly.
+Notable in `1.5.0`: browser-safe generators now cover API keys, JWT secrets, HMAC keys, salts, recovery codes, passphrases, and random strings, while the color picker makes its HEX/RGB/HSL support explicit and accepts `rgb()`, `rgba()`, `hsl()`, and `hsla()` inputs directly.
 
 ## Tools
 
