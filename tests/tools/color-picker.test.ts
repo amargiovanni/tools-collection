@@ -257,7 +257,7 @@ describe('parseColor', () => {
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.hex).toBe('#FF5833')
-      expect(result.value.rgb).toEqual({ r: 255, g: 87, b: 51 })
+      expect(result.value.rgb).toEqual({ r: 255, g: 88, b: 51 })
     }
   })
 
