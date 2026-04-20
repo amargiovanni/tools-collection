@@ -33,10 +33,18 @@ function randomUint32(count: number): Uint32Array {
 
 export function randomString(length: number, alphabet: string): string {
   const size = Math.max(1, length)
-  const randoms = randomUint32(size)
+  const alphabetLength = alphabet.length
+  const maxValid = Math.floor(0x100000000 / alphabetLength) * alphabetLength
   let result = ''
-  for (let i = 0; i < size; i++) {
-    result += alphabet.charAt(randoms[i]! % alphabet.length)
+  while (result.length < size) {
+    const randoms = randomUint32(size - result.length)
+    for (let i = 0; i < randoms.length; i++) {
+      const value = randoms[i]!
+      if (value < maxValid) {
+        result += alphabet.charAt(value % alphabetLength)
+        if (result.length === size) break
+      }
+    }
   }
   return result
 }

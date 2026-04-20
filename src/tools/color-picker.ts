@@ -136,9 +136,11 @@ export function hslToRgb(hsl: HslColor): Result<RgbColor> {
   })
 }
 
-function parseRgbFunction(input: string): RgbColor | undefined {
-  const match = input.match(/^rgba?\(\s*([+-]?\d+(?:\.\d+)?%?)\s*([, ])\s*([+-]?\d+(?:\.\d+)?%?)\s*\2\s*([+-]?\d+(?:\.\d+)?%?)(?:\s*([,/])\s*([+-]?\d+(?:\.\d+)?%?)\s*)?\)$/i)
-  if (!match) return undefined
+function parseRgbFunction(input: string): Result<RgbColor> {
+  const match = input.match(/^rgba?\(\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*(?:,|\/)\s*(?:0|1|\d*\.\d+)\s*)?\)$/i)
+  if (!match) {
+    return err('INVALID_COLOR', 'Could not parse color input')
+  }
 
   const rgb = {
     r: parseInt(match[1]!, 10),
@@ -146,11 +148,15 @@ function parseRgbFunction(input: string): RgbColor | undefined {
     b: parseInt(match[3]!, 10),
   }
 
-  return isValidRgb(rgb) ? rgb : undefined
+  if (!isValidRgb(rgb)) {
+    return err('INVALID_RGB', 'RGB values must be between 0 and 255')
+  }
+
+  return ok(rgb)
 }
 
 function parseHslFunction(input: string): Result<RgbColor> | undefined {
-  const match = input.match(/^hsla?\(\s*([+-]?\d+(?:\.\d+)?(?:deg|rad|grad|turn)?)\s*([, ])\s*([+-]?\d+(?:\.\d+)?)%\s*\2\s*([+-]?\d+(?:\.\d+)?)%(?:\s*([,/])\s*([+-]?\d+(?:\.\d+)?%?)\s*)?\)$/i)
+  const match = input.match(/^hsla?\(\s*([+-]?\d+(?:\.\d+)?)(?:\s*,\s*|\s+)([+-]?\d+(?:\.\d+)?)%(?:\s*,\s*|\s+)([+-]?\d+(?:\.\d+)?)%(?:\s*(?:,|\/)\s*(?:0|1|\d*\.\d+)\s*)?\)$/i)
   if (!match) return undefined
 
   return hslToRgb({
@@ -174,7 +180,12 @@ export function parseColor(
     if (!result.ok) return result
     rgb = result.value
   } else if (/^rgba?\(/i.test(input)) {
-    rgb = parseRgbFunction(input)
+    const rgbResult = parseRgbFunction(input)
+    if (rgbResult.ok) {
+      rgb = rgbResult.value
+    } else {
+      return rgbResult
+    }
   } else if (/^hsla?\(/i.test(input)) {
     const hslResult = parseHslFunction(input)
     if (hslResult) {
