@@ -13,6 +13,10 @@ export interface HslColor {
   l: number
 }
 
+function isValidRgb(rgb: RgbColor): boolean {
+  return rgb.r >= 0 && rgb.r <= 255 && rgb.g >= 0 && rgb.g <= 255 && rgb.b >= 0 && rgb.b <= 255
+}
+
 export function hexToRgb(hex: string): Result<RgbColor> {
   if (hex.trim() === '') {
     return err('EMPTY_INPUT', 'Please enter a hex color')
@@ -42,10 +46,6 @@ export function hexToRgb(hex: string): Result<RgbColor> {
     g: parseInt(result[2]!, 16),
     b: parseInt(result[3]!, 16),
   })
-}
-
-function isValidRgb(rgb: RgbColor): boolean {
-  return rgb.r >= 0 && rgb.r <= 255 && rgb.g >= 0 && rgb.g <= 255 && rgb.b >= 0 && rgb.b <= 255
 }
 
 export function rgbToHex(rgb: RgbColor): Result<string> {
@@ -102,6 +102,40 @@ export function rgbToHsl(rgb: RgbColor): Result<HslColor> {
   })
 }
 
+export function hslToRgb(hsl: HslColor): Result<RgbColor> {
+  if (hsl.s < 0 || hsl.s > 100 || hsl.l < 0 || hsl.l > 100) {
+    return err('INVALID_HSL', 'HSL saturation and lightness must be between 0 and 100')
+  }
+
+  const h = ((hsl.h % 360) + 360) % 360 / 360
+  const s = hsl.s / 100
+  const l = hsl.l / 100
+
+  if (s === 0) {
+    const value = Math.round(l * 255)
+    return ok({ r: value, g: value, b: value })
+  }
+
+  const hueToRgb = (p: number, q: number, t: number): number => {
+    let normalized = t
+    if (normalized < 0) normalized += 1
+    if (normalized > 1) normalized -= 1
+    if (normalized < 1 / 6) return p + (q - p) * 6 * normalized
+    if (normalized < 1 / 2) return q
+    if (normalized < 2 / 3) return p + (q - p) * (2 / 3 - normalized) * 6
+    return p
+  }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+  const p = 2 * l - q
+
+  return ok({
+    r: Math.round(hueToRgb(p, q, h + 1 / 3) * 255),
+    g: Math.round(hueToRgb(p, q, h) * 255),
+    b: Math.round(hueToRgb(p, q, h - 1 / 3) * 255),
+  })
+}
+
 export function parseColor(
   input: string,
 ): Result<{ hex: string; rgb: RgbColor; hsl: HslColor }> {
@@ -115,13 +149,27 @@ export function parseColor(
     const result = hexToRgb(input)
     if (!result.ok) return result
     rgb = result.value
-  } else if (input.startsWith('rgb')) {
-    const match = input.match(/(\d+),\s*(\d+),\s*(\d+)/)
+  } else if (/^rgba?\(/i.test(input)) {
+    const match = input.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(?:0|1|0?\.\d+)\s*)?\)$/i)
     if (match) {
       rgb = {
         r: parseInt(match[1]!, 10),
         g: parseInt(match[2]!, 10),
         b: parseInt(match[3]!, 10),
+      }
+    }
+  } else if (/^hsla?\(/i.test(input)) {
+    const match = input.match(/^hsla?\(\s*([+-]?\d+(?:\.\d+)?)\s*,\s*([+-]?\d+(?:\.\d+)?)%\s*,\s*([+-]?\d+(?:\.\d+)?)%(?:\s*,\s*(?:0|1|0?\.\d+)\s*)?\)$/i)
+    if (match) {
+      const hslResult = hslToRgb({
+        h: parseFloat(match[1]!),
+        s: parseFloat(match[2]!),
+        l: parseFloat(match[3]!),
+      })
+      if (hslResult.ok) {
+        rgb = hslResult.value
+      } else {
+        return hslResult
       }
     }
   }

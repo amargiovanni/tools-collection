@@ -60,6 +60,13 @@ test.describe('Color Picker', () => {
     await expect(page.getByText(/hsl\(11, 100%, 60%\)/)).toBeVisible()
   })
 
+  test('parses HSL input directly', async ({ page }) => {
+    await page.locator('[data-testid="input"]').fill('hsl(11, 100%, 60%)')
+    await page.getByRole('button', { name: 'Convert Color' }).click()
+    await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
+    await expect(page.getByText('#FF5733')).toBeVisible()
+  })
+
   test('shows RGBA output for #FF5733', async ({ page }) => {
     await page.locator('[data-testid="input"]').fill('#FF5733')
     await page.getByRole('button', { name: 'Convert Color' }).click()

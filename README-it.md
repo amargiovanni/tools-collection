@@ -1,6 +1,6 @@
 # Tools Collection
 
-Una raccolta modulare e type-safe di più di 30 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
+Una raccolta modulare e type-safe di 44 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,22 +9,22 @@ Una raccolta modulare e type-safe di più di 30 strumenti per sviluppatori che f
 
 ## Cosa Fa
 
-Più di 30 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+44 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-Novità della `1.4.0`: importante ottimizzazione interna — hook condiviso `useToolState()` e utility `validateNonEmpty()` eliminano ~360 righe di boilerplate da tutti i tool, route Astro dinamiche sostituiscono 10 file pagina duplicati, fix `createMemo` in 8 componenti, upgrade perf emoji-shortcode, CronExpression decomposta in moduli focalizzati e 357 test Playwright E2E che coprono ogni tool in profondità.
+Novità della `1.6.0`: generatori browser-safe per API key, JWT secret, HMAC key, salt, codici di recupero, passphrase e stringhe casuali; in più il color picker chiarisce i formati supportati (HEX/RGB/HSL) e accetta direttamente `rgb()`, `rgba()`, `hsl()` e `hsla()`.
 
 ## Strumenti
 
 | Categoria | Strumenti |
 |---|---|
 | **Elaborazione Testo** | List Generator, Add Text to Lines, Convert Case, Remove Duplicate Lines, Remove Line Breaks, Remove Lines Containing |
-| **Generatori** | Password Generator (crypto API), Username Generator, PIN Generator, UUID Generator, BitTorrent Magnet Link Generator |
+| **Generatori** | Password Generator (crypto API), Passphrase Generator, Random String Generator, API Key Generator, JWT Secret Generator, Username Generator, PIN Generator, UUID Generator, BitTorrent Magnet Link Generator |
 | **Estrazione** | Domain Extractor, Email Extractor |
 | **Analisi** | Count Duplicates, Text Counter |
-| **Sicurezza** | PEM Certificate Inspector, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
+| **Sicurezza** | PEM Certificate Inspector, AES Key Generator, HMAC Key Generator, Salt Generator, Recovery Code Generator, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
 | **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
 | **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
-| **Utilità** | Color Picker, Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
+| **Utilità** | Color Picker (HEX/RGB/HSL), Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 
 ## Stack Tecnologico
 
@@ -57,7 +57,7 @@ src/
 │   ├── Sidebar.astro      # Navigazione per categorie
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts           # Registry tool (più di 30 voci con metadati)
+│   ├── tools.ts           # Registry tool (44 voci con metadati)
 │   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
@@ -79,7 +79,7 @@ src/
 │   └── [lang]/            # Route dinamiche per tutte e 5 le lingue
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 36 moduli di logica pura (zero DOM)
+└── tools/                 # 44 moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -107,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 186 pagine HTML statiche (36 tool per lingua x 5 + homepage + redirect root) pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: 226 pagine HTML statiche (44 tool per lingua x 5 + homepage + redirect root) pronte per qualsiasi hosting.
 
 ### Docker
 

@@ -83,13 +83,14 @@ export default function ColorPicker(props: Props) {
             type="color"
             value={pickerValue()}
             onChange={handlePickerChange}
-            class="h-10 w-14 cursor-pointer rounded-lg border border-border bg-surface-raised"
-          />
-        </div>
-        <Input
-          label={t(props.lang, 'tools_colorPicker_inputLabel')}
-          placeholder={t(props.lang, 'tools_colorPicker_placeholder')}
-          value={colorInput()}
+          class="h-10 w-14 cursor-pointer rounded-lg border border-border bg-surface-raised"
+        />
+      </div>
+      <p class="text-sm text-text-muted">{t(props.lang, 'tools_colorPicker_hint')}</p>
+      <Input
+        label={t(props.lang, 'tools_colorPicker_inputLabel')}
+        placeholder={t(props.lang, 'tools_colorPicker_placeholder')}
+        value={colorInput()}
           onInput={(e) => setColorInput(e.currentTarget.value)}
           class="flex-1"
         />

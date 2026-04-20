@@ -4,6 +4,16 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Unreleased
+
+### Added
+- Added an `AES Key Generator` tool for browser-side generation of AES-128, AES-192, and AES-256 keys in hex and Base64.
+- Added browser-safe generators for API keys, JWT secrets, HMAC keys, salts, recovery codes, passphrases, and random strings.
+
+### Changed
+- Clarified the `Color Picker/Converter` input hints so it is explicit that the field accepts HEX, RGB, RGBA, HSL, and HSLA values.
+- Improved the color parser so HSL and RGBA inputs are accepted directly.
+
 ## Published: `1.4.1`
 
 ### Changed
