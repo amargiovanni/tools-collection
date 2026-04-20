@@ -5,18 +5,25 @@ const HEX_ALPHABET = '0123456789ABCDEF'
 const BASE64URL_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
 const ALNUM_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 const SAFE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'
+const RECOVERY_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 const SYMBOL_ALPHABET = '!@#$%^&*()-_=+[]{};:,.?'
 
-const WORDS = [
-  'amber', 'anchor', 'apple', 'atlas', 'autumn', 'bamboo', 'beacon', 'binary', 'blossom', 'brisk',
-  'canyon', 'cipher', 'cloud', 'coast', 'comet', 'coral', 'crystal', 'dawn', 'delta', 'ember',
-  'field', 'fjord', 'forest', 'galaxy', 'harbor', 'horizon', 'ice', 'indigo', 'jade', 'lagoon',
-  'lantern', 'lattice', 'legacy', 'lilac', 'lunar', 'marble', 'matrix', 'meadow', 'meteor', 'mint',
-  'nimbus', 'north', 'oasis', 'omega', 'opal', 'orbit', 'origin', 'pearl', 'pixel', 'plasma',
-  'prairie', 'pulse', 'quartz', 'raven', 'river', 'rocket', 'saffron', 'saturn', 'shadow', 'signal',
-  'silver', 'sky', 'spark', 'spruce', 'stone', 'storm', 'summer', 'sunset', 'swift', 'tangent',
-  'thunder', 'topaz', 'tundra', 'ultra', 'valley', 'vapor', 'violet', 'willow', 'winter', 'zenith',
+// 16 x 16 x 16 = 4096 pronounceable combinations.
+const WORD_ONSETS = [
+  'b', 'br', 'c', 'ch', 'd', 'f', 'g', 'gr', 'k', 'm', 'n', 'p', 'pr', 'r', 's', 't',
 ] as const
+
+const WORD_NUCLEI = [
+  'a', 'e', 'i', 'o', 'u', 'ae', 'ai', 'ea', 'ee', 'ei', 'ia', 'ie', 'io', 'oa', 'oi', 'ou',
+] as const
+
+const WORD_CODAS = [
+  '', 'b', 'd', 'f', 'g', 'l', 'm', 'n', 'p', 'r', 's', 't', 'nd', 'ng', 'rt', 'sh',
+] as const
+
+const WORDS = WORD_ONSETS.flatMap((onset) =>
+  WORD_NUCLEI.flatMap((nucleus) => WORD_CODAS.map((coda) => `${onset}${nucleus}${coda}`)),
+)
 
 function randomUint32(count: number): Uint32Array {
   const values = new Uint32Array(count)
@@ -72,7 +79,7 @@ export function generateRecoveryCodes(count: number, length: number, groupSize =
   const normalizedLength = Math.max(6, Math.min(32, length))
   const normalizedGroupSize = Math.max(2, Math.min(8, groupSize))
   const codes = Array.from({ length: normalizedCount }, () => {
-    const raw = randomString(normalizedLength, SAFE_ALPHABET)
+    const raw = randomString(normalizedLength, RECOVERY_CODE_ALPHABET)
     const groups: string[] = []
     for (let i = 0; i < raw.length; i += normalizedGroupSize) {
       groups.push(raw.slice(i, i + normalizedGroupSize))

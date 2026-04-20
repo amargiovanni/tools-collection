@@ -413,7 +413,7 @@
   "tools_cronExpression_fieldDayOfWeek": "Dia de la semana",
   "tools_cronExpression_fieldYear": "Ano",
   "tools_colorPicker_name": "Selector/Conversor de colores",
-  "tools_colorPicker_description": "Selecciona colores y convierte entre HEX, RGB y HSL",
+  "tools_colorPicker_description": "Selecciona colores y convierte entre HEX, RGB y HSL. Pega directamente valores hex, rgb(), rgba(), hsl() o hsla().",
   "tools_colorPicker_inputLabel": "O introduce HEX, RGB o HSL:",
   "tools_colorPicker_placeholder": "#FF5733, rgb(255,87,51), hsl(11,100%,60%)",
   "tools_colorPicker_hint": "Puedes pegar valores hex, rgb(), rgba(), hsl() o hsla() y ver todas las conversiones al instante.",

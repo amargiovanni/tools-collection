@@ -68,6 +68,7 @@ describe('browser-safe secret generators', () => {
     if (result.ok) {
       expect(result.value).toHaveLength(3)
       result.value.forEach((phrase) => {
+        expect(phrase).toMatch(/^[a-z]+(-[a-z]+){3}$/)
         expect(phrase.split('-')).toHaveLength(4)
       })
     }

@@ -228,8 +228,24 @@ describe('parseColor', () => {
     }
   })
 
+  it('parses space-separated rgb() format', () => {
+    const result = parseColor('rgb(0 128 255 / .5)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
+    }
+  })
+
   it('parses rgba() format', () => {
     const result = parseColor('rgba(0, 128, 255, 0.5)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
+    }
+  })
+
+  it('parses rgba() format with 1.0 alpha', () => {
+    const result = parseColor('rgba(0, 128, 255, 1.0)')
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
@@ -242,6 +258,14 @@ describe('parseColor', () => {
     if (result.ok) {
       expect(result.value.hex).toBe('#FF5733')
       expect(result.value.rgb).toEqual({ r: 255, g: 87, b: 51 })
+    }
+  })
+
+  it('parses space-separated hsla() format with decimal alpha', () => {
+    const result = parseColor('hsla(11 100% 60% / .5)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.hex).toBe('#FF5733')
     }
   })
 
