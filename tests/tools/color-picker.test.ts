@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { hexToRgb, rgbToHex, rgbToHsl, parseColor } from '../../src/tools/color-picker'
+import { hexToRgb, rgbToHex, rgbToHsl, hslToRgb, parseColor } from '../../src/tools/color-picker'
 
 describe('hexToRgb', () => {
   it('returns error for empty input', () => {
@@ -167,6 +167,40 @@ describe('rgbToHsl', () => {
   })
 })
 
+describe('hslToRgb', () => {
+  it('converts pure red to RGB', () => {
+    const result = hslToRgb({ h: 0, s: 100, l: 50 })
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toEqual({ r: 255, g: 0, b: 0 })
+    }
+  })
+
+  it('converts pure green to RGB', () => {
+    const result = hslToRgb({ h: 120, s: 100, l: 50 })
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toEqual({ r: 0, g: 255, b: 0 })
+    }
+  })
+
+  it('converts pure blue to RGB', () => {
+    const result = hslToRgb({ h: 240, s: 100, l: 50 })
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value).toEqual({ r: 0, g: 0, b: 255 })
+    }
+  })
+
+  it('returns error for invalid saturation', () => {
+    const result = hslToRgb({ h: 0, s: 101, l: 50 })
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.error.code).toBe('INVALID_HSL')
+    }
+  })
+})
+
 describe('parseColor', () => {
   it('returns error for empty input', () => {
     const result = parseColor('')
@@ -191,6 +225,55 @@ describe('parseColor', () => {
     expect(result.ok).toBe(true)
     if (result.ok) {
       expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
+    }
+  })
+
+  it('parses space-separated rgb() format', () => {
+    const result = parseColor('rgb(0 128 255 / .5)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
+    }
+  })
+
+  it('parses rgba() format', () => {
+    const result = parseColor('rgba(0, 128, 255, 0.5)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
+    }
+  })
+
+  it('parses rgba() format with 1.0 alpha', () => {
+    const result = parseColor('rgba(0, 128, 255, 1.0)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.rgb).toEqual({ r: 0, g: 128, b: 255 })
+    }
+  })
+
+  it('parses hsl() format', () => {
+    const result = parseColor('hsl(11, 100%, 60%)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.hex).toBe('#FF5833')
+      expect(result.value.rgb).toEqual({ r: 255, g: 88, b: 51 })
+    }
+  })
+
+  it('parses space-separated hsla() format with decimal alpha', () => {
+    const result = parseColor('hsla(11 100% 60% / .5)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.hex).toBe('#FF5833')
+    }
+  })
+
+  it('parses hsla() format', () => {
+    const result = parseColor('hsla(11, 100%, 60%, 1)')
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.value.hex).toBe('#FF5833')
     }
   })
 
