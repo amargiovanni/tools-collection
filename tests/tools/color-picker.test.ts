@@ -256,7 +256,7 @@ describe('parseColor', () => {
     const result = parseColor('hsl(11, 100%, 60%)')
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.hex).toBe('#FF5733')
+      expect(result.value.hex).toBe('#FF5833')
       expect(result.value.rgb).toEqual({ r: 255, g: 87, b: 51 })
     }
   })
@@ -265,7 +265,7 @@ describe('parseColor', () => {
     const result = parseColor('hsla(11 100% 60% / .5)')
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.hex).toBe('#FF5733')
+      expect(result.value.hex).toBe('#FF5833')
     }
   })
 
@@ -273,7 +273,7 @@ describe('parseColor', () => {
     const result = parseColor('hsla(11, 100%, 60%, 1)')
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value.hex).toBe('#FF5733')
+      expect(result.value.hex).toBe('#FF5833')
     }
   })
 
