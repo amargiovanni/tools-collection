@@ -1,5 +1,6 @@
 import { err, ok } from '../lib/result'
 import type { Result } from '../lib/result'
+import { randomBytes, bytesToHex, bytesToBase64 } from './random-secrets'
 
 export type AesKeySize = 128 | 192 | 256
 
@@ -8,24 +9,6 @@ export interface AesKeyResult {
   readonly sizeBytes: number
   readonly hex: string
   readonly base64: string
-}
-
-function randomBytes(length: number): Uint8Array {
-  const bytes = new Uint8Array(length)
-  crypto.getRandomValues(bytes)
-  return bytes
-}
-
-function bytesToHex(bytes: Uint8Array): string {
-  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('').toUpperCase()
-}
-
-function bytesToBase64(bytes: Uint8Array): string {
-  let binary = ''
-  for (const byte of bytes) {
-    binary += String.fromCharCode(byte)
-  }
-  return btoa(binary)
 }
 
 export function generateAesKey(sizeBits: number): Result<AesKeyResult> {
