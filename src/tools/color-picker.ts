@@ -150,7 +150,7 @@ function parseRgbFunction(input: string): RgbColor | undefined {
 }
 
 function parseHslFunction(input: string): Result<RgbColor> | undefined {
-  const match = input.match(/^hsla?\(\s*([+-]?\d+(?:\.\d+)?)\s*[, ]\s*([+-]?\d+(?:\.\d+)?)%\s*[, ]\s*([+-]?\d+(?:\.\d+)?)%(?:\s*[,/]\s*(?:0|1|\d*\.\d+)\s*)?\)$/i)
+  const match = input.match(/^hsla?\(\s*([+-]?\d+(?:\.\d+)?(?:deg|rad|grad|turn)?)\s*([, ])\s*([+-]?\d+(?:\.\d+)?)%\s*\2\s*([+-]?\d+(?:\.\d+)?)%(?:\s*([,/])\s*([+-]?\d+(?:\.\d+)?%?)\s*)?\)$/i)
   if (!match) return undefined
 
   return hslToRgb({
