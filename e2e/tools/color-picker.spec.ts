@@ -64,7 +64,7 @@ test.describe('Color Picker', () => {
     await page.locator('[data-testid="input"]').fill('hsl(11, 100%, 60%)')
     await page.getByRole('button', { name: 'Convert Color' }).click()
     await expect(page.locator('[data-testid="result-card"]')).toHaveCount(4, { timeout: 5000 })
-    await expect(page.getByText('#FF5733')).toBeVisible()
+    await expect(page.getByText('#FF5833')).toBeVisible()
   })
 
   test('shows RGBA output for #FF5733', async ({ page }) => {
