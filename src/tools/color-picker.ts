@@ -137,7 +137,7 @@ export function hslToRgb(hsl: HslColor): Result<RgbColor> {
 }
 
 function parseRgbFunction(input: string): RgbColor | undefined {
-  const match = input.match(/^rgba?\(\s*([+-]?\d{1,3})\s*[, ]\s*([+-]?\d{1,3})\s*[, ]\s*([+-]?\d{1,3})(?:\s*[,/]\s*(?:0|1|\d*\.\d+)\s*)?\)$/i)
+  const match = input.match(/^rgba?\(\s*([+-]?\d+(?:\.\d+)?%?)\s*([, ])\s*([+-]?\d+(?:\.\d+)?%?)\s*\2\s*([+-]?\d+(?:\.\d+)?%?)(?:\s*([,/])\s*([+-]?\d+(?:\.\d+)?%?)\s*)?\)$/i)
   if (!match) return undefined
 
   const rgb = {
