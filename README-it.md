@@ -158,7 +158,7 @@ Non serve alcun adapter: l'output statico di Astro funziona direttamente.
 | Comando | Descrizione |
 |---|---|
 | `npm run dev` | Avvia il server di sviluppo con HMR |
-| `npm run build` | Build di produzione (186 pagine) |
+| `npm run build` | Build di produzione (226 pagine) |
 | `npm run preview` | Anteprima della build di produzione |
 | `npm run test` | Esegue i test unitari |
 | `npm run test:watch` | Esegue i test unitari in watch mode |
