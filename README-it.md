@@ -1,6 +1,6 @@
 # Tools Collection
 
-Una raccolta modulare e type-safe di 44 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
+Una raccolta modulare e type-safe di 45 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,9 +9,9 @@ Una raccolta modulare e type-safe di 44 strumenti per sviluppatori che funzionan
 
 ## Cosa Fa
 
-44 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+45 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
-Novità della `1.5.0`: generatori browser-safe per API key, JWT secret, HMAC key, salt, codici di recupero, passphrase e stringhe casuali; in più il color picker chiarisce i formati supportati (HEX/RGB/HSL) e accetta direttamente `rgb()`, `rgba()`, `hsl()` e `hsla()`.
+Novità della `1.5.1`: nuovo convertitore Markdown → HTML con anteprima dal vivo, tabelle GFM, task list e download dell'HTML come frammento o documento completo.
 
 ## Strumenti
 
@@ -22,7 +22,7 @@ Novità della `1.5.0`: generatori browser-safe per API key, JWT secret, HMAC key
 | **Estrazione** | Domain Extractor, Email Extractor |
 | **Analisi** | Count Duplicates, Text Counter |
 | **Sicurezza** | PEM Certificate Inspector, AES Key Generator, HMAC Key Generator, Salt Generator, Recovery Code Generator, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
-| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
+| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter, HTML Entity Encoder/Decoder, Markdown to HTML |
 | **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
 | **Utilità** | Color Picker (HEX/RGB/HSL), Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 
@@ -57,7 +57,7 @@ src/
 │   ├── Sidebar.astro      # Navigazione per categorie
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts           # Registry tool (44 voci con metadati)
+│   ├── tools.ts           # Registry tool (45 voci con metadati)
 │   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
@@ -79,7 +79,7 @@ src/
 │   └── [lang]/            # Route dinamiche per tutte e 5 le lingue
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 44 moduli di logica pura (zero DOM)
+└── tools/                 # 45 moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -107,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 226 pagine HTML statiche (44 tool per lingua x 5 + homepage + redirect root) pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: 256 pagine HTML statiche (45 tool per lingua x 5 + homepage + redirect root) pronte per qualsiasi hosting.
 
 ### Docker
 

@@ -4,9 +4,25 @@ import { TextArea } from '../ui/TextArea'
 import { Checkbox } from '../ui/Checkbox'
 import { OutputPanel } from '../ui/OutputPanel'
 import { StatusMessage } from '../ui/StatusMessage'
+import { DownloadButton } from '../ui/DownloadButton'
 import { convertMarkdownToHtml } from '../../tools/markdown-to-html'
 import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
+
+function buildFullDocument(body: string, title: string): string {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title}</title>
+</head>
+<body>
+${body}
+</body>
+</html>
+`
+}
 
 interface Props {
   lang: Language
@@ -105,6 +121,21 @@ export default function MarkdownToHtml(props: Props) {
         monospace
         rows={10}
       />
+
+      <div class="flex flex-wrap gap-2">
+        <DownloadButton
+          getData={() => html()}
+          filename="output.html"
+          mimeType="text/html"
+          label={t(props.lang, 'tools_markdownToHtml_downloadFragment')}
+        />
+        <DownloadButton
+          getData={() => buildFullDocument(html(), t(props.lang, 'tools_markdownToHtml_name'))}
+          filename="document.html"
+          mimeType="text/html"
+          label={t(props.lang, 'tools_markdownToHtml_downloadDocument')}
+        />
+      </div>
 
       <div class="flex flex-col gap-1.5">
         <span class="text-sm font-medium text-text-secondary">

@@ -347,6 +347,8 @@
   "tools_markdownToHtml_optionGfm": "GitHub Flavored Markdown (tables, tasks, strikethrough)",
   "tools_markdownToHtml_optionLinkify": "Auto-link URLs",
   "tools_markdownToHtml_optionBreaks": "Convert line breaks to <br>",
+  "tools_markdownToHtml_downloadFragment": "Download HTML",
+  "tools_markdownToHtml_downloadDocument": "Download full document",
   "tools_urlEncoder_name": "URL Encoder/Decoder",
   "tools_urlEncoder_description": "Encode and decode URLs and parameters",
   "tools_urlEncoder_placeholder": "https://example.com?param=value with spaces",

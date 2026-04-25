@@ -1,6 +1,6 @@
 # Tools Collection
 
-A modular, type-safe collection of 44 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
+A modular, type-safe collection of 45 browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,9 +9,9 @@ A modular, type-safe collection of 44 browser-based developer tools. Built with 
 
 ## What it does
 
-44 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
+45 tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
-Notable in `1.5.0`: browser-safe generators now cover API keys, JWT secrets, HMAC keys, salts, recovery codes, passphrases, and random strings, while the color picker makes its HEX/RGB/HSL support explicit and accepts `rgb()`, `rgba()`, `hsl()`, and `hsla()` inputs directly.
+Notable in `1.5.1`: a new Markdown-to-HTML converter with a live preview, GFM tables, task lists, and direct download of either the HTML fragment or a full HTML document.
 
 ## Tools
 
@@ -22,7 +22,7 @@ Notable in `1.5.0`: browser-safe generators now cover API keys, JWT secrets, HMA
 | **Extraction** | Domain Extractor, Email Extractor |
 | **Analysis** | Count Duplicates, Text Counter |
 | **Security** | PEM Certificate Inspector, AES Key Generator, HMAC Key Generator, Salt Generator, Recovery Code Generator, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
-| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter |
+| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter, HTML Entity Encoder/Decoder, Markdown to HTML |
 | **Development** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
 | **Utilities** | Color Picker (HEX/RGB/HSL), Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 
@@ -57,7 +57,7 @@ src/
 │   ├── Sidebar.astro    # Category navigation
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts         # Tool registry (44 entries with metadata)
+│   ├── tools.ts         # Tool registry (45 entries with metadata)
 │   └── tool-components.ts # Lazy component mapping (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts         # Type-safe t(lang, key) helper
@@ -79,7 +79,7 @@ src/
 │   └── [lang]/          # Dynamic routes for all 5 languages
 ├── styles/
 │   └── global.css       # Tailwind 4 @theme tokens + dark mode
-└── tools/               # 44 pure logic modules (zero DOM)
+└── tools/               # 45 pure logic modules (zero DOM)
 ```
 
 ## Getting Started
@@ -107,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-Output goes to `dist/` — 226 static HTML pages (44 tools per language x 5 + homepages + root redirect) ready for any hosting.
+Output goes to `dist/` — 256 static HTML pages (45 tools per language x 5 + homepages + root redirect) ready for any hosting.
 
 ### Docker
 

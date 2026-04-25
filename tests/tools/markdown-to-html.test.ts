@@ -87,6 +87,39 @@ describe('convertMarkdownToHtml', () => {
     expect(html).not.toContain('javascript:')
   })
 
+  it('sanitizes data: URLs', () => {
+    const html = convert('[a](data:text/html,xyz)')
+    expect(html).toContain('href="#"')
+    expect(html).not.toContain('data:')
+  })
+
+  it('sanitizes vbscript: URLs', () => {
+    const html = convert('[a](vbscript:alert(2))')
+    expect(html).toContain('href="#"')
+    expect(html).not.toContain('vbscript:')
+  })
+
+  it('sanitizes javascript: in mixed case', () => {
+    const html = convert('[a](JaVaScRiPt:alert(1))')
+    expect(html).toContain('href="#"')
+    expect(html).not.toContain('JaVaScRiPt:')
+  })
+
+  it('strips placeholder control characters from input', () => {
+    const html = convert('hello 0 world')
+    expect(html).not.toContain('')
+    expect(html).not.toContain('')
+    expect(html).toContain('hello')
+    expect(html).toContain('world')
+  })
+
+  it('handles escaped pipes inside table cells', () => {
+    const md = '| col | val |\n| --- | --- |\n| a \\| b | c \\| d |'
+    const html = convert(md)
+    expect(html).toContain('<td>a | b</td>')
+    expect(html).toContain('<td>c | d</td>')
+  })
+
   it('renders unordered lists', () => {
     const html = convert('- one\n- two\n- three')
     expect(html).toContain('<ul>')

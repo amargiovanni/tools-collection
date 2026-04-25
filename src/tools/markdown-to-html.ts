@@ -28,7 +28,12 @@ const URL_REGEX = /\bhttps?:\/\/[^\s<>"'()]+[^\s<>"'(),.;:!?]/g
 
 function sanitizeUrl(url: string): string {
   const trimmed = url.trim()
-  if (/^\s*javascript:/i.test(trimmed) || /^\s*data:/i.test(trimmed) || /^\s*vbscript:/i.test(trimmed)) {
+  const protocolCheck = trimmed.replace(/[^\x21-\x7E]/g, '').toLowerCase()
+  if (
+    protocolCheck.startsWith('javascript:') ||
+    protocolCheck.startsWith('data:') ||
+    protocolCheck.startsWith('vbscript:')
+  ) {
     return '#'
   }
   return trimmed
@@ -55,7 +60,7 @@ function restorePlaceholders(text: string, state: InlineState): string {
 }
 
 function parseInline(input: string, state: InlineState): string {
-  let text = input
+  let text = input.replace(/[\u0001\u0002]/g, '')
 
   text = text.replace(/`([^`\n]+)`/g, (_, code: string) => {
     return reservePlaceholder(state, `<code>${escapeHtml(code)}</code>`)
@@ -184,8 +189,8 @@ function renderTable(headerLine: string, alignLine: string, bodyLines: string[],
   const splitRow = (row: string): string[] => {
     let s = row.trim()
     if (s.startsWith('|')) s = s.slice(1)
-    if (s.endsWith('|')) s = s.slice(0, -1)
-    return s.split('|').map((c) => c.trim())
+    if (s.endsWith('|') && !s.endsWith('\\|')) s = s.slice(0, -1)
+    return s.split(/(?<!\\)\|/).map((c) => c.trim().replace(/\\\|/g, '|'))
   }
 
   const headers = splitRow(headerLine)
