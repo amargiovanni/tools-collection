@@ -274,6 +274,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     path: '/tools/html-entity',
   },
   {
+    id: 'markdown-to-html',
+    category: 'converters',
+    icon: '📝',
+    keywords: ['markdown', 'md', 'html', 'convert', 'preview', 'render', 'gfm', 'commonmark'],
+    path: '/tools/markdown-to-html',
+  },
+  {
     id: 'number-base-converter',
     category: 'converters',
     icon: '🔢',

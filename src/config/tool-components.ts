@@ -54,6 +54,7 @@ export const toolComponents: Record<string, ToolComponent> = {
   'jwt-decoder': lazy(() => import('../components/tools/JwtDecoder')),
   'uuid-generator': lazy(() => import('../components/tools/UuidGenerator')),
   'html-entity': lazy(() => import('../components/tools/HtmlEntity')),
+  'markdown-to-html': lazy(() => import('../components/tools/MarkdownToHtml')),
   'number-base-converter': lazy(() => import('../components/tools/NumberBaseConverter')),
   'csv-viewer': lazy(() => import('../components/tools/CsvViewer')),
   'toml-formatter': lazy(() => import('../components/tools/TomlFormatter')),
