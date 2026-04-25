@@ -6,6 +6,19 @@ This changelog tracks the recent evolution of the project by published release a
 
 ## Unreleased
 
+## Published: `1.5.1`
+
+### Added
+- Added a `Markdown to HTML` converter with a live preview, supporting GFM tables, task lists, fenced code blocks, links, images, blockquotes, and a self-contained parser that escapes HTML and sanitizes `javascript:`, `data:`, and `vbscript:` URLs.
+- Added `Download HTML` and `Download full document` buttons for the Markdown to HTML output.
+
+### Changed
+- Bumped the product version to `1.5.1`.
+- Hardened URL sanitization in the Markdown converter against control-character bypasses.
+- Added support for escaped pipes (`\|`) inside GFM table cells.
+
+## Published: `1.5.0`
+
 ### Added
 - Added an `AES Key Generator` tool for browser-side generation of AES-128, AES-192, and AES-256 keys in hex and Base64.
 - Added browser-safe generators for API keys, JWT secrets, HMAC keys, salts, recovery codes, passphrases, and random strings.
