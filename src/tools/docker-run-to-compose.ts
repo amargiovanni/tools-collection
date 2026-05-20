@@ -497,7 +497,7 @@ export function configToCompose(cfg: DockerRunConfig): string {
     body.push('    sysctls:')
     for (const s of cfg.sysctls) {
       const [k = '', v = ''] = s.split('=')
-      body.push(`      ${k}: "${v}"`)
+      body.push(`      ${k}: "${v.replace(/"/g, '\\"')}"`)
     }
   }
 
