@@ -6,6 +6,16 @@ This changelog tracks the recent evolution of the project by published release a
 
 ## Unreleased
 
+### Added
+- Added a `Date Interval` tool for calculating the span between two dates, including total days, week breakdown, working days, and weekend days.
+- Added a `Sort Text` tool for sorting line-based text with alphabetical, length-based, numeric, reverse, and random modes.
+- Added a `Docker Run ↔ Compose` converter for translating between `docker run` commands and Docker Compose YAML.
+
+### Fixed
+- Fixed the tool-order test so the utilities catalog includes the new `Date Interval` entry.
+- Fixed timezone-sensitive date initialization in the new date interval tool.
+- Fixed Docker converter output handling for multiline commands, environment map values, YAML quoting, log options, and ulimits.
+
 ## Published: `1.5.1`
 
 ### Added
