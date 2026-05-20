@@ -6,6 +6,9 @@ This changelog tracks the recent evolution of the project by published release a
 
 ## Unreleased
 
+### Changed
+- Reworded the README files and changelog notes to avoid hard-coded tool counts in catalog descriptions.
+
 ## Published: `1.5.2`
 
 ### Added
@@ -108,7 +111,7 @@ This changelog tracks the recent evolution of the project by published release a
 ### Changed
 - Bumped the product version to `1.3.3`.
 - Updated the password generator with a Nebula.Tools-aligned `Simple mode` for reduced special characters plus a separate `Avoid ambiguous characters` option that `Simple mode` enables by default.
-- Updated catalog metadata, lazy tool loading, translations, and automated tests to account for the new tool count.
+- Updated catalog metadata, lazy tool loading, translations, and automated tests to account for the expanded catalog.
 - Replaced eager static imports of all 29 tool components with SolidJS `lazy()` dynamic imports for code splitting (44 separate JS chunks instead of 1 monolithic bundle).
 - Replaced `getAlternateLanguage()` with `getOtherLanguages()` to support 5 languages.
 - Updated root redirect and hash redirect scripts to recognize all 5 supported languages.
@@ -120,7 +123,7 @@ This changelog tracks the recent evolution of the project by published release a
 - Extracted `isValidRgb()` helper in `color-picker` to deduplicate RGB range validation.
 - Removed redundant `valid` signal from `JsonFormatter` and `XmlBeautifier` (derived from output state).
 - Set minimum `font-size: 16px` on all input elements to prevent iOS auto-zoom on focus.
-- Updated docs and tests to reflect the new tool count and dynamic catalog totals.
+- Updated docs and tests to reflect the expanded catalog and its dynamic totals.
 
 ### Fixed
 - Fixed data-size conversion semantics to follow base 1024 for `KB/MB/GB/TB` (common IT usage), so `4 GB = 4096 MB`.
