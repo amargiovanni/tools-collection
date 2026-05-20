@@ -376,6 +376,10 @@ function yamlScalar(key: string, value: string, indent: string): string {
     : `${indent}${key}: ${value}`
 }
 
+function yamlQuoted(value: string): string {
+  return `"${value.replace(/"/g, '\\"')}"`
+}
+
 export function configToCompose(cfg: DockerRunConfig): string {
   const serviceName = cfg.containerName || serviceNameFromImage(cfg.image)
   const lines: string[] = ['services:']
@@ -466,7 +470,7 @@ export function configToCompose(cfg: DockerRunConfig): string {
       body.push('      options:')
       for (const opt of cfg.logOpts) {
         const [k, v] = splitOnce(opt, '=')
-        body.push(`        ${k}: "${v}"`)
+        body.push(`        ${k}: ${yamlQuoted(v)}`)
       }
     }
   }
@@ -497,7 +501,7 @@ export function configToCompose(cfg: DockerRunConfig): string {
     body.push('    sysctls:')
     for (const s of cfg.sysctls) {
       const [k = '', v = ''] = s.split('=')
-      body.push(`      ${k}: "${v.replace(/"/g, '\\"')}"`)
+      body.push(`      ${k}: ${yamlQuoted(v)}`)
     }
   }
 
