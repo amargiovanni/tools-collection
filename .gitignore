@@ -30,3 +30,4 @@ tasks/
 playwright-report/
 test-results/
 .worktrees/
+/.tokensave

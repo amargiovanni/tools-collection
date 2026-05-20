@@ -345,6 +345,24 @@ export const toolRegistry: readonly ToolMeta[] = [
     path: '/tools/yaml-formatter',
   },
 
+  // Text Processing (sort)
+  {
+    id: 'sort-text',
+    category: 'text-processing',
+    icon: '🔤',
+    keywords: ['sort', 'order', 'alphabetical', 'lines', 'text', 'numeric', 'reverse', 'random', 'length'],
+    path: '/tools/sort-text',
+  },
+
+  // Development (docker)
+  {
+    id: 'docker-run-to-compose',
+    category: 'development',
+    icon: '🐳',
+    keywords: ['docker', 'compose', 'run', 'container', 'convert', 'yaml', 'dockerfile'],
+    path: '/tools/docker-run-to-compose',
+  },
+
   // Utilities
   {
     id: 'color-picker',
@@ -380,6 +398,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     icon: '🔏',
     keywords: ['hash', 'sha', 'md5', 'sha256', 'sha512', 'checksum', 'digest'],
     path: '/tools/hash-generator',
+  },
+  {
+    id: 'date-interval',
+    category: 'utilities',
+    icon: '📅',
+    keywords: ['date', 'interval', 'duration', 'days', 'working', 'difference', 'calendar', 'weeks', 'months'],
+    path: '/tools/date-interval',
   },
 ] as const
 
