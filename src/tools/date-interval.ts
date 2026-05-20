@@ -10,35 +10,73 @@ export interface DateIntervalResult {
   swapped: boolean
 }
 
+const MS_PER_DAY = 86_400_000
+
+function parseDateInput(value: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim())
+  if (!match) return null
+
+  const year = Number(match[1])
+  const month = Number(match[2])
+  const day = Number(match[3])
+
+  const utcTime = Date.UTC(year, month - 1, day)
+  const parsed = new Date(utcTime)
+
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    return null
+  }
+
+  return parsed
+}
+
+function countWorkingDays(start: Date, end: Date): number {
+  const inclusiveDays = Math.round((end.getTime() - start.getTime()) / MS_PER_DAY) + 1
+  const fullWeeks = Math.floor(inclusiveDays / 7)
+  let workingDays = fullWeeks * 5
+  const remainderDays = inclusiveDays % 7
+  const startDow = start.getUTCDay()
+
+  for (let i = 0; i < remainderDays; i++) {
+    const dow = (startDow + i) % 7
+    if (dow !== 0 && dow !== 6) workingDays++
+  }
+
+  return workingDays
+}
+
 export function calculateDateInterval(startStr: string, endStr: string): DateIntervalResult | null {
   if (!startStr || !endStr) return null
 
-  const a = new Date(startStr + 'T00:00:00')
-  const b = new Date(endStr + 'T00:00:00')
+  const a = parseDateInput(startStr)
+  const b = parseDateInput(endStr)
 
-  if (isNaN(a.getTime()) || isNaN(b.getTime())) return null
+  if (!a || !b) return null
 
   const swapped = b < a
   const start = swapped ? b : a
   const end = swapped ? a : b
 
-  const msPerDay = 86_400_000
-  const totalDays = Math.round((end.getTime() - start.getTime()) / msPerDay)
+  const totalDays = Math.round((end.getTime() - start.getTime()) / MS_PER_DAY)
   const totalWeeks = Math.floor(totalDays / 7)
   const remainderDays = totalDays % 7
 
-  let years = end.getFullYear() - start.getFullYear()
-  let months = end.getMonth() - start.getMonth()
+  let years = end.getUTCFullYear() - start.getUTCFullYear()
+  let months = end.getUTCMonth() - start.getUTCMonth()
 
-  const ed = end.getDate()
-  const sd = start.getDate()
+  const ed = end.getUTCDate()
+  const sd = start.getUTCDate()
   let days: number
 
   if (ed >= sd) {
     days = ed - sd
   } else {
     months--
-    const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate()
+    const prevMonthDays = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), 0)).getUTCDate()
     const clampedSd = Math.min(sd, prevMonthDays)
     days = prevMonthDays - clampedSd + ed
   }
@@ -48,13 +86,7 @@ export function calculateDateInterval(startStr: string, endStr: string): DateInt
     months += 12
   }
 
-  let workingDays = 0
-  const cur = new Date(start.getTime())
-  while (cur.getTime() <= end.getTime()) {
-    const dow = cur.getDay()
-    if (dow !== 0 && dow !== 6) workingDays++
-    cur.setDate(cur.getDate() + 1)
-  }
+  const workingDays = countWorkingDays(start, end)
   const weekendDays = totalDays + 1 - workingDays
 
   return {

@@ -10,6 +10,7 @@ describe('sortToolsByLocalizedName', () => {
     expect(sorted.map((tool) => tool.id)).toEqual([
       'color-picker',
       'csv-viewer',
+      'date-interval',
       'hash-generator',
       'reg2gpo',
       'time-convert',

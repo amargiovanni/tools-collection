@@ -37,6 +37,37 @@ function tokenize(input: string): string[] {
   return tokens
 }
 
+function splitOnce(input: string, separator: string): [string, string] {
+  const index = input.indexOf(separator)
+  if (index < 0) return [input, '']
+  return [input.slice(0, index), input.slice(index + 1)]
+}
+
+function listValues(value: MaybeJsonValue): JsonValue[] {
+  if (Array.isArray(value)) return value
+  if (value === null || value === undefined) return []
+  return [value]
+}
+
+function environmentEntries(value: MaybeJsonValue): string[] {
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => {
+      if (typeof entry === 'string') return [entry]
+      if (entry !== null && typeof entry === 'object') {
+        return Object.entries(entry).map(([key, raw]) =>
+          raw === null || raw === undefined ? key : `${key}=${String(raw)}`
+        )
+      }
+      return [String(entry)]
+    })
+  }
+
+  const env = obj(value)
+  return Object.entries(env).map(([key, raw]) =>
+    raw === null || raw === undefined ? key : `${key}=${String(raw)}`
+  )
+}
+
 // ---------------------------------------------------------------------------
 // Parsed docker run structure
 // ---------------------------------------------------------------------------
@@ -435,7 +466,7 @@ export function configToCompose(cfg: DockerRunConfig): string {
     if (cfg.logOpts.length) {
       body.push('      options:')
       for (const opt of cfg.logOpts) {
-        const [k = '', v = ''] = opt.split('=')
+        const [k, v] = splitOnce(opt, '=')
         body.push(`        ${k}: "${v}"`)
       }
     }
@@ -444,14 +475,16 @@ export function configToCompose(cfg: DockerRunConfig): string {
   if (cfg.ulimits.length) {
     body.push('    ulimits:')
     for (const u of cfg.ulimits) {
-      const [uname = '', limits = ''] = u.split(':')
-      const uparts = limits.split(':')
-      if (uparts.length === 2) {
+      const [uname, limits] = splitOnce(u, '=')
+      const uparts = limits.split(':').filter((part) => part !== '')
+      if (uparts.length >= 2) {
         body.push(`      ${uname}:`)
-        body.push(`        soft: ${uparts[0] ?? ''}`)
-        body.push(`        hard: ${uparts[1] ?? ''}`)
+        body.push(`        soft: ${uparts[0]}`)
+        body.push(`        hard: ${uparts.slice(1).join(':')}`)
+      } else if (uparts.length === 1) {
+        body.push(`      ${uname}: ${uparts[0]}`)
       } else {
-        body.push(`      ${uname}: ${limits}`)
+        body.push(`      ${uname}:`)
       }
     }
   }
@@ -568,11 +601,11 @@ function serviceToDockerRun(name: string, svc: Record<string, MaybeJsonValue>): 
   if (pid) parts.push('--pid', pid)
   if (ipc) parts.push('--ipc', ipc)
 
-  for (const p of arr(svc['ports'])) parts.push('-p', shellQuote(str(p)))
-  for (const v of arr(svc['volumes'])) parts.push('-v', shellQuote(str(v)))
-  for (const e of arr(svc['environment'])) parts.push('-e', shellQuote(str(e)))
-  for (const f of arr(svc['env_file'])) parts.push('--env-file', shellQuote(str(f)))
-  for (const n of arr(svc['networks'])) parts.push('--network', shellQuote(str(n)))
+  for (const p of listValues(svc['ports'])) parts.push('-p', shellQuote(str(p)))
+  for (const v of listValues(svc['volumes'])) parts.push('-v', shellQuote(str(v)))
+  for (const e of environmentEntries(svc['environment'])) parts.push('-e', shellQuote(e))
+  for (const f of listValues(svc['env_file'])) parts.push('--env-file', shellQuote(str(f)))
+  for (const n of listValues(svc['networks'])) parts.push('--network', shellQuote(str(n)))
   for (const d of arr(svc['dns'])) parts.push('--dns', str(d))
   for (const d of arr(svc['dns_search'])) parts.push('--dns-search', str(d))
   for (const h of arr(svc['extra_hosts'])) parts.push('--add-host', shellQuote(str(h)))
@@ -589,7 +622,7 @@ function serviceToDockerRun(name: string, svc: Record<string, MaybeJsonValue>): 
     parts.push('--log-driver', str(logging['driver']))
     const opts = obj(logging['options'])
     for (const [k, v] of Object.entries(opts)) {
-      parts.push('--log-opt', `${k}=${str(v)}`)
+      parts.push('--log-opt', shellQuote(`${k}=${str(v)}`))
     }
   }
 
@@ -597,10 +630,16 @@ function serviceToDockerRun(name: string, svc: Record<string, MaybeJsonValue>): 
   for (const [uname, uval] of Object.entries(ulimits)) {
     if (typeof uval === 'number') {
       parts.push('--ulimit', `${uname}=${uval}`)
+    } else if (typeof uval === 'string') {
+      parts.push('--ulimit', `${uname}=${uval}`)
     } else {
       const u = obj(uval)
       if (u['soft'] !== undefined && u['hard'] !== undefined) {
-        parts.push('--ulimit', `${uname}=${u['soft']}:${u['hard']}`)
+        parts.push('--ulimit', `${uname}=${str(u['soft'])}:${str(u['hard'])}`)
+      } else if (u['soft'] !== undefined) {
+        parts.push('--ulimit', `${uname}=${str(u['soft'])}`)
+      } else if (u['hard'] !== undefined) {
+        parts.push('--ulimit', `${uname}=${str(u['hard'])}`)
       }
     }
   }
