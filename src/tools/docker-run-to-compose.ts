@@ -257,7 +257,7 @@ export function parseDockerRun(input: string): Result<DockerRunConfig> {
     }
 
     // Expand combined short flags like -dit → -d -i -t
-    if (/^-[a-zA-Z]{2,}$/.test(flag) && !VALUE_FLAGS.has(flag)) {
+    if (inlineValue === null && /^-[a-zA-Z]{2,}$/.test(flag) && !VALUE_FLAGS.has(flag)) {
       const chars = flag.slice(1).split('')
       for (const ch of chars) {
         applyBooleanFlag(cfg, '-' + ch)
