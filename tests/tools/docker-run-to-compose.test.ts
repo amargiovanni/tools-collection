@@ -38,7 +38,7 @@ services:
 
     expect(result.ok).toBe(true)
     const output = result.ok ? result.value : ''
-    const normalized = output.replace(/\s+/g, ' ')
+    const normalized = output.replace(/\\\s*\n\s*/g, ' ').replace(/\s+/g, ' ')
 
     expect(normalized).toContain('-e FOO=bar')
     expect(normalized).toContain('-e EMPTY')
