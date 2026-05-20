@@ -520,7 +520,7 @@ export function configToCompose(cfg: DockerRunConfig): string {
   if (cfg.cpus) body.push(`    cpus: ${cfg.cpus}`)
 
   if (cfg.command.length) {
-    const cmd = cfg.command.map((c) => `"${c.replace(/"/g, '\\"')}"`).join(' ')
+    const cmd = cfg.command.map((c) => `"${c.replace(/"/g, '\\"')}"`).join(', ')
     body.push(`    command: [${cmd}]`)
   }
 
