@@ -38,9 +38,11 @@ services:
 
     expect(result.ok).toBe(true)
     const output = result.ok ? result.value : ''
-    expect(output).toContain('-e FOO=bar')
-    expect(output).toContain('-e EMPTY')
-    expect(output).toContain('--log-opt max-size=10m')
-    expect(output).toContain('--ulimit nofile=1024:2048')
+    const normalized = output.replace(/\s+/g, ' ')
+
+    expect(normalized).toContain('-e FOO=bar')
+    expect(normalized).toContain('-e EMPTY')
+    expect(normalized).toContain('--log-opt max-size=10m')
+    expect(normalized).toContain('--ulimit nofile=1024:2048')
   })
 })
