@@ -23,7 +23,7 @@ export function sortText(input: string, options: SortOptions): Result<string> {
   const validated = validateNonEmpty(input)
   if (!validated.ok) return validated
 
-  let lines = input.split('\n')
+  let lines = input.split(/\r?\n/)
 
   if (options.trimLines) {
     lines = lines.map((l) => l.trim())
