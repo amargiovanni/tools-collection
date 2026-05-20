@@ -6,6 +6,8 @@ This changelog tracks the recent evolution of the project by published release a
 
 ## Unreleased
 
+## Published: `1.5.2`
+
 ### Added
 - Added a `Date Interval` tool for calculating the span between two dates, including total days, week breakdown, working days, and weekend days.
 - Added a `Sort Text` tool for sorting line-based text with alphabetical, length-based, numeric, reverse, and random modes.
