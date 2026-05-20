@@ -288,7 +288,6 @@ export function parseDockerRun(input: string): Result<DockerRunConfig> {
 
     // Unknown flag — skip
     if (tok.startsWith('-')) {
-      if (inlineValue === null) i++
       i++
       continue
     }
