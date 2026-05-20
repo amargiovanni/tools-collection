@@ -1,6 +1,6 @@
 # Tools Collection
 
-Una raccolta modulare e type-safe di 45 strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
+Una raccolta modulare e type-safe di 50+ strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
@@ -9,7 +9,7 @@ Una raccolta modulare e type-safe di 45 strumenti per sviluppatori che funzionan
 
 ## Cosa Fa
 
-45 strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
+50+ strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
 Novità della `1.5.1`: nuovo convertitore Markdown → HTML con anteprima dal vivo, tabelle GFM, task list e download dell'HTML come frammento o documento completo.
 
@@ -53,11 +53,11 @@ src/pages/[lang]/tools/[tool].astro     ← Pagina Astro (monta l'island con cli
 src/
 ├── components/
 │   ├── ui/                # 13 componenti Solid riutilizzabili (Button, TextArea, OutputPanel, ...)
-│   ├── tools/             # più di 30 componenti UI tool (uno per tool)
+│   ├── tools/             # componenti UI tool (uno per tool)
 │   ├── Sidebar.astro      # Navigazione per categorie
 │   └── HomeCatalog.astro
 ├── config/
-│   ├── tools.ts           # Registry tool (45 voci con metadati)
+│   ├── tools.ts           # Registry tool con metadati
 │   └── tool-components.ts # Mapping componenti lazy (code splitting via SolidJS lazy())
 ├── i18n/
 │   ├── index.ts           # Helper type-safe t(lang, key)
@@ -79,7 +79,7 @@ src/
 │   └── [lang]/            # Route dinamiche per tutte e 5 le lingue
 ├── styles/
 │   └── global.css         # Tailwind 4 @theme tokens + dark mode
-└── tools/                 # 45 moduli di logica pura (zero DOM)
+└── tools/                 # moduli di logica pura (zero DOM)
 ```
 
 ## Avvio Rapido
@@ -107,7 +107,7 @@ npm run build
 npm run preview
 ```
 
-L'output viene generato in `dist/`: 256 pagine HTML statiche (45 tool per lingua x 5 + homepage + redirect root) pronte per qualsiasi hosting.
+L'output viene generato in `dist/`: una pagina HTML statica per tool e lingua, più le homepage e il redirect root, pronte per qualsiasi hosting.
 
 ### Docker
 
