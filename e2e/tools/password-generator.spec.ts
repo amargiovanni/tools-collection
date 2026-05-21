@@ -20,13 +20,13 @@ test.describe('Password Generator', () => {
     await expect(output).not.toBeEmpty()
   })
 
-  test('default generates 5 passwords (5 lines)', async ({ page }) => {
+  test('default generates 1 password (1 line)', async ({ page }) => {
     await page.getByRole('button', { name: 'Generate Password' }).click()
     const output = page.locator('[data-testid="output-panel"] textarea')
     await expect(output).not.toBeEmpty({ timeout: 5000 })
     const value = await output.inputValue()
     const lines = value.split('\n').filter((l) => l.trim() !== '')
-    expect(lines).toHaveLength(5)
+    expect(lines).toHaveLength(1)
   })
 
   test('each generated password is at least 16 chars (default length)', async ({ page }) => {

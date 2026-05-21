@@ -127,16 +127,23 @@ for (const tool of toolRegistry) {
     for (var i = 0; i < sidebars.length; i++) {
       var sidebar = sidebars[i]
       var activeLink = sidebar.querySelector('a[aria-current="page"]')
-      if (activeLink) {
+      if (activeLink && activeLink.offsetParent !== null) {
         activeLink.scrollIntoView({ block: 'center', inline: 'nearest' })
       }
     }
   }
 
-  initSidebarFavorites()
-  scrollActiveToolIntoView()
-  document.addEventListener('astro:page-load', initSidebarFavorites)
-  document.addEventListener('astro:page-load', scrollActiveToolIntoView)
-  window.addEventListener('favorites-updated', initSidebarFavorites)
-  window.addEventListener('favorites-updated', scrollActiveToolIntoView)
+  if (!window.__sidebarListenersBound) {
+    document.addEventListener('astro:page-load', initSidebarFavorites)
+    document.addEventListener('astro:page-load', scrollActiveToolIntoView)
+    window.addEventListener('favorites-updated', initSidebarFavorites)
+    window.addEventListener('favorites-updated', scrollActiveToolIntoView)
+    window.__sidebarListenersBound = true
+  }
+
+  if (!window.__sidebarInitialSyncDone) {
+    initSidebarFavorites()
+    scrollActiveToolIntoView()
+    window.__sidebarInitialSyncDone = true
+  }
 </script>
