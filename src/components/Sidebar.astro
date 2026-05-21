@@ -20,7 +20,7 @@ for (const tool of toolRegistry) {
 }
 ---
 
-<nav class="flex flex-col gap-4 py-4" aria-label="Tool navigation">
+<nav class="flex flex-col gap-4 py-4" aria-label="Tool navigation" data-tool-sidebar>
   <!-- Favorites section (populated client-side) -->
   <div id={!mobile ? 'sidebar-favorites' : undefined} data-favorites-section class="hidden" data-lang={lang} data-current-path={currentPath}>
     <h3 class="mb-1.5 px-3 text-xs font-semibold uppercase tracking-wider text-amber-500 dark:text-amber-400">
@@ -122,7 +122,28 @@ for (const tool of toolRegistry) {
     document.querySelectorAll('[data-favorites-section]').forEach(updateFavoritesSection)
   }
 
-  initSidebarFavorites()
-  document.addEventListener('astro:page-load', initSidebarFavorites)
-  window.addEventListener('favorites-updated', initSidebarFavorites)
+  function scrollActiveToolIntoView() {
+    var sidebars = document.querySelectorAll('[data-tool-sidebar]')
+    for (var i = 0; i < sidebars.length; i++) {
+      var sidebar = sidebars[i]
+      var activeLink = sidebar.querySelector('a[aria-current="page"]')
+      if (activeLink && activeLink.offsetParent !== null) {
+        activeLink.scrollIntoView({ block: 'center', inline: 'nearest' })
+      }
+    }
+  }
+
+  if (!window.__sidebarListenersBound) {
+    document.addEventListener('astro:page-load', initSidebarFavorites)
+    document.addEventListener('astro:page-load', scrollActiveToolIntoView)
+    window.addEventListener('favorites-updated', initSidebarFavorites)
+    window.addEventListener('favorites-updated', scrollActiveToolIntoView)
+    window.__sidebarListenersBound = true
+  }
+
+  if (!window.__sidebarInitialSyncDone) {
+    initSidebarFavorites()
+    scrollActiveToolIntoView()
+    window.__sidebarInitialSyncDone = true
+  }
 </script>

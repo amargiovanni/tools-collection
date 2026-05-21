@@ -16,7 +16,7 @@ interface Props {
 
 export default function UsernameGenerator(props: Props) {
   const [style, setStyle] = createSignal<UsernameStyle>('random')
-  const [count, setCount] = createSignal(10)
+  const [count, setCount] = createSignal(1)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)
 

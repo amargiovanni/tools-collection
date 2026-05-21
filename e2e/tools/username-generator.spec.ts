@@ -19,13 +19,13 @@ test.describe('Username Generator', () => {
     await expect(page.locator('[data-testid="output-panel"] textarea')).not.toBeEmpty({ timeout: 5000 })
   })
 
-  test('default generates 10 usernames', async ({ page }) => {
+  test('default generates 1 username', async ({ page }) => {
     await page.getByRole('button', { name: 'Generate Usernames' }).click()
     const output = page.locator('[data-testid="output-panel"] textarea')
     await expect(output).not.toBeEmpty({ timeout: 5000 })
     const value = await output.inputValue()
     const lines = value.split('\n').filter((l) => l.trim() !== '')
-    expect(lines).toHaveLength(10)
+    expect(lines).toHaveLength(1)
   })
 
   test('style select shows all 4 options', async ({ page }) => {

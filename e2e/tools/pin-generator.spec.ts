@@ -25,13 +25,13 @@ test.describe('PIN Generator', () => {
     }
   })
 
-  test('default generates 10 PINs', async ({ page }) => {
+  test('default generates 1 PIN', async ({ page }) => {
     await page.getByRole('button', { name: 'Generate PINs' }).click()
     const output = page.locator('[data-testid="output-panel"] textarea')
     await expect(output).not.toBeEmpty({ timeout: 5000 })
     const value = await output.inputValue()
     const lines = value.split('\n').filter((l) => l.trim() !== '')
-    expect(lines).toHaveLength(10)
+    expect(lines).toHaveLength(1)
   })
 
   test('default PIN length is 4 digits', async ({ page }) => {

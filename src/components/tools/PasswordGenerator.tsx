@@ -15,7 +15,7 @@ interface Props {
 
 export default function PasswordGenerator(props: Props) {
   const [length, setLength] = createSignal(16)
-  const [count, setCount] = createSignal(5)
+  const [count, setCount] = createSignal(1)
   const [uppercase, setUppercase] = createSignal(true)
   const [lowercase, setLowercase] = createSignal(true)
   const [numbers, setNumbers] = createSignal(true)

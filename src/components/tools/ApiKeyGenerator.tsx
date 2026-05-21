@@ -15,7 +15,7 @@ interface Props {
 export default function ApiKeyGenerator(props: Props) {
   const [prefix, setPrefix] = createSignal('sk_live_')
   const [length, setLength] = createSignal(32)
-  const [count, setCount] = createSignal(3)
+  const [count, setCount] = createSignal(1)
   const [format, setFormat] = createSignal<ApiKeyFormat>('alnum')
   const [output, setOutput] = createSignal('')
 
