@@ -15,7 +15,7 @@ interface Props {
 
 export default function PinGenerator(props: Props) {
   const [length, setLength] = createSignal(4)
-  const [count, setCount] = createSignal(10)
+  const [count, setCount] = createSignal(1)
   const [unique, setUnique] = createSignal(true)
   const [output, setOutput] = createSignal('')
   const [error, setError] = createSignal<string | null>(null)

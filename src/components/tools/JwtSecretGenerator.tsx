@@ -14,7 +14,7 @@ interface Props {
 
 export default function JwtSecretGenerator(props: Props) {
   const [size, setSize] = createSignal<JwtSecretSize>(32)
-  const [count, setCount] = createSignal(3)
+  const [count, setCount] = createSignal(1)
   const [format, setFormat] = createSignal<JwtSecretFormat>('base64url')
   const [output, setOutput] = createSignal('')
 

@@ -13,7 +13,7 @@ interface Props {
 
 export default function PassphraseGenerator(props: Props) {
   const [wordCount, setWordCount] = createSignal(4)
-  const [count, setCount] = createSignal(5)
+  const [count, setCount] = createSignal(1)
   const [separator, setSeparator] = createSignal('-')
   const [output, setOutput] = createSignal('')
 

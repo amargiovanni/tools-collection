@@ -14,7 +14,7 @@ interface Props {
 
 export default function SaltGenerator(props: Props) {
   const [size, setSize] = createSignal<SaltSize>(16)
-  const [count, setCount] = createSignal(5)
+  const [count, setCount] = createSignal(1)
   const [format, setFormat] = createSignal<SaltFormat>('base64url')
   const [output, setOutput] = createSignal('')
 

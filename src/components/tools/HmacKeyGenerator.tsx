@@ -14,7 +14,7 @@ interface Props {
 
 export default function HmacKeyGenerator(props: Props) {
   const [size, setSize] = createSignal<HmacKeySize>(32)
-  const [count, setCount] = createSignal(3)
+  const [count, setCount] = createSignal(1)
   const [format, setFormat] = createSignal<HmacKeyFormat>('base64url')
   const [output, setOutput] = createSignal('')
 
