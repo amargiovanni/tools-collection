@@ -1,12 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro'
 import Sidebar from '../components/Sidebar.astro'
-import BrandMark from '../components/BrandMark.astro'
-import { t, getOtherLanguages, languageNames, getToolNameKey, getToolDescKey } from '../i18n'
+import { t, getOtherLanguages, languageNames, getCategoryName, getToolNameKey, getToolDescKey } from '../i18n'
 import { ShareButton } from '../components/ui/ShareButton'
 import type { Language } from '../i18n'
 import type { ToolMeta } from '../config/tools'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
+import { getToolsByCategory, toolRegistry } from '../config/tools'
+import { iconInner, iconSvg, toolIconSvg, hueOf } from '../lib/icons'
 
 interface Props {
   tool: ToolMeta
@@ -17,125 +18,94 @@ const { tool, lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
 const toolName = t(lang, getToolNameKey(tool.id))
 const toolDesc = t(lang, getToolDescKey(tool.id))
+const categoryName = getCategoryName(lang, tool.category)
+const hue = hueOf(tool.category)
 const currentPath = Astro.url.pathname
+
+// Related tools: same category first, then fill from the rest.
+const sameCat = getToolsByCategory(tool.category).filter((x) => x.id !== tool.id)
+const others = toolRegistry.filter((x) => x.category !== tool.category && x.id !== tool.id)
+const related = [...sameCat, ...others].slice(0, 4)
 ---
 
 <BaseLayout title={`${toolName} — ${t(lang, 'app_documentTitle')}`} description={toolDesc} lang={lang}>
-  <div class="flex min-h-screen">
-    <!-- Sidebar (desktop) -->
-    <aside class="hidden lg:flex w-72 shrink-0 flex-col border-r border-border bg-surface overflow-y-auto h-screen sticky top-0">
-      <div class="flex items-center gap-2 border-b border-border px-4 py-3">
-        <a href={`/${lang}/`} class="flex items-center gap-2 text-sm font-semibold text-text-primary hover:text-accent transition-colors" title={t(lang, 'app_backHomeAria')}>
-          <BrandMark
-            wrapperClass="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-sm shadow-teal-500/20"
-            imageClass="h-full w-full object-contain bg-surface-raised"
-            fallbackClass="inline-flex h-full w-full items-center justify-center p-1.5"
-          />
-          <span>{t(lang, 'app_title')}</span>
-        </a>
-      </div>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Tool catalog">
+      <a class="sb-brand" href={`/${lang}/`} title={t(lang, 'app_backHomeAria')}>
+        <span class="mark"></span>
+        <span class="word">{t(lang, 'app_title')}</span>
+        <span class="ver">v{appVersion}</span>
+      </a>
+      <button type="button" class="sb-search" id="tool-search-trigger">
+        <Fragment set:html={iconSvg('search', 'icon-sm')} />
+        <span class="grow">{t(lang, 'app_searchPlaceholder')}</span>
+        <span class="kbd">⌘K</span>
+      </button>
       <Sidebar lang={lang} currentPath={currentPath} />
     </aside>
 
-    <!-- Main content -->
-    <div class="flex flex-1 flex-col">
-      <!-- Top bar -->
-      <header class="flex items-center gap-3 border-b border-border px-4 py-3 lg:px-6">
-        <!-- Mobile menu button -->
+    <!-- MAIN -->
+    <div class="main">
+      <div class="main-bar">
         <button
           type="button"
           id="mobile-menu-toggle"
-          class="lg:hidden text-text-secondary hover:text-text-primary cursor-pointer"
+          class="ws-btn ws-btn-ghost ws-btn-icon"
           aria-label={t(lang, 'app_mobileMenuAria')}
         >
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Fragment set:html={iconSvg('menu', 'icon-sm')} />
         </button>
-
-        <div class="flex items-center gap-2">
-          <span class="text-xl" aria-hidden="true">{tool.icon}</span>
-          <h1 class="text-lg font-semibold text-text-primary" tabindex="-1" id="tool-heading">
-            {toolName}
-          </h1>
+        <nav class="crumb" aria-label="Breadcrumb">
+          <a href={`/${lang}/`}>Home</a><span class="sep">/</span>
+          <span>{categoryName}</span><span class="sep">/</span>
+          <span class="here">{toolName}</span>
+        </nav>
+        <span class="spacer"></span>
+        <div class="main-actions">
+          <button type="button" id="tool-search-trigger-bar" class="ws-btn ws-btn-ghost ws-btn-icon" aria-label={t(lang, 'app_searchPlaceholder')}>
+            <Fragment set:html={iconSvg('search', 'icon-sm')} />
+          </button>
           <button
             type="button"
             id="favorite-toggle"
             data-tool-id={tool.id}
             data-add-label={t(lang, 'favorites_add')}
             data-remove-label={t(lang, 'favorites_remove')}
-            class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:text-amber-500 cursor-pointer"
+            class="ws-btn ws-btn-ghost"
             aria-label={t(lang, 'favorites_add')}
           >
-            <!-- Empty star (not favorite) -->
-            <svg id="fav-icon-empty" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-            </svg>
-            <!-- Filled star (favorite) -->
-            <svg id="fav-icon-filled" class="h-5 w-5 hidden text-amber-500" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-            </svg>
+            <svg id="fav-icon-empty" class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('star')} />
+            <svg id="fav-icon-filled" class="icon icon-sm hidden" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" stroke="none" style="color:var(--c-fav)" set:html={iconInner('star')} />
+            <span data-fav-label>{t(lang, 'favorites_add')}</span>
           </button>
-          <ShareButton
-            client:load
-            label={t(lang, 'share_copy')}
-            copiedLabel={t(lang, 'share_copied')}
-            unavailableLabel={t(lang, 'share_unavailable')}
-          />
-        </div>
-
-        <div class="ml-auto flex items-center gap-2">
-          <span class="hidden h-9 items-center rounded-lg border border-accent/30 bg-accent/10 px-3 text-sm font-semibold tracking-wide text-accent sm:inline-flex">
-            v{appVersion}
-          </span>
-          <button
-            type="button"
-            id="tool-search-trigger"
-            class="inline-flex h-9 items-center gap-2 rounded-lg border border-border bg-surface-raised px-3 text-sm text-text-muted transition-colors hover:border-accent hover:text-text-secondary cursor-pointer"
-          >
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <span class="hidden sm:inline">{t(lang, 'app_searchPlaceholder')}</span>
-            <kbd class="hidden sm:inline-flex items-center gap-0.5 rounded border border-border px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
-              <span>⌘</span>K
-            </kbd>
-          </button>
-          <!-- Theme toggle -->
           <button
             type="button"
             id="theme-toggle"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-raised text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent cursor-pointer"
+            class="ws-btn ws-btn-ghost ws-btn-icon"
             aria-label={t(lang, 'app_themeToggleAria')}
             title={t(lang, 'app_themeToggleAria')}
           >
-            <svg id="theme-icon-light" class="h-4 w-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <svg id="theme-icon-dark" class="h-4 w-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-            <svg id="theme-icon-system" class="h-4 w-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+            <svg id="theme-icon-light" class="icon icon-sm hidden" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('sun')} />
+            <svg id="theme-icon-dark" class="icon icon-sm hidden" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('moon')} />
+            <svg id="theme-icon-system" class="icon icon-sm hidden" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('monitor')} />
           </button>
-          <!-- Language switcher dropdown -->
           <div class="relative" data-lang-dropdown>
             <button
               type="button"
-              class="inline-flex h-9 min-w-9 items-center justify-center gap-1 rounded-lg border border-border bg-surface-raised px-3 text-sm font-medium text-text-secondary hover:text-accent transition-colors cursor-pointer"
+              class="lang"
               title={t(lang, 'app_switchLanguageAria')}
               aria-haspopup="true"
               aria-expanded="false"
             >
               {lang.toUpperCase()}
-              <svg class="h-3 w-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              <Fragment set:html={iconSvg('chev', 'icon-sm')} />
             </button>
-            <div class="absolute right-0 top-full z-50 mt-1 hidden min-w-[8rem] overflow-hidden rounded-lg border border-border bg-surface shadow-lg" data-lang-menu>
+            <div class="absolute right-0 top-full z-50 mt-1 hidden min-w-[8rem] overflow-hidden rounded-lg border border-border bg-surface-raised shadow-lg" data-lang-menu>
               {otherLangs.map((l) => (
                 <a
                   href={`/${l}/tools/${tool.id}/`}
-                  class="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:bg-surface-raised hover:text-accent transition-colors"
+                  class="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:bg-surface hover:text-accent transition-colors"
                 >
                   <span class="w-6 font-medium">{l.toUpperCase()}</span>
                   <span class="text-text-muted">{languageNames[l]}</span>
@@ -144,98 +114,107 @@ const currentPath = Astro.url.pathname
             </div>
           </div>
         </div>
-      </header>
-
-      <!-- Mobile sidebar overlay -->
-      <div id="mobile-sidebar-overlay" class="fixed inset-0 z-40 hidden lg:hidden">
-        <div class="absolute inset-0 bg-black/50" id="mobile-overlay-backdrop"></div>
-        <aside class="absolute left-0 top-0 h-full w-72 overflow-y-auto bg-surface border-r border-border">
-          <div class="flex items-center justify-between border-b border-border px-4 py-3">
-            <a href={`/${lang}/`} class="flex items-center gap-2 text-sm font-semibold text-text-primary">
-              <BrandMark
-                wrapperClass="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-sm shadow-teal-500/20"
-                imageClass="h-full w-full object-contain bg-surface-raised"
-                fallbackClass="inline-flex h-full w-full items-center justify-center p-1.5"
-              />
-              <span>{t(lang, 'app_title')}</span>
-            </a>
-            <button type="button" id="mobile-menu-close" class="text-text-secondary hover:text-text-primary cursor-pointer" aria-label="Close menu">
-              ✕
-            </button>
-          </div>
-          <Sidebar lang={lang} currentPath={currentPath} mobile />
-        </aside>
       </div>
 
-      <!-- Tool content -->
-      <main id="main-content" class="flex-1 px-4 py-6 lg:px-8">
-        <p class="mb-6 text-sm text-text-secondary">{toolDesc}</p>
-        <slot />
-      </main>
-
-      <footer class="border-t border-border px-4 py-4 text-sm text-text-muted lg:px-8">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-2">
-            <span>{t(lang, 'home_footerName')}</span>
-            <span>&middot;</span>
-            <span class="font-medium text-text-secondary">v{appVersion}</span>
+      <main id="main-content" class="tool-content">
+        <header class="tool-head" style={`--hue:${hue}`}>
+          <span class="tile" style={`--tint:${hue}`} set:html={toolIconSvg(tool.id)} />
+          <div class="th-body">
+            <div class="th-cat">{categoryName}</div>
+            <h1 id="tool-heading" tabindex="-1">{toolName}</h1>
+            <p class="th-desc">{toolDesc}</p>
           </div>
-          <a href={upstreamRepositoryUrl} class="text-text-secondary transition-colors hover:text-accent">
-            {t(lang, 'home_footerGithub')}
-          </a>
-        </div>
-      </footer>
+          <div class="th-actions">
+            <ShareButton
+              client:load
+              label={t(lang, 'share_copy')}
+              copiedLabel={t(lang, 'share_copied')}
+              unavailableLabel={t(lang, 'share_unavailable')}
+            />
+          </div>
+        </header>
+
+        <slot />
+
+        <section class="related">
+          <h2>{t(lang, 'tool_relatedTitle')}</h2>
+          <div class="related-grid">
+            {related.map((rel) => (
+              <a class="rel-card" href={`/${lang}/tools/${rel.id}/`}>
+                <span class="tile" style={`--tint:${hueOf(rel.category)}`} set:html={toolIconSvg(rel.id, 'icon-sm')} />
+                <span class="name">{t(lang, getToolNameKey(rel.id))}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <footer class="tool-foot">
+          <span class="sc"><Fragment set:html={iconSvg('search', 'icon-sm')} /> <span class="kbd">⌘</span><span class="kbd">K</span> {t(lang, 'tool_footSearch')}</span>
+          <span class="sc"><span class="kbd">/</span> {t(lang, 'tool_footQuickOpen')}</span>
+          <span class="sc">{t(lang, 'tool_footPrivacy')}</span>
+        </footer>
+      </main>
     </div>
+
+    <div class="sb-scrim" id="sidebar-scrim"></div>
   </div>
 
-  <!-- Mobile menu + focus management -->
+  <!-- Repo link for crawlers / footer parity (kept out of the editorial chrome) -->
+  <a class="sr-only" href={upstreamRepositoryUrl}>{t(lang, 'home_footerGithub')}</a>
+
+  <!-- Shell behaviour: favorites, theme, search, mobile menu, recents -->
   <script>
     import { isFavorite, toggleFavorite } from '../lib/favorites'
+    import { recordRecent } from '../lib/recents'
 
     function initToolLayout() {
-      // Mobile menu
-      const toggle = document.getElementById('mobile-menu-toggle')
-      const close = document.getElementById('mobile-menu-close')
-      const overlay = document.getElementById('mobile-sidebar-overlay')
-      const backdrop = document.getElementById('mobile-overlay-backdrop')
+      const favBtn = document.getElementById('favorite-toggle')
+      const toolId = favBtn?.dataset['toolId'] ?? ''
 
-      if (toggle && overlay) {
-        const openMenu = () => overlay.classList.remove('hidden')
-        const closeMenu = () => overlay.classList.add('hidden')
+      // Record this tool visit for "Jump back in".
+      if (toolId) recordRecent(toolId)
 
-        toggle.addEventListener('click', openMenu)
-        close?.addEventListener('click', closeMenu)
-        backdrop?.addEventListener('click', closeMenu)
-        overlay.querySelectorAll('a').forEach((a) => {
-          a.addEventListener('click', closeMenu)
+      // Mobile sidebar toggle
+      const menuBtn = document.getElementById('mobile-menu-toggle')
+      const sidebar = document.querySelector('.sidebar')
+      const scrim = document.getElementById('sidebar-scrim')
+      const closeMenu = () => {
+        sidebar?.classList.remove('open')
+        scrim?.classList.remove('open')
+      }
+      if (menuBtn && menuBtn.dataset['bound'] !== 'true') {
+        menuBtn.dataset['bound'] = 'true'
+        menuBtn.addEventListener('click', () => {
+          sidebar?.classList.toggle('open')
+          scrim?.classList.toggle('open')
         })
+      }
+      if (scrim && scrim.dataset['bound'] !== 'true') {
+        scrim.dataset['bound'] = 'true'
+        scrim.addEventListener('click', closeMenu)
       }
 
       // Focus tool heading on navigation
-      const heading = document.getElementById('tool-heading')
-      if (heading) heading.focus()
+      document.getElementById('tool-heading')?.focus()
 
-      // Favorite toggle
-      const favBtn = document.getElementById('favorite-toggle')
+      // Favorite toggle (keeps the empty/filled star contract used by e2e)
       if (favBtn) {
-        const toolId = favBtn.dataset.toolId ?? ''
-        const addLabel = favBtn.dataset.addLabel ?? ''
-        const removeLabel = favBtn.dataset.removeLabel ?? ''
+        const addLabel = favBtn.dataset['addLabel'] ?? ''
+        const removeLabel = favBtn.dataset['removeLabel'] ?? ''
         const iconEmpty = document.getElementById('fav-icon-empty')
         const iconFilled = document.getElementById('fav-icon-filled')
+        const label = favBtn.querySelector('[data-fav-label]')
 
-        function updateFavIcon() {
-          const isFav = isFavorite(toolId)
-          if (iconEmpty && iconFilled) {
-            iconEmpty.classList.toggle('hidden', isFav)
-            iconFilled.classList.toggle('hidden', !isFav)
-          }
-          favBtn!.setAttribute('aria-label', isFav ? removeLabel : addLabel)
-          favBtn!.setAttribute('title', isFav ? removeLabel : addLabel)
+        const updateFavIcon = () => {
+          const fav = isFavorite(toolId)
+          iconEmpty?.classList.toggle('hidden', fav)
+          iconFilled?.classList.toggle('hidden', !fav)
+          favBtn.classList.toggle('on', fav)
+          favBtn.setAttribute('aria-label', fav ? removeLabel : addLabel)
+          favBtn.setAttribute('title', fav ? removeLabel : addLabel)
+          if (label) label.textContent = fav ? removeLabel : addLabel
         }
-
         updateFavIcon()
-
         if (favBtn.dataset['favBound'] !== 'true') {
           favBtn.dataset['favBound'] = 'true'
           favBtn.addEventListener('click', () => {
@@ -245,72 +224,52 @@ const currentPath = Astro.url.pathname
         }
       }
 
-      const searchTrigger = document.getElementById('tool-search-trigger')
-      if (searchTrigger && searchTrigger.dataset.bound !== 'true') {
-        searchTrigger.dataset.bound = 'true'
-        searchTrigger.addEventListener('click', () => {
-          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
-        })
-      }
+      // Search triggers → open command palette
+      ;['tool-search-trigger', 'tool-search-trigger-bar'].forEach((id) => {
+        const el = document.getElementById(id)
+        if (el && el.dataset['bound'] !== 'true') {
+          el.dataset['bound'] = 'true'
+          el.addEventListener('click', () => {
+            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
+          })
+        }
+      })
 
-      // Theme toggle
+      // Theme toggle (tri-state: system → light → dark)
       const themeBtn = document.getElementById('theme-toggle')
-      if (themeBtn) {
-        function getStoredPreference(): string {
-          return localStorage.getItem('theme') || 'system'
+      if (themeBtn && themeBtn.dataset['bound'] !== 'true') {
+        themeBtn.dataset['bound'] = 'true'
+        const getPref = (): string => localStorage.getItem('theme') || 'system'
+        const updateIcon = (pref: string) => {
+          const l = document.getElementById('theme-icon-light')
+          const d = document.getElementById('theme-icon-dark')
+          const s = document.getElementById('theme-icon-system')
+          if (!l || !d || !s) return
+          l.classList.add('hidden'); d.classList.add('hidden'); s.classList.add('hidden')
+          if (pref === 'light') d.classList.remove('hidden')
+          else if (pref === 'dark') l.classList.remove('hidden')
+          else s.classList.remove('hidden')
         }
-
-        function updateIcon(pref: string) {
-          const iconLight = document.getElementById('theme-icon-light')
-          const iconDark = document.getElementById('theme-icon-dark')
-          const iconSystem = document.getElementById('theme-icon-system')
-          if (!iconLight || !iconDark || !iconSystem) return
-          iconLight.classList.add('hidden')
-          iconDark.classList.add('hidden')
-          iconSystem.classList.add('hidden')
-          if (pref === 'light') iconDark.classList.remove('hidden')
-          else if (pref === 'dark') iconLight.classList.remove('hidden')
-          else iconSystem.classList.remove('hidden')
-        }
-
-        function applyTheme(pref: string) {
+        const applyTheme = (pref: string) => {
           let effective = pref
-          if (pref === 'system') {
-            effective = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-          }
+          if (pref === 'system') effective = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
           document.documentElement.setAttribute('data-theme', effective)
         }
-
-        function cyclePref(current: string): string {
-          if (current === 'system') return 'light'
-          if (current === 'light') return 'dark'
-          return 'system'
-        }
-
-        let pref = getStoredPreference()
-        applyTheme(pref)
-        updateIcon(pref)
-
+        const cyclePref = (c: string): string => (c === 'system' ? 'light' : c === 'light' ? 'dark' : 'system')
+        let pref = getPref()
+        applyTheme(pref); updateIcon(pref)
         themeBtn.addEventListener('click', () => {
           pref = cyclePref(pref)
-          if (pref === 'system') {
-            localStorage.removeItem('theme')
-          } else {
-            localStorage.setItem('theme', pref)
-          }
-          applyTheme(pref)
-          updateIcon(pref)
+          if (pref === 'system') localStorage.removeItem('theme')
+          else localStorage.setItem('theme', pref)
+          applyTheme(pref); updateIcon(pref)
         })
-
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-          if (getStoredPreference() === 'system') {
-            applyTheme('system')
-          }
+          if (getPref() === 'system') applyTheme('system')
         })
       }
     }
 
-    // Run on initial load and after every client-side navigation
     initToolLayout()
     document.addEventListener('astro:page-load', initToolLayout)
   </script>
