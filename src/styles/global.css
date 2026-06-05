@@ -375,6 +375,9 @@ input, select, textarea {
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
   transition: transform .22s cubic-bezier(.2, .8, .2, 1), border-color .18s, box-shadow .22s; }
 .tool-card:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: var(--shadow-md); }
+.tool-card .card-hit { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.tool-card .favbtn { z-index: 2; }
+.tool-card .open-hint { pointer-events: none; }
 .tool-card:hover .tile { transform: scale(1.06) rotate(-3deg); }
 .tool-card .body { min-width: 0; display: flex; flex-direction: column; }
 .tool-card .name { font-weight: 650; font-size: 15.5px; letter-spacing: -.005em; line-height: 1.25; }

@@ -7,6 +7,12 @@ export interface ToolTestOptions {
   expectOutput?: string
   expectOutputContains?: string
   expectError?: string
+  /**
+   * Match the action button name exactly. Needed when the action label is a
+   * substring of another button on the page (e.g. "Convert" vs the sidebar's
+   * "Converters" category header).
+   */
+  exact?: boolean
 }
 
 /**
@@ -35,7 +41,7 @@ export async function toolTest(page: Page, options: ToolTestOptions): Promise<vo
   const textarea = page.locator('[data-testid="textarea"]').first()
   await textarea.fill(options.input)
 
-  const button = page.getByRole('button', { name: options.action })
+  const button = page.getByRole('button', { name: options.action, exact: options.exact ?? false })
   await button.click()
 
   if (options.expectError) {

@@ -35,11 +35,17 @@ const chevSvg = iconSvg('chev', 'icon-sm chev')
     data-current-path={currentPath}
     style="--hue:var(--c-fav)"
   >
-    <div class="sb-group-head" data-toggle tabindex="0">
+    <button
+      type="button"
+      class="sb-group-head"
+      data-toggle
+      aria-expanded="true"
+      aria-controls="sidebar-favorites-list"
+    >
       <span class="ghue"></span>{t(lang, 'favorites_title')}
       <span class="gcount" data-fav-count>0</span>
       <Fragment set:html={chevSvg} />
-    </div>
+    </button>
     <div class="sb-items" id="sidebar-favorites-list" data-favorites-list></div>
   </div>
 
@@ -47,12 +53,18 @@ const chevSvg = iconSvg('chev', 'icon-sm chev')
     const tools = sortToolsByLocalizedName(lang, getToolsByCategory(cat))
     return (
       <div class="sb-group" data-group={cat} style={`--hue:${hueOf(cat)}`}>
-        <div class="sb-group-head" data-toggle tabindex="0">
+        <button
+          type="button"
+          class="sb-group-head"
+          data-toggle
+          aria-expanded="true"
+          aria-controls={`sb-items-${cat}`}
+        >
           <span class="ghue"></span>{getCategoryName(lang, cat)}
           <span class="gcount">{tools.length}</span>
           <Fragment set:html={chevSvg} />
-        </div>
-        <div class="sb-items">
+        </button>
+        <div class="sb-items" id={`sb-items-${cat}`}>
           {tools.map((tool) => {
             const href = `/${lang}/tools/${tool.id}/`
             const isActive = currentPath === href
@@ -130,16 +142,11 @@ const chevSvg = iconSvg('chev', 'icon-sm chev')
     document.querySelectorAll('[data-tool-sidebar] [data-toggle]').forEach(function (btn) {
       if (btn.dataset.toggleBound === 'true') return
       btn.dataset.toggleBound = 'true'
-      var toggle = function () {
+      btn.addEventListener('click', function () {
         var group = btn.closest('.sb-group')
-        if (group) group.classList.toggle('collapsed')
-      }
-      btn.addEventListener('click', toggle)
-      btn.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          toggle()
-        }
+        if (!group) return
+        var collapsed = group.classList.toggle('collapsed')
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true')
       })
     })
   }

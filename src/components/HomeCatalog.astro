@@ -1,5 +1,6 @@
 ---
 import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
+import type { Category } from '../config/tools'
 import {
   t,
   getCategoryName,
@@ -22,7 +23,7 @@ const { lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
 const totalTools = toolRegistry.length
 
-const categoryBlurbKey: Record<string, string> = {
+const categoryBlurbKey: Record<Category, Parameters<typeof t>[1]> = {
   'text-processing': 'categoryBlurb_textProcessing',
   generators: 'categoryBlurb_generators',
   extraction: 'categoryBlurb_extraction',
@@ -186,13 +187,14 @@ const favStrings = {
                 <span class="num">{num}</span>
                 <span class="ctext">
                   <h2>{getCategoryName(lang, cat)}</h2>
-                  <p>{t(lang, categoryBlurbKey[cat] as never)}</p>
+                  <p>{t(lang, categoryBlurbKey[cat])}</p>
                 </span>
                 <span class="ccount">{tools.length} {t(lang, 'units_tools')}</span>
               </div>
               <div class="tool-grid">
                 {tools.map((tool) => (
-                  <a class="tool-card" href={`/${lang}/tools/${tool.id}/`} data-id={tool.id}>
+                  <div class="tool-card" data-id={tool.id}>
+                    <a class="card-hit" href={`/${lang}/tools/${tool.id}/`} aria-label={t(lang, getToolNameKey(tool.id))}></a>
                     <span class="tile" style={`--tint:${hueOf(tool.category)}`} set:html={toolIconSvg(tool.id)} />
                     <span class="body">
                       <span class="name">{t(lang, getToolNameKey(tool.id))}</span>
@@ -202,7 +204,7 @@ const favStrings = {
                       <Fragment set:html={iconSvg('star', 'icon-sm')} />
                     </button>
                     <span class="open-hint">{t(lang, 'home_cardOpen')} <span class="kbd">↵</span></span>
-                  </a>
+                  </div>
                 ))}
               </div>
             </section>
@@ -307,6 +309,14 @@ const favStrings = {
     const btn = document.getElementById('home-back-to-top')
     if (!btn || btn.dataset['bound'] === 'true') return
     btn.dataset['bound'] = 'true'
+
+    // The window object persists across Astro view transitions, so abort any
+    // listeners bound by a previous initialisation before adding new ones.
+    const globalWindow = window as Window & { __homeBackToTopAbort?: AbortController }
+    globalWindow.__homeBackToTopAbort?.abort()
+    const controller = new AbortController()
+    globalWindow.__homeBackToTopAbort = controller
+
     const threshold = 320
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let isVisible = false
@@ -329,10 +339,12 @@ const favStrings = {
         ticking = false
       })
     }
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' })
-    })
-    window.addEventListener('scroll', onScroll, { passive: true })
+    btn.addEventListener(
+      'click',
+      () => window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' }),
+      { signal: controller.signal },
+    )
+    window.addEventListener('scroll', onScroll, { passive: true, signal: controller.signal })
     setVisible(window.scrollY > threshold)
   }
 

@@ -15,6 +15,7 @@ test.describe('Convert Case', () => {
       toolId: 'convert-case',
       input: 'hello world',
       action: 'Convert',
+      exact: true,
       expectOutput: 'HELLO WORLD',
     })
   })
@@ -24,6 +25,7 @@ test.describe('Convert Case', () => {
       toolId: 'convert-case',
       input: '',
       action: 'Convert',
+      exact: true,
       expectError: 'Please enter some input',
     })
   })
@@ -41,7 +43,7 @@ test.describe('Convert Case', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('camel')
 
-      const button = page.getByRole('button', { name: 'Convert' })
+      const button = page.getByRole('button', { name: 'Convert', exact: true })
       await button.click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
@@ -55,7 +57,7 @@ test.describe('Convert Case', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('lower')
 
-      await page.getByRole('button', { name: 'Convert' }).click()
+      await page.getByRole('button', { name: 'Convert', exact: true }).click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
       await expect(output).toHaveValue('hello world', { timeout: 5000 })
@@ -68,7 +70,7 @@ test.describe('Convert Case', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('title')
 
-      await page.getByRole('button', { name: 'Convert' }).click()
+      await page.getByRole('button', { name: 'Convert', exact: true }).click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
       await expect(output).toHaveValue('Hello World', { timeout: 5000 })
@@ -81,7 +83,7 @@ test.describe('Convert Case', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('snake')
 
-      await page.getByRole('button', { name: 'Convert' }).click()
+      await page.getByRole('button', { name: 'Convert', exact: true }).click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
       await expect(output).toHaveValue('hello_world', { timeout: 5000 })
@@ -94,7 +96,7 @@ test.describe('Convert Case', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('constant')
 
-      await page.getByRole('button', { name: 'Convert' }).click()
+      await page.getByRole('button', { name: 'Convert', exact: true }).click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
       await expect(output).toHaveValue('HELLO_WORLD', { timeout: 5000 })
