@@ -13,7 +13,7 @@ This changelog tracks the recent evolution of the project by published release a
 
 ### Changed
 - Bumped the product version to `1.6.0`.
-- Redesigned the entire UX/UI with an editorial "workshop" look: warm paper palette, a burnt-vermillion accent, serif display type (Newsreader) with Hanken Grotesk and JetBrains Mono, per-category accent hues, and refined light/dark themes.
+- Redesigned the entire UX/UI with a modern "dev-tool" look: cool slate surfaces, an electric-indigo accent, geometric display type (Space Grotesk) with Inter for body text and JetBrains Mono for code, per-category accent hues, and refined light/dark themes.
 - Replaced every emoji icon in the page chrome with a coherent custom SVG line-icon set.
 - Rebuilt the home catalog with an editorial hero, a sticky scroll-spy category index, and numbered category sections.
 - Rebuilt the tool-page shell with a collapsible, favorite-aware sidebar, a breadcrumb top bar, an editorial tool header, related-tool suggestions, and a keyboard-shortcut footer.
