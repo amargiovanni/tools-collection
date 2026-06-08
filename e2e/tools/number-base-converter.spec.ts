@@ -61,13 +61,15 @@ test.describe('Number Base Converter', () => {
   test('invalid binary digit shows error border on that field', async ({ page }) => {
     await page.getByLabel('Binary').fill('2')
     const binaryInput = page.getByLabel('Binary')
-    await expect(binaryInput).toHaveClass(/border-red-500/)
+    await expect(binaryInput).toHaveClass(/border-error/)
+    await expect(binaryInput).toHaveAttribute('aria-invalid', 'true')
   })
 
   test('invalid hex digit shows error border on that field', async ({ page }) => {
     await page.getByLabel('Hexadecimal').fill('g')
     const hexInput = page.getByLabel('Hexadecimal')
-    await expect(hexInput).toHaveClass(/border-red-500/)
+    await expect(hexInput).toHaveClass(/border-error/)
+    await expect(hexInput).toHaveAttribute('aria-invalid', 'true')
   })
 
   test('handles zero correctly', async ({ page }) => {
