@@ -461,6 +461,10 @@ input, select, textarea {
 .tool-head .th-body { flex: 1; min-width: 0; }
 .tool-head .th-cat { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--hue, var(--ink-3)); }
 .tool-head h1 { font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 40px); font-weight: 600; letter-spacing: -.03em; line-height: 1.05; margin-top: 6px; }
+/* the heading is focused programmatically on navigation for screen-reader
+   flow — it is not user-tabbable, so it should not show a visible ring */
+.tool-head h1[tabindex="-1"]:focus,
+.tool-head h1[tabindex="-1"]:focus-visible { outline: none; }
 .tool-head .th-desc { font-size: 16.5px; color: var(--ink-2); margin-top: 10px; max-width: 56ch; }
 .tool-head .th-actions { display: flex; gap: 8px; flex: none; }
 
@@ -486,6 +490,33 @@ input, select, textarea {
   .sidebar.open { transform: none; }
   .sb-scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, .35); z-index: 70; display: none; }
   .sb-scrim.open { display: block; }
+}
+
+/* ---------- phones: compact the chrome so nothing overflows ---------- */
+@media (max-width: 640px) {
+  /* a touch less gutter on phones */
+  .wrap { padding-inline: 16px; }
+
+  /* home top bar */
+  .topbar-in { gap: 10px; }
+  .topbar-right { gap: 2px; }
+  .brand .ver { display: none; }
+  .search-trigger {
+    flex: 0 0 auto; width: 40px; max-width: none; padding: 0;
+    justify-content: center; margin-left: auto; margin-right: 0;
+  }
+  .search-trigger .grow, .search-trigger .kbd { display: none; }
+
+  /* tool top bar — breadcrumb is redundant with the tool header below */
+  .main-bar { gap: 8px; padding-inline: 16px; }
+  .crumb { display: none; }
+  .main-actions { gap: 4px; }
+  .main-actions [data-fav-label] { display: none; }
+  #favorite-toggle { width: 40px; padding: 0; justify-content: center; }
+
+  /* tool header: tighten on small screens */
+  .tool-head { gap: 14px; }
+  .tool-head .tile { width: 44px; height: 44px; }
 }
 
 /* ============================================================

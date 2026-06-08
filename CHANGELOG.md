@@ -18,6 +18,8 @@ This changelog tracks the recent evolution of the project by published release a
 - Rebuilt the home catalog with an editorial hero, a sticky scroll-spy category index, and numbered category sections.
 - Rebuilt the tool-page shell with a collapsible, favorite-aware sidebar, a breadcrumb top bar, an editorial tool header, related-tool suggestions, and a keyboard-shortcut footer.
 - Restyled the command palette and added an actions group (home, theme, GitHub, clear recents), `/` quick-open, and keyboard hints.
+- Added a global ⌘/Ctrl+Enter shortcut that runs each tool's primary action, a live character/line count on outputs, wrapping (no truncation) of long result values, and line-icon status messages.
+- Tightened the responsive chrome on phones: the home and tool top bars compact (search collapses to an icon, breadcrumb hides, favorite becomes icon-only) so nothing overflows horizontally on small screens.
 
 ### Added
 - Added a "Jump back in" recents section on the home page that remembers recently opened tools locally.
