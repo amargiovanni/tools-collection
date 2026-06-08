@@ -9,6 +9,23 @@ This changelog tracks the recent evolution of the project by published release a
 ### Changed
 - Reworded the README files and changelog notes to avoid hard-coded tool counts in catalog descriptions.
 
+## Published: `1.6.0`
+
+### Changed
+- Bumped the product version to `1.6.0`.
+- Redesigned the entire UX/UI with a modern "dev-tool" look: cool slate surfaces, an electric-indigo accent, geometric display type (Space Grotesk) with Inter for body text and JetBrains Mono for code, per-category accent hues, and refined light/dark themes.
+- Replaced every emoji icon in the page chrome with a coherent custom SVG line-icon set.
+- Rebuilt the home catalog with an editorial hero, a sticky scroll-spy category index, and numbered category sections.
+- Rebuilt the tool-page shell with a collapsible, favorite-aware sidebar, a breadcrumb top bar, an editorial tool header, related-tool suggestions, and a keyboard-shortcut footer.
+- Restyled the command palette and added an actions group (home, theme, GitHub, clear recents), `/` quick-open, and keyboard hints.
+- Added a global ⌘/Ctrl+Enter shortcut that runs each tool's primary action, a live character/line count on outputs, wrapping (no truncation) of long result values, and line-icon status messages.
+- Tightened the responsive chrome on phones: the home and tool top bars compact (search collapses to an icon, breadcrumb hides, favorite becomes icon-only) so nothing overflows horizontally on small screens.
+
+### Added
+- Added a "Jump back in" recents section on the home page that remembers recently opened tools locally.
+- Added richer favorites surfaces on the home page and in the tool sidebar.
+- Translated all new interface strings across English, Italian, Spanish, French, and German.
+
 ## Published: `1.5.2`
 
 ### Added

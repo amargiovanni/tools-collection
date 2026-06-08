@@ -378,8 +378,8 @@ export default function CronExpression(props: Props) {
               <div class="flex flex-wrap items-center gap-2">
                 <span class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   parsed().format === 'aws'
-                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                    : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                    ? 'bg-warning-light text-warning'
+                    : 'bg-accent-light text-accent'
                 }`} data-testid="format-badge">
                   {parsed().format === 'aws' ? phraseSets[props.lang].aws : phraseSets[props.lang].unix}
                 </span>

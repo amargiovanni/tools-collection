@@ -1,6 +1,7 @@
 import { createSignal } from 'solid-js'
 import { Button } from './Button'
 import { copyToClipboard } from '../../lib/clipboard'
+import { iconSvg } from '../../lib/icons'
 
 interface CopyButtonProps {
   getValue: () => string
@@ -20,13 +21,11 @@ export function CopyButton(props: CopyButtonProps) {
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={handleCopy}
-      class={props.class}
-    >
-      {copied() ? '✓ Copied!' : (props.label ? <>📋 {props.label}</> : '📋')}
+    <Button variant="ghost" size="sm" onClick={handleCopy} class={props.class}>
+      <span class="inline-flex items-center gap-1.5">
+        <span class="inline-flex" innerHTML={iconSvg(copied() ? 'shieldcheck' : 'copy', 'icon-sm')} />
+        {copied() ? <span>Copied!</span> : props.label ? <span>{props.label}</span> : null}
+      </span>
     </Button>
   )
 }

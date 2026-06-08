@@ -89,10 +89,14 @@ test.describe('Favorites', () => {
     await expect(favCard).toBeVisible()
   })
 
-  test('homepage hides favorites section when empty', async ({ page }) => {
+  test('homepage favorites band shows an empty state when there are no favorites', async ({ page }) => {
     await page.goto('/en/', { waitUntil: 'networkidle' })
+    // The editorial "workbench band" always shows the Favorites column; when
+    // empty it renders a placeholder and no tool links.
     const homeFavs = page.locator('#home-favorites')
-    await expect(homeFavs).toBeHidden()
+    await expect(homeFavs).toBeVisible()
+    await expect(homeFavs.locator('.fav-empty')).toBeVisible()
+    await expect(homeFavs.locator('a[href*="/en/tools/"]')).toHaveCount(0)
   })
 
   test('star button has correct aria-label', async ({ page }) => {

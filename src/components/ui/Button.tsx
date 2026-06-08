@@ -52,6 +52,7 @@ export function Button(props: ButtonProps) {
       class={`${buttonVariants({ variant: local.variant, size: local.size })} ${local.class ?? ''}`}
       disabled={local.disabled}
       onClick={local.onClick}
+      data-primary-action={(local.variant ?? 'primary') === 'primary' ? '' : undefined}
     >
       {local.children}
     </button>

@@ -1,10 +1,19 @@
 ---
 import { categories, getToolsByCategory, toolRegistry } from '../config/tools'
-import { t, getCategoryName, getOtherLanguages, languageNames, getToolNameKey, getToolDescKey } from '../i18n'
+import type { Category } from '../config/tools'
+import {
+  t,
+  getCategoryName,
+  getOtherLanguages,
+  languages,
+  languageNames,
+  getToolNameKey,
+  getToolDescKey,
+} from '../i18n'
 import type { Language } from '../i18n'
-import BrandMark from './BrandMark.astro'
 import { sortToolsByLocalizedName } from '../lib/tool-order'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
+import { iconInner, iconSvg, toolIconSvg, hueOf } from '../lib/icons'
 
 interface Props {
   lang: Language
@@ -12,219 +21,211 @@ interface Props {
 
 const { lang } = Astro.props
 const otherLangs = getOtherLanguages(lang)
-const totalTools = categories.reduce((total, category) => total + getToolsByCategory(category).length, 0)
+const totalTools = toolRegistry.length
 
-// Build lookup maps for client-side favorites rendering
-const homeToolData: Record<string, { name: string; desc: string; icon: string; category: string }> = {}
+const categoryBlurbKey: Record<Category, Parameters<typeof t>[1]> = {
+  'text-processing': 'categoryBlurb_textProcessing',
+  generators: 'categoryBlurb_generators',
+  extraction: 'categoryBlurb_extraction',
+  analysis: 'categoryBlurb_analysis',
+  security: 'categoryBlurb_security',
+  converters: 'categoryBlurb_converters',
+  development: 'categoryBlurb_development',
+  utilities: 'categoryBlurb_utilities',
+}
+
+// Client-side lookup map for recents + favorites hydration.
+const homeToolData: Record<
+  string,
+  { name: string; desc: string; cat: string; hue: string; icon: string; iconSm: string }
+> = {}
 for (const tool of toolRegistry) {
   homeToolData[tool.id] = {
     name: t(lang, getToolNameKey(tool.id)),
     desc: t(lang, getToolDescKey(tool.id)),
-    icon: tool.icon,
-    category: tool.category,
+    cat: getCategoryName(lang, tool.category),
+    hue: hueOf(tool.category),
+    icon: toolIconSvg(tool.id),
+    iconSm: toolIconSvg(tool.id, 'icon-sm'),
   }
 }
 
-const categoryColors: Record<string, string> = {
-  'text-processing': 'from-teal-500/10 to-cyan-500/10 border-teal-500/20 hover:border-teal-400',
-  'generators': 'from-violet-500/10 to-purple-500/10 border-violet-500/20 hover:border-violet-400',
-  'extraction': 'from-blue-500/10 to-indigo-500/10 border-blue-500/20 hover:border-blue-400',
-  'analysis': 'from-amber-500/10 to-orange-500/10 border-amber-500/20 hover:border-amber-400',
-  'security': 'from-rose-500/10 to-pink-500/10 border-rose-500/20 hover:border-rose-400',
-  'converters': 'from-emerald-500/10 to-green-500/10 border-emerald-500/20 hover:border-emerald-400',
-  'development': 'from-sky-500/10 to-blue-500/10 border-sky-500/20 hover:border-sky-400',
-  'utilities': 'from-fuchsia-500/10 to-pink-500/10 border-fuchsia-500/20 hover:border-fuchsia-400',
+const timeStrings = {
+  justNow: t(lang, 'time_justNow'),
+  m: t(lang, 'time_minutesAgoSuffix'),
+  h: t(lang, 'time_hoursAgoSuffix'),
+  d: t(lang, 'time_daysAgoSuffix'),
+  arrow: iconSvg('arrow', 'icon-sm arrow'),
+  star: iconSvg('star', 'icon-sm'),
+  emptyText: t(lang, 'home_recentsEmpty'),
 }
-
-const categoryAccents: Record<string, string> = {
-  'text-processing': 'text-teal-600 dark:text-teal-400',
-  'generators': 'text-violet-600 dark:text-violet-400',
-  'extraction': 'text-blue-600 dark:text-blue-400',
-  'analysis': 'text-amber-600 dark:text-amber-400',
-  'security': 'text-rose-600 dark:text-rose-400',
-  'converters': 'text-emerald-600 dark:text-emerald-400',
-  'development': 'text-sky-600 dark:text-sky-400',
-  'utilities': 'text-fuchsia-600 dark:text-fuchsia-400',
+const favStrings = {
+  star: iconSvg('star', 'icon-sm'),
+  emptyText: t(lang, 'home_favoritesEmpty'),
 }
 ---
 
 <div class="min-h-screen">
-  <!-- Sticky top bar -->
-  <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border/50 bg-surface/80 px-4 py-2.5 backdrop-blur-lg sm:px-6">
-    <span class="flex items-center gap-2 text-sm font-semibold text-text-primary">
-      <BrandMark
-        wrapperClass="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-sm shadow-teal-500/20"
-        imageClass="h-full w-full object-contain bg-surface-raised"
-        fallbackClass="inline-flex h-full w-full items-center justify-center p-1.5"
-      />
-      <span>{t(lang, 'app_title')}</span>
-    </span>
-    <div class="flex items-center gap-2">
-      <span class="hidden h-9 items-center rounded-lg border border-accent/30 bg-accent/10 px-3 text-sm font-semibold tracking-wide text-accent sm:inline-flex">
-        v{appVersion}
-      </span>
-      <button
-        type="button"
-        id="home-search-trigger"
-        class="inline-flex h-9 items-center gap-2 rounded-lg border border-border bg-surface-raised px-3 text-sm text-text-muted transition-colors hover:border-accent hover:text-text-secondary cursor-pointer"
-      >
-        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <span class="hidden sm:inline">{t(lang, 'app_searchPlaceholder')}</span>
-        <kbd class="hidden sm:inline-flex items-center gap-0.5 rounded border border-border px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
-          <span>⌘</span>K
-        </kbd>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <a href={`/${lang}/`} class="brand" aria-label={t(lang, 'app_backHomeAria')}>
+        <span class="mark"></span>
+        <span class="word">{t(lang, 'app_title')}</span>
+        <span class="ver">v{appVersion}</span>
+      </a>
+      <button type="button" class="search-trigger" id="home-search-trigger" aria-label={t(lang, 'app_searchPlaceholder')}>
+        <Fragment set:html={iconSvg('search', 'icon-sm')} />
+        <span class="grow">{t(lang, 'app_searchPlaceholder')}</span>
+        <span class="kbd">⌘</span><span class="kbd">K</span>
       </button>
-      <!-- Theme toggle -->
-      <button
-        type="button"
-        id="theme-toggle"
-        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-raised text-text-secondary transition-colors hover:bg-surface-raised hover:text-accent cursor-pointer"
-        aria-label={t(lang, 'app_themeToggleAria')}
-        title={t(lang, 'app_themeToggleAria')}
-      >
-        <!-- Sun icon (shown in dark mode) -->
-        <svg id="theme-icon-light" class="h-4 w-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <!-- Moon icon (shown in light mode) -->
-        <svg id="theme-icon-dark" class="h-4 w-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-        <!-- Monitor icon (shown in system mode) -->
-        <svg id="theme-icon-system" class="h-4 w-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      </button>
-      <div class="relative" data-lang-dropdown>
+      <div class="topbar-right">
+        <div class="relative" data-lang-dropdown>
+          <button
+            type="button"
+            class="lang"
+            title={t(lang, 'app_switchLanguageAria')}
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {lang.toUpperCase()}
+            <Fragment set:html={iconSvg('chev', 'icon-sm')} />
+          </button>
+          <div class="absolute right-0 top-full z-50 mt-1 hidden min-w-[8rem] overflow-hidden rounded-lg border border-border bg-surface-raised shadow-lg" data-lang-menu>
+            {otherLangs.map((l) => (
+              <a
+                href={`/${l}/`}
+                class="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:bg-surface hover:text-accent transition-colors"
+              >
+                <span class="w-6 font-medium">{l.toUpperCase()}</span>
+                <span class="text-text-muted">{languageNames[l]}</span>
+              </a>
+            ))}
+          </div>
+        </div>
         <button
           type="button"
-          class="inline-flex h-9 min-w-9 items-center justify-center gap-1 rounded-lg border border-border bg-surface-raised px-3 text-sm font-medium text-text-secondary hover:text-accent transition-colors cursor-pointer"
-          title={t(lang, 'app_switchLanguageAria')}
-          aria-haspopup="true"
-          aria-expanded="false"
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label={t(lang, 'app_themeToggleAria')}
+          title={t(lang, 'app_themeToggleAria')}
         >
-          {lang.toUpperCase()}
-          <svg class="h-3 w-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          <svg id="theme-icon-light" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('sun')} />
+          <svg id="theme-icon-dark" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('moon')} />
+          <svg id="theme-icon-system" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true" set:html={iconInner('monitor')} />
         </button>
-        <div class="absolute right-0 top-full z-50 mt-1 hidden min-w-[8rem] overflow-hidden rounded-lg border border-border bg-surface shadow-lg" data-lang-menu>
-          {otherLangs.map((l) => (
-            <a
-              href={`/${l}/`}
-              class="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:bg-surface-raised hover:text-accent transition-colors"
-            >
-              <span class="w-6 font-medium">{l.toUpperCase()}</span>
-              <span class="text-text-muted">{languageNames[l]}</span>
-            </a>
-          ))}
-        </div>
+        <a class="icon-link" href={upstreamRepositoryUrl} aria-label="GitHub" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" stroke="none" set:html={iconInner('github')} />
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <div class="relative overflow-hidden">
-    <!-- Gradient background blobs -->
-    <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2">
-      <div class="h-80 w-[40rem] rounded-full bg-gradient-to-r from-teal-400/20 via-indigo-400/20 to-pink-400/20 blur-3xl"></div>
-    </div>
-
-    <div class="relative mx-auto max-w-4xl px-4 pb-12 pt-16 text-center sm:pt-20">
-      <!-- Logo mark -->
-      <BrandMark
-        wrapperClass="mx-auto mb-6 flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-indigo-500 text-white shadow-lg shadow-teal-500/25"
-        imageClass="h-full w-full object-contain bg-surface-raised"
-        fallbackClass="inline-flex h-full w-full items-center justify-center p-4"
-      />
-
-      <h1 class="mb-3 text-4xl font-extrabold tracking-tight text-text-primary sm:text-5xl">
-        {t(lang, 'home_title')}
-      </h1>
-      <p class="mx-auto mb-8 max-w-xl text-lg text-text-secondary">
-        {t(lang, 'home_description')}
-      </p>
-
-      <!-- Stats pills -->
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-          {totalTools} tools
-        </span>
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-surface-raised px-3 py-1 text-sm text-text-secondary">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          EN / IT / ES / FR / DE
-        </span>
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-surface-raised px-3 py-1 text-sm text-text-secondary">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          100% client-side
-        </span>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="ws-eyebrow">{t(lang, 'home_heroEyebrow')}</span>
+      <h1>{t(lang, 'home_heroTitlePre')}<em>{t(lang, 'home_heroTitleEm')}</em>{t(lang, 'home_heroTitlePost')}</h1>
+      <p class="ws-lede">{t(lang, 'home_heroLede')}</p>
+      <div class="hero-meta">
+        <span class="chip"><span class="dot" style="background:var(--accent)"></span><b>{totalTools}</b>&nbsp;{t(lang, 'home_heroMetaTools')}</span>
+        <span class="chip"><b>{categories.length}</b>&nbsp;{t(lang, 'home_heroMetaCategories')}</span>
+        <span class="chip"><span class="dot" style="background:var(--c-convert)"></span><b>100%</b>&nbsp;{t(lang, 'home_heroMetaClientSide')}</span>
+        <span class="chip"><b>{languages.length}</b>&nbsp;{t(lang, 'home_heroMetaLanguages')}</span>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Tool catalog -->
-  <div class="mx-auto max-w-6xl px-4 pb-20">
-    <!-- Favorites section (populated client-side) -->
-    <section id="home-favorites" class="mb-12 hidden" data-lang={lang}>
-      <div class="mb-5 flex items-center gap-3">
-        <h2 class="text-sm font-bold uppercase tracking-widest text-amber-500 dark:text-amber-400">
-          ⭐ {t(lang, 'favorites_title')}
+  <!-- WORKBENCH BAND: recents + favorites -->
+  <section class="band">
+    <div class="wrap band-in">
+      <div>
+        <h2>
+          <Fragment set:html={iconSvg('clock', 'icon-sm')} />
+          {t(lang, 'home_jumpBackIn')} <span class="count" id="home-recents-count"></span>
         </h2>
-        <div class="h-px flex-1 bg-border"></div>
-        <span id="home-favorites-count" class="text-xs text-text-muted">0</span>
+        <div class="recent-row" id="home-recents-row"></div>
       </div>
-      <div id="home-favorites-grid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
-    </section>
+      <div id="home-favorites" data-lang={lang}>
+        <h2>
+          <Fragment set:html={iconSvg('star', 'icon-sm')} />
+          {t(lang, 'favorites_title')} <span class="count" id="home-favorites-count"></span>
+        </h2>
+        <div class="fav-grid" id="home-favorites-grid"></div>
+      </div>
+    </div>
+  </section>
 
-    {categories.map((cat) => {
-      const tools = sortToolsByLocalizedName(lang, getToolsByCategory(cat))
-      const colorClass = categoryColors[cat] ?? ''
-      const accentClass = categoryAccents[cat] ?? 'text-accent'
-      return (
-        <section class="mb-12">
-          <div class="mb-5 flex items-center gap-3">
-            <h2 class={`text-sm font-bold uppercase tracking-widest ${accentClass}`}>
-              {getCategoryName(lang, cat)}
-            </h2>
-            <div class="h-px flex-1 bg-border"></div>
-            <span class="text-xs text-text-muted">{tools.length}</span>
-          </div>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {tools.map((tool) => {
-              return (
-                <a
-                  href={`/${lang}/tools/${tool.id}/`}
-                  class={`group relative flex items-start gap-3.5 rounded-xl border bg-gradient-to-br p-4 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${colorClass}`}
-                >
-                  <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm" role="img" aria-hidden="true">
-                    {tool.icon}
-                  </span>
-                  <div class="min-w-0">
-                    <h3 class="font-semibold text-text-primary group-hover:text-accent transition-colors">
-                      {t(lang, getToolNameKey(tool.id))}
-                    </h3>
-                    <p class="mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2">{t(lang, getToolDescKey(tool.id))}</p>
+  <!-- CATALOG -->
+  <main id="main-content" class="catalog">
+    <div class="wrap catalog-in">
+      <nav class="toc" id="home-toc" aria-label={t(lang, 'home_catalogLabel')}>
+        <div class="toc-title">{t(lang, 'home_catalogLabel')}</div>
+        <div id="home-toc-list">
+          {categories.map((cat) => {
+            const count = getToolsByCategory(cat).length
+            return (
+              <a href={`#cat-${cat}`} data-slug={cat} style={`--hue:${hueOf(cat)}`}>
+                <span class="dot"></span>{getCategoryName(lang, cat)}<span class="tcount">{count}</span>
+              </a>
+            )
+          })}
+        </div>
+        <div class="privacy">
+          <Fragment set:html={iconSvg('shieldcheck', 'icon-sm')} />
+          <span>{t(lang, 'home_privacyNote')}</span>
+        </div>
+      </nav>
+
+      <div id="home-sections">
+        {categories.map((cat, i) => {
+          const tools = sortToolsByLocalizedName(lang, getToolsByCategory(cat))
+          const num = String(i + 1).padStart(2, '0')
+          return (
+            <section class="cat-section" id={`cat-${cat}`} style={`--hue:${hueOf(cat)}`}>
+              <div class="cat-head">
+                <span class="num">{num}</span>
+                <span class="ctext">
+                  <h2>{getCategoryName(lang, cat)}</h2>
+                  <p>{t(lang, categoryBlurbKey[cat])}</p>
+                </span>
+                <span class="ccount">{tools.length} {t(lang, 'units_tools')}</span>
+              </div>
+              <div class="tool-grid">
+                {tools.map((tool) => (
+                  <div class="tool-card" data-id={tool.id}>
+                    <a class="card-hit" href={`/${lang}/tools/${tool.id}/`} aria-label={t(lang, getToolNameKey(tool.id))}></a>
+                    <span class="tile" style={`--tint:${hueOf(tool.category)}`} set:html={toolIconSvg(tool.id)} />
+                    <span class="body">
+                      <span class="name">{t(lang, getToolNameKey(tool.id))}</span>
+                      <span class="desc">{t(lang, getToolDescKey(tool.id))}</span>
+                    </span>
+                    <button class="favbtn" type="button" data-fav={tool.id} aria-label={t(lang, 'favorites_add')} title={t(lang, 'favorites_title')}>
+                      <Fragment set:html={iconSvg('star', 'icon-sm')} />
+                    </button>
+                    <span class="open-hint">{t(lang, 'home_cardOpen')} <span class="kbd">↵</span></span>
                   </div>
-                  <svg class="absolute right-3 top-4 h-4 w-4 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </a>
-              )
-            })}
-          </div>
-        </section>
-      )
-    })}
-  </div>
+                ))}
+              </div>
+            </section>
+          )
+        })}
+      </div>
+    </div>
+  </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-border px-4 py-6 text-center text-sm text-text-muted">
-    {t(lang, 'home_footerName')} &middot;
-    <a href={upstreamRepositoryUrl} class="text-text-secondary hover:text-accent transition-colors">
-      {t(lang, 'home_footerGithub')}
-    </a>
-    &middot; <span class="text-text-muted">v{appVersion}</span>
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-in">
+        <a href={`/${lang}/`} class="brand"><span class="mark"></span><span class="word">{t(lang, 'app_title')}</span></a>
+        <nav class="links">
+          <a href="#main-content">{t(lang, 'home_catalogLabel')}</a>
+          <a href={upstreamRepositoryUrl} target="_blank" rel="noopener">{t(lang, 'home_footerGithub')}</a>
+        </nav>
+      </div>
+      <p class="fineprint">{t(lang, 'home_footerName')} · v{appVersion} · 100% {t(lang, 'home_heroMetaClientSide')}.</p>
+    </div>
   </footer>
 
   <button
@@ -242,11 +243,12 @@ const categoryAccents: Record<string, string> = {
   </button>
 </div>
 
-<!-- Trigger command palette from search button + theme toggle -->
+<!-- Chrome behaviour: search trigger, theme toggle, back-to-top, scroll spy -->
 <script>
   function initHomeSearch() {
     const btn = document.getElementById('home-search-trigger')
-    if (btn) {
+    if (btn && btn.dataset['bound'] !== 'true') {
+      btn.dataset['bound'] = 'true'
       btn.addEventListener('click', () => {
         document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
       })
@@ -255,12 +257,12 @@ const categoryAccents: Record<string, string> = {
 
   function initThemeToggle() {
     const btn = document.getElementById('theme-toggle')
-    if (!btn) return
+    if (!btn || btn.dataset['bound'] === 'true') return
+    btn.dataset['bound'] = 'true'
 
     function getStoredPreference(): string {
       return localStorage.getItem('theme') || 'system'
     }
-
     function updateIcon(pref: string) {
       const iconLight = document.getElementById('theme-icon-light')
       const iconDark = document.getElementById('theme-icon-dark')
@@ -273,7 +275,6 @@ const categoryAccents: Record<string, string> = {
       else if (pref === 'dark') iconLight.classList.remove('hidden')
       else iconSystem.classList.remove('hidden')
     }
-
     function applyTheme(pref: string) {
       let effective = pref
       if (pref === 'system') {
@@ -281,7 +282,6 @@ const categoryAccents: Record<string, string> = {
       }
       document.documentElement.setAttribute('data-theme', effective)
     }
-
     function cyclePref(current: string): string {
       if (current === 'system') return 'light'
       if (current === 'light') return 'dark'
@@ -294,28 +294,24 @@ const categoryAccents: Record<string, string> = {
 
     btn.addEventListener('click', () => {
       pref = cyclePref(pref)
-      if (pref === 'system') {
-        localStorage.removeItem('theme')
-      } else {
-        localStorage.setItem('theme', pref)
-      }
+      if (pref === 'system') localStorage.removeItem('theme')
+      else localStorage.setItem('theme', pref)
       applyTheme(pref)
       updateIcon(pref)
     })
 
-    // Listen for system theme changes when in "system" mode
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (getStoredPreference() === 'system') {
-        applyTheme('system')
-      }
+      if (getStoredPreference() === 'system') applyTheme('system')
     })
   }
 
   function initBackToTop() {
     const btn = document.getElementById('home-back-to-top')
-    if (!btn || btn.dataset.bound === 'true') return
-    btn.dataset.bound = 'true'
+    if (!btn || btn.dataset['bound'] === 'true') return
+    btn.dataset['bound'] = 'true'
 
+    // The window object persists across Astro view transitions, so abort any
+    // listeners bound by a previous initialisation before adding new ones.
     const globalWindow = window as Window & { __homeBackToTopAbort?: AbortController }
     globalWindow.__homeBackToTopAbort?.abort()
     const controller = new AbortController()
@@ -325,123 +321,187 @@ const categoryAccents: Record<string, string> = {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let isVisible = false
     let ticking = false
-
-    function setVisible(visible: boolean) {
+    const el = btn
+    const setVisible = (visible: boolean) => {
       if (visible === isVisible) return
       isVisible = visible
-      btn.classList.toggle('opacity-0', !visible)
-      btn.classList.toggle('translate-y-2', !visible)
-      btn.classList.toggle('pointer-events-none', !visible)
-      btn.tabIndex = visible ? 0 : -1
-      btn.setAttribute('aria-hidden', visible ? 'false' : 'true')
+      el.classList.toggle('opacity-0', !visible)
+      el.classList.toggle('translate-y-2', !visible)
+      el.classList.toggle('pointer-events-none', !visible)
+      el.tabIndex = visible ? 0 : -1
+      el.setAttribute('aria-hidden', visible ? 'false' : 'true')
     }
-
-    function updateVisibility() {
-      setVisible(window.scrollY > threshold)
-    }
-
-    function onScroll() {
-      if (!btn.isConnected) {
-        controller.abort()
-        return
-      }
+    const onScroll = () => {
       if (ticking) return
       ticking = true
       window.requestAnimationFrame(() => {
-        updateVisibility()
+        setVisible(window.scrollY > threshold)
         ticking = false
       })
     }
-
-    btn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: reducedMotion ? 'auto' : 'smooth',
-      })
-    }, { signal: controller.signal })
-
+    btn.addEventListener(
+      'click',
+      () => window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' }),
+      { signal: controller.signal },
+    )
     window.addEventListener('scroll', onScroll, { passive: true, signal: controller.signal })
-    updateVisibility()
+    setVisible(window.scrollY > threshold)
   }
 
-  initHomeSearch()
-  initThemeToggle()
-  initBackToTop()
-  document.addEventListener('astro:page-load', () => {
+  function initScrollSpy() {
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('#home-toc-list a'))
+    if (!links.length) return
+    const map: Record<string, HTMLAnchorElement> = {}
+    links.forEach((a) => {
+      const slug = a.dataset['slug']
+      if (slug) map[slug] = a
+    })
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            const slug = en.target.id.replace('cat-', '')
+            links.forEach((a) => a.classList.remove('active'))
+            map[slug]?.classList.add('active')
+          }
+        })
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    )
+    document.querySelectorAll('.cat-section').forEach((s) => obs.observe(s))
+  }
+
+  function initHomeChrome() {
     initHomeSearch()
     initThemeToggle()
     initBackToTop()
-  })
+    initScrollSpy()
+  }
+
+  initHomeChrome()
+  document.addEventListener('astro:page-load', initHomeChrome)
 </script>
 
-<!-- Home favorites hydration -->
-<script define:vars={{ homeToolData, categoryColors }} is:inline>
-  function initHomeFavorites() {
-    var section = document.getElementById('home-favorites')
-    if (!section) return
-    var lang = section.dataset.lang
-    var grid = document.getElementById('home-favorites-grid')
-    var countEl = document.getElementById('home-favorites-count')
-    if (!grid) return
+<!-- Recents + favorites + card-favorite hydration -->
+<script define:vars={{ homeToolData, timeStrings, favStrings, lang }} is:inline>
+  function timeAgo(ts) {
+    var s = (Date.now() - ts) / 1000
+    if (s < 60) return timeStrings.justNow
+    if (s < 3600) return Math.floor(s / 60) + timeStrings.m
+    if (s < 86400) return Math.floor(s / 3600) + timeStrings.h
+    return Math.floor(s / 86400) + timeStrings.d
+  }
 
-    var raw = localStorage.getItem('favorite-tools')
-    if (!raw) { section.classList.add('hidden'); return }
-
+  function readJSON(key) {
     try {
-      var favIds = JSON.parse(raw)
-      if (!Array.isArray(favIds) || favIds.length === 0) { section.classList.add('hidden'); return }
-
-      grid.innerHTML = ''
-      var count = 0
-
-      for (var i = 0; i < favIds.length; i++) {
-        var id = favIds[i]
-        if (typeof id !== 'string') continue
-        var data = homeToolData[id]
-        if (!data) continue
-        count++
-
-        var colorClass = categoryColors[data.category] || ''
-        var href = '/' + lang + '/tools/' + id + '/'
-
-        var a = document.createElement('a')
-        a.href = href
-        a.className = 'group relative flex items-start gap-3.5 rounded-xl border bg-gradient-to-br p-4 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ' + colorClass
-
-        var iconSpan = document.createElement('span')
-        iconSpan.className = 'mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/80 text-xl shadow-sm'
-        iconSpan.setAttribute('role', 'img')
-        iconSpan.setAttribute('aria-hidden', 'true')
-        iconSpan.textContent = data.icon
-
-        var textDiv = document.createElement('div')
-        textDiv.className = 'min-w-0'
-        var h3 = document.createElement('h3')
-        h3.className = 'font-semibold text-text-primary group-hover:text-accent transition-colors'
-        h3.textContent = data.name
-        var p = document.createElement('p')
-        p.className = 'mt-0.5 text-sm leading-relaxed text-text-secondary line-clamp-2'
-        p.textContent = data.desc
-        textDiv.appendChild(h3)
-        textDiv.appendChild(p)
-
-        a.appendChild(iconSpan)
-        a.appendChild(textDiv)
-        grid.appendChild(a)
-      }
-
-      if (countEl) countEl.textContent = String(count)
-      if (count > 0) {
-        section.classList.remove('hidden')
-      } else {
-        section.classList.add('hidden')
-      }
+      var raw = localStorage.getItem(key)
+      if (!raw) return null
+      return JSON.parse(raw)
     } catch (e) {
-      section.classList.add('hidden')
+      return null
     }
   }
 
-  initHomeFavorites()
-  document.addEventListener('astro:page-load', initHomeFavorites)
-  window.addEventListener('favorites-updated', initHomeFavorites)
+  function toolHref(id) {
+    return '/' + lang + '/tools/' + id + '/'
+  }
+
+  function renderRecents() {
+    var row = document.getElementById('home-recents-row')
+    var countEl = document.getElementById('home-recents-count')
+    if (!row) return
+    var recents = readJSON('recent-tools')
+    var items = Array.isArray(recents)
+      ? recents.filter(function (r) { return r && homeToolData[r.id] }).slice(0, 4)
+      : []
+    if (countEl) countEl.textContent = items.length ? String(items.length) : ''
+    if (!items.length) {
+      row.innerHTML = '<div class="fav-empty">' + timeStrings.emptyText + '</div>'
+      return
+    }
+    row.innerHTML = items
+      .map(function (r) {
+        var d = homeToolData[r.id]
+        return (
+          '<a class="recent" href="' + toolHref(r.id) + '">' +
+          '<span class="tile" style="--tint:' + d.hue + '">' + d.icon + '</span>' +
+          '<span class="meta"><span class="name">' + d.name + '</span>' +
+          '<span class="sub"><span class="dot" style="background:' + d.hue + '"></span>' + d.cat + '</span></span>' +
+          '<span class="when">' + timeAgo(r.ts) + '</span>' +
+          timeStrings.arrow +
+          '</a>'
+        )
+      })
+      .join('')
+  }
+
+  function renderFavorites() {
+    var grid = document.getElementById('home-favorites-grid')
+    var countEl = document.getElementById('home-favorites-count')
+    if (!grid) return
+    var favs = readJSON('favorite-tools')
+    var items = Array.isArray(favs)
+      ? favs.filter(function (id) { return typeof id === 'string' && homeToolData[id] }).slice(0, 5)
+      : []
+    if (countEl) countEl.textContent = items.length ? String(items.length) : ''
+    if (!items.length) {
+      grid.innerHTML = '<div class="fav-empty">' + favStrings.emptyText + '</div>'
+      return
+    }
+    grid.innerHTML = items
+      .map(function (id) {
+        var d = homeToolData[id]
+        return (
+          '<a class="fav" href="' + toolHref(id) + '">' +
+          '<span class="tile" style="--tint:' + d.hue + ';width:34px;height:34px">' + d.iconSm + '</span>' +
+          '<span class="name">' + d.name + '</span>' +
+          '<span class="star">' + favStrings.star + '</span>' +
+          '</a>'
+        )
+      })
+      .join('')
+  }
+
+  function syncCardFavorites() {
+    var favs = readJSON('favorite-tools')
+    var set = Array.isArray(favs) ? favs : []
+    document.querySelectorAll('.tool-card').forEach(function (card) {
+      card.classList.toggle('is-fav', set.indexOf(card.dataset.id) !== -1)
+    })
+  }
+
+  function toggleCardFavorite(id) {
+    var favs = readJSON('favorite-tools')
+    var list = Array.isArray(favs) ? favs.slice() : []
+    var idx = list.indexOf(id)
+    if (idx === -1) list.unshift(id)
+    else list.splice(idx, 1)
+    try {
+      localStorage.setItem('favorite-tools', JSON.stringify(list))
+    } catch (e) {}
+    window.dispatchEvent(new CustomEvent('favorites-updated'))
+  }
+
+  function renderAll() {
+    renderRecents()
+    renderFavorites()
+    syncCardFavorites()
+  }
+
+  if (!window.__homeFavCardBound) {
+    window.__homeFavCardBound = true
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('[data-fav]')
+      if (btn) {
+        e.preventDefault()
+        e.stopPropagation()
+        toggleCardFavorite(btn.dataset.fav)
+      }
+    })
+    window.addEventListener('favorites-updated', renderAll)
+    window.addEventListener('recents-updated', renderRecents)
+    document.addEventListener('astro:page-load', renderAll)
+  }
+
+  renderAll()
 </script>

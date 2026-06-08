@@ -15,6 +15,7 @@ test.describe('List Generator', () => {
       toolId: 'list-generator',
       input: 'a\nb\nc',
       action: 'Convert',
+      exact: true,
       expectOutputContains: '1. a',
     })
   })
@@ -24,6 +25,7 @@ test.describe('List Generator', () => {
       toolId: 'list-generator',
       input: '',
       action: 'Convert',
+      exact: true,
       expectError: 'Please enter some input',
     })
   })
@@ -41,7 +43,7 @@ test.describe('List Generator', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('bulleted')
 
-      const button = page.getByRole('button', { name: 'Convert' })
+      const button = page.getByRole('button', { name: 'Convert', exact: true })
       await button.click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
@@ -55,7 +57,7 @@ test.describe('List Generator', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('pipe')
 
-      await page.getByRole('button', { name: 'Convert' }).click()
+      await page.getByRole('button', { name: 'Convert', exact: true }).click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
       await expect(output).toHaveValue('a | b | c', { timeout: 5000 })
@@ -68,7 +70,7 @@ test.describe('List Generator', () => {
       const select = page.locator('[data-testid="select"]')
       await select.selectOption('comma')
 
-      await page.getByRole('button', { name: 'Convert' }).click()
+      await page.getByRole('button', { name: 'Convert', exact: true }).click()
 
       const output = page.locator('[data-testid="output-panel"] textarea')
       await expect(output).toHaveValue('a, b, c', { timeout: 5000 })

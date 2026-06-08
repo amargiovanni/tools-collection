@@ -78,10 +78,12 @@ export default function PasswordStrength(props: Props) {
           />
           <button
             type="button"
-            class="absolute right-2 top-1/2 -translate-y-1/2 rounded px-2 py-1 text-xs text-text-secondary hover:text-accent cursor-pointer"
+            class="absolute right-2 top-1/2 -translate-y-1/2 rounded px-2 py-1 text-xs font-medium text-text-secondary hover:text-accent cursor-pointer"
             onClick={() => setShowPassword(!showPassword())}
+            aria-pressed={showPassword()}
+            aria-label={showPassword() ? t(props.lang, 'tools_passwordStrength_hide') : t(props.lang, 'tools_passwordStrength_show')}
           >
-            {showPassword() ? 'Hide' : 'Show'}
+            {showPassword() ? t(props.lang, 'tools_passwordStrength_hide') : t(props.lang, 'tools_passwordStrength_show')}
           </button>
         </div>
       </div>
