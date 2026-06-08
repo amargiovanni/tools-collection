@@ -87,9 +87,10 @@ export default function NumberBaseConverter(props: Props) {
               value={field.signal()}
               placeholder={t(props.lang, field.hintKey)}
               onInput={(e) => handleInput(field.base, e.currentTarget.value)}
+              aria-invalid={hasError()}
               class={`w-full rounded-lg border px-3 py-2 font-mono text-sm bg-surface text-text-primary placeholder-text-muted transition-colors outline-none focus:ring-2 focus:ring-accent/30 ${
                 hasError()
-                  ? 'border-red-500 focus:border-red-500'
+                  ? 'border-error focus:border-error'
                   : 'border-border focus:border-accent'
               }`}
             />

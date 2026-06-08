@@ -51,7 +51,7 @@ export default function HtmlEntity(props: Props) {
         onInput={(e) => setInput(e.currentTarget.value)}
       />
       <div class="flex flex-wrap items-center gap-2">
-        <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+        <label class="flex items-center gap-1 text-sm text-text-secondary">
           <input
             type="radio"
             name="encode-mode"
@@ -61,7 +61,7 @@ export default function HtmlEntity(props: Props) {
           />
           {t(props.lang, 'tools_htmlEntity_modeMinimal')}
         </label>
-        <label class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+        <label class="flex items-center gap-1 text-sm text-text-secondary">
           <input
             type="radio"
             name="encode-mode"

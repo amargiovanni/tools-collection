@@ -64,8 +64,13 @@ export default function CsvViewer(props: Props) {
   }
 
   const sortIcon = (colIndex: number) => {
-    if (sortCol() !== colIndex) return '↕'
-    return sortDir() === 'asc' ? '↑' : '↓'
+    const inner =
+      sortCol() !== colIndex
+        ? '<path d="m8 9 4-4 4 4"/><path d="m8 15 4 4 4-4"/>'
+        : sortDir() === 'asc'
+          ? '<path d="m6 14 6-6 6 6"/>'
+          : '<path d="m6 10 6 6 6-6"/>'
+    return `<svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`
   }
 
   return (
@@ -104,13 +109,18 @@ export default function CsvViewer(props: Props) {
                       <For each={p.headers}>
                         {(header, i) => (
                           <th
-                            class="px-3 py-2 text-left font-medium text-text-primary whitespace-nowrap cursor-pointer select-none hover:bg-surface transition-colors"
-                            onClick={() => handleSort(i())}
+                            class="p-0 text-left font-medium text-text-primary whitespace-nowrap"
+                            aria-sort={sortCol() === i() ? (sortDir() === 'asc' ? 'ascending' : 'descending') : 'none'}
                           >
-                            <span class="flex items-center gap-1">
-                              {header}
-                              <span class="text-text-muted text-xs">{sortIcon(i())}</span>
-                            </span>
+                            <button
+                              type="button"
+                              class="flex w-full items-center gap-1.5 px-3 py-2 text-left select-none hover:bg-surface transition-colors cursor-pointer"
+                              onClick={() => handleSort(i())}
+                              aria-label={t(props.lang, 'csv_sortByLabel').replace('{col}', header)}
+                            >
+                              <span>{header}</span>
+                              <span class="text-text-muted" innerHTML={sortIcon(i())} />
+                            </button>
                           </th>
                         )}
                       </For>

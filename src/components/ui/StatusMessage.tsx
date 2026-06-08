@@ -23,9 +23,9 @@ interface StatusMessageProps {
 }
 
 const icons: Record<string, string> = {
-  success: '✓',
-  error: '✗',
-  warning: '⚠',
+  success: '<circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  error: '<circle cx="12" cy="12" r="8.5"/><path d="M12 8v5"/><path d="M12 16h.01"/>',
+  warning: '<path d="M12 4 3 19h18z"/><path d="M12 10v4"/><path d="M12 17h.01"/>',
 }
 
 export function StatusMessage(props: StatusMessageProps) {
@@ -35,7 +35,11 @@ export function StatusMessage(props: StatusMessageProps) {
       role={props.type === 'error' ? 'alert' : 'status'}
       data-testid="status-message"
     >
-      <span class="shrink-0 font-bold">{icons[props.type]}</span>
+      <span
+        class="mt-px shrink-0"
+        aria-hidden="true"
+        innerHTML={`<svg class="icon icon-sm" viewBox="0 0 24 24">${icons[props.type]}</svg>`}
+      />
       <span class="flex-1">{props.message}</span>
       <Show when={props.onDismiss}>
         <button
@@ -43,9 +47,8 @@ export function StatusMessage(props: StatusMessageProps) {
           class="shrink-0 text-current opacity-60 hover:opacity-100 cursor-pointer"
           onClick={props.onDismiss}
           aria-label="Dismiss"
-        >
-          ✕
-        </button>
+          innerHTML='<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+        />
       </Show>
     </div>
   )

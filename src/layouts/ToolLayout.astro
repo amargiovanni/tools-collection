@@ -151,6 +151,7 @@ const related = [...sameCat, ...others].slice(0, 4)
         <footer class="tool-foot">
           <span class="sc"><Fragment set:html={iconSvg('search', 'icon-sm')} /> <span class="kbd">⌘</span><span class="kbd">K</span> {t(lang, 'tool_footSearch')}</span>
           <span class="sc"><span class="kbd">/</span> {t(lang, 'tool_footQuickOpen')}</span>
+          <span class="sc"><span class="kbd">⌘</span><span class="kbd">↵</span> {t(lang, 'tool_footRun')}</span>
           <span class="sc">{t(lang, 'tool_footPrivacy')}</span>
         </footer>
       </main>
@@ -268,6 +269,23 @@ const related = [...sameCat, ...others].slice(0, 4)
           if (getPref() === 'system') applyTheme('system')
         })
       }
+    }
+
+    // Power-user shortcut: Cmd/Ctrl+Enter runs the tool's primary action
+    // (the first enabled primary button inside the tool content). Bound once.
+    const w = window as Window & { __toolSubmitBound?: boolean }
+    if (!w.__toolSubmitBound) {
+      w.__toolSubmitBound = true
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+          const main = document.getElementById('main-content')
+          const btn = main?.querySelector<HTMLButtonElement>('[data-primary-action]:not([disabled])')
+          if (btn) {
+            e.preventDefault()
+            btn.click()
+          }
+        }
+      })
     }
 
     initToolLayout()

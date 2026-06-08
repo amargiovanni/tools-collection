@@ -737,5 +737,9 @@
   "tool_footPrivacy": "100% client-side · nothing leaves this tab",
   "favorites_added": "Added to favorites",
   "favorites_removed": "Removed from favorites",
-  "recents_cleared": "Recents cleared"
+  "recents_cleared": "Recents cleared",
+  "tools_passwordStrength_show": "Show",
+  "tools_passwordStrength_hide": "Hide",
+  "tool_footRun": "to run",
+  "csv_sortByLabel": "Sort by {col}"
 }

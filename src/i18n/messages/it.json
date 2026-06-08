@@ -737,5 +737,9 @@
   "tool_footPrivacy": "100% lato client · niente esce da questa scheda",
   "favorites_added": "Aggiunto ai preferiti",
   "favorites_removed": "Rimosso dai preferiti",
-  "recents_cleared": "Recenti cancellati"
+  "recents_cleared": "Recenti cancellati",
+  "tools_passwordStrength_show": "Mostra",
+  "tools_passwordStrength_hide": "Nascondi",
+  "tool_footRun": "per eseguire",
+  "csv_sortByLabel": "Ordina per {col}"
 }

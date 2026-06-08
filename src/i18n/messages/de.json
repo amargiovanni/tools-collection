@@ -737,5 +737,9 @@
   "tool_footPrivacy": "100% clientseitig · nichts verlässt diesen Tab",
   "favorites_added": "Zu Favoriten hinzugefügt",
   "favorites_removed": "Aus Favoriten entfernt",
-  "recents_cleared": "Zuletzt verwendete gelöscht"
+  "recents_cleared": "Zuletzt verwendete gelöscht",
+  "tools_passwordStrength_show": "Anzeigen",
+  "tools_passwordStrength_hide": "Verbergen",
+  "tool_footRun": "zum Ausführen",
+  "csv_sortByLabel": "Sortieren nach {col}"
 }

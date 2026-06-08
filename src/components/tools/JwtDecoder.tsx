@@ -79,11 +79,11 @@ export default function JwtDecoder(props: Props) {
                       data-testid="expiry-badge"
                       class={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold w-fit ${
                         isValid
-                          ? 'bg-green-500/10 text-green-600 dark:text-green-400'
-                          : 'bg-red-500/10 text-red-600 dark:text-red-400'
+                          ? 'bg-success-light text-success'
+                          : 'bg-error-light text-error'
                       }`}
                     >
-                      <span class={`h-2 w-2 rounded-full ${isValid ? 'bg-green-500' : 'bg-red-500'}`} />
+                      <span class={`h-2 w-2 rounded-full ${isValid ? 'bg-success' : 'bg-error'}`} />
                       <span>{isValid ? t(props.lang, 'jwt_valid') : t(props.lang, 'jwt_expired')}</span>
                       <span class="font-normal opacity-60">·</span>
                       <span class="font-normal">{label}</span>
