@@ -20,7 +20,7 @@
     "astro": "^6.4.4",
     "class-variance-authority": "^0.7.1",
     "fuse.js": "^7.4.2",
-    "solid-js": "^1.9.13"
+    "solid-js": "^1.9.14"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
