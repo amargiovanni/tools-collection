@@ -4,6 +4,21 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.7.1`
+
+### Security
+- Added a per-page Content-Security-Policy with site-wide sha256 script hashes (safe under client-router navigation), hardening headers for both Cloudflare Pages (`public/_headers`) and the Docker image (nginx config), and build-provenance attestations for published container images.
+- Published a coordinated vulnerability disclosure policy (`SECURITY.md`, `/.well-known/security.txt`) with GitHub private vulnerability reporting enabled, and protected the `main` branch behind the CI status check.
+- Updated `js-yaml` to 4.3.1 and `svgo` to 4.0.2, resolving two build-time advisories; the remaining findings without upstream fixes are accepted time-boxed under ADR 0002.
+
+### Accessibility
+- Resolved every automated WCAG violation across all 54 English routes (315 instances → 0): accessible names on icon-only buttons and file inputs, programmatic labels on date/color/datetime/range inputs, ≥4.5:1 contrast for light-theme text and category hues, landmark structure for hero/band sections, and un-nested interactive controls in the file drop zone.
+- Published an accessibility statement (`compliance/eaa/statement.md`) with an honest "partially compliant" status: manual criteria (keyboard, screen reader, reflow) remain to be human-verified.
+
+### Added
+- Architecture Decision Records under `docs/adr/` with an immutability ledger; ADR 0001 (process) and ADR 0002 (time-boxed vulnerability accepts) accepted by the maintainer.
+- An SPA-navigation end-to-end test guarding the CSP against client-router regressions.
+
 ## Published: `1.7.0`
 
 ### Changed
