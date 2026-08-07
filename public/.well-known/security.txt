@@ -1,0 +1,5 @@
+Contact: https://github.com/amargiovanni/tools-collection/security/advisories/new
+Expires: 2027-08-07T00:00:00.000Z
+Preferred-Languages: en, it
+Canonical: https://tools.margiovanni.it/.well-known/security.txt
+Policy: https://github.com/amargiovanni/tools-collection/blob/main/SECURITY.md
