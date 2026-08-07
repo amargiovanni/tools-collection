@@ -46,19 +46,19 @@ Detailed records: one file per finding under `compliance/vulns/`.
 
 | ID | Component | Severity | Draft decision | Status | ADR |
 |----|-----------|----------|----------------|--------|-----|
-| GO-2026-4970 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Proposed | pending |
-| GO-2026-5856 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-09-07 | Proposed | pending |
-| GO-2026-5970 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Proposed | pending |
-| GHSA-5p4m-2wfm-xmqj | js-yaml@4.3.0 (build) | High | fix — npm update to 4.3.1, next cycle | Proposed | — |
+| GO-2026-4970 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-5856 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-09-07 | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-5970 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GHSA-5p4m-2wfm-xmqj | js-yaml@4.3.0 (build) | High | fix — updated to 4.3.1, 2026-08-07 | Resolved (pending review) | — |
 | GHSA-f88m-g3jw-g9cj | sharp@0.34.5 (build) | High | fix — when astro raises range to 0.35.x | Proposed | — |
-| GHSA-2p49-hgcm-8545 | svgo@4.0.1 (build) | High | fix — npm update to 4.0.2, next cycle | Proposed | — |
+| GHSA-2p49-hgcm-8545 | svgo@4.0.1 (build) | High | fix — updated to 4.0.2, 2026-08-07 | Resolved (pending review) | — |
 | GHSA-4g3v-8h47-v7g6 | astro@7.0.7 (build/dev server) | Medium | fix — upgrade to 7.1.0, next cycle | Proposed | — |
-| CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Proposed | — |
-| CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Proposed | — |
-| CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | — |
-| CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | — |
-| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | — |
-| CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | — |
+| CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 
 ## 4. CRA Annex I gap report
 
@@ -75,21 +75,21 @@ a DRAFT pending review by counsel.
 | I.2c security updates | **conformant** | Continuous deploy from main (Cloudflare Pages); Docker `latest`/`main` + versioned tags from v1.7.0 (dockerbuild.yml, fixed this release); dependabot enabled (.github/dependabot.yml). |
 | I.2d unauthorized-access protection | **not applicable** | No accounts, no server-side data, no non-public functionality — all processing is in-browser. |
 | I.2e confidentiality / encryption | **conformant** | TLS enforced by Cloudflare Pages; no user data stored or transmitted by design; no secrets in repo (no .env, none committed). |
-| I.2f integrity of code/config | **gap** | Release artifacts and Docker images are not signed/attested. Remediation: GitHub artifact attestations or cosign in dockerbuild.yml. |
+| I.2f integrity of code/config | **conformant** (2026-08-07) | Build provenance attestations published for container images (actions/attest-build-provenance in dockerbuild.yml). |
 | I.2g data minimisation | **conformant** | Architecture processes no personal data; tool inputs never leave the browser; site analytics (Cloudflare Web Analytics) is cookieless and aggregate. |
 | I.2h availability after incident | **not applicable** | Stateless static content on a CDN; recovery is redeploy-from-git. |
 | I.2i impact on other services | **conformant** | Shipped product makes no outbound calls at runtime (client-side only). |
 | I.2j limit attack surface | **conformant** | Exposure is static assets only; no admin surface, no API; dependency count reduced this release (437→408). |
-| I.2k exploitation mitigation | **gap** | No Content-Security-Policy or hardening headers on either distribution. Remediation: add `public/_headers` (Pages) and nginx headers (Docker) — CSP, X-Content-Type-Options, frame-ancestors. |
+| I.2k exploitation mitigation | **conformant** (2026-08-07) | Per-page hashed CSP meta (astro.config.ts security.csp + post-build union), hardening headers via public/_headers and docker/security-headers.conf; e2e-tested incl. SPA navigation. |
 | I.2l security logging | **not applicable** | No server-side activity of the product to record; edge logs are the host platform's. |
 | I.2m data removal | **conformant** | Only user state is browser localStorage (favorites/recents), user-clearable; nothing stored server-side. |
 | II.1 SBOM | **conformant** | CycloneDX SBOMs per release: sbom/v1.6.0.cdx.json, sbom/v1.7.0.cdx.json + diff. |
 | II.2 timely remediation `[org]` | **conformant** | This release removed 13/20 known findings including the only Critical within the dependabot cycle; register carries dates and decisions. |
 | II.3 regular testing `[org]` | **conformant** | CI (tests+build) on every push/PR; per-release W2 scan mandated by CLAUDE.md policy block. |
-| II.4 disclosure of fixed vulns `[org]` | **gap** | No advisory channel in use. Remediation: GitHub Security Advisories or a security section in release notes when fixes ship. |
-| II.5 CVD policy `[org]` | **gap** | No SECURITY.md. Remediation: publish a coordinated vulnerability disclosure policy (cra-incident-reporting skill drafts it). |
-| II.6 reporting contact | **gap** | No security reporting contact published. Remediation: SECURITY.md with contact + optional security.txt. |
-| II.7 secure update distribution | **gap** | `main` is not branch-protected (verified 2026-08-07); tags/images unsigned. Remediation: enable branch protection requiring CI; consider signed tags and image attestations. |
+| II.4 disclosure of fixed vulns `[org]` | **conformant** (2026-08-07) | GitHub Security Advisories available; release notes carry a Security section (v1.7.0 onward). |
+| II.5 CVD policy `[org]` | **conformant** (2026-08-07, draft pending maintainer sign-off) | SECURITY.md with CVD policy, response targets, safe harbour. |
+| II.6 reporting contact | **conformant** (2026-08-07) | Private vulnerability reporting enabled; contact in SECURITY.md and /.well-known/security.txt. |
+| II.7 secure update distribution | **conformant** (2026-08-07) | Branch protection on main requiring Test & Build; container images carry provenance attestations. Admin bypass remains possible (solo-maintainer trade-off, see tasks/lessons.md). |
 | II.8 free timely patches `[org]` | **conformant** | Free product; patches reach the site immediately via continuous deploy and Docker users via `latest` + versioned tags. |
 
 ## 5. Accessibility (EAA) — frontend products only
@@ -103,7 +103,9 @@ the v1.7.0 build served locally — all 54 English routes (home + 53 tools).
 Raw results: one JSON per route under `compliance/a11y/`. EAA posture is
 **voluntary** (see section 1); target is WCAG 2.2 AA.
 
-**Plain-language summary:** every route currently carries violations, but they
+**Remediation update (2026-08-07):** after fixing the shared components, tokens and landmarks, the re-scan reports **0 automated violations on all 54 English routes** (axe-core 4.12.1). The EAA module now lives in `compliance/eaa/` (scope, statement, routes, manual checklist). The paragraph and table below document the pre-remediation state for the record.
+
+**Plain-language summary (pre-remediation):** every route carried violations, but they
 collapse into five recurring patterns — this is a design-system issue, not 54
 separate problems. Fixing the shared tokens/components resolves most of the
 315 instances at once.
