@@ -1,8 +1,8 @@
 # Compliance Evidence Dossier — Tools Collection
 
 **Repository:** amargiovanni/tools-collection
-**Status:** Draft — pending human review
-**Last updated:** 2026-08-07 by Claude (drafter) / Andrea Margiovanni (reviewer, pending)
+**Status:** Reviewed — approved by maintainer 2026-08-07 (scope, triage decisions, gap report, EAA module)
+**Last updated:** 2026-08-07 by Claude (drafter) / Andrea Margiovanni (reviewer)
 
 > This dossier is assembled by the `cra-evidence` skill. Claude drafts;
 > humans review and approve. Nothing in this file is a conformity claim
@@ -31,9 +31,9 @@ One row per tagged release. Artifacts live under `compliance/`.
 
 | Release | Date | SBOM | Supply-chain diff | Vulnerabilities (open / triaged) | Reviewer |
 |---------|------|------|-------------------|----------------------------------|----------|
-| v1.6.0 | 2026-06-08 (SBOM retroactive, 2026-08-07) | [sbom/v1.6.0.cdx.json](sbom/v1.6.0.cdx.json) (437 components) | baseline | 20 (1 Critical, 9 High, 7 Medium, 3 Low) — superseded by v1.7.0 | pending |
-| v1.7.0 (container) | 2026-08-07 | [sbom/v1.7.0-docker.cdx.json](sbom/v1.7.0-docker.cdx.json) (1025 components, ghcr.io …:v1.7.0 linux/amd64 — first versioned image ever published) | base image nginx:alpine + static build | 8 matches / 6 distinct CVEs, all in the base image, all triaged, none reachable in shipped config | pending |
-| v1.7.0 | 2026-08-07 | [sbom/v1.7.0.cdx.json](sbom/v1.7.0.cdx.json) (408 components) | [sbom/diff-v1.6.0-to-v1.7.0.md](sbom/diff-v1.6.0-to-v1.7.0.md) — 57 added, 104 removed, 126 version changes (headline: astro 6.3.6→7.0.7, vite 7→8, typescript 6→7 native, @astrojs/solid-js 6→7, tailwind 4.3.3) | 7 / 7 (0 Critical, 5 High, 2 Medium — all triaged, none reachable in shipped product) | pending |
+| v1.6.0 | 2026-06-08 (SBOM retroactive, 2026-08-07) | [sbom/v1.6.0.cdx.json](sbom/v1.6.0.cdx.json) (437 components) | baseline | 20 (1 Critical, 9 High, 7 Medium, 3 Low) — superseded by v1.7.0 | Andrea Margiovanni, 2026-08-07 |
+| v1.7.0 (container) | 2026-08-07 | [sbom/v1.7.0-docker.cdx.json](sbom/v1.7.0-docker.cdx.json) (1025 components, ghcr.io …:v1.7.0 linux/amd64 — first versioned image ever published) | base image nginx:alpine + static build | 8 matches / 6 distinct CVEs, all in the base image, all triaged, none reachable in shipped config | Andrea Margiovanni, 2026-08-07 |
+| v1.7.0 | 2026-08-07 | [sbom/v1.7.0.cdx.json](sbom/v1.7.0.cdx.json) (408 components) | [sbom/diff-v1.6.0-to-v1.7.0.md](sbom/diff-v1.6.0-to-v1.7.0.md) — 57 added, 104 removed, 126 version changes (headline: astro 6.3.6→7.0.7, vite 7→8, typescript 6→7 native, @astrojs/solid-js 6→7, tailwind 4.3.3) | 7 / 7 (0 Critical, 5 High, 2 Medium — all triaged, none reachable in shipped product) | Andrea Margiovanni, 2026-08-07 |
 
 **Plain-language summary:** the v1.7.0 dependency wave (17 dependabot PRs)
 removed 13 of the 20 known vulnerabilities present in v1.6.0's supply chain,
@@ -46,19 +46,19 @@ Detailed records: one file per finding under `compliance/vulns/`.
 
 | ID | Component | Severity | Draft decision | Status | ADR |
 |----|-----------|----------|----------------|--------|-----|
-| GO-2026-4970 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| GO-2026-5856 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-09-07 | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| GO-2026-5970 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| GHSA-5p4m-2wfm-xmqj | js-yaml@4.3.0 (build) | High | fix — updated to 4.3.1, 2026-08-07 | Resolved (pending review) | — |
-| GHSA-f88m-g3jw-g9cj | sharp@0.34.5 (build) | High | fix — when astro raises range to 0.35.x | Proposed | — |
-| GHSA-2p49-hgcm-8545 | svgo@4.0.1 (build) | High | fix — updated to 4.0.2, 2026-08-07 | Resolved (pending review) | — |
-| GHSA-4g3v-8h47-v7g6 | astro@7.0.7 (build/dev server) | Medium | fix — upgrade to 7.1.0, next cycle | Proposed | — |
-| CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Proposed | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-4970 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-5856 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-09-07 | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-5970 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GHSA-5p4m-2wfm-xmqj | js-yaml@4.3.0 (build) | High | fix — updated to 4.3.1, 2026-08-07 | Resolved | — |
+| GHSA-f88m-g3jw-g9cj | sharp@0.34.5 (build) | High | fix — when astro raises range to 0.35.x | Accepted | — |
+| GHSA-2p49-hgcm-8545 | svgo@4.0.1 (build) | High | fix — updated to 4.0.2, 2026-08-07 | Resolved | — |
+| GHSA-4g3v-8h47-v7g6 | astro@7.0.7 (build/dev server) | Medium | fix — upgrade to 7.1.0, next cycle | Accepted | — |
+| CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 
 ## 4. CRA Annex I gap report
 
@@ -151,4 +151,7 @@ a named human completes them:
 
 | Date | Section | Reviewer | Outcome |
 |------|---------|----------|---------|
-| — | — | — | — |
+| 2026-08-07 | Scope decisions (CRA out-of-scope voluntary, EAA voluntary WCAG 2.2 AA, a11y routes) | Andrea Margiovanni | approved |
+| 2026-08-07 | v1.6.0 + v1.7.0 release evidence, triage register (13 records), ADR 0002 | Andrea Margiovanni | approved |
+| 2026-08-07 | Annex I gap report incl. remediation states | Andrea Margiovanni | approved |
+| 2026-08-07 | EAA module: statement (partially compliant), SECURITY.md/CVD policy | Andrea Margiovanni | approved — manual a11y checks remain open |

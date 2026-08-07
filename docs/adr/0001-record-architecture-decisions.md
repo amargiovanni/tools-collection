@@ -1,7 +1,8 @@
 # 0001 — Record architecture decisions
 
-**Status:** Proposed
-**Date:** 2026-08-07
+**Status**: Accepted
+**Date**: 2026-08-07
+**Accepted**: 2026-08-07 (Andrea Margiovanni)
 
 ## Context
 

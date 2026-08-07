@@ -1,9 +1,5 @@
 # Security Policy
 
-> **DRAFT — pending maintainer confirmation** that the contact channel is
-> monitored and the response targets below are sustainable. Remove this banner
-> when approving.
-
 Tools Collection is a free, open-source set of browser-based utilities. All
 processing happens client-side: the product has no backend, no accounts and no
 server-side data. Security issues are still possible — in the shipped
@@ -57,4 +53,4 @@ disclosing publicly.
 
 ---
 
-*Last reviewed: 2026-08-07 · Owner: repository maintainer*
+*Last reviewed: 2026-08-07 · Approved by the repository maintainer · Owner: repository maintainer*

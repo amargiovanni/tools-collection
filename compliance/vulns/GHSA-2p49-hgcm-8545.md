@@ -1,8 +1,8 @@
 # GHSA-2p49-hgcm-8545 — svgo@4.0.1
 
-**Status:** Proposed — pending human review
+**Status:** Accepted — 2026-08-07
 **Date drafted:** 2026-08-07
-**Drafter:** Claude (cra-evidence) | **Decider:** [name — REQUIRED before status changes]
+**Drafter:** Claude (cra-evidence) | **Decider:** Andrea Margiovanni (2026-08-07)
 
 ## Finding
 
@@ -19,7 +19,7 @@
 - **Exposure:** build-time only.
 - **Existing mitigations:** SVG inputs are first-party and version-controlled.
 
-## Draft decision (Proposed)
+## Decision (Accepted)
 
 - **Action:** fix — `npm update svgo` to 4.0.2 (patch, within range) at the next
   dependency cycle; expected via dependabot within days.

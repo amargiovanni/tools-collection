@@ -1,8 +1,8 @@
 # GHSA-4g3v-8h47-v7g6 — astro@7.0.7
 
-**Status:** Proposed — pending human review
+**Status:** Accepted — 2026-08-07
 **Date drafted:** 2026-08-07
-**Drafter:** Claude (cra-evidence) | **Decider:** [name — REQUIRED before status changes]
+**Drafter:** Claude (cra-evidence) | **Decider:** Andrea Margiovanni (2026-08-07)
 
 ## Finding
 
@@ -21,7 +21,7 @@
 - **Exposure:** build-time / local development only.
 - **Existing mitigations:** static output mode; no SSR endpoints exist.
 
-## Draft decision (Proposed)
+## Decision (Accepted)
 
 - **Action:** fix — upgrade to astro 7.1.0 at the next dependency cycle (dependabot
   will propose it; the 6→7 major was completed in this release).

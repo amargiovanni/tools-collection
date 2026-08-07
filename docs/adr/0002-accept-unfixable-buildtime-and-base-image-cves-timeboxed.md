@@ -1,7 +1,8 @@
 # 0002 — Accept unfixable build-time and base-image CVEs, time-boxed
 
-**Status:** Proposed
-**Date:** 2026-08-07
+**Status**: Accepted
+**Date**: 2026-08-07
+**Accepted**: 2026-08-07 (Andrea Margiovanni)
 
 ## Context
 

@@ -1,8 +1,8 @@
 # GHSA-5p4m-2wfm-xmqj — js-yaml@4.3.0
 
-**Status:** Proposed — pending human review
+**Status:** Accepted — 2026-08-07
 **Date drafted:** 2026-08-07
-**Drafter:** Claude (cra-evidence) | **Decider:** [name — REQUIRED before status changes]
+**Drafter:** Claude (cra-evidence) | **Decider:** Andrea Margiovanni (2026-08-07)
 
 ## Finding
 
@@ -21,7 +21,7 @@
 - **Exposure:** build-time only.
 - **Existing mitigations:** inputs are first-party files under version control.
 
-## Draft decision (Proposed)
+## Decision (Accepted)
 
 - **Action:** fix — `npm update js-yaml` to 4.3.1 (within astro's semver range) at the
   next dependency cycle; expected to arrive via dependabot within days.

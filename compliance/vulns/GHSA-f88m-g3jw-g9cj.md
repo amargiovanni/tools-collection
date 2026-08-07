@@ -1,8 +1,8 @@
 # GHSA-f88m-g3jw-g9cj — sharp@0.34.5
 
-**Status:** Proposed — pending human review
+**Status:** Accepted — 2026-08-07
 **Date drafted:** 2026-08-07
-**Drafter:** Claude (cra-evidence) | **Decider:** [name — REQUIRED before status changes]
+**Drafter:** Claude (cra-evidence) | **Decider:** Andrea Margiovanni (2026-08-07)
 
 ## Finding
 
@@ -20,7 +20,7 @@
 - **Exposure:** build-time only.
 - **Existing mitigations:** image inputs are first-party and version-controlled.
 
-## Draft decision (Proposed)
+## Decision (Accepted)
 
 - **Action:** fix — arrives when astro raises its sharp range (0.35.x); tracked via
   dependabot. No action possible in-range today without an override.
