@@ -1,0 +1,299 @@
+## SBOM diff
+
+`compliance/sbom/v1.6.0.cdx.json` → `compliance/sbom/v1.7.0.cdx.json`
+
+### Added (57)
+
+- `/Users/andreamargiovanni/dev/tools-collection/.github/workflows/ci.yml` 
+- `/Users/andreamargiovanni/dev/tools-collection/.github/workflows/dockerbuild.yml` 
+- `/Users/andreamargiovanni/dev/tools-collection/node_modules/@typescript/typescript-darwin-arm64/lib/tsc` 
+- `/Users/andreamargiovanni/dev/tools-collection/node_modules/@ungap/structured-clone/.github/workflows/node.js.yml` 
+- `/Users/andreamargiovanni/dev/tools-collection/package-lock.json` 
+- `@astrojs/compiler-binding` 0.3.1
+- `@astrojs/compiler-binding-darwin-arm64` 0.3.1
+- `@astrojs/compiler-binding-darwin-x64` 0.3.1
+- `@astrojs/compiler-binding-linux-arm64-gnu` 0.3.1
+- `@astrojs/compiler-binding-linux-arm64-musl` 0.3.1
+- `@astrojs/compiler-binding-linux-x64-gnu` 0.3.1
+- `@astrojs/compiler-binding-linux-x64-musl` 0.3.1
+- `@astrojs/compiler-binding-wasm32-wasi` 0.3.1
+- `@astrojs/compiler-binding-win32-arm64-msvc` 0.3.1
+- `@astrojs/compiler-binding-win32-x64-msvc` 0.3.1
+- `@astrojs/compiler-rs` 0.3.1
+- `@astrojs/markdown-satteri` 0.3.3
+- `@bruits/satteri-darwin-arm64` 0.9.5
+- `@bruits/satteri-darwin-x64` 0.9.5
+- `@bruits/satteri-linux-arm64-gnu` 0.9.5
+- `@bruits/satteri-linux-arm64-musl` 0.9.5
+- `@bruits/satteri-linux-x64-gnu` 0.9.5
+- `@bruits/satteri-linux-x64-musl` 0.9.5
+- `@bruits/satteri-wasm32-wasi` 0.9.5
+- `@bruits/satteri-win32-arm64-msvc` 0.9.5
+- `@bruits/satteri-win32-x64-msvc` 0.9.5
+- `@oxc-project/types` 0.143.0
+- `@rolldown/binding-android-arm64` 1.2.3
+- `@rolldown/binding-darwin-arm64` 1.2.3
+- `@rolldown/binding-darwin-x64` 1.2.3
+- `@rolldown/binding-freebsd-x64` 1.2.3
+- `@rolldown/binding-linux-arm-gnueabihf` 1.2.3
+- `@rolldown/binding-linux-arm64-gnu` 1.2.3
+- `@rolldown/binding-linux-arm64-musl` 1.2.3
+- `@rolldown/binding-linux-ppc64-gnu` 1.2.3
+- `@rolldown/binding-linux-s390x-gnu` 1.2.3
+- `@rolldown/binding-linux-x64-gnu` 1.2.3
+- `@rolldown/binding-linux-x64-musl` 1.2.3
+- `@rolldown/binding-openharmony-arm64` 1.2.3
+- `@rolldown/binding-win32-arm64-msvc` 1.2.3
+- `@rolldown/binding-win32-x64-msvc` 1.2.3
+- `@rolldown/pluginutils` 1.0.1
+- `@types/estree-jsx` 1.0.5
+- `am-i-vibing` 0.4.0
+- `coverallsapp/github-action` master
+- `github.com/go-json-experiment/json` v0.0.0-20260623181947-01eb4420fa68
+- `github.com/mackerelio/go-osstat` v0.2.7
+- `github.com/microsoft/typescript-go` v0.0.0-20260708042240-2bd066d87f5b+dirty
+- `github.com/zeebo/xxh3` v1.1.0
+- `golang.org/x/sync` v0.21.0
+- `golang.org/x/sys` v0.46.0
+- `golang.org/x/term` v0.44.0
+- `golang.org/x/text` v0.38.0
+- `process-ancestry` 0.1.0
+- `rolldown` 1.2.3
+- `satteri` 0.9.5
+- `stdlib` go1.26.4
+
+### Removed (104)
+
+- `/private/tmp/claude-501/-Users-andreamargiovanni-dev-tools-collection/b238ce08-ec11-46bd-9783-05273e611f12/scratchpad/wt-v160/.github/workflows/ci.yml` 
+- `/private/tmp/claude-501/-Users-andreamargiovanni-dev-tools-collection/b238ce08-ec11-46bd-9783-05273e611f12/scratchpad/wt-v160/.github/workflows/dockerbuild.yml` 
+- `/private/tmp/claude-501/-Users-andreamargiovanni-dev-tools-collection/b238ce08-ec11-46bd-9783-05273e611f12/scratchpad/wt-v160/package-lock.json` 
+- `@astrojs/compiler` 4.0.0
+- `@astrojs/markdown-remark` 7.1.2
+- `@rollup/rollup-android-arm-eabi` 4.59.0
+- `@rollup/rollup-android-arm64` 4.59.0
+- `@rollup/rollup-darwin-arm64` 4.59.0
+- `@rollup/rollup-darwin-x64` 4.59.0
+- `@rollup/rollup-freebsd-arm64` 4.59.0
+- `@rollup/rollup-freebsd-x64` 4.59.0
+- `@rollup/rollup-linux-arm-gnueabihf` 4.59.0
+- `@rollup/rollup-linux-arm-musleabihf` 4.59.0
+- `@rollup/rollup-linux-arm64-gnu` 4.59.0
+- `@rollup/rollup-linux-arm64-musl` 4.59.0
+- `@rollup/rollup-linux-loong64-gnu` 4.59.0
+- `@rollup/rollup-linux-loong64-musl` 4.59.0
+- `@rollup/rollup-linux-ppc64-gnu` 4.59.0
+- `@rollup/rollup-linux-ppc64-musl` 4.59.0
+- `@rollup/rollup-linux-riscv64-gnu` 4.59.0
+- `@rollup/rollup-linux-riscv64-musl` 4.59.0
+- `@rollup/rollup-linux-s390x-gnu` 4.59.0
+- `@rollup/rollup-linux-x64-gnu` 4.59.0
+- `@rollup/rollup-linux-x64-musl` 4.59.0
+- `@rollup/rollup-openbsd-x64` 4.59.0
+- `@rollup/rollup-openharmony-arm64` 4.59.0
+- `@rollup/rollup-win32-arm64-msvc` 4.59.0
+- `@rollup/rollup-win32-ia32-msvc` 4.59.0
+- `@rollup/rollup-win32-x64-gnu` 4.59.0
+- `@rollup/rollup-win32-x64-msvc` 4.59.0
+- `@types/debug` 4.1.13
+- `@types/ms` 2.1.0
+- `array-iterate` 2.0.1
+- `character-entities` 2.0.2
+- `decode-named-character-reference` 1.3.0
+- `escape-string-regexp` 5.0.0
+- `hast-util-from-html` 2.0.3
+- `hast-util-from-parse5` 8.0.3
+- `hast-util-is-element` 3.0.0
+- `hast-util-parse-selector` 4.0.0
+- `hast-util-raw` 9.1.0
+- `hast-util-to-parse5` 8.0.1
+- `hast-util-to-text` 4.0.2
+- `hastscript` 9.0.1
+- `is-inside-container` 1.0.0
+- `is-wsl` 3.1.1
+- `longest-streak` 3.1.0
+- `markdown-table` 3.0.4
+- `mdast-util-definitions` 6.0.0
+- `mdast-util-find-and-replace` 3.0.2
+- `mdast-util-from-markdown` 2.0.3
+- `mdast-util-gfm` 3.1.0
+- `mdast-util-gfm-autolink-literal` 2.0.1
+- `mdast-util-gfm-footnote` 2.1.0
+- `mdast-util-gfm-strikethrough` 2.0.0
+- `mdast-util-gfm-table` 2.0.0
+- `mdast-util-gfm-task-list-item` 2.0.0
+- `mdast-util-phrasing` 4.1.0
+- `mdast-util-to-markdown` 2.1.2
+- `mdast-util-to-string` 4.0.0
+- `micromark` 4.0.2
+- `micromark-core-commonmark` 2.0.3
+- `micromark-extension-gfm` 3.0.0
+- `micromark-extension-gfm-autolink-literal` 2.1.0
+- `micromark-extension-gfm-footnote` 2.1.0
+- `micromark-extension-gfm-strikethrough` 2.1.0
+- `micromark-extension-gfm-table` 2.1.1
+- `micromark-extension-gfm-tagfilter` 2.0.0
+- `micromark-extension-gfm-task-list-item` 2.1.0
+- `micromark-factory-destination` 2.0.1
+- `micromark-factory-label` 2.0.1
+- `micromark-factory-space` 2.0.1
+- `micromark-factory-title` 2.0.1
+- `micromark-factory-whitespace` 2.0.1
+- `micromark-util-chunked` 2.0.1
+- `micromark-util-classify-character` 2.0.1
+- `micromark-util-combine-extensions` 2.0.1
+- `micromark-util-decode-numeric-character-reference` 2.0.2
+- `micromark-util-decode-string` 2.0.1
+- `micromark-util-html-tag-name` 2.0.1
+- `micromark-util-normalize-identifier` 2.0.1
+- `micromark-util-resolve-all` 2.0.1
+- `micromark-util-subtokenize` 2.1.0
+- `parse-latin` 7.0.0
+- `rehype` 13.0.2
+- `rehype-parse` 9.0.1
+- `rehype-raw` 7.0.0
+- `rehype-stringify` 10.0.1
+- `remark-gfm` 4.0.1
+- `remark-parse` 11.0.0
+- `remark-rehype` 11.1.2
+- `remark-smartypants` 3.0.2
+- `remark-stringify` 11.0.0
+- `retext` 9.0.0
+- `retext-latin` 4.0.0
+- `retext-stringify` 4.0.0
+- `rollup` 4.59.0
+- `unist-util-find-after` 5.0.0
+- `unist-util-modify-children` 4.0.0
+- `unist-util-remove-position` 5.0.0
+- `unist-util-visit-children` 3.0.0
+- `vfile-location` 5.0.3
+- `web-namespaces` 2.0.1
+- `which-pm-runs` 1.1.0
+
+### Version changed (126)
+
+- `@astrojs/internal-helpers` 0.9.1 → 0.10.1
+- `@astrojs/solid-js` 6.0.0 → 7.0.1
+- `@astrojs/telemetry` 3.3.2 → 3.3.3
+- `@babel/code-frame` 7.29.0 → 7.29.7
+- `@babel/compat-data` 7.29.0 → 7.29.7
+- `@babel/core` 7.29.0 → 7.29.7
+- `@babel/generator` 7.29.1 → 7.29.8
+- `@babel/helper-compilation-targets` 7.28.6 → 7.29.7
+- `@babel/helper-globals` 7.28.0 → 7.29.7
+- `@babel/helper-module-imports` 7.28.6 → 7.29.7
+- `@babel/helper-module-transforms` 7.28.6 → 7.29.7
+- `@babel/helper-plugin-utils` 7.28.6 → 7.29.7
+- `@babel/helper-string-parser` 7.27.1 → 7.29.7
+- `@babel/helper-validator-identifier` 7.28.5 → 7.29.7
+- `@babel/helper-validator-option` 7.27.1 → 7.29.7
+- `@babel/helpers` 7.28.6 → 7.29.7
+- `@babel/parser` 7.29.0 → 7.29.8
+- `@babel/plugin-syntax-jsx` 7.28.6 → 7.29.7
+- `@babel/template` 7.28.6 → 7.29.7
+- `@babel/traverse` 7.29.0 → 7.29.8
+- `@babel/types` 7.29.0 → 7.29.8
+- `@emnapi/core` 1.10.0 → 1.11.2
+- `@emnapi/runtime` 1.9.0 → 1.11.1
+- `@emnapi/wasi-threads` 1.2.1 → 1.2.2
+- `@esbuild/aix-ppc64` 0.27.4 → 0.28.1
+- `@esbuild/android-arm` 0.27.4 → 0.28.1
+- `@esbuild/android-arm64` 0.27.4 → 0.28.1
+- `@esbuild/android-x64` 0.27.4 → 0.28.1
+- `@esbuild/darwin-arm64` 0.27.4 → 0.28.1
+- `@esbuild/darwin-x64` 0.27.4 → 0.28.1
+- `@esbuild/freebsd-arm64` 0.27.4 → 0.28.1
+- `@esbuild/freebsd-x64` 0.27.4 → 0.28.1
+- `@esbuild/linux-arm` 0.27.4 → 0.28.1
+- `@esbuild/linux-arm64` 0.27.4 → 0.28.1
+- `@esbuild/linux-ia32` 0.27.4 → 0.28.1
+- `@esbuild/linux-loong64` 0.27.4 → 0.28.1
+- `@esbuild/linux-mips64el` 0.27.4 → 0.28.1
+- `@esbuild/linux-ppc64` 0.27.4 → 0.28.1
+- `@esbuild/linux-riscv64` 0.27.4 → 0.28.1
+- `@esbuild/linux-s390x` 0.27.4 → 0.28.1
+- `@esbuild/linux-x64` 0.27.4 → 0.28.1
+- `@esbuild/netbsd-arm64` 0.27.4 → 0.28.1
+- `@esbuild/netbsd-x64` 0.27.4 → 0.28.1
+- `@esbuild/openbsd-arm64` 0.27.4 → 0.28.1
+- `@esbuild/openbsd-x64` 0.27.4 → 0.28.1
+- `@esbuild/openharmony-arm64` 0.27.4 → 0.28.1
+- `@esbuild/sunos-x64` 0.27.4 → 0.28.1
+- `@esbuild/win32-arm64` 0.27.4 → 0.28.1
+- `@esbuild/win32-ia32` 0.27.4 → 0.28.1
+- `@esbuild/win32-x64` 0.27.4 → 0.28.1
+- `@napi-rs/wasm-runtime` 1.1.4 → 1.1.6
+- `@shikijs/core` 4.1.0 → 4.3.1
+- `@shikijs/engine-javascript` 4.1.0 → 4.3.1
+- `@shikijs/engine-oniguruma` 4.1.0 → 4.3.1
+- `@shikijs/langs` 4.1.0 → 4.3.1
+- `@shikijs/primitive` 4.1.0 → 4.3.1
+- `@shikijs/themes` 4.1.0 → 4.3.1
+- `@shikijs/types` 4.1.0 → 4.3.1
+- `@tailwindcss/node` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-android-arm64` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-darwin-arm64` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-darwin-x64` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-freebsd-x64` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-linux-arm-gnueabihf` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-linux-arm64-gnu` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-linux-arm64-musl` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-linux-x64-gnu` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-linux-x64-musl` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-wasm32-wasi` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-win32-arm64-msvc` 4.3.0 → 4.3.3
+- `@tailwindcss/oxide-win32-x64-msvc` 4.3.0 → 4.3.3
+- `@tailwindcss/vite` 4.3.0 → 4.3.3
+- `@tybys/wasm-util` 0.10.1 → 0.10.3
+- `@types/hast` 3.0.4 → 3.0.5
+- `@types/node` 25.9.1 → 26.1.2
+- `@ungap/structured-clone` 1.3.0 → 1.3.3
+- `actions/checkout` v6 → v7
+- `actions/setup-node` v6 → v7
+- `astro` 6.3.6 → 7.0.7
+- `babel-plugin-jsx-dom-expressions` 0.40.5 → 0.40.7
+- `babel-preset-solid` 1.9.10 → 1.9.12
+- `baseline-browser-mapping` 2.10.8 → 2.11.12
+- `browserslist` 4.28.1 → 4.28.7
+- `caniuse-lite` 1.0.30001779 → 1.0.30001809
+- `devalue` 5.6.4 → 5.8.1
+- `docker/build-push-action` v7.1.0 → v7.3.0
+- `docker/login-action` v4.1.0 → v4.6.0
+- `docker/metadata-action` v6.0.0 → v6.2.0
+- `docker/setup-buildx-action` v4.0.0 → v4.2.0
+- `docker/setup-qemu-action` v4.0.0 → v4.2.0
+- `electron-to-chromium` 1.5.313 → 1.5.402
+- `enhanced-resolve` 5.21.6 → 5.24.5
+- `esbuild` 0.27.4 → 0.28.1
+- `fuse.js` 7.3.0 → 7.4.2
+- `jiti` 2.6.1 → 2.7.0
+- `js-yaml` 4.1.1 → 4.3.0
+- `lightningcss` 1.32.0 → 1.33.0
+- `lightningcss-android-arm64` 1.32.0 → 1.33.0
+- `lightningcss-darwin-arm64` 1.32.0 → 1.33.0
+- `lightningcss-darwin-x64` 1.32.0 → 1.33.0
+- `lightningcss-freebsd-x64` 1.32.0 → 1.33.0
+- `lightningcss-linux-arm-gnueabihf` 1.32.0 → 1.33.0
+- `lightningcss-linux-arm64-gnu` 1.32.0 → 1.33.0
+- `lightningcss-linux-arm64-musl` 1.32.0 → 1.33.0
+- `lightningcss-linux-x64-gnu` 1.32.0 → 1.33.0
+- `lightningcss-linux-x64-musl` 1.32.0 → 1.33.0
+- `lightningcss-win32-arm64-msvc` 1.32.0 → 1.33.0
+- `lightningcss-win32-x64-msvc` 1.32.0 → 1.33.0
+- `nanoid` 3.3.11 → 3.3.17
+- `node-releases` 2.0.36 → 2.0.53
+- `picomatch` 4.0.4 → 4.0.5
+- `postcss` 8.5.8 → 8.5.26
+- `property-information` 7.1.0 → 7.2.0
+- `seroval` 1.5.1 → 1.5.4
+- `seroval-plugins` 1.5.1 → 1.5.4
+- `shiki` 4.1.0 → 4.3.1
+- `smol-toml` 1.6.1 → 1.7.0
+- `solid-js` 1.9.13 → 1.9.14
+- `tailwindcss` 4.3.0 → 4.3.3
+- `tinyglobby` 0.2.15 → 0.2.17
+- `tools-collection` 1.6.0 → 1.7.0
+- `undici-types` 7.24.6 → 8.3.0
+- `update-browserslist-db` 1.2.3 → 1.3.0
+- `vite` 7.3.3 → 8.2.1
+- `vite-plugin-solid` 2.11.11 → 2.11.14
