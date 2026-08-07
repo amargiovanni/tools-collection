@@ -4,10 +4,22 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
-## Unreleased
+## Published: `1.7.0`
 
 ### Changed
+- Bumped the product version to `1.7.0`.
+- Upgraded the entire toolchain in a single dependency wave (17 dependabot PRs): Astro 6.3.6 → 7.0.7 (with Vite 8), `@astrojs/solid-js` 6 → 7, TypeScript 6 → 7 (native compiler), Tailwind CSS 4.3.3, Vitest 4.1.10, Playwright 1.61.1, solid-js 1.9.14, plus all Docker/GitHub Actions workflow actions.
 - Reworded the README files and changelog notes to avoid hard-coded tool counts in catalog descriptions.
+
+### Added
+- Added a versioned compliance dossier under `compliance/`: CycloneDX SBOMs for v1.6.0 and v1.7.0, a supply-chain diff between the two releases, grype vulnerability scans with one draft triage record per finding, a voluntary CRA Annex I gap report, and an automated axe-core accessibility scan of every English route.
+- Added a repository `CLAUDE.md` with the compliance policy block (voluntary CRA/EAA posture, per-release evidence regeneration).
+
+### Fixed
+- Fixed the Docker build workflow tag filters so `v`-prefixed release tags actually trigger a versioned image publish — no tag build had ever run before this fix.
+
+### Security
+- The dependency wave removed 13 of the 20 known vulnerabilities in the previous release's supply chain, including the only Critical (seroval); the 7 remaining findings are all in build-time tooling and have draft triage records under `compliance/vulns/`.
 
 ## Published: `1.6.0`
 
