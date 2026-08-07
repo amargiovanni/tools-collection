@@ -449,8 +449,9 @@ export default function CronExpression(props: Props) {
               <p class="mb-3 text-sm font-medium text-text-secondary">{phraseSets[props.lang].schedulePreview}</p>
               <div class="flex flex-wrap items-end gap-3 mb-4">
                 <div class="flex flex-col gap-1">
-                  <label class="text-xs text-text-muted">{phraseSets[props.lang].referenceTime} (UTC)</label>
+                  <label for="cron-ref-time" class="text-xs text-text-muted">{phraseSets[props.lang].referenceTime} (UTC)</label>
                   <input
+                    id="cron-ref-time"
                     type="datetime-local"
                     class="rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-text-primary"
                     value={scheduleRefTime()}

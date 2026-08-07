@@ -22,15 +22,15 @@ function formatLocalDate(date: Date): string {
 
 function DateField(props: { label: string; value: string; onInput: (v: string) => void }) {
   return (
-    <div class="flex flex-col gap-1.5">
-      <label class="text-sm font-medium text-text-secondary">{props.label}</label>
+    <label class="flex flex-col gap-1.5">
+      <span class="text-sm font-medium text-text-secondary">{props.label}</span>
       <input
         type="date"
         value={props.value}
         onInput={(e) => props.onInput(e.currentTarget.value)}
         class={INPUT_CLASS}
       />
-    </div>
+    </label>
   )
 }
 

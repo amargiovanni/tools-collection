@@ -41,7 +41,7 @@ export function FileInput(props: FileInputProps) {
         </label>
       )}
       <div
-        class={`relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer ${
+        class={`relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer focus-within:border-accent ${
           dragOver()
             ? 'border-accent bg-accent-light'
             : 'border-border hover:border-accent-hover'
@@ -53,19 +53,13 @@ export function FileInput(props: FileInputProps) {
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
         onClick={() => document.getElementById(resolvedId)?.click()}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            document.getElementById(resolvedId)?.click()
-          }
-        }}
-        role="button"
-        tabindex="0"
       >
         <input
           id={resolvedId}
           type="file"
           accept={props.accept}
           onChange={handleChange}
+          aria-label={props.label ?? 'Choose a file'}
           class="sr-only"
         />
         <span class="text-sm text-text-secondary">

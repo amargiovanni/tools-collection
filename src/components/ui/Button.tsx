@@ -33,6 +33,7 @@ interface ButtonProps extends ParentProps {
   class?: string
   onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>
   type?: 'button' | 'submit' | 'reset'
+  'aria-label'?: string
 }
 
 export function Button(props: ButtonProps) {
@@ -44,6 +45,7 @@ export function Button(props: ButtonProps) {
     'onClick',
     'type',
     'children',
+    'aria-label',
   ])
 
   return (
@@ -52,6 +54,7 @@ export function Button(props: ButtonProps) {
       class={`${buttonVariants({ variant: local.variant, size: local.size })} ${local.class ?? ''}`}
       disabled={local.disabled}
       onClick={local.onClick}
+      aria-label={local['aria-label']}
       data-primary-action={(local.variant ?? 'primary') === 'primary' ? '' : undefined}
     >
       {local.children}

@@ -83,6 +83,7 @@ export default function ColorPicker(props: Props) {
             type="color"
             value={pickerValue()}
             onChange={handlePickerChange}
+            aria-label={t(props.lang, 'tools_colorPicker_preview')}
             class="h-10 w-14 cursor-pointer rounded-lg border border-border bg-surface-raised"
           />
         </div>

@@ -70,10 +70,11 @@ export default function PasswordGenerator(props: Props) {
   return (
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-medium text-text-secondary">
+        <label for="pw-length" class="text-sm font-medium text-text-secondary">
           {t(props.lang, 'tools_passwordGenerator_lengthLabel')} {length()}
         </label>
         <input
+          id="pw-length"
           type="range"
           min={8}
           max={64}

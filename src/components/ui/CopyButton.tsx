@@ -21,7 +21,13 @@ export function CopyButton(props: CopyButtonProps) {
   }
 
   return (
-    <Button variant="ghost" size="sm" onClick={handleCopy} class={props.class}>
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={handleCopy}
+      class={props.class}
+      aria-label={props.label ?? (copied() ? 'Copied' : 'Copy to clipboard')}
+    >
       <span class="inline-flex items-center gap-1.5">
         <span class="inline-flex" innerHTML={iconSvg(copied() ? 'shieldcheck' : 'copy', 'icon-sm')} />
         {copied() ? <span>Copied!</span> : props.label ? <span>{props.label}</span> : null}
