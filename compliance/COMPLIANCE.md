@@ -13,7 +13,11 @@
 - **Product:** Tools Collection — a free, open-source collection of 53 browser-based
   developer utilities (formatters, generators, converters, inspectors) in 5 languages.
   All processing happens client-side in the visitor's browser; no user data is ever
-  transmitted to or stored on a server.
+  transmitted to or stored on a server. **Known deviation (found 2026-08-07):** the
+  QR generator sends its input text to a third-party API (api.qrserver.com) via an
+  image URL — a defect against the project's own policy, currently also blocked by
+  the CSP (broken image). Local generation fix pending maintainer approval of a
+  QR-encoding dependency.
 - **Distribution:** static site (Cloudflare Pages, tools.margiovanni.it) and a Docker
   image (nginx serving the same static build) published to GHCR.
 - **CRA scope:** out of scope — free and open-source software made available outside
@@ -31,6 +35,7 @@ One row per tagged release. Artifacts live under `compliance/`.
 
 | Release | Date | SBOM | Supply-chain diff | Vulnerabilities (open / triaged) | Reviewer |
 |---------|------|------|-------------------|----------------------------------|----------|
+| v1.7.1 (container) | 2026-08-07 | [sbom/v1.7.1-docker.cdx.json](sbom/v1.7.1-docker.cdx.json) (1025 components; provenance attestation verified via `gh attestation verify`) | base nginx:alpine unchanged | 8 matches / 6 distinct CVEs — identical to v1.7.0 set, all accepted under ADR 0002 | Andrea Margiovanni, 2026-08-07 |
 | v1.7.1 | 2026-08-07 | [sbom/v1.7.1.cdx.json](sbom/v1.7.1.cdx.json) (409 components) | [sbom/diff-v1.7.0-to-v1.7.1.md](sbom/diff-v1.7.0-to-v1.7.1.md) — security/a11y remediation release: js-yaml 4.3.1, svgo 4.0.2 | 5 / 5 (3 High, 2 Medium — all covered by accepted triage records; js-yaml and svgo findings resolved) | Andrea Margiovanni, 2026-08-07 |
 | v1.6.0 | 2026-06-08 (SBOM retroactive, 2026-08-07) | [sbom/v1.6.0.cdx.json](sbom/v1.6.0.cdx.json) (437 components) | baseline | 20 (1 Critical, 9 High, 7 Medium, 3 Low) — superseded by v1.7.0 | Andrea Margiovanni, 2026-08-07 |
 | v1.7.0 (container) | 2026-08-07 | [sbom/v1.7.0-docker.cdx.json](sbom/v1.7.0-docker.cdx.json) (1025 components, ghcr.io …:v1.7.0 linux/amd64 — first versioned image ever published) | base image nginx:alpine + static build | 8 matches / 6 distinct CVEs, all in the base image, all triaged, none reachable in shipped config | Andrea Margiovanni, 2026-08-07 |
@@ -77,9 +82,9 @@ a DRAFT pending review by counsel.
 | I.2d unauthorized-access protection | **not applicable** | No accounts, no server-side data, no non-public functionality — all processing is in-browser. |
 | I.2e confidentiality / encryption | **conformant** | TLS enforced by Cloudflare Pages; no user data stored or transmitted by design; no secrets in repo (no .env, none committed). |
 | I.2f integrity of code/config | **conformant** (2026-08-07) | Build provenance attestations published for container images (actions/attest-build-provenance in dockerbuild.yml). |
-| I.2g data minimisation | **conformant** | Architecture processes no personal data; tool inputs never leave the browser; site analytics (Cloudflare Web Analytics) is cookieless and aggregate. |
+| I.2g data minimisation | **conformant, one exception** | Tool inputs never leave the browser except the QR generator (see I.2i gap); analytics cookieless/aggregate. |
 | I.2h availability after incident | **not applicable** | Stateless static content on a CDN; recovery is redeploy-from-git. |
-| I.2i impact on other services | **conformant** | Shipped product makes no outbound calls at runtime (client-side only). |
+| I.2i impact on other services | **gap** (corrected 2026-08-07) | One outbound call found: QR generator ships user input to api.qrserver.com (img URL). Every other tool is fully client-side. Remediation: generate QR locally (dependency pending approval). |
 | I.2j limit attack surface | **conformant** | Exposure is static assets only; no admin surface, no API; dependency count reduced this release (437→408). |
 | I.2k exploitation mitigation | **conformant** (2026-08-07) | Per-page hashed CSP meta (astro.config.ts security.csp + post-build union), hardening headers via public/_headers and docker/security-headers.conf; e2e-tested incl. SPA navigation. |
 | I.2l security logging | **not applicable** | No server-side activity of the product to record; edge logs are the host platform's. |
