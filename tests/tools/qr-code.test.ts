@@ -13,13 +13,20 @@ describe('qr-code', () => {
     if (!result.ok) expect(result.error.code).toBe('EMPTY_INPUT')
   })
 
-  it('generateQrUrl returns valid URL for text input', () => {
+  it('generateQrUrl generates the QR locally as an SVG data URL', () => {
     const result = generateQrUrl({ text: 'https://example.com', size: 300 })
     expect(result.ok).toBe(true)
     if (result.ok) {
-      expect(result.value).toContain('api.qrserver.com')
-      expect(result.value).toContain('300x300')
-      expect(result.value).toContain('example.com')
+      expect(result.value).toMatch(/^data:image\/svg\+xml/)
+      // Privacy invariant: the QR payload must never leave the browser
+      expect(result.value).not.toContain('api.qrserver.com')
     }
+  })
+
+  it('generateQrUrl encodes the payload into the QR modules, not into a request', () => {
+    const a = generateQrUrl({ text: 'payload-one', size: 200 })
+    const b = generateQrUrl({ text: 'payload-two', size: 200 })
+    expect(a.ok && b.ok).toBe(true)
+    if (a.ok && b.ok) expect(a.value).not.toBe(b.value)
   })
 })

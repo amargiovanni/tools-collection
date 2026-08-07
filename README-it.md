@@ -4,14 +4,12 @@ Una raccolta modulare e type-safe di 50+ strumenti per sviluppatori che funziona
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
-![Astro](https://img.shields.io/badge/Astro-6-ff5d01.svg)
+![Astro](https://img.shields.io/badge/Astro-7-ff5d01.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Cosa Fa
 
-50+ strumenti che girano interamente nel browser: nessun dato lascia la tua macchina, ad eccezione della generazione QR, che usa un'API esterna. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
-
-Novità della `1.5.1`: nuovo convertitore Markdown → HTML con anteprima dal vivo, tabelle GFM, task list e download dell'HTML come frammento o documento completo.
+50+ strumenti che girano interamente nel browser: nessun dato lascia mai la tua macchina. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
 ## Strumenti
 
@@ -30,7 +28,7 @@ Novità della `1.5.1`: nuovo convertitore Markdown → HTML con anteprima dal vi
 
 | Livello | Tecnologia |
 |---|---|
-| Meta-framework | [Astro](https://astro.build/) 6 — generazione statica, code splitting per pagina |
+| Meta-framework | [Astro](https://astro.build/) 7 — generazione statica, code splitting per pagina |
 | Framework UI | [Solid.js](https://www.solidjs.com/) — reattività fine-grained, zero virtual DOM |
 | Styling | [Tailwind CSS](https://tailwindcss.com/) 4 — design token via `@theme`, switch tema (chiaro/scuro/sistema) |
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
@@ -203,8 +201,12 @@ I colori sono definiti come custom property CSS in `src/styles/global.css` trami
 
 - Tutta l'elaborazione avviene nel browser
 - Nessun analytics, nessun tracking, nessun cookie
-- La generazione QR è l'unica eccezione: usa `api.qrserver.com`
+- Anche i QR sono generati in locale come SVG (dalla `1.7.2`): nessuna eccezione
 - Password e PIN usano `crypto.getRandomValues()` (crittograficamente sicuro)
+
+## Sicurezza e Compliance
+
+Policy di divulgazione, dossier di evidenze (SBOM, scansioni, gap report CRA, accessibilità) e ADR: vedi la sezione **Security & Compliance** del [README inglese](README.md#security--compliance) e [SECURITY.md](SECURITY.md).
 
 ## Licenza
 

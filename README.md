@@ -4,14 +4,12 @@ A modular, type-safe collection of 50+ browser-based developer tools. Built with
 
 ![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
-![Astro](https://img.shields.io/badge/Astro-6-ff5d01.svg)
+![Astro](https://img.shields.io/badge/Astro-7-ff5d01.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## What it does
 
-50+ tools that run entirely in your browser — no data leaves your machine (except QR generation, which uses an external API). Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
-
-Notable in `1.5.1`: a new Markdown-to-HTML converter with a live preview, GFM tables, task lists, and direct download of either the HTML fragment or a full HTML document.
+50+ tools that run entirely in your browser — no data ever leaves your machine. Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
 ## Tools
 
@@ -30,7 +28,7 @@ Notable in `1.5.1`: a new Markdown-to-HTML converter with a live preview, GFM ta
 
 | Layer | Technology |
 |---|---|
-| Meta-framework | [Astro](https://astro.build/) 6 — static site generation, per-page code splitting |
+| Meta-framework | [Astro](https://astro.build/) 7 — static site generation, per-page code splitting |
 | UI framework | [Solid.js](https://www.solidjs.com/) — fine-grained reactivity, zero virtual DOM |
 | Styling | [Tailwind CSS](https://tailwindcss.com/) 4 — `@theme` design tokens, theme switcher (light/dark/system) |
 | Type safety | TypeScript strict — `noUncheckedIndexedAccess`, zero `any` |
@@ -201,10 +199,18 @@ Colors are defined as CSS custom properties in `src/styles/global.css` via Tailw
 
 ## Privacy
 
-- All processing happens in the browser
-- No analytics, no tracking, no cookies
-- QR Code generation is the only exception: it uses `api.qrserver.com`
+- All processing happens in the browser — tool inputs never leave the page (QR codes included: generated locally as SVG since `1.7.2`)
+- No tracking of tool inputs, no cookies; site-level analytics is Cloudflare Web Analytics (cookieless, aggregate)
 - Passwords and PINs use `crypto.getRandomValues()` (cryptographically secure)
+- Every page ships a hash-based Content-Security-Policy
+
+## Security & Compliance
+
+- **Reporting a vulnerability:** see [SECURITY.md](SECURITY.md) — private reporting via [GitHub advisories](https://github.com/amargiovanni/tools-collection/security/advisories/new), coordinated disclosure policy, safe harbour.
+- **Evidence dossier:** [compliance/COMPLIANCE.md](compliance/COMPLIANCE.md) — CycloneDX SBOMs and vulnerability scans per release (also attached to each [GitHub Release](https://github.com/amargiovanni/tools-collection/releases)), supply-chain diffs, triage records, a voluntary CRA Annex I gap report, and the accessibility evidence.
+- **Accessibility:** WCAG 2.2 AA target (voluntary); zero automated axe violations across all English routes; [statement](compliance/eaa/statement.md) honestly marked *partially compliant* until manual criteria are human-verified.
+- **Container provenance:** images on GHCR carry build-provenance attestations — verify with `gh attestation verify oci://ghcr.io/amargiovanni/tools-collection:<tag> --owner amargiovanni`.
+- **Decisions:** architecture and risk-acceptance decisions are recorded as [ADRs](docs/adr/README.md).
 
 ## License
 

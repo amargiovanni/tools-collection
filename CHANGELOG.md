@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.7.2`
+
+### Security
+- QR codes are now generated locally as SVG (`uqr`, zero-dependency): the QR payload no longer leaves the browser. Previously the input text was sent to `api.qrserver.com` as an image URL — a privacy defect against the project's client-side-only policy, and broken anyway under the new CSP.
+
+### Changed
+- Enriched both READMEs: Astro 7 badge, a Security & Compliance section (CVD policy, evidence dossier, provenance verification, accessibility statement, ADRs), and an unqualified client-side-only privacy claim now that the QR exception is gone.
+
 ## Published: `1.7.1`
 
 ### Security

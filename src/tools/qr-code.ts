@@ -1,3 +1,4 @@
+import { renderSVG } from 'uqr'
 import { ok } from '../lib/result'
 import type { Result } from '../lib/result'
 import { validateNonEmpty } from '../lib/validation'
@@ -10,17 +11,15 @@ export interface QrOptions {
 }
 
 /**
- * Generate a QR code URL using an external API.
- * Returns the image URL string on success.
+ * Generate a QR code locally and return it as an SVG data URL.
+ * The payload never leaves the browser.
  */
 export function generateQrUrl(options: QrOptions): Result<string> {
   const validated = validateNonEmpty(options.text)
   if (!validated.ok) return validated
 
-  const trimmed = validated.value
-
-  const url = `https://api.qrserver.com/v1/create-qr-code/?size=${options.size}x${options.size}&data=${encodeURIComponent(trimmed)}`
-  return ok(url)
+  const svg = renderSVG(validated.value, { ecc: 'M', border: 2 })
+  return ok(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`)
 }
 
 /**
