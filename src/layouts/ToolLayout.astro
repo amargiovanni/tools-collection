@@ -161,7 +161,9 @@ const related = [...sameCat, ...others].slice(0, 4)
   </div>
 
   <!-- Repo link for crawlers / footer parity (kept out of the editorial chrome) -->
-  <a class="sr-only" href={upstreamRepositoryUrl}>{t(lang, 'home_footerGithub')}</a>
+  <footer class="sr-only">
+    <a href={upstreamRepositoryUrl}>{t(lang, 'home_footerGithub')}</a>
+  </footer>
 
   <!-- Shell behaviour: favorites, theme, search, mobile menu, recents -->
   <script>

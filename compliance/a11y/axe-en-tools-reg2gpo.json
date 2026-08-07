@@ -14,7 +14,7 @@
       "orientationAngle": 0,
       "orientationType": "landscape-primary"
     },
-    "timestamp": "2026-08-07T15:08:14.964Z",
+    "timestamp": "2026-08-07T17:46:16.640Z",
     "url": "http://localhost:4321/en/tools/reg2gpo/",
     "toolOptions": {
       "reporter": "v1"
@@ -57,6 +57,18 @@
         "nodes": []
       },
       {
+        "id": "aria-allowed-role",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "best-practice"
+        ],
+        "description": "Ensure role attribute has an appropriate value for the element",
+        "help": "ARIA role should be appropriate for the element",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-allowed-role?application=webdriverjs",
+        "nodes": []
+      },
+      {
         "id": "aria-braille-equivalent",
         "impact": null,
         "tags": [
@@ -69,6 +81,43 @@
         "description": "Ensure aria-braillelabel and aria-brailleroledescription have a non-braille equivalent",
         "help": "aria-braille attributes must have a non-braille equivalent",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-braille-equivalent?application=webdriverjs",
+        "nodes": []
+      },
+      {
+        "id": "aria-command-name",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "TTv5",
+          "TT6.a",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "ACT",
+          "RGAAv4",
+          "RGAA-11.9.1"
+        ],
+        "description": "Ensure every ARIA button, link and menuitem has an accessible name",
+        "help": "ARIA commands must have an accessible name",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-command-name?application=webdriverjs",
+        "nodes": []
+      },
+      {
+        "id": "aria-deprecated-role",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure elements do not use deprecated roles",
+        "help": "Deprecated ARIA roles must not be used",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-deprecated-role?application=webdriverjs",
         "nodes": []
       },
       {
@@ -138,6 +187,23 @@
         "nodes": []
       },
       {
+        "id": "aria-required-attr",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure elements with ARIA roles have all required ARIA attributes",
+        "help": "Required ARIA attributes must be provided",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-required-attr?application=webdriverjs",
+        "nodes": []
+      },
+      {
         "id": "aria-required-children",
         "impact": null,
         "tags": [
@@ -169,6 +235,23 @@
         "description": "Ensure elements with an ARIA role that require parent roles are contained by them",
         "help": "Certain ARIA roles must be contained by particular parents",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-required-parent?application=webdriverjs",
+        "nodes": []
+      },
+      {
+        "id": "aria-roles",
+        "impact": null,
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure all elements with a role attribute use a valid value",
+        "help": "ARIA roles used must conform to valid values",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-roles?application=webdriverjs",
         "nodes": []
       },
       {
@@ -516,18 +599,6 @@
         "description": "Ensure the banner landmark is at top level",
         "help": "Banner landmark should not be contained in another landmark",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-banner-is-top-level?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "landmark-contentinfo-is-top-level",
-        "impact": null,
-        "tags": [
-          "cat.semantics",
-          "best-practice"
-        ],
-        "description": "Ensure the contentinfo landmark is at top level",
-        "help": "Contentinfo landmark should not be contained in another landmark",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-contentinfo-is-top-level?application=webdriverjs",
         "nodes": []
       },
       {
@@ -1466,75 +1537,38 @@
             "target": [
               ".lang"
             ]
-          }
-        ]
-      },
-      {
-        "id": "aria-allowed-role",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "best-practice"
-        ],
-        "description": "Ensure role attribute has an appropriate value for the element",
-        "help": "ARIA role should be appropriate for the element",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-allowed-role?application=webdriverjs",
-        "nodes": [
+          },
           {
-            "any": [
+            "any": [],
+            "all": [
               {
-                "id": "aria-allowed-role",
+                "id": "aria-allowed-attr",
                 "data": null,
                 "relatedNodes": [],
-                "impact": "minor",
-                "message": "ARIA role is allowed for given element"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
-            "target": [
-              ".border-2"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "aria-command-name",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "TTv5",
-          "TT6.a",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "ACT",
-          "RGAAv4",
-          "RGAA-11.9.1"
-        ],
-        "description": "Ensure every ARIA button, link and menuitem has an accessible name",
-        "help": "ARIA commands must have an accessible name",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-command-name?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              },
               {
-                "id": "has-visible-text",
+                "id": "aria-allowed-attr-elm",
                 "data": null,
                 "relatedNodes": [],
-                "impact": "serious",
-                "message": "Element has text that is visible to screen readers"
+                "message": "ARIA attributes are allowed for this element",
+                "impact": "critical"
               }
             ],
-            "all": [],
-            "none": [],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
             "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
-              ".border-2"
+              "#file-1"
             ]
           }
         ]
@@ -1860,41 +1894,23 @@
             "target": [
               ".lang"
             ]
-          }
-        ]
-      },
-      {
-        "id": "aria-deprecated-role",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure elements do not use deprecated roles",
-        "help": "Deprecated ARIA roles must not be used",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-deprecated-role?application=webdriverjs",
-        "nodes": [
+          },
           {
             "any": [],
-            "all": [],
-            "none": [
+            "all": [
               {
-                "id": "deprecatedrole",
+                "id": "aria-conditional-attr",
                 "data": null,
                 "relatedNodes": [],
-                "impact": "minor",
-                "message": "ARIA role is not deprecated"
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
               }
             ],
+            "none": [],
             "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
-              ".border-2"
+              "#file-1"
             ]
           }
         ]
@@ -6438,91 +6454,23 @@
             "target": [
               ".lang"
             ]
-          }
-        ]
-      },
-      {
-        "id": "aria-required-attr",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure elements with ARIA roles have all required ARIA attributes",
-        "help": "Required ARIA attributes must be provided",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-required-attr?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "aria-required-attr",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "All required ARIA attributes are present"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
-            "target": [
-              ".border-2"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "aria-roles",
-        "impact": null,
-        "tags": [
-          "cat.aria",
-          "wcag2a",
-          "wcag412",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure all elements with a role attribute use a valid value",
-        "help": "ARIA roles used must conform to valid values",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-roles?application=webdriverjs",
-        "nodes": [
+          },
           {
             "any": [],
             "all": [],
             "none": [
               {
-                "id": "invalidrole",
+                "id": "aria-prohibited-attr",
                 "data": null,
                 "relatedNodes": [],
-                "impact": "critical",
-                "message": "ARIA role is valid"
-              },
-              {
-                "id": "abstractrole",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Abstract roles are not used"
-              },
-              {
-                "id": "unsupportedrole",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "ARIA role is supported"
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
               }
             ],
             "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
-              ".border-2"
+              "#file-1"
             ]
           }
         ]
@@ -7086,6 +7034,38 @@
             "target": [
               ".lang"
             ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
+            "target": [
+              "#file-1"
+            ]
           }
         ]
       },
@@ -7409,6 +7389,24 @@
             "html": "<button type=\"button\" class=\"lang\" title=\"Switch language\" aria-haspopup=\"true\" aria-expanded=\"false\" data-lang-bound=\"true\">EN<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>",
             "target": [
               ".lang"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
+            "target": [
+              "#file-1"
             ]
           }
         ]
@@ -8059,16 +8057,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.68,
+                  "contrastRatio": 5.25,
                   "fontSize": "10.1pt (13.5px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.68"
+                "message": "Element has sufficient color contrast of 5.25"
               }
             ],
             "all": [],
@@ -8084,16 +8082,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.68,
+                  "contrastRatio": 5.25,
                   "fontSize": "10.1pt (13.5px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.68"
+                "message": "Element has sufficient color contrast of 5.25"
               }
             ],
             "all": [],
@@ -8177,6 +8175,31 @@
             "html": "<button type=\"button\" class=\"lang\" title=\"Switch language\" aria-haspopup=\"true\" aria-expanded=\"false\" data-lang-bound=\"true\">EN<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>",
             "target": [
               ".lang"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#be185d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 5.68,
+                  "fontSize": "9.0pt (12px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 5.68"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"th-cat\">Utilities</div>",
+            "target": [
+              ".th-cat"
             ]
           },
           {
@@ -8344,7 +8367,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
               "#file-1"
             ]
@@ -8579,6 +8602,31 @@
               {
                 "id": "color-contrast",
                 "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg> <span class=\"kbd\">⌘</span><span class=\"kbd\">K</span> to search</span>",
+            "target": [
+              ".sc:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
                   "fgColor": "#475467",
                   "bgColor": "#ffffff",
                   "contrastRatio": 7.68,
@@ -8597,6 +8645,81 @@
             "html": "<span class=\"kbd\">K</span>",
             "target": [
               ".sc:nth-child(1) > .kbd:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><span class=\"kbd\">/</span> quick open</span>",
+            "target": [
+              ".sc:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><span class=\"kbd\">⌘</span><span class=\"kbd\">↵</span> to run</span>",
+            "target": [
+              ".sc:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
+            "target": [
+              ".sc:nth-child(4)"
             ]
           }
         ]
@@ -8849,7 +8972,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
               "#file-1"
             ]
@@ -8986,7 +9109,7 @@
               }
             ],
             "impact": null,
-            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
               "#file-1"
             ]
@@ -9202,7 +9325,7 @@
               }
             ],
             "impact": null,
-            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
               "#file-1"
             ]
@@ -9307,6 +9430,13 @@
                 ],
                 "impact": "critical",
                 "message": "Element has an explicit <label>"
+              },
+              {
+                "id": "aria-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-label attribute exists and is not empty"
               }
             ],
             "all": [],
@@ -9320,7 +9450,7 @@
               }
             ],
             "impact": null,
-            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
               "#file-1"
             ]
@@ -9365,6 +9495,39 @@
             "html": "<input class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\" id=\"input-1\" data-testid=\"input\" type=\"text\" placeholder=\"Imported_REG\">",
             "target": [
               "#input-1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "landmark-contentinfo-is-top-level",
+        "impact": null,
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the contentinfo landmark is at top level",
+        "help": "Contentinfo landmark should not be contained in another landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-contentinfo-is-top-level?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "landmark-is-top-level",
+                "data": {
+                  "role": "contentinfo"
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "The contentinfo landmark is at the top level."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
             ]
           }
         ]
@@ -9449,7 +9612,14 @@
               {
                 "id": "page-no-duplicate-contentinfo",
                 "data": null,
-                "relatedNodes": [],
+                "relatedNodes": [
+                  {
+                    "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+                    "target": [
+                      "body > footer"
+                    ]
+                  }
+                ],
                 "impact": "moderate",
                 "message": "Document does not have more than one contentinfo landmark"
               }
@@ -9459,7 +9629,7 @@
             "impact": null,
             "html": "<footer class=\"tool-foot\">",
             "target": [
-              "footer"
+              ".tool-foot"
             ]
           }
         ]
@@ -9626,6 +9796,27 @@
             "html": "<main id=\"main-content\" class=\"tool-content\">",
             "target": [
               "#main-content"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "landmark-is-unique",
+                "data": {
+                  "role": "contentinfo",
+                  "accessibleText": null
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
             ]
           }
         ]
@@ -11241,9 +11432,9 @@
               }
             ],
             "impact": null,
-            "html": "<a class=\"sr-only\" href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
+            "html": "<a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
             "target": [
-              ".sr-only:nth-child(3)"
+              "footer > a"
             ]
           }
         ]
@@ -11318,7 +11509,7 @@
       },
       {
         "id": "nested-interactive",
-        "impact": "serious",
+        "impact": null,
         "tags": [
           "cat.keyboard",
           "wcag2a",
@@ -11664,7 +11855,7 @@
       },
       {
         "id": "region",
-        "impact": "moderate",
+        "impact": null,
         "tags": [
           "cat.keyboard",
           "best-practice",
@@ -15370,9 +15561,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<astro-island uid=\"1Y4JGV\" data-solid-render-id=\"s0\" component-url=\"/_astro/ToolRenderer.D6B5RtPy.js\" component-export=\"default\" renderer-url=\"/_astro/client.DiJdXU2w.js\" props=\"{\"toolId\":[0,\"reg2gpo\"],\"lang\":[0,\"en\"]}\" client=\"load\" opts=\"{\"name\":\"ToolRenderer\",\"value\":true}\" await-children=\"\">",
+            "html": "<astro-island uid=\"1oFma7\" data-solid-render-id=\"s0\" component-url=\"/_astro/ToolRenderer.CSVLntyf.js\" component-export=\"default\" renderer-url=\"/_astro/client.DiJdXU2w.js\" props=\"{\"toolId\":[0,\"reg2gpo\"],\"lang\":[0,\"en\"]}\" client=\"load\" opts=\"{\"name\":\"ToolRenderer\",\"value\":true}\" await-children=\"\">",
             "target": [
-              "astro-island[uid=\"1Y4JGV\"]"
+              "astro-island[uid=\"1oFma7\"]"
             ]
           },
           {
@@ -15510,7 +15701,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
+            "html": "<div class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer focus-within:border-accent border-border hover:border-accent-hover\">",
             "target": [
               ".border-2"
             ]
@@ -15530,7 +15721,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
+            "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\" aria-label=\"Upload file:\">",
             "target": [
               "#file-1"
             ]
@@ -15952,7 +16143,7 @@
             "impact": null,
             "html": "<footer class=\"tool-foot\">",
             "target": [
-              "footer"
+              ".tool-foot"
             ]
           },
           {
@@ -16150,6 +16341,46 @@
             "all": [],
             "none": [],
             "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
+            "target": [
+              "footer > a"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
             "html": "<astro-island uid=\"Zglw1W\" component-url=\"/_astro/CommandPalette.DZlNvUCx.js\" component-export=\"default\" renderer-url=\"/_astro/client.DiJdXU2w.js\" props=\"{\"lang\":[0,\"en\"]}\" client=\"only\" opts=\"{\"name\":\"CommandPalette\",\"value\":\"solid-js\"}\">",
             "target": [
               "astro-island[uid=\"Zglw1W\"]"
@@ -16258,24 +16489,6 @@
             "target": [
               "#tool-heading"
             ]
-          },
-          {
-            "any": [
-              {
-                "id": "tabindex",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "serious",
-                "message": "Element does not have a tabindex greater than 0"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
-            "target": [
-              ".border-2"
-            ]
           }
         ]
       }
@@ -16366,280 +16579,6 @@
         ]
       }
     ],
-    "violations": [
-      {
-        "id": "color-contrast",
-        "impact": "serious",
-        "tags": [
-          "cat.color",
-          "wcag2aa",
-          "wcag143",
-          "TTv5",
-          "TT13.c",
-          "EN-301-549",
-          "EN-9.1.4.3",
-          "ACT",
-          "RGAAv4",
-          "RGAA-3.2.1"
-        ],
-        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-        "help": "Elements must meet minimum color contrast ratio thresholds",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#db2777",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.32,
-                  "fontSize": "9.0pt (12px)",
-                  "fontWeight": "bold",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 4.32 (foreground color: #db2777, background color: #f7f8fa, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<div class=\"th-cat\">Utilities</div>",
-            "target": [
-              ".th-cat"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.32 (foreground color: #db2777, background color: #f7f8fa, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg> <span class=\"kbd\">⌘</span><span class=\"kbd\">K</span> to search</span>",
-            "target": [
-              ".sc:nth-child(1)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><span class=\"kbd\">/</span> quick open</span>",
-            "target": [
-              ".sc:nth-child(2)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><span class=\"kbd\">⌘</span><span class=\"kbd\">↵</span> to run</span>",
-            "target": [
-              ".sc:nth-child(3)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
-            "target": [
-              ".sc:nth-child(4)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          }
-        ]
-      },
-      {
-        "id": "nested-interactive",
-        "impact": "serious",
-        "tags": [
-          "cat.keyboard",
-          "wcag2a",
-          "wcag412",
-          "TTv5",
-          "TT6.a",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "RGAAv4",
-          "RGAA-7.1.1"
-        ],
-        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
-        "help": "Interactive controls must not be nested",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/nested-interactive?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "no-focusable-content",
-                "data": null,
-                "relatedNodes": [
-                  {
-                    "html": "<input type=\"file\" class=\"sr-only\" id=\"file-1\" accept=\".reg\">",
-                    "target": [
-                      "#file-1"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has focusable descendants"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<div role=\"button\" tabindex=\"0\" class=\"relative flex items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer border-border hover:border-accent-hover\">",
-            "target": [
-              ".border-2"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has focusable descendants"
-          }
-        ]
-      },
-      {
-        "id": "region",
-        "impact": "moderate",
-        "tags": [
-          "cat.keyboard",
-          "best-practice",
-          "RGAAv4",
-          "RGAA-9.2.1"
-        ],
-        "description": "Ensure all page content is contained by landmarks",
-        "help": "All page content should be contained by landmarks",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "Some page content is not contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "moderate",
-            "html": "<a class=\"sr-only\" href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
-            "target": [
-              ".sr-only:nth-child(3)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-          }
-        ]
-      }
-    ]
+    "violations": []
   }
 ]

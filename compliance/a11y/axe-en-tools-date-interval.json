@@ -14,7 +14,7 @@
       "orientationAngle": 0,
       "orientationType": "landscape-primary"
     },
-    "timestamp": "2026-08-07T15:05:13.767Z",
+    "timestamp": "2026-08-07T17:45:30.837Z",
     "url": "http://localhost:4321/en/tools/date-interval/",
     "toolOptions": {
       "reporter": "v1"
@@ -599,18 +599,6 @@
         "description": "Ensure the banner landmark is at top level",
         "help": "Banner landmark should not be contained in another landmark",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-banner-is-top-level?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "landmark-contentinfo-is-top-level",
-        "impact": null,
-        "tags": [
-          "cat.semantics",
-          "best-practice"
-        ],
-        "description": "Ensure the contentinfo landmark is at top level",
-        "help": "Contentinfo landmark should not be contained in another landmark",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-contentinfo-is-top-level?application=webdriverjs",
         "nodes": []
       },
       {
@@ -1549,6 +1537,171 @@
             "target": [
               ".lang"
             ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              },
+              {
+                "id": "aria-allowed-attr-elm",
+                "data": null,
+                "relatedNodes": [],
+                "message": "ARIA attributes are allowed for this element",
+                "impact": "critical"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              },
+              {
+                "id": "aria-allowed-attr-elm",
+                "data": null,
+                "relatedNodes": [],
+                "message": "ARIA attributes are allowed for this element",
+                "impact": "critical"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              },
+              {
+                "id": "aria-allowed-attr-elm",
+                "data": null,
+                "relatedNodes": [],
+                "message": "ARIA attributes are allowed for this element",
+                "impact": "critical"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              },
+              {
+                "id": "aria-allowed-attr-elm",
+                "data": null,
+                "relatedNodes": [],
+                "message": "ARIA attributes are allowed for this element",
+                "impact": "critical"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-allowed-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attributes are used correctly for the defined role"
+              },
+              {
+                "id": "aria-allowed-attr-elm",
+                "data": null,
+                "relatedNodes": [],
+                "message": "ARIA attributes are allowed for this element",
+                "impact": "critical"
+              }
+            ],
+            "none": [
+              {
+                "id": "aria-unsupported-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
           }
         ]
       },
@@ -1872,6 +2025,96 @@
             "html": "<button type=\"button\" class=\"lang\" title=\"Switch language\" aria-haspopup=\"true\" aria-expanded=\"false\" data-lang-bound=\"true\">EN<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>",
             "target": [
               ".lang"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-conditional-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           }
         ]
@@ -5961,7 +6204,7 @@
             "impact": null,
             "html": "<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
             ]
           },
           {
@@ -5993,7 +6236,7 @@
             "impact": null,
             "html": "<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
             ]
           },
           {
@@ -6025,7 +6268,7 @@
             "impact": null,
             "html": "<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
             ]
           },
           {
@@ -6057,7 +6300,7 @@
             "impact": null,
             "html": "<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
             ]
           },
           {
@@ -6089,7 +6332,7 @@
             "impact": null,
             "html": "<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex > .icon-sm"
             ]
           },
           {
@@ -6574,6 +6817,96 @@
             "html": "<button type=\"button\" class=\"lang\" title=\"Switch language\" aria-haspopup=\"true\" aria-expanded=\"false\" data-lang-bound=\"true\">EN<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>",
             "target": [
               ".lang"
+            ]
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "ARIA attribute is allowed"
+              }
+            ],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           }
         ]
@@ -7137,6 +7470,166 @@
             "target": [
               ".lang"
             ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute values are valid"
+              },
+              {
+                "id": "aria-errormessage",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+              },
+              {
+                "id": "aria-level",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-level values are valid"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
           }
         ]
       },
@@ -7461,6 +7954,96 @@
             "target": [
               ".lang"
             ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-valid-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute name is valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
           }
         ]
       },
@@ -7675,7 +8258,7 @@
       },
       {
         "id": "button-name",
-        "impact": "critical",
+        "impact": null,
         "tags": [
           "cat.name-role-value",
           "wcag2a",
@@ -7991,6 +8574,96 @@
             "target": [
               "button[data-hk=\"s100000\"]"
             ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-label attribute exists and is not empty"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-label attribute exists and is not empty"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-label attribute exists and is not empty"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-label attribute exists and is not empty"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "aria-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "aria-label attribute exists and is not empty"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
+            "target": [
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
+            ]
           }
         ]
       },
@@ -8092,16 +8765,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.68,
+                  "contrastRatio": 5.25,
                   "fontSize": "10.1pt (13.5px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.68"
+                "message": "Element has sufficient color contrast of 5.25"
               }
             ],
             "all": [],
@@ -8117,16 +8790,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.68,
+                  "contrastRatio": 5.25,
                   "fontSize": "10.1pt (13.5px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.68"
+                "message": "Element has sufficient color contrast of 5.25"
               }
             ],
             "all": [],
@@ -8210,6 +8883,31 @@
             "html": "<button type=\"button\" class=\"lang\" title=\"Switch language\" aria-haspopup=\"true\" aria-expanded=\"false\" data-lang-bound=\"true\">EN<svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></button>",
             "target": [
               ".lang"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#be185d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 5.68,
+                  "fontSize": "9.0pt (12px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 5.68"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"th-cat\">Utilities</div>",
+            "target": [
+              ".th-cat"
             ]
           },
           {
@@ -8307,9 +9005,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<label class=\"text-sm font-medium text-text-secondary\">Start date:</label>",
+            "html": "<span class=\"text-sm font-medium text-text-secondary\">Start date:</span>",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > label"
+              "label:nth-child(1) > .font-medium.text-text-secondary.text-sm"
             ]
           },
           {
@@ -8334,7 +9032,7 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > input"
+              "label:nth-child(1) > input"
             ]
           },
           {
@@ -8357,9 +9055,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<label class=\"text-sm font-medium text-text-secondary\">End date:</label>",
+            "html": "<span class=\"text-sm font-medium text-text-secondary\">End date:</span>",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > label"
+              "label:nth-child(2) > .font-medium.text-text-secondary.text-sm"
             ]
           },
           {
@@ -8384,7 +9082,7 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > input"
+              "label:nth-child(2) > input"
             ]
           },
           {
@@ -8392,16 +9090,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#ffffff",
-                  "contrastRatio": 4.97,
+                  "contrastRatio": 5.58,
                   "fontSize": "9.0pt (12px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.97"
+                "message": "Element has sufficient color contrast of 5.58"
               }
             ],
             "all": [],
@@ -8442,16 +9140,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#ffffff",
-                  "contrastRatio": 4.97,
+                  "contrastRatio": 5.58,
                   "fontSize": "9.0pt (12px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.97"
+                "message": "Element has sufficient color contrast of 5.58"
               }
             ],
             "all": [],
@@ -8492,16 +9190,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#ffffff",
-                  "contrastRatio": 4.97,
+                  "contrastRatio": 5.58,
                   "fontSize": "9.0pt (12px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.97"
+                "message": "Element has sufficient color contrast of 5.58"
               }
             ],
             "all": [],
@@ -8542,16 +9240,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#ffffff",
-                  "contrastRatio": 4.97,
+                  "contrastRatio": 5.58,
                   "fontSize": "9.0pt (12px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.97"
+                "message": "Element has sufficient color contrast of 5.58"
               }
             ],
             "all": [],
@@ -8592,16 +9290,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#ffffff",
-                  "contrastRatio": 4.97,
+                  "contrastRatio": 5.58,
                   "fontSize": "9.0pt (12px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.97"
+                "message": "Element has sufficient color contrast of 5.58"
               }
             ],
             "all": [],
@@ -8767,6 +9465,31 @@
               {
                 "id": "color-contrast",
                 "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg> <span class=\"kbd\">⌘</span><span class=\"kbd\">K</span> to search</span>",
+            "target": [
+              ".sc:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
                   "fgColor": "#475467",
                   "bgColor": "#ffffff",
                   "contrastRatio": 7.68,
@@ -8785,6 +9508,81 @@
             "html": "<span class=\"kbd\">K</span>",
             "target": [
               ".sc:nth-child(1) > .kbd:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><span class=\"kbd\">/</span> quick open</span>",
+            "target": [
+              ".sc:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><span class=\"kbd\">⌘</span><span class=\"kbd\">↵</span> to run</span>",
+            "target": [
+              ".sc:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
+            "target": [
+              ".sc:nth-child(4)"
             ]
           }
         ]
@@ -9082,7 +9880,14 @@
               {
                 "id": "multiple-label",
                 "data": null,
-                "relatedNodes": [],
+                "relatedNodes": [
+                  {
+                    "html": "<label class=\"flex flex-col gap-1.5\">",
+                    "target": [
+                      "label:nth-child(1)"
+                    ]
+                  }
+                ],
                 "impact": "moderate",
                 "message": "Form field does not have multiple label elements"
               }
@@ -9090,7 +9895,7 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > input"
+              "label:nth-child(1) > input"
             ]
           },
           {
@@ -9100,7 +9905,14 @@
               {
                 "id": "multiple-label",
                 "data": null,
-                "relatedNodes": [],
+                "relatedNodes": [
+                  {
+                    "html": "<label class=\"flex flex-col gap-1.5\">",
+                    "target": [
+                      "label:nth-child(2)"
+                    ]
+                  }
+                ],
                 "impact": "moderate",
                 "message": "Form field does not have multiple label elements"
               }
@@ -9108,7 +9920,7 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > input"
+              "label:nth-child(2) > input"
             ]
           }
         ]
@@ -9281,7 +10093,7 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > input"
+              "label:nth-child(1) > input"
             ]
           },
           {
@@ -9299,7 +10111,133 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > input"
+              "label:nth-child(2) > input"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "label",
+        "impact": null,
+        "tags": [
+          "cat.forms",
+          "wcag2a",
+          "wcag412",
+          "section508",
+          "section508.22.n",
+          "TTv5",
+          "TT5.c",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "ACT",
+          "RGAAv4",
+          "RGAA-11.1.1"
+        ],
+        "description": "Ensure every form element has a label",
+        "help": "Form elements must have labels",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "implicit-label",
+                "data": {
+                  "implicitLabel": "Start date:"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<label class=\"flex flex-col gap-1.5\">",
+                    "target": [
+                      "label:nth-child(1)"
+                    ]
+                  }
+                ],
+                "impact": "critical",
+                "message": "Element has an implicit (wrapped) <label>"
+              }
+            ],
+            "all": [],
+            "none": [
+              {
+                "id": "hidden-explicit-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "Form element has a visible explicit <label>"
+              }
+            ],
+            "impact": null,
+            "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
+            "target": [
+              "label:nth-child(1) > input"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "implicit-label",
+                "data": {
+                  "implicitLabel": "End date:"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<label class=\"flex flex-col gap-1.5\">",
+                    "target": [
+                      "label:nth-child(2)"
+                    ]
+                  }
+                ],
+                "impact": "critical",
+                "message": "Element has an implicit (wrapped) <label>"
+              }
+            ],
+            "all": [],
+            "none": [
+              {
+                "id": "hidden-explicit-label",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "Form element has a visible explicit <label>"
+              }
+            ],
+            "impact": null,
+            "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
+            "target": [
+              "label:nth-child(2) > input"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "landmark-contentinfo-is-top-level",
+        "impact": null,
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the contentinfo landmark is at top level",
+        "help": "Contentinfo landmark should not be contained in another landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-contentinfo-is-top-level?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "landmark-is-top-level",
+                "data": {
+                  "role": "contentinfo"
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "The contentinfo landmark is at the top level."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
             ]
           }
         ]
@@ -9384,7 +10322,14 @@
               {
                 "id": "page-no-duplicate-contentinfo",
                 "data": null,
-                "relatedNodes": [],
+                "relatedNodes": [
+                  {
+                    "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+                    "target": [
+                      "body > footer"
+                    ]
+                  }
+                ],
                 "impact": "moderate",
                 "message": "Document does not have more than one contentinfo landmark"
               }
@@ -9394,7 +10339,7 @@
             "impact": null,
             "html": "<footer class=\"tool-foot\">",
             "target": [
-              "footer"
+              ".tool-foot"
             ]
           }
         ]
@@ -9561,6 +10506,27 @@
             "html": "<main id=\"main-content\" class=\"tool-content\">",
             "target": [
               "#main-content"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "landmark-is-unique",
+                "data": {
+                  "role": "contentinfo",
+                  "accessibleText": null
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
             ]
           }
         ]
@@ -11176,9 +12142,9 @@
               }
             ],
             "impact": null,
-            "html": "<a class=\"sr-only\" href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
+            "html": "<a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
             "target": [
-              ".sr-only:nth-child(3)"
+              "footer > a"
             ]
           }
         ]
@@ -11552,9 +12518,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -11570,9 +12536,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -11588,9 +12554,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -11606,9 +12572,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -11624,9 +12590,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           }
         ]
@@ -11671,7 +12637,7 @@
       },
       {
         "id": "region",
-        "impact": "moderate",
+        "impact": null,
         "tags": [
           "cat.keyboard",
           "best-practice",
@@ -15377,9 +16343,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<astro-island uid=\"Z1KE01\" data-solid-render-id=\"s0\" component-url=\"/_astro/ToolRenderer...\" component-export=\"default\" renderer-url=\"/_astro/client.DiJdX...\" props=\"{\"toolId\":[0,\"date-i...\" client=\"load\" opts=\"{\"name\":\"ToolRendere...\" await-children=\"\">",
+            "html": "<astro-island uid=\"Np7EK\" data-solid-render-id=\"s0\" component-url=\"/_astro/ToolRenderer...\" component-export=\"default\" renderer-url=\"/_astro/client.DiJdX...\" props=\"{\"toolId\":[0,\"date-i...\" client=\"load\" opts=\"{\"name\":\"ToolRendere...\" await-children=\"\">",
             "target": [
-              "astro-island[uid=\"Z1KE01\"]"
+              "astro-island[uid=\"Np7EK\"]"
             ]
           },
           {
@@ -15437,9 +16403,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div class=\"flex flex-col gap-1.5\">",
+            "html": "<label class=\"flex flex-col gap-1.5\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1)"
+              "label:nth-child(1)"
             ]
           },
           {
@@ -15457,69 +16423,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<label class=\"text-sm font-medium text-text-secondary\">Start date:</label>",
+            "html": "<span class=\"text-sm font-medium text-text-secondary\">Start date:</span>",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > label"
-            ]
-          },
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "All page content is contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
-            "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > input"
-            ]
-          },
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "All page content is contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<div class=\"flex flex-col gap-1.5\">",
-            "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2)"
-            ]
-          },
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "All page content is contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<label class=\"text-sm font-medium text-text-secondary\">End date:</label>",
-            "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > label"
+              "label:nth-child(1) > .font-medium.text-text-secondary.text-sm"
             ]
           },
           {
@@ -15539,7 +16445,67 @@
             "impact": null,
             "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
             "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > input"
+              "label:nth-child(1) > input"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<label class=\"flex flex-col gap-1.5\">",
+            "target": [
+              "label:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"text-sm font-medium text-text-secondary\">End date:</span>",
+            "target": [
+              "label:nth-child(2) > .font-medium.text-text-secondary.text-sm"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
+            "target": [
+              "label:nth-child(2) > input"
             ]
           },
           {
@@ -15677,9 +16643,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -15699,7 +16665,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex items-center gap-1.5\"><span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span><!--$--><!--/--></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex"
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex"
             ]
           },
           {
@@ -15719,7 +16685,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex"
+              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex"
             ]
           },
           {
@@ -15837,9 +16803,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -15859,7 +16825,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex items-center gap-1.5\"><span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span><!--$--><!--/--></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex"
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex"
             ]
           },
           {
@@ -15879,7 +16845,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex"
+              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex"
             ]
           },
           {
@@ -15997,9 +16963,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -16019,7 +16985,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex items-center gap-1.5\"><span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span><!--$--><!--/--></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex"
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex"
             ]
           },
           {
@@ -16039,7 +17005,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex"
+              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex"
             ]
           },
           {
@@ -16157,9 +17123,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -16179,7 +17145,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex items-center gap-1.5\"><span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span><!--$--><!--/--></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex"
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex"
             ]
           },
           {
@@ -16199,7 +17165,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex"
+              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex"
             ]
           },
           {
@@ -16317,9 +17283,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
+            "html": "<button type=\"button\" class=\"inline-flex items-ce...\" aria-label=\"Copy to clipboard\">",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"]"
             ]
           },
           {
@@ -16339,7 +17305,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex items-center gap-1.5\"><span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span><!--$--><!--/--></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex"
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex"
             ]
           },
           {
@@ -16359,7 +17325,7 @@
             "impact": null,
             "html": "<span class=\"inline-flex\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M5 15V5a2 2 0 0 1 2-2h8\"></path></svg></span>",
             "target": [
-              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2 > .gap-1\\.5.items-center.inline-flex > .inline-flex"
+              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2[aria-label=\"Copy to clipboard\"] > .gap-1\\.5.items-center.inline-flex > .inline-flex"
             ]
           },
           {
@@ -16679,7 +17645,7 @@
             "impact": null,
             "html": "<footer class=\"tool-foot\">",
             "target": [
-              "footer"
+              ".tool-foot"
             ]
           },
           {
@@ -16860,6 +17826,46 @@
             "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
             "target": [
               ".sc:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
+            "target": [
+              "footer > a"
             ]
           },
           {
@@ -17075,725 +18081,6 @@
         ]
       }
     ],
-    "violations": [
-      {
-        "id": "button-name",
-        "impact": "critical",
-        "tags": [
-          "cat.name-role-value",
-          "wcag2a",
-          "wcag412",
-          "section508",
-          "section508.22.a",
-          "TTv5",
-          "TT6.a",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "ACT",
-          "RGAAv4",
-          "RGAA-11.9.1"
-        ],
-        "description": "Ensure buttons have discernible text",
-        "help": "Buttons must have discernible text",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/button-name?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "button-has-visible-text",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have inner text that is visible to screen readers"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
-            "target": [
-              ".items-start.justify-between.p-3:nth-child(1) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          },
-          {
-            "any": [
-              {
-                "id": "button-has-visible-text",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have inner text that is visible to screen readers"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
-            "target": [
-              ".items-start.justify-between.p-3:nth-child(2) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          },
-          {
-            "any": [
-              {
-                "id": "button-has-visible-text",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have inner text that is visible to screen readers"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
-            "target": [
-              ".items-start.justify-between.p-3:nth-child(3) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          },
-          {
-            "any": [
-              {
-                "id": "button-has-visible-text",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have inner text that is visible to screen readers"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
-            "target": [
-              ".items-start.justify-between.p-3:nth-child(4) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          },
-          {
-            "any": [
-              {
-                "id": "button-has-visible-text",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have inner text that is visible to screen readers"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<button type=\"button\" class=\"inline-flex items-ce...\">",
-            "target": [
-              ".items-start.justify-between.p-3:nth-child(5) > .shrink-0 > .justify-center.focus-visible\\:outline-2.focus-visible\\:outline-offset-2"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          }
-        ]
-      },
-      {
-        "id": "color-contrast",
-        "impact": "serious",
-        "tags": [
-          "cat.color",
-          "wcag2aa",
-          "wcag143",
-          "TTv5",
-          "TT13.c",
-          "EN-301-549",
-          "EN-9.1.4.3",
-          "ACT",
-          "RGAAv4",
-          "RGAA-3.2.1"
-        ],
-        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-        "help": "Elements must meet minimum color contrast ratio thresholds",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#db2777",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.32,
-                  "fontSize": "9.0pt (12px)",
-                  "fontWeight": "bold",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 4.32 (foreground color: #db2777, background color: #f7f8fa, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<div class=\"th-cat\">Utilities</div>",
-            "target": [
-              ".th-cat"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.32 (foreground color: #db2777, background color: #f7f8fa, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg> <span class=\"kbd\">⌘</span><span class=\"kbd\">K</span> to search</span>",
-            "target": [
-              ".sc:nth-child(1)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><span class=\"kbd\">/</span> quick open</span>",
-            "target": [
-              ".sc:nth-child(2)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><span class=\"kbd\">⌘</span><span class=\"kbd\">↵</span> to run</span>",
-            "target": [
-              ".sc:nth-child(3)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
-            "target": [
-              ".sc:nth-child(4)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          }
-        ]
-      },
-      {
-        "id": "label",
-        "impact": "critical",
-        "tags": [
-          "cat.forms",
-          "wcag2a",
-          "wcag412",
-          "section508",
-          "section508.22.n",
-          "TTv5",
-          "TT5.c",
-          "EN-301-549",
-          "EN-9.4.1.2",
-          "ACT",
-          "RGAAv4",
-          "RGAA-11.1.1"
-        ],
-        "description": "Ensure every form element has a label",
-        "help": "Form elements must have labels",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "non-empty-placeholder",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no placeholder attribute"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
-            "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(1) > input"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          },
-          {
-            "any": [
-              {
-                "id": "implicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an implicit (wrapped) <label>"
-              },
-              {
-                "id": "explicit-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element does not have an explicit <label>"
-              },
-              {
-                "id": "aria-label",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-label attribute does not exist or is empty"
-              },
-              {
-                "id": "aria-labelledby",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
-              },
-              {
-                "id": "non-empty-title",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no title attribute"
-              },
-              {
-                "id": "non-empty-placeholder",
-                "data": {
-                  "messageKey": "noAttr"
-                },
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element has no placeholder attribute"
-              },
-              {
-                "id": "presentational-role",
-                "data": null,
-                "relatedNodes": [],
-                "impact": "critical",
-                "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "critical",
-            "html": "<input type=\"date\" class=\"w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-1 focus:ring-border-focus\">",
-            "target": [
-              ".flex-col.gap-1\\.5.flex:nth-child(2) > input"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-          }
-        ]
-      },
-      {
-        "id": "region",
-        "impact": "moderate",
-        "tags": [
-          "cat.keyboard",
-          "best-practice",
-          "RGAAv4",
-          "RGAA-9.2.1"
-        ],
-        "description": "Ensure all page content is contained by landmarks",
-        "help": "All page content should be contained by landmarks",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "Some page content is not contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "moderate",
-            "html": "<a class=\"sr-only\" href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
-            "target": [
-              ".sr-only:nth-child(3)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-          }
-        ]
-      }
-    ]
+    "violations": []
   }
 ]

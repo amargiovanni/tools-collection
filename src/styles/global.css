@@ -15,7 +15,7 @@
   --color-surface-raised: #ffffff;
   --color-text-primary: #0b0f1a;
   --color-text-secondary: #475467;
-  --color-text-muted: #667085;
+  --color-text-muted: #5d6979;
 
   /* brand accent — electric indigo */
   --color-accent: #4f46e5;
@@ -27,11 +27,11 @@
   --color-border-focus: #4f46e5;
 
   /* semantic (kept for tool states) */
-  --color-success: #059669;
+  --color-success: #047857;
   --color-success-light: #d1fae5;
   --color-error: #dc2626;
   --color-error-light: #fee2e2;
-  --color-warning: #d97706;
+  --color-warning: #b45309;
   --color-warning-light: #fef3c7;
 
   --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -48,8 +48,8 @@
   --card-2: #f7f8fa;
   --ink: #0b0f1a;
   --ink-2: #475467;
-  --ink-3: #667085;
-  --ink-4: #98a2b3;
+  --ink-3: #5d6979;
+  --ink-4: #616d7d;
   --line: #e4e7ec;
   --line-2: #d0d5dd;
   --line-strong: #b9c0cc;
@@ -61,12 +61,12 @@
 
   --c-text: #2563eb;
   --c-gen: #7c3aed;
-  --c-extract: #0891b2;
-  --c-analyze: #d97706;
-  --c-secure: #e11d48;
-  --c-convert: #059669;
+  --c-extract: #0e7490;
+  --c-analyze: #b45309;
+  --c-secure: #be123c;
+  --c-convert: #047857;
   --c-dev: #4f46e5;
-  --c-util: #db2777;
+  --c-util: #be185d;
   --c-fav: #f59e0b;
 
   --shadow-sm: 0 1px 2px rgba(11, 15, 26, 0.06);

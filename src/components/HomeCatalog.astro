@@ -122,7 +122,7 @@ const favStrings = {
   </header>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" aria-label={t(lang, 'home_heroEyebrow')}>
     <div class="wrap">
       <span class="ws-eyebrow">{t(lang, 'home_heroEyebrow')}</span>
       <h1>{t(lang, 'home_heroTitlePre')}<em>{t(lang, 'home_heroTitleEm')}</em>{t(lang, 'home_heroTitlePost')}</h1>
@@ -136,8 +136,8 @@ const favStrings = {
     </div>
   </section>
 
-  <!-- WORKBENCH BAND: recents + favorites -->
-  <section class="band">
+  <!-- WORKBENCH BAND: recents + favorites (aria-label makes it a region landmark) -->
+  <section class="band" aria-label={t(lang, 'home_jumpBackIn')}>
     <div class="wrap band-in">
       <div>
         <h2>

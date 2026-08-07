@@ -14,7 +14,7 @@
       "orientationAngle": 0,
       "orientationType": "landscape-primary"
     },
-    "timestamp": "2026-08-07T15:10:04.122Z",
+    "timestamp": "2026-08-07T17:46:55.390Z",
     "url": "http://localhost:4321/en/tools/yaml-formatter/",
     "toolOptions": {
       "reporter": "v1"
@@ -599,18 +599,6 @@
         "description": "Ensure the banner landmark is at top level",
         "help": "Banner landmark should not be contained in another landmark",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-banner-is-top-level?application=webdriverjs",
-        "nodes": []
-      },
-      {
-        "id": "landmark-contentinfo-is-top-level",
-        "impact": null,
-        "tags": [
-          "cat.semantics",
-          "best-practice"
-        ],
-        "description": "Ensure the contentinfo landmark is at top level",
-        "help": "Contentinfo landmark should not be contained in another landmark",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-contentinfo-is-top-level?application=webdriverjs",
         "nodes": []
       },
       {
@@ -7928,16 +7916,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.68,
+                  "contrastRatio": 5.25,
                   "fontSize": "10.1pt (13.5px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.68"
+                "message": "Element has sufficient color contrast of 5.25"
               }
             ],
             "all": [],
@@ -7953,16 +7941,16 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#667085",
+                  "fgColor": "#5d6979",
                   "bgColor": "#f7f8fa",
-                  "contrastRatio": 4.68,
+                  "contrastRatio": 5.25,
                   "fontSize": "10.1pt (13.5px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 4.68"
+                "message": "Element has sufficient color contrast of 5.25"
               }
             ],
             "all": [],
@@ -8503,6 +8491,31 @@
               {
                 "id": "color-contrast",
                 "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg> <span class=\"kbd\">⌘</span><span class=\"kbd\">K</span> to search</span>",
+            "target": [
+              ".sc:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
                   "fgColor": "#475467",
                   "bgColor": "#ffffff",
                   "contrastRatio": 7.68,
@@ -8521,6 +8534,81 @@
             "html": "<span class=\"kbd\">K</span>",
             "target": [
               ".sc:nth-child(1) > .kbd:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><span class=\"kbd\">/</span> quick open</span>",
+            "target": [
+              ".sc:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\"><span class=\"kbd\">⌘</span><span class=\"kbd\">↵</span> to run</span>",
+            "target": [
+              ".sc:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#616d7d",
+                  "bgColor": "#f7f8fa",
+                  "contrastRatio": 4.95,
+                  "fontSize": "9.4pt (12.5px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.95"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
+            "target": [
+              ".sc:nth-child(4)"
             ]
           }
         ]
@@ -9313,6 +9401,39 @@
         ]
       },
       {
+        "id": "landmark-contentinfo-is-top-level",
+        "impact": null,
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the contentinfo landmark is at top level",
+        "help": "Contentinfo landmark should not be contained in another landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-contentinfo-is-top-level?application=webdriverjs",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "landmark-is-top-level",
+                "data": {
+                  "role": "contentinfo"
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "The contentinfo landmark is at the top level."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
+            ]
+          }
+        ]
+      },
+      {
         "id": "landmark-main-is-top-level",
         "impact": null,
         "tags": [
@@ -9392,7 +9513,14 @@
               {
                 "id": "page-no-duplicate-contentinfo",
                 "data": null,
-                "relatedNodes": [],
+                "relatedNodes": [
+                  {
+                    "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+                    "target": [
+                      "body > footer"
+                    ]
+                  }
+                ],
                 "impact": "moderate",
                 "message": "Document does not have more than one contentinfo landmark"
               }
@@ -9402,7 +9530,7 @@
             "impact": null,
             "html": "<footer class=\"tool-foot\">",
             "target": [
-              "footer"
+              ".tool-foot"
             ]
           }
         ]
@@ -9569,6 +9697,27 @@
             "html": "<main id=\"main-content\" class=\"tool-content\">",
             "target": [
               "#main-content"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "landmark-is-unique",
+                "data": {
+                  "role": "contentinfo",
+                  "accessibleText": null
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
             ]
           }
         ]
@@ -11184,9 +11333,9 @@
               }
             ],
             "impact": null,
-            "html": "<a class=\"sr-only\" href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
+            "html": "<a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
             "target": [
-              ".sr-only:nth-child(3)"
+              "footer > a"
             ]
           }
         ]
@@ -11733,7 +11882,7 @@
       },
       {
         "id": "region",
-        "impact": "moderate",
+        "impact": null,
         "tags": [
           "cat.keyboard",
           "best-practice",
@@ -16201,7 +16350,7 @@
             "impact": null,
             "html": "<footer class=\"tool-foot\">",
             "target": [
-              "footer"
+              ".tool-foot"
             ]
           },
           {
@@ -16382,6 +16531,46 @@
             "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
             "target": [
               ".sc:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<footer class=\"sr-only\"><a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a></footer>",
+            "target": [
+              "body > footer"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<a href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
+            "target": [
+              "footer > a"
             ]
           },
           {
@@ -16690,200 +16879,6 @@
         ]
       }
     ],
-    "violations": [
-      {
-        "id": "color-contrast",
-        "impact": "serious",
-        "tags": [
-          "cat.color",
-          "wcag2aa",
-          "wcag143",
-          "TTv5",
-          "TT13.c",
-          "EN-301-549",
-          "EN-9.1.4.3",
-          "ACT",
-          "RGAAv4",
-          "RGAA-3.2.1"
-        ],
-        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-        "help": "Elements must meet minimum color contrast ratio thresholds",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><svg class=\"icon icon-sm\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg> <span class=\"kbd\">⌘</span><span class=\"kbd\">K</span> to search</span>",
-            "target": [
-              ".sc:nth-child(1)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><span class=\"kbd\">/</span> quick open</span>",
-            "target": [
-              ".sc:nth-child(2)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\"><span class=\"kbd\">⌘</span><span class=\"kbd\">↵</span> to run</span>",
-            "target": [
-              ".sc:nth-child(3)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          },
-          {
-            "any": [
-              {
-                "id": "color-contrast",
-                "data": {
-                  "fgColor": "#98a2b3",
-                  "bgColor": "#f7f8fa",
-                  "contrastRatio": 2.42,
-                  "fontSize": "9.4pt (12.5px)",
-                  "fontWeight": "normal",
-                  "messageKey": null,
-                  "expectedContrastRatio": "4.5:1"
-                },
-                "relatedNodes": [
-                  {
-                    "html": "<body class=\"bg-surface text-text-primary min-h-screen\">",
-                    "target": [
-                      "body"
-                    ]
-                  }
-                ],
-                "impact": "serious",
-                "message": "Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "serious",
-            "html": "<span class=\"sc\">100% client-side · nothing leaves this tab</span>",
-            "target": [
-              ".sc:nth-child(4)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.42 (foreground color: #98a2b3, background color: #f7f8fa, font size: 9.4pt (12.5px), font weight: normal). Expected contrast ratio of 4.5:1"
-          }
-        ]
-      },
-      {
-        "id": "region",
-        "impact": "moderate",
-        "tags": [
-          "cat.keyboard",
-          "best-practice",
-          "RGAAv4",
-          "RGAA-9.2.1"
-        ],
-        "description": "Ensure all page content is contained by landmarks",
-        "help": "All page content should be contained by landmarks",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=webdriverjs",
-        "nodes": [
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "Some page content is not contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": "moderate",
-            "html": "<a class=\"sr-only\" href=\"https://github.com/amargiovanni/tools-collection\">GitHub</a>",
-            "target": [
-              ".sr-only:nth-child(3)"
-            ],
-            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-          }
-        ]
-      }
-    ]
+    "violations": []
   }
 ]

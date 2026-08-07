@@ -55,10 +55,16 @@ test.describe('Content Security Policy', () => {
     await page.locator('a[href*="/en/tools/base64/"]').click()
     await expect(page).toHaveURL(/\/en\/tools\/base64\//)
 
-    // The island on the destination page must hydrate and work
-    await page.locator('textarea').first().fill('spa-nav')
-    await page.getByRole('button', { name: 'Encode Base64' }).click()
-    await expect(page.locator('textarea').nth(1)).toHaveValue('c3BhLW5hdg==')
+    // The island on the destination page must hydrate and work. Hydration
+    // after a client-router swap is async, so retry the whole interaction
+    // until the click actually lands on a hydrated button.
+    await expect(async () => {
+      await page.locator('textarea').first().fill('spa-nav')
+      await page.getByRole('button', { name: 'Encode Base64' }).click()
+      await expect(page.locator('textarea').nth(1)).toHaveValue('c3BhLW5hdg==', {
+        timeout: 500,
+      })
+    }).toPass({ timeout: 15000 })
 
     // And a second hop, tool → related tool
     await page.locator('a[href*="/en/tools/url-encoder/"]').first().click()
