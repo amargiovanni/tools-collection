@@ -34,6 +34,7 @@ One row per tagged release. Artifacts live under `compliance/`.
 
 | Release | Date | SBOM | Supply-chain diff | Vulnerabilities (open / triaged) | Reviewer |
 |---------|------|------|-------------------|----------------------------------|----------|
+| v1.7.2 (container) | 2026-08-07 | [sbom/v1.7.2-docker.cdx.json](sbom/v1.7.2-docker.cdx.json) (1025 components; provenance attestation verified) | base nginx:alpine unchanged | 8 matches / 6 distinct CVEs — unchanged accepted set (ADR 0002) | Andrea Margiovanni, 2026-08-07 |
 | v1.7.2 | 2026-08-07 | [sbom/v1.7.2.cdx.json](sbom/v1.7.2.cdx.json) (410 components) | [sbom/diff-v1.7.1-to-v1.7.2.md](sbom/diff-v1.7.1-to-v1.7.2.md) — +uqr 0.1.3 (local QR generation, privacy fix) | 5 / 5 (unchanged accepted set) | Andrea Margiovanni, 2026-08-07 |
 | v1.7.1 (container) | 2026-08-07 | [sbom/v1.7.1-docker.cdx.json](sbom/v1.7.1-docker.cdx.json) (1025 components; provenance attestation verified via `gh attestation verify`) | base nginx:alpine unchanged | 8 matches / 6 distinct CVEs — identical to v1.7.0 set, all accepted under ADR 0002 | Andrea Margiovanni, 2026-08-07 |
 | v1.7.1 | 2026-08-07 | [sbom/v1.7.1.cdx.json](sbom/v1.7.1.cdx.json) (409 components) | [sbom/diff-v1.7.0-to-v1.7.1.md](sbom/diff-v1.7.0-to-v1.7.1.md) — security/a11y remediation release: js-yaml 4.3.1, svgo 4.0.2 | 5 / 5 (3 High, 2 Medium — all covered by accepted triage records; js-yaml and svgo findings resolved) | Andrea Margiovanni, 2026-08-07 |
