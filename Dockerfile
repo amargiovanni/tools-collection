@@ -14,7 +14,6 @@ RUN rm -rf ./* \
   && mkdir -p /usr/share/nginx/html/data
 
 COPY --from=builder /app/dist/ ./
-COPY docker/security-headers.conf /etc/nginx/conf.d/default.conf
 COPY docker/default-language.sh /docker-entrypoint.d/40-default-language.sh
 
 RUN chmod +x /docker-entrypoint.d/40-default-language.sh
