@@ -27,7 +27,7 @@
     "@playwright/test": "^1.61.1",
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^6.9.1",
-    "@types/node": "^26.1.2",
+    "@types/node": "^26.2.0",
     "@vitest/coverage-v8": "^4.1.10",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4.3.2",
