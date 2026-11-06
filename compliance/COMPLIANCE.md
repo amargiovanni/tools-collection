@@ -38,6 +38,7 @@ One row per tagged release. Artifacts live under `compliance/`.
 
 | Release | Date | SBOM | Supply-chain diff | Vulnerabilities (open / triaged) | Reviewer |
 |---------|------|------|-------------------|----------------------------------|----------|
+| v1.8.0 (container) | 2026-11-06 | [sbom/v1.8.0-docker.cdx.json](sbom/v1.8.0-docker.cdx.json) (1285 components; provenance attestation verified, SLSA v1, refs/tags/v1.8.0) | base nginx:alpine refreshed | 3 matches / 1 CVE (CVE-2025-60876, busybox — accepted, ADR 0002 time box lapsed, renewal pending); tiff and nghttp2 CVEs gone with the newer base image | [pending — maintainer] |
 | v1.8.0 | 2026-11-06 | [sbom/v1.8.0.cdx.json](sbom/v1.8.0.cdx.json) (426 components) | [sbom/diff-v1.7.2-to-v1.8.0.md](sbom/diff-v1.7.2-to-v1.8.0.md) — 26 added, 34 removed, 157 version changes (headline: astro 7.0.7→7.4.7, vite 8.3.6, devalue 6, sharp 0.35, jsdom 30, heic-to 1.6.6 new) | 26 / 26 (2 Critical, 17 High, 7 Medium — all Go stdlib/x/text inside TypeScript 7's native compiler, build-time only; 27 npm findings fixed before release) | [pending — maintainer] |
 | v1.7.2 (container) | 2026-08-07 | [sbom/v1.7.2-docker.cdx.json](sbom/v1.7.2-docker.cdx.json) (1025 components; provenance attestation verified) | base nginx:alpine unchanged | 8 matches / 6 distinct CVEs — unchanged accepted set (ADR 0002) | Andrea Margiovanni, 2026-08-07 |
 | v1.7.2 | 2026-08-07 | [sbom/v1.7.2.cdx.json](sbom/v1.7.2.cdx.json) (410 components) | [sbom/diff-v1.7.1-to-v1.7.2.md](sbom/diff-v1.7.1-to-v1.7.2.md) — +uqr 0.1.3 (local QR generation, privacy fix) | 5 / 5 (unchanged accepted set) | Andrea Margiovanni, 2026-08-07 |
@@ -98,12 +99,12 @@ Detailed records: one file per finding under `compliance/vulns/`.
 | GHSA-f88m-g3jw-g9cj | sharp@0.34.5 (build) | High | fix — sharp 0.35.5, 2026-11-06 (#162) | Resolved | — |
 | GHSA-2p49-hgcm-8545 | svgo@4.0.1 (build) | High | fix — updated to 4.0.2, 2026-08-07 | Resolved | — |
 | GHSA-4g3v-8h47-v7g6 | astro@7.0.7 (build/dev server) | Medium | fix — astro 7.4.7, 2026-11-06 (#162) | Resolved | — |
-| CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — still present in v1.8.0 image; **time box lapsed 2026-09-07**, re-review needed | Accepted (re-review overdue) | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 
 ## 4. CRA Annex I gap report
 
