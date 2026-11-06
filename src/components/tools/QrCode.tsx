@@ -4,10 +4,10 @@ import { TextArea } from '../ui/TextArea'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
 import { FileInput } from '../ui/FileInput'
-import { DownloadButton } from '../ui/DownloadButton'
+import { downloadFile } from '../../lib/download'
 import { StatusMessage } from '../ui/StatusMessage'
 import { OutputPanel } from '../ui/OutputPanel'
-import { generateQrUrl, isBarcodeDetectorAvailable } from '../../tools/qr-code'
+import { generateQrUrl, isBarcodeDetectorAvailable, qrToPngBlob } from '../../tools/qr-code'
 import type { QrSize } from '../../tools/qr-code'
 import { t, translateError } from '../../i18n'
 import type { Language } from '../../i18n'
@@ -104,11 +104,19 @@ export default function QrCode(props: Props) {
         {(src) => (
           <div class="flex flex-col items-center gap-3 rounded-lg border border-border bg-surface-raised p-4">
             <img src={src()} alt="QR Code" class="rounded" width={size()} height={size()} />
-            <DownloadButton
-              getData={() => src()}
-              filename="qrcode.png"
-              label={t(props.lang, 'tools_qrCode_download')}
-            />
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={async () => {
+                try {
+                  downloadFile(await qrToPngBlob(src(), size()), 'qrcode.png')
+                } catch (cause) {
+                  setError(cause instanceof Error ? cause.message : String(cause))
+                }
+              }}
+            >
+              {t(props.lang, 'tools_qrCode_download')}
+            </Button>
           </div>
         )}
       </Show>

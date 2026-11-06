@@ -15,7 +15,7 @@ test.describe('URL shareable state', () => {
     await expect(page.getByRole('button', { name: /share/i })).toBeVisible()
   })
 
-  test('Share button copies URL with ?s= param to clipboard', async ({ page, context }) => {
+  test('Share button copies a URL with the state in the #s= fragment', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write'])
     await page.goto('/en/tools/base64/', { waitUntil: 'networkidle' })
     await waitForHydration(page)
@@ -26,7 +26,9 @@ test.describe('URL shareable state', () => {
     await expect(page.getByRole('button', { name: /copied/i })).toBeVisible()
 
     const url = await page.evaluate(() => navigator.clipboard.readText())
-    expect(url).toMatch(/[?&]s=/)
+    // The fragment never reaches the server; a ?s= query would.
+    expect(new URL(url).hash).toMatch(/^#s=/)
+    expect(new URL(url).searchParams.has('s')).toBe(false)
   })
 
   test('navigating to a shared URL restores tool state', async ({ page, context }) => {
@@ -42,11 +44,36 @@ test.describe('URL shareable state', () => {
     const sharedUrl = await page.evaluate(() => navigator.clipboard.readText())
 
     const page2 = await context.newPage()
+    const requested: string[] = []
+    page2.on('request', (req) => requested.push(req.url()))
     await page2.goto(sharedUrl, { waitUntil: 'networkidle' })
     await waitForHydration(page2)
     await page2.waitForTimeout(200)
 
     await expect(page2.locator('[data-testid="textarea"]').first()).toHaveValue('round-trip test')
+    // No request carried the shared state to the server.
+    expect(requested.filter((u) => /[?&]s=/.test(u))).toEqual([])
+    await page2.close()
+  })
+
+  test('a legacy ?s= link still restores, then the state leaves the query', async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+    await page.goto('/en/tools/base64/', { waitUntil: 'networkidle' })
+    await waitForHydration(page)
+    await page.locator('[data-testid="textarea"]').first().fill('legacy link')
+    await page.getByRole('button', { name: /share/i }).click()
+    await expect(page.getByRole('button', { name: /copied/i })).toBeVisible()
+    const shared = new URL(await page.evaluate(() => navigator.clipboard.readText()))
+    const state = shared.hash.slice('#s='.length) || shared.searchParams.get('s')
+    const legacy = `${shared.origin}${shared.pathname}?s=${state}`
+
+    const page2 = await context.newPage()
+    await page2.goto(legacy, { waitUntil: 'networkidle' })
+    await waitForHydration(page2)
+    await expect(page2.locator('[data-testid="textarea"]').first()).toHaveValue('legacy link')
+    const now = new URL(page2.url())
+    expect(now.searchParams.has('s')).toBe(false)
+    expect(now.hash).toMatch(/^#s=/)
     await page2.close()
   })
 

@@ -1,6 +1,6 @@
 import { createSignal, onCleanup } from 'solid-js'
 import { Button } from './Button'
-import { encodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
+import { buildShareUrl, encodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from '../../lib/share'
 
 interface Props {
   label: string
@@ -52,9 +52,7 @@ export function ShareButton(props: Props) {
 
     try {
       const encoded = await encodeState(state)
-      const url = new URL(location.href)
-      url.searchParams.set('s', encoded)
-      await navigator.clipboard.writeText(url.toString())
+      await navigator.clipboard.writeText(buildShareUrl(location.href, encoded))
       setFeedback('copied')
       resetAfter(1500)
     } catch {

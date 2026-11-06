@@ -5,6 +5,40 @@ export const TOOL_STATE_RESPONSE = 'tool-state-response'
 
 type ShareEnvelope = { v: 1; state: Record<string, unknown> }
 
+/**
+ * Shared state lives in the URL fragment (#s=…). Browsers never send the
+ * fragment to a server, so a shared link does not hand the tool's input —
+ * possibly a password or a token — to the host, its logs or a proxy. Links
+ * made before this used ?s=, which does reach the server; they are still read
+ * and rewritten in place.
+ */
+const PARAM = 's'
+
+export function buildShareUrl(href: string, encoded: string): string {
+  const url = new URL(href)
+  url.searchParams.delete(PARAM)
+  url.hash = `${PARAM}=${encoded}`
+  return url.toString()
+}
+
+export function readSharedParam(loc: {
+  search: string
+  hash: string
+}): { value: string; legacy: boolean } | null {
+  const fromHash = new URLSearchParams(loc.hash.replace(/^#/, '')).get(PARAM)
+  if (fromHash) return { value: fromHash, legacy: false }
+  const fromQuery = new URLSearchParams(loc.search).get(PARAM)
+  if (fromQuery) return { value: fromQuery, legacy: true }
+  return null
+}
+
+export function withoutLegacyParam(href: string): string {
+  const url = new URL(href)
+  const value = url.searchParams.get(PARAM)
+  if (!value) return href
+  return buildShareUrl(href, value)
+}
+
 export async function encodeState(state: Record<string, unknown>): Promise<string> {
   const envelope: ShareEnvelope = { v: 1, state }
   const json = JSON.stringify(envelope)

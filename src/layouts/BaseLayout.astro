@@ -5,6 +5,8 @@ import { languages, getOtherLanguages } from '../i18n'
 import type { Language } from '../i18n'
 
 const supportedLangs = [...languages]
+import { toolRegistry } from '../config/tools'
+const toolIds = toolRegistry.map((tool) => tool.id)
 import CommandPalette from '../islands/CommandPalette'
 import { customLogoPath } from '../config/site'
 
@@ -50,11 +52,14 @@ const altLinks = getOtherLanguages(lang).map((l) => ({
         document.documentElement.setAttribute('data-theme', theme)
       })()
     </script>
-    <!-- Legacy hash redirect: #json-formatter → /en/tools/json-formatter -->
-    <script define:vars={{ supportedLangs }} is:inline>
+    <!-- Legacy hash redirect: /en/#json-formatter → /en/tools/json-formatter/.
+         Only on the home pages and only for a bare slug: other fragments (in-page
+         anchors, the #s= shared state on tool pages) are left alone. -->
+    <script define:vars={{ supportedLangs, toolIds }} is:inline>
       ;(function () {
         var hash = location.hash.slice(1)
-        if (!hash) return
+        if (!/^[a-z0-9-]+$/.test(hash)) return
+        if (!/^\/([a-z]{2}\/)?$/.test(location.pathname)) return
         var renames = {
           'cert-extractor': 'pem-inspector',
           'password-checker': 'password-strength',
@@ -65,6 +70,7 @@ const altLinks = getOtherLanguages(lang).map((l) => ({
           'remove-duplicates': 'remove-duplicate-lines',
         }
         var slug = renames[hash] || hash
+        if (toolIds.indexOf(slug) === -1) return
         var stored = localStorage.getItem('lang')
         var configuredDefault =
           typeof window.__DEFAULT_LANGUAGE__ === 'string' &&
