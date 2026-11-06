@@ -17,7 +17,7 @@
   "dependencies": {
     "@astrojs/solid-js": "^7.0.2",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.4",
+    "astro": "^7.4.7",
     "class-variance-authority": "^0.7.1",
     "client-zip": "^2.5.1",
     "fuse.js": "^7.5.0",
@@ -30,10 +30,10 @@
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^7.0.1",
     "@types/node": "^26.2.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.12",
     "jsdom": "^30.0.1",
     "tailwindcss": "^4.3.2",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   }
 }
