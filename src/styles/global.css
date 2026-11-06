@@ -566,7 +566,9 @@ input, select, textarea {
     flex: 0 0 auto; width: 40px; max-width: none; padding: 0;
     justify-content: center; margin-left: auto; margin-right: 0;
   }
-  .search-trigger .grow, .search-trigger .kbd { display: none; }
+  .search-trigger .kbd { display: none; }
+  /* visually hidden, still the button's accessible name */
+  .search-trigger .grow { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
   /* tool top bar — breadcrumb is redundant with the tool header below */
   .main-bar { gap: 8px; padding-inline: 16px; }

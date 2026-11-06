@@ -70,15 +70,15 @@ const favStrings = {
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="wrap topbar-in">
-      <a href={`/${lang}/`} class="brand" aria-label={t(lang, 'app_backHomeAria')}>
+      <a href={`/${lang}/`} class="brand">
         <span class="mark"></span>
         <span class="word">{t(lang, 'app_title')}</span>
-        <span class="ver">v{appVersion}</span>
+        <span class="ver" aria-hidden="true">v{appVersion}</span>
       </a>
-      <button type="button" class="search-trigger" id="home-search-trigger" aria-label={t(lang, 'app_searchPlaceholder')}>
+      <button type="button" class="search-trigger" id="home-search-trigger">
         <Fragment set:html={iconSvg('search', 'icon-sm')} />
         <span class="grow">{t(lang, 'app_searchPlaceholder')}</span>
-        <span class="kbd">⌘</span><span class="kbd">K</span>
+        <span class="kbd" aria-hidden="true">⌘</span><span class="kbd" aria-hidden="true">K</span>
       </button>
       <div class="topbar-right">
         <div class="relative" data-lang-dropdown>
