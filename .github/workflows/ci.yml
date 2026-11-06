@@ -67,3 +67,21 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  unit-current-node:
+    name: Unit tests (Node 26)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npx vitest run
