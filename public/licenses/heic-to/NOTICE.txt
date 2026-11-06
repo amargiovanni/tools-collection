@@ -17,7 +17,7 @@ Corresponding source: the complete source for the versions above is
 available at the URLs listed, and the build scripts that produce the
 distributed file are in the heic-to repository at the same tag. The exact
 version shipped is pinned in package-lock.json of Tools Collection:
-https://github.com/amargiovanni/tools-collection
+https://github.com/BuildBandits/tools-collection
 
 Modification and relinking: the libraries are shipped unmodified as a
 standalone file, loaded only by the HEIC to JPG tool. You may replace that

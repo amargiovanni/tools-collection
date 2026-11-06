@@ -8,7 +8,7 @@ chain — and reports are very welcome.
 
 ## Reporting a vulnerability
 
-Report privately via **[GitHub private vulnerability reporting](https://github.com/amargiovanni/tools-collection/security/advisories/new)**.
+Report privately via **[GitHub private vulnerability reporting](https://github.com/BuildBandits/tools-collection/security/advisories/new)**.
 
 Please include, as far as you can:
 
@@ -36,7 +36,8 @@ You will be credited in the advisory unless you ask not to be.
 ## Scope
 
 **In scope:** this repository, the deployed site (tools.margiovanni.it), and
-the published Docker image (`ghcr.io/amargiovanni/tools-collection`).
+the published Docker image (`ghcr.io/buildbandits/tools-collection`; releases up to
+v1.8.0 under `ghcr.io/amargiovanni/tools-collection`).
 
 **Out of scope:** findings from automated scanners with no demonstrated
 impact; denial of service by volume; issues exclusively in third-party

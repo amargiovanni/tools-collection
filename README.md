@@ -2,7 +2,7 @@
 
 A modular, type-safe collection of 50+ browser-based developer tools. Built with Astro, Solid.js, TypeScript strict, and Tailwind CSS 4. Deployable on Cloudflare Pages or any static hosting.
 
-![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/BuildBandits/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
 ![Astro](https://img.shields.io/badge/Astro-7-ff5d01.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -92,7 +92,7 @@ src/
 ### Install & Run
 
 ```bash
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/BuildBandits/tools-collection.git
 cd tools-collection
 npm install
 npm run dev
@@ -209,10 +209,10 @@ Colors are defined as CSS custom properties in `src/styles/global.css` via Tailw
 
 ## Security & Compliance
 
-- **Reporting a vulnerability:** see [SECURITY.md](SECURITY.md) — private reporting via [GitHub advisories](https://github.com/amargiovanni/tools-collection/security/advisories/new), coordinated disclosure policy, safe harbour.
-- **Evidence dossier:** [compliance/COMPLIANCE.md](compliance/COMPLIANCE.md) — CycloneDX SBOMs and vulnerability scans per release (also attached to each [GitHub Release](https://github.com/amargiovanni/tools-collection/releases)), supply-chain diffs, triage records, a voluntary CRA Annex I gap report, and the accessibility evidence.
+- **Reporting a vulnerability:** see [SECURITY.md](SECURITY.md) — private reporting via [GitHub advisories](https://github.com/BuildBandits/tools-collection/security/advisories/new), coordinated disclosure policy, safe harbour.
+- **Evidence dossier:** [compliance/COMPLIANCE.md](compliance/COMPLIANCE.md) — CycloneDX SBOMs and vulnerability scans per release (also attached to each [GitHub Release](https://github.com/BuildBandits/tools-collection/releases)), supply-chain diffs, triage records, a voluntary CRA Annex I gap report, and the accessibility evidence.
 - **Accessibility:** WCAG 2.2 AA target (voluntary); zero automated axe violations across all English routes; [statement](compliance/eaa/statement.md) honestly marked *partially compliant* until manual criteria are human-verified.
-- **Container provenance:** images on GHCR carry build-provenance attestations — verify with `gh attestation verify oci://ghcr.io/amargiovanni/tools-collection:<tag> --owner amargiovanni`.
+- **Container provenance:** images on GHCR carry build-provenance attestations — verify with `gh attestation verify oci://ghcr.io/buildbandits/tools-collection:<tag> --owner BuildBandits`. Images up to v1.8.0 were published before the move to BuildBandits as `ghcr.io/amargiovanni/tools-collection` (verify those with `--owner amargiovanni`).
 - **Decisions:** architecture and risk-acceptance decisions are recorded as [ADRs](docs/adr/README.md).
 
 ## License
@@ -227,5 +227,5 @@ MIT — see [LICENSE](LICENSE).
 ---
 
 <div align="center">
-  <a href="https://github.com/amargiovanni/tools-collection/issues">Report a Bug</a> · <a href="https://github.com/amargiovanni/tools-collection/issues">Request a Feature</a>
+  <a href="https://github.com/BuildBandits/tools-collection/issues">Report a Bug</a> · <a href="https://github.com/BuildBandits/tools-collection/issues">Request a Feature</a>
 </div>
