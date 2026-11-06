@@ -385,7 +385,7 @@ export default function CronExpression(props: Props) {
                 </span>
                 <p class="text-lg font-semibold text-text-primary">{formatSummary(parsed(), props.lang)}</p>
                 <Show when={conversionCheck()?.ok} fallback={
-                  <span class="text-xs text-text-muted italic">{conversionCheck()?.ok === false ? conversionCheck()!.error.message : ''}</span>
+                  <span class="text-xs text-text-muted italic">{(() => { const c = conversionCheck(); return c && !c.ok ? c.error.message : '' })()}</span>
                 }>
                   <Button variant="secondary" size="sm" onClick={handleConvert}>
                     {phraseSets[props.lang].convertTo(parsed().format === 'aws' ? 'Unix' : 'AWS')}
