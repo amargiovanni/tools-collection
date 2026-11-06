@@ -8,3 +8,4 @@
 | [0004](0004-self-host-web-fonts.md) | Self-host web fonts; no third-party font host | Proposed | 2026-11-06 |
 | [0005](0005-shared-tool-state-in-url-fragment.md) | Shared tool state travels in the URL fragment, not the query | Proposed | 2026-11-06 |
 | [0006](0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) | Accept Go findings in TypeScript 7's native compiler, time-boxed | Proposed | 2026-11-06 |
+| [0007](0007-renew-busybox-accept-and-drop-wget-from-image.md) | Renew the busybox accept and drop wget from the container image | Accepted | 2026-11-06 |

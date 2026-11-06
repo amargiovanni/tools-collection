@@ -103,7 +103,7 @@ Detailed records: one file per finding under `compliance/vulns/`.
 | CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 | CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 | CVE-2023-6228 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed — still present in v1.8.0 image; **time box lapsed 2026-09-07**, re-review needed | Accepted (re-review overdue) | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| CVE-2025-60876 | busybox 1.37.0-r31 (nginx:alpine base) | Medium | accept, time-boxed to 2026-12-07 + mitigated: wget and ssl_client removed from the image | Accepted (renewed 2026-11-06) | [0007](../docs/adr/0007-renew-busybox-accept-and-drop-wget-from-image.md) |
 | CVE-2026-58055 | nghttp2-libs 1.69.0-r0 (nginx:alpine base) | Medium | resolved — not present in the v1.8.0 image (base image rebuilt) | Resolved | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 
 ## 4. CRA Annex I gap report
@@ -211,3 +211,4 @@ a named human completes them:
 | 2026-08-07 | Annex I gap report incl. remediation states | Andrea Margiovanni | approved |
 | 2026-08-07 | EAA module: statement (partially compliant), SECURITY.md/CVD policy | Andrea Margiovanni | approved — manual a11y checks remain open |
 | 2026-11-06 | v1.8.0 release evidence (SBOM, diff, scan, 23 new + 3 updated triage records), ADR 0004/0005/0006, I.2a/I.2g updates, a11y re-scan (55 routes, 0 violations) | [pending — maintainer] | drafted by Claude; **ADR 0002 time box lapsed 2026-09-07** — renewal proposed in ADR 0006 |
+| 2026-11-06 | CVE-2025-60876 (busybox): renewal of the lapsed ADR 0002 time box to 2026-12-07, wget/ssl_client removed from the image (ADR 0007) | Andrea Margiovanni | approved |
