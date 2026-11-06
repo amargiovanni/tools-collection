@@ -82,4 +82,21 @@ test.describe('QR Code', () => {
     // The download button should appear after generation
     await expect(page.getByRole('button', { name: 'Download PNG' })).toBeVisible({ timeout: 5000 })
   })
+
+  test('Download PNG saves a real PNG image', async ({ page }) => {
+    await page.locator('[data-testid="textarea"]').first().fill('https://example.com')
+    await page.getByRole('button', { name: 'Generate QR Code' }).click()
+    await expect(page.locator('img[alt="QR Code"]')).toBeVisible({ timeout: 5000 })
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: 'Download PNG' }).click(),
+    ])
+    expect(download.suggestedFilename()).toBe('qrcode.png')
+    const stream = await download.createReadStream()
+    const chunks: Buffer[] = []
+    for await (const chunk of stream) chunks.push(chunk as Buffer)
+    const bytes = Buffer.concat(chunks)
+    // PNG signature: 89 50 4E 47 0D 0A 1A 0A
+    expect([...bytes.subarray(0, 8)]).toEqual([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+  })
 })
