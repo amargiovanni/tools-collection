@@ -20,7 +20,7 @@ A modular, type-safe collection of 50+ browser-based developer tools. Built with
 | **Extraction** | Domain Extractor, Email Extractor |
 | **Analysis** | Count Duplicates, Text Counter |
 | **Security** | PEM Certificate Inspector, AES Key Generator, HMAC Key Generator, Salt Generator, Recovery Code Generator, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
-| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter, HTML Entity Encoder/Decoder, Markdown to HTML |
+| **Converters** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter, HTML Entity Encoder/Decoder, Markdown to HTML, HEIC to JPG |
 | **Development** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
 | **Utilities** | Color Picker (HEX/RGB/HSL), Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 

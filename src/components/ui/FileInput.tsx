@@ -5,7 +5,12 @@ let idCounter = 0
 interface FileInputProps {
   accept?: string
   label?: string
-  onFile: (file: File) => void
+  /** Text shown in the drop zone before a file is chosen */
+  hint?: string
+  /** Accept several files at once; they are passed to onFiles */
+  multiple?: boolean
+  onFile?: (file: File) => void
+  onFiles?: (files: File[]) => void
   id?: string
   class?: string
 }
@@ -15,22 +20,29 @@ export function FileInput(props: FileInputProps) {
   const [fileName, setFileName] = createSignal<string>('')
   const [dragOver, setDragOver] = createSignal(false)
 
-  const handleFile = (file: File) => {
-    setFileName(file.name)
-    props.onFile(file)
+  const handleFiles = (list: FileList | null | undefined) => {
+    const files = Array.from(list ?? [])
+    if (files.length === 0) return
+    if (props.multiple) {
+      // The caller lists the chosen files itself; keep the hint visible
+      props.onFiles?.(files)
+    } else {
+      setFileName(files[0]!.name)
+      props.onFile?.(files[0]!)
+    }
   }
 
   const handleChange = (e: Event) => {
     const input = e.target as HTMLInputElement
-    const file = input.files?.[0]
-    if (file) handleFile(file)
+    handleFiles(input.files)
+    // Allow choosing the same file(s) again
+    input.value = ''
   }
 
   const handleDrop = (e: DragEvent) => {
     e.preventDefault()
     setDragOver(false)
-    const file = e.dataTransfer?.files[0]
-    if (file) handleFile(file)
+    handleFiles(e.dataTransfer?.files)
   }
 
   return (
@@ -58,12 +70,13 @@ export function FileInput(props: FileInputProps) {
           id={resolvedId}
           type="file"
           accept={props.accept}
+          multiple={props.multiple}
           onChange={handleChange}
           aria-label={props.label ?? 'Choose a file'}
           class="sr-only"
         />
         <span class="text-sm text-text-secondary">
-          {fileName() || 'Drop a file here or click to browse'}
+          {fileName() || props.hint || 'Drop a file here or click to browse'}
         </span>
       </div>
     </div>

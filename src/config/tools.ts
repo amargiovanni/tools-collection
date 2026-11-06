@@ -287,6 +287,13 @@ export const toolRegistry: readonly ToolMeta[] = [
     keywords: ['number', 'base', 'decimal', 'hex', 'hexadecimal', 'binary', 'octal', 'convert'],
     path: '/tools/number-base-converter',
   },
+  {
+    id: 'heic-to-jpg',
+    category: 'converters',
+    icon: '🖼️',
+    keywords: ['heic', 'heif', 'jpg', 'jpeg', 'iphone', 'photo', 'image', 'convert'],
+    path: '/tools/heic-to-jpg',
+  },
 
   // Development
   {

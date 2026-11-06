@@ -68,7 +68,7 @@ function cspPostProcess(): AstroIntegration {
         }
 
         // Pass 2 — identical policy on every page.
-        const scriptSrc = `script-src 'self' https://static.cloudflareinsights.com ${[...scriptHashes].join(' ')}`
+        const scriptSrc = `script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com ${[...scriptHashes].join(' ')}`
         const styleSrc = `style-src 'self' https://fonts.googleapis.com ${[...styleHashes].join(' ')}`
         await Promise.all(
           pages.map(async ({ f, html }) => {
@@ -117,12 +117,16 @@ export default defineConfig({
         "connect-src 'self' https://cloudflareinsights.com",
         "font-src 'self' https://fonts.gstatic.com",
         "object-src 'none'",
+        // HEIC to JPG: heic-to/csp runs libheif in a Web Worker built from a blob: URL (ADR 0003)
+        "worker-src 'self' blob:",
         "base-uri 'self'",
         "form-action 'self'",
       ],
       scriptDirective: {
         // Cloudflare Web Analytics beacon injected at the edge on Pages
-        resources: ["'self'", 'https://static.cloudflareinsights.com'],
+        // 'wasm-unsafe-eval' allows compiling WebAssembly (libheif, HEIC to JPG) and
+        // nothing else: eval() and new Function() stay blocked.
+        resources: ["'self'", "'wasm-unsafe-eval'", 'https://static.cloudflareinsights.com'],
       },
       styleDirective: {
         // Scripts stay strictly hashed; styles accept inline attributes.

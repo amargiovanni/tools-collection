@@ -59,6 +59,7 @@ export const toolComponents: Record<string, ToolComponent> = {
   'docker-run-to-compose': lazy(() => import('../components/tools/DockerRunToCompose')),
   'date-interval': lazy(() => import('../components/tools/DateInterval')),
   'number-base-converter': lazy(() => import('../components/tools/NumberBaseConverter')),
+  'heic-to-jpg': lazy(() => import('../components/tools/HeicToJpg')),
   'csv-viewer': lazy(() => import('../components/tools/CsvViewer')),
   'toml-formatter': lazy(() => import('../components/tools/TomlFormatter')),
   'yaml-formatter': lazy(() => import('../components/tools/YamlFormatter')),

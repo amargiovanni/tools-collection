@@ -1,0 +1,29 @@
+Third-party notice — HEIC to JPG tool (/tools/heic-to-jpg)
+==========================================================
+
+The HEIC to JPG tool loads a separate JavaScript/WebAssembly file
+(/_astro/heic-to.<hash>.js) built from the following libraries, which are
+licensed under the GNU Lesser General Public License, version 3 or later:
+
+  heic-to   1.6.6     https://github.com/hoppergee/heic-to/tree/v1.6.6
+  libheif   1.23.6    https://github.com/strukturag/libheif/tree/v1.23.6
+  libde265  (bundled by libheif in heic-to's build)
+                      https://github.com/strukturag/libde265
+
+The rest of Tools Collection is MIT-licensed (see LICENSE in the repository);
+the MIT license does not apply to these libraries.
+
+Corresponding source: the complete source for the versions above is
+available at the URLs listed, and the build scripts that produce the
+distributed file are in the heic-to repository at the same tag. The exact
+version shipped is pinned in package-lock.json of Tools Collection:
+https://github.com/amargiovanni/tools-collection
+
+Modification and relinking: the libraries are shipped unmodified as a
+standalone file, loaded only by the HEIC to JPG tool. You may replace that
+file with a build of a modified version of the libraries exposing the same
+interface (heicTo, isHeic).
+
+License texts:
+  LGPL-3.0.txt  GNU Lesser General Public License, version 3
+  GPL-3.0.txt   GNU General Public License, version 3 (incorporated by the LGPL)

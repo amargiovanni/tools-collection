@@ -20,7 +20,7 @@ Una raccolta modulare e type-safe di 50+ strumenti per sviluppatori che funziona
 | **Estrazione** | Domain Extractor, Email Extractor |
 | **Analisi** | Count Duplicates, Text Counter |
 | **Sicurezza** | PEM Certificate Inspector, AES Key Generator, HMAC Key Generator, Salt Generator, Recovery Code Generator, Rclone Password Revealer, Password Strength Checker, QR Code Generator/Reader |
-| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter, HTML Entity Encoder/Decoder, Markdown to HTML |
+| **Convertitori** | Emoji Shortcode, Base64 Encoder/Decoder, URL Encoder/Decoder, Data Size Converter, Number Base Converter, HTML Entity Encoder/Decoder, Markdown to HTML, HEIC to JPG |
 | **Sviluppo** | JSON Formatter/Validator, Diff Checker, Regex Tester, XML Beautifier, Cron Expression Parser, JWT Decoder |
 | **Utilità** | Color Picker (HEX/RGB/HSL), Timestamp Converter, Time Convert, Reg2GPO, Hash Generator, CSV Viewer |
 

@@ -64,6 +64,7 @@ const ICONS: Record<string, string> = {
   container: '<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5"/><path d="M12 13v7"/>',
   asterisk: '<path d="M12 5v14"/><path d="M5.5 8.5 18.5 15.5"/><path d="M18.5 8.5 5.5 15.5"/>',
   filecode: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M10 12l-2 2.5 2 2.5"/><path d="M14 12l2 2.5-2 2.5"/>',
+  image: '<rect x="4" y="5" width="16" height="14" rx="2.4"/><circle cx="9" cy="10" r="1.6"/><path d="M20 16l-4.5-4.5L6 19"/>',
 
   /* utilities / extraction / analysis */
   palette: '<path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.9 2-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H17a4 4 0 0 0 4-4c0-4.4-4-8.2-9-8.2z"/><circle cx="8" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="7.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="10" r="1.1" fill="currentColor" stroke="none"/>',
@@ -125,6 +126,7 @@ const TOOL_ICON_MAP: Record<string, string> = {
   'html-entity': 'code',
   'markdown-to-html': 'filetext',
   'number-base-converter': 'binary',
+  'heic-to-jpg': 'image',
   'url-encoder': 'link',
   'cron-expression': 'calclock',
   'diff-checker': 'gitcompare',
