@@ -60,7 +60,7 @@ Structure (follows `stringadvice/docs/handouts`, no npm packages):
       clean on touched routes
 - [x] B7. README/README-it mention, CHANGELOG, `npm test` + `check` + `build` +
       e2e green with output shown; PR to main (feature branch), CI green, merge
-- [ ] B8. After deploy: download the PDF from the live site, check one tool
+- [x] B8. After deploy: download the PDF from the live site, check one tool
       deep link opens the right page
 
 Compliance notes: the PDF is a static same-origin asset — nothing leaves the
@@ -71,8 +71,8 @@ in the manual's colophon. No ADR needed (no architectural or compliance decision
 
 - [x] C1. Version bump (minor: new user-facing manual) + CHANGELOG
 - [x] C2. cra-evidence W2: SBOM, scan, supply-chain diff vs 1.7.2, triage
-- [ ] C3. Tag, GitHub release with artifacts (incl. the PDF), container SBOM
-- [ ] C4. Live-site check: home→tool navigation, PDF download, deep link
+- [x] C3. Tag, GitHub release with artifacts (incl. the PDF), container SBOM
+- [x] C4. Live-site check: home→tool navigation, PDF download, deep link
 
 ## Review
 
@@ -94,3 +94,9 @@ Outcome (2026-11-06):
 - Open for the maintainer: decide ADRs 0003–0006; approve the dossier row;
   Cloudflare injects a bot-detection inline script the CSP blocks on every
   page (dashboard setting, not code); manual a11y checks still not verified.
+- Live check after release (2026-11-06): v1.8.0 served; home → Base64 via the
+  client router hydrates (~1.2 s) and works; PDF 200 application/pdf; tool deep
+  link `#page=25` matches the map; only third-party host is the Cloudflare
+  analytics beacon; the only CSP-blocked inline script is Cloudflare's injected
+  bot-detection snippet. Container v1.8.0: attestation verified, 1 CVE left.
+
