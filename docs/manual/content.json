@@ -1,0 +1,509 @@
+{
+  "tools": {
+    "list-generator": {
+      "use": "Paste one item per line, pick an output format (Numbered, Bulleted, Comma Separated or Pipe Separated) and press Convert.",
+      "screen": {
+        "fill": [
+          "Inter\nSpace Grotesk\nJetBrains Mono"
+        ],
+        "click": [
+          "Convert"
+        ]
+      }
+    },
+    "add-text-to-lines": {
+      "use": "Paste your lines, type the prefix or suffix, then add it at the beginning or at the end of every line.",
+      "screen": {
+        "fill": [
+          "alpha\nbeta\ngamma",
+          "- [ ] "
+        ],
+        "click": [
+          "Add at the beginning"
+        ]
+      }
+    },
+    "convert-case": {
+      "use": "Paste text, choose a case (UPPERCASE, lowercase, Title Case, camelCase, snake_case or CONSTANT_CASE) and press Convert.",
+      "screen": {
+        "fill": [
+          "the quick brown fox jumps over the lazy dog"
+        ],
+        "click": [
+          "Convert"
+        ]
+      }
+    },
+    "count-duplicates": {
+      "use": "Paste a list, one item per line, and press Analyze to see every value with the number of times it occurs.",
+      "screen": {
+        "fill": [
+          "apple\nbanana\napple\ncherry\nbanana\napple"
+        ],
+        "click": [
+          "Analyze"
+        ]
+      }
+    },
+    "remove-duplicate-lines": {
+      "use": "Paste a list and press Remove Duplicates; “Case sensitive” and “Preserve original order” are on by default and can be turned off.",
+      "screen": {
+        "fill": [
+          "red\ngreen\nred\nblue\ngreen"
+        ],
+        "click": [
+          "Remove Duplicates"
+        ]
+      }
+    },
+    "remove-line-breaks": {
+      "use": "Paste text, choose what replaces each line break (Space, Nothing or a Custom string) and press Remove Line Breaks.",
+      "screen": {
+        "fill": [
+          "one\ntwo\nthree\nfour"
+        ],
+        "click": [
+          "Remove Line Breaks"
+        ]
+      }
+    },
+    "remove-lines-containing": {
+      "use": "Paste text, list words or phrases separated by commas and press Remove Lines; lines containing any of them are dropped and counted.",
+      "screen": {
+        "fill": [
+          "INFO server started\nDEBUG cache miss\nINFO request served\nDEBUG retry scheduled",
+          "DEBUG"
+        ],
+        "click": [
+          "Remove Lines"
+        ]
+      }
+    },
+    "sort-text": {
+      "use": "Paste lines, pick a sort method (A → Z, Z → A, shortest or longest first, numeric, reverse, random), optionally trim, remove empty lines or duplicates, and press Sort Lines.",
+      "screen": {
+        "fill": [
+          "pear\napple\nfig\nbanana\ncherry"
+        ],
+        "click": [
+          "Sort Lines"
+        ]
+      }
+    },
+    "text-counter": {
+      "use": "Type or paste text: characters, words, sentences, paragraphs, reading and speaking time and top keywords update as you write.",
+      "screen": {
+        "fill": [
+          "Tools Collection runs entirely in your browser. Nothing you type is ever uploaded, logged or stored on a server. Close the tab and it is gone."
+        ]
+      }
+    },
+    "slug-generator": {
+      "use": "Type a title: you get a URL-safe slug, with accents transliterated and the separator and maximum length you choose.",
+      "screen": {
+        "fill": [
+          "Ça marche! 54 tools for Developers & Admins"
+        ]
+      }
+    },
+    "lorem-ipsum-generator": {
+      "use": "Choose paragraphs, sentences or words and how many, then press Generate for placeholder text.",
+      "screen": {
+        "click": [
+          "Generate"
+        ]
+      }
+    },
+    "password-generator": {
+      "use": "Set the length, how many and the character sets, then press Generate Password; ambiguous characters are left out by default and Simple mode is available.",
+      "screen": {
+        "click": [
+          "Generate Password"
+        ]
+      }
+    },
+    "passphrase-generator": {
+      "use": "Choose the words per passphrase, how many and the separator, then press Generate Passphrases.",
+      "screen": {
+        "click": [
+          "Generate Passphrases"
+        ]
+      }
+    },
+    "pin-generator": {
+      "use": "Pick the PIN length and how many you need; duplicates can be avoided.",
+      "screen": {
+        "click": [
+          "Generate PINs"
+        ]
+      }
+    },
+    "username-generator": {
+      "use": "Pick a style and press Generate Usernames for handles you can use for test accounts or new sign-ups.",
+      "screen": {
+        "click": [
+          "Generate Usernames"
+        ]
+      }
+    },
+    "uuid-generator": {
+      "use": "UUID v4, time-ordered UUID v7 and ULID are ready on load; press Generate for new ones or Generate 10 for a batch.",
+      "screen": {}
+    },
+    "random-string-generator": {
+      "use": "Set the length, the count and the character set (alphanumeric, hex, Base64URL…) and press Generate Strings.",
+      "screen": {
+        "click": [
+          "Generate Strings"
+        ]
+      }
+    },
+    "api-key-generator": {
+      "use": "Set a prefix such as sk_live_, the length of the random part and the character set, then generate keys.",
+      "screen": {
+        "click": [
+          "Generate API Keys"
+        ]
+      }
+    },
+    "qr-code": {
+      "use": "Type a URL or any text, pick a size and press Generate QR Code; you can also upload a picture to read a QR code, where the browser supports it.",
+      "screen": {
+        "fill": [
+          "https://tools.margiovanni.it"
+        ],
+        "click": [
+          "Generate QR Code"
+        ]
+      }
+    },
+    "bittorrent-magnet-link-generator": {
+      "use": "Paste a 40-character hex (or 32-character Base32) info hash, optionally a name and trackers: you get a magnet link.",
+      "screen": {
+        "fill": [
+          "c12fe1c06bba254a9dc9f519b335aa7c1367a88a",
+          "ubuntu-24.04-desktop-amd64.iso"
+        ],
+        "click": [
+          "Generate Magnet Link"
+        ]
+      }
+    },
+    "markdown-to-html": {
+      "use": "Type Markdown and the HTML and a live preview update as you write; save it with Download HTML or Download full document.",
+      "screen": {}
+    },
+    "email-extractor": {
+      "use": "Paste any text — a mail thread, a log, a web page — and press Extract Emails for a clean list of addresses.",
+      "screen": {
+        "fill": [
+          "Write to ada@example.com or ops@example.org; cc linus@example.net and ada@example.com again."
+        ],
+        "click": [
+          "Extract Emails"
+        ]
+      }
+    },
+    "domain-extractor": {
+      "use": "Paste URLs, one per line, and press Extract Domains; subdomains can be kept or folded into the main domain.",
+      "screen": {
+        "fill": [
+          "https://example.com/path\nhttps://docs.example.org/guide?x=1\nhttps://www.wikipedia.org/wiki/URL"
+        ],
+        "click": [
+          "Extract Domains"
+        ]
+      }
+    },
+    "diff-checker": {
+      "use": "Paste the original and the modified text side by side and press Compare Texts to see added and removed lines.",
+      "screen": {
+        "fill": [
+          "The quick brown fox\njumps over\nthe lazy dog",
+          "The quick red fox\njumps over\nthe sleepy dog"
+        ],
+        "click": [
+          "Compare Texts"
+        ]
+      }
+    },
+    "regex-tester": {
+      "use": "Write a pattern as /pattern/flags, paste test text and press Test Regex: every match and capture group is listed.",
+      "screen": {
+        "fill": [
+          "/[a-z]+@[a-z]+\\.[a-z]+/g",
+          "Contact ada@example.com or linus@kernel.org for access."
+        ],
+        "click": [
+          "Test Regex"
+        ]
+      }
+    },
+    "password-strength": {
+      "use": "Type a password to see a score out of 8, which checks it passes and suggestions; the check runs in your browser.",
+      "screen": {
+        "fill": [
+          "correct horse battery staple"
+        ]
+      }
+    },
+    "hash-generator": {
+      "use": "Type text and press Generate Hash for its SHA-1, SHA-256 and SHA-512 digests.",
+      "screen": {
+        "fill": [
+          "Tools Collection"
+        ],
+        "click": [
+          "Generate Hash"
+        ]
+      }
+    },
+    "pem-inspector": {
+      "use": "Paste a PEM certificate and press Extract Information for its SHA-256 fingerprint, DER size and the first DER bytes in hex.",
+      "screen": {
+        "fill": [
+          "-----BEGIN CERTIFICATE-----\nMIICXTCCAgICCQDjCSmCL6SRUzAKBggqhkjOPQQDAjA8MRowGAYDVQQDDBF0b29s\ncy5leGFtcGxlLmNvbTEeMBwGA1UECgwVVG9vbHMgQ29sbGVjdGlvbiBEZW1vMB4X\nDTI2MTEwNjExMDE0NFoXDTI3MTEwNjExMDE0NFowPDEaMBgGA1UEAwwRdG9vbHMu\nZXhhbXBsZS5jb20xHjAcBgNVBAoMFVRvb2xzIENvbGxlY3Rpb24gRGVtbzCCAUsw\nggEDBgcqhkjOPQIBMIH3AgEBMCwGByqGSM49AQECIQD/////AAAAAQAAAAAAAAAA\nAAAAAP///////////////zBbBCD/////AAAAAQAAAAAAAAAAAAAAAP//////////\n/////AQgWsY12Ko6k+ez671VdpiGvGUdBrDMU7D2O848PifSYEsDFQDEnTYIhucE\nk2pmeOETnSa3gZ9+kARBBGsX0fLhLEJH+Lzm5WOkQPJ3A32BLeszoPShOUXYmMKW\nT+NC4v4af5uO5+tKfA+eFivOM1drMV7Oy7ZAaDe/UfUCIQD/////AAAAAP//////\n////vOb6racXnoTzucrC/GMlUQIBAQNCAAQ8a0n07VVD5sJCPkNyuP6nkpL1I1zg\nYgOT8OR5RRbZLCv9HRbE1QkuzcmkkrHHhR6mCtQdcZDWtZhftLuqKlw7MAoGCCqG\nSM49BAMCA0kAMEYCIQCZIUBwokf6pDzHlObY4602K8y+XPpc1lNvk1vlmEhiWAIh\nAMHB4A9LLGdDJ8ONkB8JgCCSf2WkizjPcXO0wORvQc0/\n-----END CERTIFICATE-----"
+        ],
+        "click": [
+          "Extract Information"
+        ]
+      }
+    },
+    "rclone-password": {
+      "use": "Paste a password obscured by rclone (from rclone.conf) and press Reveal Password to recover the clear text.",
+      "screen": {}
+    },
+    "jwt-secret-generator": {
+      "use": "Choose the secret size (16–64 bytes), how many, and Base64URL or Hex, then press Generate JWT Secrets.",
+      "screen": {
+        "click": [
+          "Generate JWT Secrets"
+        ]
+      }
+    },
+    "hmac-key-generator": {
+      "use": "Choose the key size (16–64 bytes), how many and Base64URL, Base64 or Hex, then press Generate HMAC Keys.",
+      "screen": {
+        "click": [
+          "Generate HMAC Keys"
+        ]
+      }
+    },
+    "aes-key-generator": {
+      "use": "Choose AES-128, 192 or 256 and press Generate AES Key; the key is shown in hex and Base64.",
+      "screen": {
+        "click": [
+          "Generate AES Key"
+        ]
+      }
+    },
+    "salt-generator": {
+      "use": "Choose the salt size (8–32 bytes), how many and Base64URL, Base64 or Hex, then press Generate Salts.",
+      "screen": {
+        "click": [
+          "Generate Salts"
+        ]
+      }
+    },
+    "recovery-code-generator": {
+      "use": "Set the number of codes, characters per code and group size, then press Generate Recovery Codes and copy the list.",
+      "screen": {
+        "click": [
+          "Generate Recovery Codes"
+        ]
+      }
+    },
+    "base64": {
+      "use": "Type text and press Encode Base64, or paste Base64 and press Decode Base64.",
+      "screen": {
+        "fill": [
+          "Hello, Tools Collection!"
+        ],
+        "click": [
+          "Encode Base64"
+        ]
+      }
+    },
+    "url-encoder": {
+      "use": "Paste a URL or a value and encode or decode it; Encode Component also escapes characters such as / ? & =.",
+      "screen": {
+        "fill": [
+          "https://example.com/search?q=café & crème"
+        ],
+        "click": [
+          "Encode URL"
+        ]
+      }
+    },
+    "html-entity": {
+      "use": "Paste text and Encode it into HTML entities (only & < > \" ' or every non-ASCII character), or Decode entities back.",
+      "screen": {
+        "fill": [
+          "<a href=\"/menu\">Café & Crème</a>"
+        ],
+        "click": [
+          "Encode"
+        ]
+      }
+    },
+    "number-base-converter": {
+      "use": "Type a number in any field — decimal, hexadecimal, binary or octal — and the others follow.",
+      "screen": {
+        "fill": [
+          "2026"
+        ]
+      }
+    },
+    "data-size-converter": {
+      "use": "Type a size, pick its unit and press Convert Size to see it in bits, bytes, KB–TB and KiB–TiB (all base 1024).",
+      "screen": {
+        "fill": [
+          "1536"
+        ],
+        "click": [
+          "Convert Size"
+        ]
+      }
+    },
+    "time-convert": {
+      "use": "Type a duration, pick its unit and press Convert Time to see it in milliseconds, seconds, minutes, hours, days and HH:MM:SS.",
+      "screen": {
+        "fill": [
+          "90061"
+        ],
+        "click": [
+          "Convert Time"
+        ]
+      }
+    },
+    "timestamp-converter": {
+      "use": "Paste a Unix timestamp in seconds or milliseconds and press Convert, or take the current time.",
+      "screen": {
+        "fill": [
+          "1762430400"
+        ],
+        "click": [
+          "Convert"
+        ]
+      }
+    },
+    "heic-to-jpg": {
+      "use": "Drop iPhone HEIC/HEIF photos and download them as JPG; the conversion runs on your device and EXIF metadata is not kept.",
+      "screen": {}
+    },
+    "json-formatter": {
+      "use": "Paste JSON, choose the indentation (2 spaces, 4 spaces, Tab or Compact) and press Format JSON; invalid JSON is flagged.",
+      "screen": {
+        "fill": [
+          "{\"name\":\"Tools Collection\",\"tools\":54,\"clientSide\":true,\"languages\":[\"en\",\"it\",\"de\",\"fr\",\"es\"]}"
+        ],
+        "click": [
+          "Format JSON"
+        ]
+      }
+    },
+    "xml-beautifier": {
+      "use": "Paste XML, choose the indentation and press Format XML.",
+      "screen": {
+        "fill": [
+          "<?xml version=\"1.0\"?><catalogue><tool id=\"1\">Base64</tool><tool id=\"2\">JSON Formatter</tool></catalogue>"
+        ],
+        "click": [
+          "Format XML"
+        ]
+      }
+    },
+    "yaml-formatter": {
+      "use": "Paste YAML or JSON, choose an action (Format, Minify, YAML to JSON, JSON to YAML) and the indentation, then press Execute.",
+      "screen": {
+        "fill": [
+          "name: Tools Collection\nclientSide: true\nlocales: [en, it, de, fr, es]\ncategories:\n  - text-processing\n  - security"
+        ],
+        "click": [
+          "Execute"
+        ]
+      }
+    },
+    "toml-formatter": {
+      "use": "Paste TOML or JSON, choose an action (Format, Minify, TOML to JSON, JSON to TOML) and the indentation, then press Execute.",
+      "screen": {
+        "fill": [
+          "[package]\nname = \"tools-collection\"\nversion = \"1.8.0\"\n\n[build]\noutput = \"static\"\nlocales = [\"en\", \"it\", \"de\", \"fr\", \"es\"]"
+        ],
+        "click": [
+          "Execute"
+        ]
+      }
+    },
+    "csv-viewer": {
+      "use": "Paste CSV data to see it as a table you can sort by clicking a column; the delimiter is detected and Export as JSON downloads it.",
+      "screen": {
+        "fill": [
+          "name,role,city\nAda Lovelace,Engineer,London\nLinus Torvalds,Maintainer,Portland\nGrace Hopper,Rear Admiral,Arlington"
+        ]
+      }
+    },
+    "jwt-decoder": {
+      "use": "Paste a JWT to see its decoded header and payload and whether it is still valid or expired; the signature is not verified.",
+      "screen": {
+        "fill": [
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFkYSBMb3ZlbGFjZSIsImlhdCI6MTcwMDAwMDAwMH0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        ]
+      }
+    },
+    "cron-expression": {
+      "use": "Build a schedule with the presets or type a cron expression: you get a plain-English summary and the next run times.",
+      "screen": {}
+    },
+    "docker-run-to-compose": {
+      "use": "Paste a docker run command and press Convert to Compose for the equivalent docker-compose.yml, or go the other way.",
+      "screen": {
+        "fill": [
+          "docker run -d --name web -p 8080:80 -e TZ=Europe/Rome -v ./html:/usr/share/nginx/html nginx:latest"
+        ],
+        "click": [
+          "Convert to Compose"
+        ]
+      }
+    },
+    "color-picker": {
+      "use": "Pick a colour or type HEX, RGB or HSL and press Convert Color to get it in every notation.",
+      "screen": {
+        "click": [
+          "Convert Color"
+        ]
+      }
+    },
+    "date-interval": {
+      "use": "Pick a start and an end date: total days, weeks, working days and a years/months/days breakdown.",
+      "screen": {
+        "fill": [
+          "2026-01-01",
+          "2026-11-06"
+        ]
+      }
+    },
+    "emoji-shortcode": {
+      "use": "Type text and press Shortcode → Emoji to turn :shortcodes: into emoji, or Emoji → Shortcode to go back.",
+      "screen": {
+        "fill": [
+          ":rocket: Ship it :tada: :sparkles:"
+        ],
+        "click": [
+          "Shortcode → Emoji"
+        ]
+      }
+    },
+    "reg2gpo": {
+      "use": "Paste or upload a .reg export, name the collection and press Generate GPO XML for Group Policy Preferences.",
+      "screen": {
+        "fill": [
+          "Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Contoso\\App]\n\"Server\"=\"app.contoso.local\"\n\"Port\"=dword:00000443"
+        ],
+        "click": [
+          "Generate GPO XML"
+        ]
+      }
+    }
+  }
+}
