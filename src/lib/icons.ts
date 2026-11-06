@@ -20,6 +20,7 @@ const ICONS: Record<string, string> = {
   code: '<path d="M9 8l-4 4 4 4"/><path d="M15 8l4 4-4 4"/>',
   wrench:
     '<path d="M14.5 5.5a3.8 3.8 0 0 0-5 5L4 16v4h4l5.5-5.5a3.8 3.8 0 0 0 5-5l-2.8 2.8-2.2-.6-.6-2.2z"/>',
+  book: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19"/><path d="M9 7h6"/>',
   star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z"/>',
 
   /* generators / security */

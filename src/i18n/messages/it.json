@@ -758,5 +758,9 @@
   "tools_passwordStrength_show": "Mostra",
   "tools_passwordStrength_hide": "Nascondi",
   "tool_footRun": "per eseguire",
-  "csv_sortByLabel": "Ordina per {col}"
+  "csv_sortByLabel": "Ordina per {col}",
+  "manual_title": "Manuale utente",
+  "manual_language": "in inglese",
+  "manual_pageAbbr": "p.",
+  "manual_pdfNote": "PDF, in inglese"
 }

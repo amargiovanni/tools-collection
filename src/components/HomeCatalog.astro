@@ -13,6 +13,7 @@ import {
 import type { Language } from '../i18n'
 import { sortToolsByLocalizedName } from '../lib/tool-order'
 import { appVersion, upstreamRepositoryUrl } from '../config/site'
+import { manualHref, manualSizeLabel } from '../lib/manual'
 import { iconInner, iconSvg, toolIconSvg, hueOf } from '../lib/icons'
 
 interface Props {
@@ -132,6 +133,10 @@ const favStrings = {
         <span class="chip"><b>{categories.length}</b>&nbsp;{t(lang, 'home_heroMetaCategories')}</span>
         <span class="chip"><span class="dot" style="background:var(--c-convert)"></span><b>100%</b>&nbsp;{t(lang, 'home_heroMetaClientSide')}</span>
         <span class="chip"><b>{languages.length}</b>&nbsp;{t(lang, 'home_heroMetaLanguages')}</span>
+        <a class="chip chip-manual" href={manualHref()} type="application/pdf" hreflang="en" target="_blank" rel="noopener" data-astro-reload>
+          <Fragment set:html={iconSvg('book', 'icon-sm')} />
+          <b>{t(lang, 'manual_title')}</b>&nbsp;<span>PDF · {t(lang, 'manual_language')} · {manualSizeLabel()}</span>
+        </a>
       </div>
     </div>
   </section>
@@ -221,6 +226,7 @@ const favStrings = {
         <a href={`/${lang}/`} class="brand"><span class="mark"></span><span class="word">{t(lang, 'app_title')}</span></a>
         <nav class="links">
           <a href="#main-content">{t(lang, 'home_catalogLabel')}</a>
+          <a href={manualHref()} type="application/pdf" hreflang="en" target="_blank" rel="noopener" data-astro-reload>{t(lang, 'manual_title')} <span class="sr-only">({t(lang, 'manual_pdfNote')})</span></a>
           <a href={upstreamRepositoryUrl} target="_blank" rel="noopener">{t(lang, 'home_footerGithub')}</a>
         </nav>
       </div>
