@@ -1,0 +1,17 @@
+Self-hosted web fonts (SIL Open Font License 1.1)
+
+Served from /fonts/ so that no page request reaches a third-party font host.
+Files are the unmodified variable-weight woff2 subsets (latin, latin-ext)
+redistributed by Fontsource (https://fontsource.org):
+
+  Inter           @fontsource-variable/inter@5.2.8          https://github.com/rsms/inter
+  Space Grotesk   @fontsource-variable/space-grotesk@5.2.10 https://github.com/floriankarsten/space-grotesk
+  JetBrains Mono  @fontsource-variable/jetbrains-mono@5.2.8 https://github.com/JetBrains/JetBrainsMono
+
+Licence texts: *-OFL-1.1.txt in this folder.
+34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956  inter-latin-ext-wght-normal.woff2
+3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62  inter-latin-wght-normal.woff2
+79bfdab9ba467e26eea4122e6f2567e188dd8a09a8c730d501fc487c4ab99c6e  jetbrains-mono-latin-ext-wght-normal.woff2
+18be452724bfdc236c074ca94a249a7f41a86752c7d04ab258ce9ed5651f6a7e  jetbrains-mono-latin-wght-normal.woff2
+952dddb45d2f96f71cbf3b7f510b24379afc3c89ea02fcf89d377b45d62c0166  space-grotesk-latin-ext-wght-normal.woff2
+0640890476fc1198ab4de571fb658de443c4d85b66466ec09534a8737ab1ce9d  space-grotesk-latin-wght-normal.woff2

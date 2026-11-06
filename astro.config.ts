@@ -69,7 +69,7 @@ function cspPostProcess(): AstroIntegration {
 
         // Pass 2 — identical policy on every page.
         const scriptSrc = `script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com ${[...scriptHashes].join(' ')}`
-        const styleSrc = `style-src 'self' https://fonts.googleapis.com ${[...styleHashes].join(' ')}`
+        const styleSrc = `style-src 'self' ${[...styleHashes].join(' ')}`
         await Promise.all(
           pages.map(async ({ f, html }) => {
             const metaMatch = html.match(
@@ -115,7 +115,7 @@ export default defineConfig({
         "default-src 'self'",
         "img-src 'self' data: blob:",
         "connect-src 'self' https://cloudflareinsights.com",
-        "font-src 'self' https://fonts.gstatic.com",
+        "font-src 'self'",
         "object-src 'none'",
         // HEIC to JPG: heic-to/csp runs libheif in a Web Worker built from a blob: URL (ADR 0003)
         "worker-src 'self' blob:",
@@ -133,7 +133,7 @@ export default defineConfig({
         // 'unsafe-inline' is only honored because no style hashes are
         // emitted (all stylesheets are external via inlineStylesheets:
         // 'never' above).
-        resources: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        resources: ["'self'", "'unsafe-inline'"],
       },
     },
   },
