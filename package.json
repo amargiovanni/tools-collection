@@ -32,7 +32,7 @@
     "@types/node": "^26.2.0",
     "@vitest/coverage-v8": "^4.1.12",
     "jsdom": "^30.0.1",
-    "tailwindcss": "^4.3.2",
+    "tailwindcss": "^4.3.4",
     "typescript": "^7.0.2",
     "vitest": "^4.1.12"
   }
