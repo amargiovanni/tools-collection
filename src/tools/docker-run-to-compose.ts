@@ -540,7 +540,7 @@ export function dockerRunToCompose(input: string): Result<string> {
 // Docker Compose YAML → docker run command(s)
 // ---------------------------------------------------------------------------
 
-type JsonValue = string | number | boolean | null | JsonValue[] | Record<string, JsonValue>
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 type MaybeJsonValue = JsonValue | undefined
 
 function str(v: MaybeJsonValue): string {

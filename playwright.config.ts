@@ -18,5 +18,10 @@ export default defineConfig({
     command: 'npm run preview',
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
+    // Astro 7.2+ detaches `astro preview` into a background daemon when it
+    // detects a coding agent, so the command exits and Playwright aborts.
+    // This variable is the marker Astro sets on its own daemon child: with it,
+    // preview stays in the foreground under Playwright's control.
+    env: { ASTRO_PREVIEW_BACKGROUND: '1' },
   },
 })

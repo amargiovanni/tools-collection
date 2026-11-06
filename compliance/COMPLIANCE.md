@@ -2,7 +2,7 @@
 
 **Repository:** amargiovanni/tools-collection
 **Status:** Reviewed — approved by maintainer 2026-08-07 (scope, triage decisions, gap report, EAA module)
-**Last updated:** 2026-08-07 by Claude (drafter) / Andrea Margiovanni (reviewer)
+**Last updated:** 2026-11-06 by Claude (drafter) / Andrea Margiovanni (reviewer)
 
 > This dossier is assembled by the `cra-evidence` skill. Claude drafts;
 > humans review and approve. Nothing in this file is a conformity claim
@@ -17,6 +17,10 @@
   QR generator used to send its input text to a third-party API (api.qrserver.com);
   since v1.7.2 QR codes are generated locally (uqr, SVG data URL) and no tool input
   leaves the browser.
+  **Second deviation found and resolved 2026-11-06:** every page loaded its fonts
+  from Google Fonts, sending each visitor's IP address and user agent to Google
+  (no tool input involved). Fonts are self-hosted since v1.8.0 (ADR 0004) and the
+  CSP no longer allows any Google font host.
 - **Distribution:** static site (Cloudflare Pages, tools.margiovanni.it) and a Docker
   image (nginx serving the same static build) published to GHCR.
 - **CRA scope:** out of scope — free and open-source software made available outside
@@ -83,7 +87,7 @@ a DRAFT pending review by counsel.
 | I.2d unauthorized-access protection | **not applicable** | No accounts, no server-side data, no non-public functionality — all processing is in-browser. |
 | I.2e confidentiality / encryption | **conformant** | TLS enforced by Cloudflare Pages; no user data stored or transmitted by design; no secrets in repo (no .env, none committed). |
 | I.2f integrity of code/config | **conformant** (2026-08-07) | Build provenance attestations published for container images (actions/attest-build-provenance in dockerbuild.yml). |
-| I.2g data minimisation | **conformant** (re-established 2026-11-06, v1.8.0) | Tool inputs never leave the browser (QR generation local since v1.7.2). Deviation fixed in v1.8.0: Share links carried the tool input in the `?s=` query string, sent to the host when opened; the state now travels in the URL fragment (ADR 0005, e2e/share.spec.ts). Analytics cookieless/aggregate. |
+| I.2g data minimisation | **conformant** (re-established 2026-11-06, v1.8.0) | Tool inputs never leave the browser (QR generation local since v1.7.2). Deviations fixed in v1.8.0: Share links carried the tool input in the `?s=` query string, sent to the host when opened — the state now travels in the URL fragment (ADR 0005, e2e/share.spec.ts); fonts were loaded from Google Fonts, sending each visitor's IP to Google — now self-hosted (ADR 0004, e2e/privacy.spec.ts). Analytics cookieless/aggregate. |
 | I.2h availability after incident | **not applicable** | Stateless static content on a CDN; recovery is redeploy-from-git. |
 | I.2i impact on other services | **conformant** (re-established 2026-08-07, v1.7.2) | QR generation moved to local SVG rendering (uqr); no tool makes outbound calls at runtime. Regression-guarded by a unit test asserting the payload never reaches an external host. |
 | I.2j limit attack surface | **conformant** | Exposure is static assets only; no admin surface, no API; dependency count reduced this release (437→408). |
