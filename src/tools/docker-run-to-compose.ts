@@ -366,18 +366,20 @@ function serviceNameFromImage(image: string): string {
 }
 
 function yamlList(items: string[], indent: string): string {
-  return items.map((v) => `${indent}- "${v.replace(/"/g, '\\"')}"`).join('\n')
+  return items.map((v) => `${indent}- ${yamlQuoted(v)}`).join('\n')
 }
 
 function yamlScalar(key: string, value: string, indent: string): string {
   const needsQuotes = /[:#{}[\],&*?|>!'%@`]/.test(value) || value.trim() !== value || value === ''
   return needsQuotes
-    ? `${indent}${key}: "${value.replace(/"/g, '\\"')}"`
+    ? `${indent}${key}: ${yamlQuoted(value)}`
     : `${indent}${key}: ${value}`
 }
 
+// A JSON string literal is a valid YAML double-quoted scalar: it escapes
+// backslashes, quotes and control characters, which a quote-only escape misses.
 function yamlQuoted(value: string): string {
-  return `"${value.replace(/"/g, '\\"')}"`
+  return JSON.stringify(value)
 }
 
 export function configToCompose(cfg: DockerRunConfig): string {
@@ -523,7 +525,7 @@ export function configToCompose(cfg: DockerRunConfig): string {
   if (cfg.cpus) body.push(`    cpus: ${cfg.cpus}`)
 
   if (cfg.command.length) {
-    const cmd = cfg.command.map((c) => `"${c.replace(/"/g, '\\"')}"`).join(', ')
+    const cmd = cfg.command.map(yamlQuoted).join(', ')
     body.push(`    command: [${cmd}]`)
   }
 
@@ -560,8 +562,10 @@ function obj(v: MaybeJsonValue): Record<string, MaybeJsonValue> {
   return {}
 }
 
+// POSIX single quotes: nothing inside is expanded ($, backticks, backslashes);
+// an embedded ' is written as '\'' (close, escaped quote, reopen).
 function shellQuote(s: string): string {
-  if (/[^a-zA-Z0-9_./:@=-]/.test(s)) return `"${s.replace(/"/g, '\\"')}"`
+  if (/[^a-zA-Z0-9_./:@=-]/.test(s)) return `'${s.replace(/'/g, "'\\''")}'`
   return s
 }
 
