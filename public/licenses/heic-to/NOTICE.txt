@@ -5,8 +5,8 @@ The HEIC to JPG tool loads a separate JavaScript/WebAssembly file
 (/_astro/heic-to.<hash>.js) built from the following libraries, which are
 licensed under the GNU Lesser General Public License, version 3 or later:
 
-  heic-to   1.6.6     https://github.com/hoppergee/heic-to/tree/v1.6.6
-  libheif   1.23.6    https://github.com/strukturag/libheif/tree/v1.23.6
+  heic-to   1.6.7     https://github.com/hoppergee/heic-to/tree/v1.6.7
+  libheif   1.23.7    https://github.com/strukturag/libheif/tree/v1.23.7
   libde265  (bundled by libheif in heic-to's build)
                       https://github.com/strukturag/libde265
 
