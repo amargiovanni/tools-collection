@@ -117,10 +117,10 @@ Triage of the 8 open CodeQL alerts on BuildBandits/tools-collection.
       `'` written as `'\''`. Verified by running the output through `sh`.
 - [x] #1, #2 `actions/missing-workflow-permissions` in `ci.yml` — workflow-level
       `permissions: contents: read`; no job pushes, comments or writes.
-- [ ] #8 `js/incomplete-url-substring-sanitization` in
+- [x] #8 `js/incomplete-url-substring-sanitization` in
       `e2e/tools/domain-extractor.spec.ts:65` — false positive: a test filter
-      on output lines, not a sanitizer. To dismiss as "used in tests"
-      (Andrea's call).
+      on output lines, not a sanitizer. Dismissed as "used in tests"
+      (approved by Andrea, 2026-11-06).
 
 Impact note: everything runs in the visitor's browser and the input is the
 visitor's own, so no third party can exploit it; the shell case still made the
