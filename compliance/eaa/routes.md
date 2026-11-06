@@ -1,6 +1,6 @@
 # Routes under test
 
-Chosen set: **all 54 English routes** (home + 53 tool pages), decided by the
+Chosen set: **all English routes** — 55 as of v1.8.0 (home + 54 tool pages; 54 when chosen), decided by the
 maintainer on 2026-08-07 — the site is small enough that full coverage costs
 little, and every tool page is a primary task flow (each tool is form-heavy
 by nature). Other languages share the same templates, components and tokens;
