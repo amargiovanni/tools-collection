@@ -3,6 +3,7 @@ import solidJs from '@astrojs/solid-js'
 import tailwindcss from '@tailwindcss/vite'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { createHash } from 'node:crypto'
 import type { AstroIntegration } from 'astro'
 
@@ -23,7 +24,7 @@ function cspPostProcess(): AstroIntegration {
     name: 'csp-post-process',
     hooks: {
       'astro:build:done': async ({ dir }) => {
-        const root = new URL(dir).pathname
+        const root = fileURLToPath(dir)
         const walk = async (d: string): Promise<string[]> =>
           (
             await Promise.all(
