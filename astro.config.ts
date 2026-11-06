@@ -96,6 +96,7 @@ function cspPostProcess(): AstroIntegration {
 }
 
 export default defineConfig({
+  site: 'https://tools.buildbandits.com',
   output: 'static',
   integrations: [solidJs(), cspPostProcess()],
   build: {

@@ -35,7 +35,7 @@ You will be credited in the advisory unless you ask not to be.
 
 ## Scope
 
-**In scope:** this repository, the deployed site (tools.margiovanni.it), and
+**In scope:** this repository, the deployed site (tools.buildbandits.com), and
 the published Docker image (`ghcr.io/buildbandits/tools-collection`; releases up to
 v1.8.0 under `ghcr.io/amargiovanni/tools-collection`).
 
