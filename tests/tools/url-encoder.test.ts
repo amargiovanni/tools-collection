@@ -95,3 +95,20 @@ describe('decodeUrl', () => {
     }
   })
 })
+
+describe('decodeUrl undoes Encode Component', () => {
+  it('decodes reserved characters (/ ? & = # :)', () => {
+    const result = decodeUrl('a%2Fb%3Fc%26d%3De%23f%3Ag')
+    expect(result.ok && result.value).toBe('a/b?c&d=e#f:g')
+  })
+
+  it('round-trips with component encode mode', () => {
+    const original = 'q=café & crème/2026?x#y'
+    const encoded = encodeUrl(original, 'component')
+    expect(encoded.ok).toBe(true)
+    if (encoded.ok) {
+      const decoded = decodeUrl(encoded.value)
+      expect(decoded.ok && decoded.value).toBe(original)
+    }
+  })
+})
