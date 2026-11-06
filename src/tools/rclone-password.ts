@@ -21,7 +21,10 @@ async function getRcloneKey(subtle: SubtleCrypto): Promise<CryptoKey> {
   return key
 }
 
-async function decryptRclonePayload(ciphertext: Uint8Array, iv: Uint8Array): Promise<Uint8Array> {
+async function decryptRclonePayload(
+  ciphertext: Uint8Array<ArrayBuffer>,
+  iv: Uint8Array<ArrayBuffer>,
+): Promise<Uint8Array> {
   const subtle = globalThis.crypto!.subtle
   const key = await getRcloneKey(subtle)
   const plainBuffer = await subtle.decrypt(
