@@ -21,7 +21,7 @@
   from Google Fonts, sending each visitor's IP address and user agent to Google
   (no tool input involved). Fonts are self-hosted since v1.8.0 (ADR 0004) and the
   CSP no longer allows any Google font host.
-- **Distribution:** static site (Cloudflare Pages, tools.margiovanni.it) and a Docker
+- **Distribution:** static site (Cloudflare Pages, tools.buildbandits.com) and a Docker
   image (nginx serving the same static build) published to GHCR.
 - **CRA scope:** out of scope — free and open-source software made available outside
   the course of a commercial activity (Recital 18, Reg. (EU) 2024/2847). This dossier

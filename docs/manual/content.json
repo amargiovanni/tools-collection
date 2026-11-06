@@ -170,7 +170,7 @@
       "use": "Type a URL or any text, pick a size and press Generate QR Code; you can also upload a picture to read a QR code, where the browser supports it.",
       "screen": {
         "fill": [
-          "https://tools.margiovanni.it"
+          "https://example.com"
         ],
         "click": [
           "Generate QR Code"

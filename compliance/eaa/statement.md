@@ -3,7 +3,7 @@
 **Status of this document:** Approved by the maintainer (Andrea Margiovanni,
 2026-08-07). Prepared by Claude (eaa-evidence).
 
-Tools Collection (tools.margiovanni.it) is committed, **voluntarily**, to
+Tools Collection (tools.buildbandits.com) is committed, **voluntarily**, to
 making its website accessible in accordance with WCAG 2.2 level AA (EN 301
 549). The EAA scope assessment for this project is recorded in `scope.md`.
 
