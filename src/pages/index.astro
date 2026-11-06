@@ -19,7 +19,8 @@
             : 'en'
         lang = configuredDefault
       }
-      location.replace('/' + lang + '/')
+      // Keep the fragment: legacy links (/#json-formatter) are resolved on /{lang}/.
+      location.replace('/' + lang + '/' + location.hash)
     </script>
   </head>
   <body></body>

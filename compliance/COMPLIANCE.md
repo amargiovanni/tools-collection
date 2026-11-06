@@ -83,7 +83,7 @@ a DRAFT pending review by counsel.
 | I.2d unauthorized-access protection | **not applicable** | No accounts, no server-side data, no non-public functionality — all processing is in-browser. |
 | I.2e confidentiality / encryption | **conformant** | TLS enforced by Cloudflare Pages; no user data stored or transmitted by design; no secrets in repo (no .env, none committed). |
 | I.2f integrity of code/config | **conformant** (2026-08-07) | Build provenance attestations published for container images (actions/attest-build-provenance in dockerbuild.yml). |
-| I.2g data minimisation | **conformant** | Tool inputs never leave the browser (QR generation local since v1.7.2); analytics cookieless/aggregate. |
+| I.2g data minimisation | **conformant** (re-established 2026-11-06, v1.8.0) | Tool inputs never leave the browser (QR generation local since v1.7.2). Deviation fixed in v1.8.0: Share links carried the tool input in the `?s=` query string, sent to the host when opened; the state now travels in the URL fragment (ADR 0005, e2e/share.spec.ts). Analytics cookieless/aggregate. |
 | I.2h availability after incident | **not applicable** | Stateless static content on a CDN; recovery is redeploy-from-git. |
 | I.2i impact on other services | **conformant** (re-established 2026-08-07, v1.7.2) | QR generation moved to local SVG rendering (uqr); no tool makes outbound calls at runtime. Regression-guarded by a unit test asserting the payload never reaches an external host. |
 | I.2j limit attack surface | **conformant** | Exposure is static assets only; no admin surface, no API; dependency count reduced this release (437→408). |

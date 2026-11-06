@@ -1,5 +1,6 @@
 import { createSignal, Show, onMount } from 'solid-js'
 import { useToolState } from '../../lib/useToolState'
+import { readSharedParam } from '../../lib/share'
 import { Input } from '../ui/Input'
 import { TextArea } from '../ui/TextArea'
 import { Button } from '../ui/Button'
@@ -36,7 +37,7 @@ export default function BittorrentMagnetLinkGenerator(props: Props) {
 
   onMount(() => {
     const params = new URLSearchParams(location.search)
-    if (!params.get('s')) {
+    if (!readSharedParam(location)) {
       const sharedHash = params.get('hash')
       const sharedName = params.get('name')
       if (sharedHash) {
