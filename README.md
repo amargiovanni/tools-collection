@@ -11,6 +11,8 @@ A modular, type-safe collection of 50+ browser-based developer tools. Built with
 
 50+ tools that run entirely in your browser — no data ever leaves your machine. Five languages (EN/IT/ES/FR/DE), theme switcher (light/dark/system), and a command palette (`Ctrl/Cmd+K`) for instant navigation.
 
+A printable **user manual** (PDF, English) describes every tool with a screenshot: download it from the home page, or open it on a tool's own page from that tool's header. Source and rebuild steps: [`docs/manual/`](docs/manual/README.md).
+
 ## Tools
 
 | Category | Tools |
@@ -190,6 +192,7 @@ Use `npm run test:e2e:ui` for an interactive UI where you can run tests one at a
 5. **Component map** — Add import to `src/config/tool-components.ts`
 6. **i18n** — Add keys to all 5 locale files (`en.json`, `it.json`, `es.json`, `fr.json`, `de.json`)
 7. **e2e test** — Create `e2e/tools/my-tool.spec.ts` using the `toolTest` helper
+8. **Manual** — Add the tool's "How to use" sentence and screenshot recipe to `docs/manual/content.json`, then rebuild the PDF ([steps](docs/manual/README.md)); `tests/config/manual-pages.test.ts` fails until you do
 
 The tool automatically gets a page at `/{lang}/tools/my-tool` and appears in the sidebar, homepage, and command palette.
 

@@ -312,6 +312,9 @@ input, select, textarea {
 }
 .chip:hover { border-color: var(--line-strong); color: var(--ink); }
 .chip b { color: var(--ink); font-weight: 700; }
+.chip-manual { color: var(--accent-ink); border-color: var(--accent-soft); background: var(--card); }
+.chip-manual:hover { border-color: var(--accent); color: var(--accent-ink); }
+.chip-manual .icon { color: var(--accent); }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); flex: none; }
 
 .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(20px, 5vw, 56px); }
@@ -532,6 +535,9 @@ input, select, textarea {
 .tool-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 40px; padding: 22px 0 48px;
   border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-4); }
 .tool-foot .sc { display: flex; align-items: center; gap: 7px; }
+.tool-foot .manual-foot { margin-left: auto; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
+.tool-foot .manual-foot:hover { color: var(--accent); }
+.tool-head .manual-link .pg { font: 600 11.5px var(--font-mono); color: var(--ink-3); }
 
 /* responsive shell */
 @media (max-width: 940px) {
@@ -546,6 +552,11 @@ input, select, textarea {
 @media (max-width: 640px) {
   /* a touch less gutter on phones */
   .wrap { padding-inline: 16px; }
+
+  /* tool header: actions (manual, share) on their own row under the title */
+  .tool-head { flex-wrap: wrap; }
+  .tool-head .th-actions { order: 3; flex-basis: 100%; padding-left: 72px; }
+  .tool-head .th-actions > * { white-space: nowrap; }
 
   /* home top bar */
   .topbar-in { gap: 10px; }

@@ -758,5 +758,9 @@
   "tools_passwordStrength_show": "Show",
   "tools_passwordStrength_hide": "Hide",
   "tool_footRun": "to run",
-  "csv_sortByLabel": "Sort by {col}"
+  "csv_sortByLabel": "Sort by {col}",
+  "manual_title": "User manual",
+  "manual_language": "English",
+  "manual_pageAbbr": "p.",
+  "manual_pdfNote": "PDF, in English"
 }

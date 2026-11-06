@@ -11,6 +11,8 @@ Una raccolta modulare e type-safe di 50+ strumenti per sviluppatori che funziona
 
 50+ strumenti che girano interamente nel browser: nessun dato lascia mai la tua macchina. Cinque lingue (EN/IT/ES/FR/DE), switch tema (chiaro/scuro/sistema) e command palette (`Ctrl/Cmd+K`) per navigare rapidamente.
 
+Un **manuale utente** stampabile (PDF, in inglese) descrive ogni tool con uno screenshot: si scarica dalla home, oppure si apre alla pagina del tool dalla testata del tool stesso. Sorgenti e passi per rigenerarlo: [`docs/manual/`](docs/manual/README.md).
+
 ## Strumenti
 
 | Categoria | Strumenti |
@@ -190,6 +192,7 @@ Usa `npm run test:e2e:ui` per un'interfaccia interattiva dove puoi eseguire i te
 5. **Component map** — Aggiungi l'import in `src/config/tool-components.ts`
 6. **i18n** — Aggiungi le chiavi in tutti i 5 file locale (`en.json`, `it.json`, `es.json`, `fr.json`, `de.json`)
 7. **Test e2e** — Crea `e2e/tools/my-tool.spec.ts` usando l'helper `toolTest`
+8. **Manuale** — Aggiungi la frase "How to use" e la ricetta dello screenshot in `docs/manual/content.json`, poi rigenera il PDF ([passi](docs/manual/README.md)); `tests/config/manual-pages.test.ts` fallisce finché non lo fai
 
 Il tool ottiene automaticamente una pagina in `/{lang}/tools/my-tool` e compare in sidebar, home e command palette.
 
