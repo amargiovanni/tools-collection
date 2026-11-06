@@ -4,6 +4,28 @@ All notable changes to this project are documented in this file.
 
 This changelog tracks the recent evolution of the project by published release and notable published commits.
 
+## Published: `1.8.0`
+
+### Added
+- **User manual (PDF, English)** — a 38-page "Field Manual" describing every tool with a real screenshot, grouped by category with thumb-index tabs. Download it from the home page (hero and footer); every tool page links straight to its own page of the manual. The PDF is built from the tool catalogue (`docs/manual/`), contains no transparency and no link to any particular deployment.
+- **HEIC to JPG converter** (contributed by @gioxx): converts iPhone photos on your device, EXIF metadata not kept.
+
+### Security
+- **Fonts are self-hosted.** Every page used to load its fonts from Google Fonts, sending each visitor's IP address and user agent to Google. Inter, Space Grotesk and JetBrains Mono (OFL) are now served from the site and the CSP allows no Google host (ADR 0004).
+- **Share links keep the tool's input in the `#` fragment.** Shared links used to carry the input — possibly a password or a token — in the `?s=` query string, which reaches the host when the link is opened. Old links still work and are rewritten in place (ADR 0005).
+- Dependency updates fixing 27 advisories, including a critical one in Astro (astro 7.4.7, vite 8.3.6, devalue 6.0.3, svgo 4.1.0, sharp 0.35.5, nanoid, zod, source-map-js, vitest 4.1.12). Remaining findings are build-time only, in TypeScript 7's native compiler (ADR 0006, proposed).
+
+### Fixed
+- QR Code "Download PNG" now saves a real PNG (it saved the text of an SVG data URL).
+- URL Decode now undoes Encode Component (`%2F %3F %26 %3D …`).
+- The legacy `/#tool-id` redirect no longer captures in-page anchors or shared-state fragments; the root redirect keeps the fragment.
+- `default-language.js` no longer 404s on the static deployment.
+- Home top bar: brand link and search trigger are named by their visible text (WCAG 2.5.3).
+- Tool page header actions wrap under the title on phones.
+
+### Changed
+- CI type-checks with `tsc` and runs the unit suite on Node 26 as well as Node 22; the three TypeScript 7 type errors are fixed.
+
 ## Published: `1.7.2`
 
 ### Security

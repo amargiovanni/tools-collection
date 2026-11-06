@@ -18,7 +18,7 @@ const ROOT = join(HERE, '../..')
 const HTML_OUT = join(HERE, 'manual.html')
 const PDF_OUT = join(ROOT, 'public/manual', PDF_NAME)
 const PAGE_MAP = join(ROOT, 'src/config/manual-pages.json')
-const SITE = 'tools.margiovanni.it'
+// No domain anywhere: the manual must fit every deployment of the site.
 
 /** Category identity: the site's palette, as opaque hex only. */
 const CATEGORY = {
@@ -83,17 +83,17 @@ function foot(page, total, label) {
 
 function card(t, en) {
   const c = CATEGORY[t.category]
-  const url = `${SITE}/en/tools/${t.id}/`
+  const path = `/en/tools/${t.id}/`
   return `<article class="card" id="${t.id}" style="--c:${c.color};--t:${tint(c.color, 0.9)};--tt:${tint(c.color, 0.95)}">
   <div class="meta">
     <div class="no"><span>No. ${pad(t.no)}</span><b>${esc(en[c.key])}</b></div>
     <div class="ident"><span class="tile">${t.icon}</span><h3>${esc(t.name)}</h3></div>
     <p class="desc">${esc(t.description)}</p>
     <div class="how"><span class="lbl">How to use</span><p>${esc(t.use)}</p></div>
-    <a class="addr" href="https://${url}"><span>${SITE}</span>/en/tools/${esc(t.id)}/</a>
+    <p class="addr"><span>Address on the site</span>${esc(path)}</p>
   </div>
   <figure class="shot">
-    <div class="bar"><i></i><i></i><i></i><span>${esc(url)}</span></div>
+    <div class="bar"><i></i><i></i><i></i><span>${esc(path)}</span></div>
     <div class="frame"><img src="screens/${t.id}.jpg" alt="${esc(t.name)} — screenshot"></div>
   </figure>
 </article>`
@@ -156,7 +156,7 @@ function sheetHtml(s, ctx) {
     .join('')}</div>
   <div class="reading">
     <h4>Reading the tool pages</h4>
-    <p>Tools are grouped in eight categories, each with its own colour on the edge of the page. Every entry gives the tool's number, what it does, how to use it, a screenshot taken from the live site, and its address — click it in the PDF to open the tool.</p>
+    <p>Tools are grouped in eight categories, each with its own colour on the edge of the page. Every entry gives the tool's number, what it does, how to use it, a screenshot of the tool at work, and its address on the site, relative to wherever Tools Collection is hosted.</p>
   </div>
   ${foot(s.page, total, 'Introduction')}
 </section>`
@@ -200,7 +200,6 @@ function sheetHtml(s, ctx) {
   <div class="crop tl"></div><div class="crop tr"></div><div class="crop bl"></div><div class="crop br"></div>
   <div class="bk-mark">&gt;_</div>
   <p class="bk-line">Fast, private utilities.<br>Your data never leaves the tab.</p>
-  <a class="bk-url" href="https://${SITE}/">${SITE}</a>
   <div class="colophon">
     <p>Tools Collection ${esc(version)} — free and open-source software, MIT licence. Source: github.com/amargiovanni/tools-collection</p>
     <p>Set in Space Grotesk, Inter and JetBrains Mono (SIL Open Font License 1.1). Screenshots taken from the built site; text generated from the tool catalogue on ${esc(date)}.</p>
@@ -262,6 +261,10 @@ export async function pdf() {
       outline: true,
     })
     assertOpaque(buf)
+    // Deployment-neutral: no link to any host (a domain here would be wrong
+    // for every other deployment). Internal links (contents → tool) are /Dest.
+    const uris = [...buf.toString('latin1').matchAll(/\/URI\s*\(([^)]*)\)/g)].map((m) => m[1])
+    if (uris.length) throw new Error(`PDF links to external URIs: ${[...new Set(uris)].join(', ')}`)
     await mkdir(join(ROOT, 'public/manual'), { recursive: true })
     await writeFile(PDF_OUT, buf)
   } finally {

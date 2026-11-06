@@ -38,6 +38,7 @@ One row per tagged release. Artifacts live under `compliance/`.
 
 | Release | Date | SBOM | Supply-chain diff | Vulnerabilities (open / triaged) | Reviewer |
 |---------|------|------|-------------------|----------------------------------|----------|
+| v1.8.0 | 2026-11-06 | [sbom/v1.8.0.cdx.json](sbom/v1.8.0.cdx.json) (426 components) | [sbom/diff-v1.7.2-to-v1.8.0.md](sbom/diff-v1.7.2-to-v1.8.0.md) — 26 added, 34 removed, 157 version changes (headline: astro 7.0.7→7.4.7, vite 8.3.6, devalue 6, sharp 0.35, jsdom 30, heic-to 1.6.6 new) | 26 / 26 (2 Critical, 17 High, 7 Medium — all Go stdlib/x/text inside TypeScript 7's native compiler, build-time only; 27 npm findings fixed before release) | [pending — maintainer] |
 | v1.7.2 (container) | 2026-08-07 | [sbom/v1.7.2-docker.cdx.json](sbom/v1.7.2-docker.cdx.json) (1025 components; provenance attestation verified) | base nginx:alpine unchanged | 8 matches / 6 distinct CVEs — unchanged accepted set (ADR 0002) | Andrea Margiovanni, 2026-08-07 |
 | v1.7.2 | 2026-08-07 | [sbom/v1.7.2.cdx.json](sbom/v1.7.2.cdx.json) (410 components) | [sbom/diff-v1.7.1-to-v1.7.2.md](sbom/diff-v1.7.1-to-v1.7.2.md) — +uqr 0.1.3 (local QR generation, privacy fix) | 5 / 5 (unchanged accepted set) | Andrea Margiovanni, 2026-08-07 |
 | v1.7.1 (container) | 2026-08-07 | [sbom/v1.7.1-docker.cdx.json](sbom/v1.7.1-docker.cdx.json) (1025 components; provenance attestation verified via `gh attestation verify`) | base nginx:alpine unchanged | 8 matches / 6 distinct CVEs — identical to v1.7.0 set, all accepted under ADR 0002 | Andrea Margiovanni, 2026-08-07 |
@@ -46,7 +47,17 @@ One row per tagged release. Artifacts live under `compliance/`.
 | v1.7.0 (container) | 2026-08-07 | [sbom/v1.7.0-docker.cdx.json](sbom/v1.7.0-docker.cdx.json) (1025 components, ghcr.io …:v1.7.0 linux/amd64 — first versioned image ever published) | base image nginx:alpine + static build | 8 matches / 6 distinct CVEs, all in the base image, all triaged, none reachable in shipped config | Andrea Margiovanni, 2026-08-07 |
 | v1.7.0 | 2026-08-07 | [sbom/v1.7.0.cdx.json](sbom/v1.7.0.cdx.json) (408 components) | [sbom/diff-v1.6.0-to-v1.7.0.md](sbom/diff-v1.6.0-to-v1.7.0.md) — 57 added, 104 removed, 126 version changes (headline: astro 6.3.6→7.0.7, vite 7→8, typescript 6→7 native, @astrojs/solid-js 6→7, tailwind 4.3.3) | 7 / 7 (0 Critical, 5 High, 2 Medium — all triaged, none reachable in shipped product) | Andrea Margiovanni, 2026-08-07 |
 
-**Plain-language summary:** the v1.7.0 dependency wave (17 dependabot PRs)
+**Plain-language summary (v1.8.0):** the pre-release scan found 53 known
+vulnerabilities, most published after August. All 27 in website or build
+dependencies with a fix (one Critical in Astro) were fixed before tagging. The
+26 left are in a single developer tool — TypeScript 7's compiler binary, built
+with an older Go — which never ships to users and has no fixed release yet;
+they are recorded and proposed for time-boxed acceptance (ADR 0006). The
+earlier time box for three of them (ADR 0002, due 2026-09-07) lapsed without a
+re-review; ADR 0006 proposes its renewal. Two privacy defects found during the
+release (Google Fonts, Share links) are fixed and recorded in section 4 (I.2g).
+
+**Plain-language summary (v1.7.0):** the v1.7.0 dependency wave (17 dependabot PRs)
 removed 13 of the 20 known vulnerabilities present in v1.6.0's supply chain,
 including the only Critical (seroval). The 7 remaining findings all live in
 build-time tooling that never ships to users; each has a draft triage record.
@@ -57,13 +68,36 @@ Detailed records: one file per finding under `compliance/vulns/`.
 
 | ID | Component | Severity | Draft decision | Status | ADR |
 |----|-----------|----------|----------------|--------|-----|
-| GO-2026-4970 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| GO-2026-5856 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-09-07 | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
-| GO-2026-5970 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-4970 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 — **lapsed**, renewal to 2026-12-07 proposed | Accepted (re-review overdue) | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-5856 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-09-07 — **lapsed**, renewal to 2026-12-07 proposed | Accepted (re-review overdue) | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-5970 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-09-07 — **lapsed**, renewal to 2026-12-07 proposed | Accepted (re-review overdue) | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
+| GO-2026-6604 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Critical | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6612 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Critical | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-5026 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-5942 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-5972 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6088 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6089 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6090 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6603 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6605 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6607 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6608 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6609 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6610 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6611 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6613 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6617 | Go stdlib (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6629 | golang.org/x/text (tsgo, via typescript@7.0.2, dev) | High | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6091 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6218 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6599 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6600 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
+| GO-2026-6809 | Go stdlib (tsgo, via typescript@7.0.2, dev) | Medium | accept, time-boxed to 2026-12-07 | Proposed | [0006](../docs/adr/0006-accept-go-findings-in-typescript-native-compiler-timeboxed.md) |
 | GHSA-5p4m-2wfm-xmqj | js-yaml@4.3.0 (build) | High | fix — updated to 4.3.1, 2026-08-07 | Resolved | — |
-| GHSA-f88m-g3jw-g9cj | sharp@0.34.5 (build) | High | fix — when astro raises range to 0.35.x | Accepted | — |
+| GHSA-f88m-g3jw-g9cj | sharp@0.34.5 (build) | High | fix — sharp 0.35.5, 2026-11-06 (#162) | Resolved | — |
 | GHSA-2p49-hgcm-8545 | svgo@4.0.1 (build) | High | fix — updated to 4.0.2, 2026-08-07 | Resolved | — |
-| GHSA-4g3v-8h47-v7g6 | astro@7.0.7 (build/dev server) | Medium | fix — upgrade to 7.1.0, next cycle | Accepted | — |
+| GHSA-4g3v-8h47-v7g6 | astro@7.0.7 (build/dev server) | Medium | fix — astro 7.4.7, 2026-11-06 (#162) | Resolved | — |
 | CVE-2023-52356 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 | CVE-2026-4775 | tiff@4.7.1-r0 (nginx:alpine base) | High | accept, time-boxed — no Alpine fix yet; auto-heals on base rebuild | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
 | CVE-2023-6277 | tiff@4.7.1-r0 (nginx:alpine base) | Medium | accept, time-boxed — same as above | Accepted | [0002](../docs/adr/0002-accept-unfixable-buildtime-and-base-image-cves-timeboxed.md) |
@@ -81,7 +115,7 @@ a DRAFT pending review by counsel.
 | Item | State | Evidence / remediation |
 |------|-------|------------------------|
 | I.1 risk assessment `[org]` | **gap** | Requires organizational evidence: no documented risk assessment. Remediation: one-page threat model of the client-side-only architecture. |
-| I.2a no known exploitable vulns | **conformant** | v1.7.0 scan: 0 Critical; 7 findings, all build-time only, none reachable in the shipped static site (compliance/vulns/, sbom/v1.7.0.vulns.json). |
+| I.2a no known exploitable vulns | **conformant** (re-assessed 2026-11-06, v1.8.0) | v1.8.0 scan: 0 findings in shipped or npm build dependencies (27 fixed before release, incl. 1 Critical in astro); 26 Go findings in TypeScript 7's native compiler — build-time only, not reachable in the shipped static site, proposed for time-boxed acceptance (ADR 0006; sbom/v1.8.0.vulns.json, compliance/vulns/GO-*). |
 | I.2b secure-by-default | **conformant** | Shipped artifact is static files; no credentials, no debug surface; Docker image is stock nginx serving the build (Dockerfile). |
 | I.2c security updates | **conformant** | Continuous deploy from main (Cloudflare Pages); Docker `latest`/`main` + versioned tags from v1.7.0 (dockerbuild.yml, fixed this release); dependabot enabled (.github/dependabot.yml). |
 | I.2d unauthorized-access protection | **not applicable** | No accounts, no server-side data, no non-public functionality — all processing is in-browser. |
@@ -109,7 +143,16 @@ Automated axe-core results per route, plus the manual-check list. Automated
 scanning covers only part of WCAG 2.2 AA; items listed under "manual
 verification required" are NOT covered until a human completes them.
 
-**Latest automated run:** 2026-08-07, axe-core 4.12.1 (chrome-headless) against
+**Latest automated run:** 2026-11-06, axe-core 4.14.0 (Playwright Chromium,
+CSP bypassed for the scanner only) against the v1.8.0 build served locally —
+all **55** English routes (home + 54 tools, HEIC to JPG added). Result: **0
+violations**. The first pass found one new-rule violation on the home page
+(`label-content-name-mismatch`, WCAG 2.5.3, 2 nodes — brand link and search
+trigger), fixed in #164 before tagging. axe left 55 "incomplete" results (one
+per route, items it cannot decide automatically): they are part of the manual
+verification below, not passes.
+
+**Previous automated run:** 2026-08-07, axe-core 4.12.1 (chrome-headless) against
 the v1.7.0 build served locally — all 54 English routes (home + 53 tools).
 Raw results: one JSON per route under `compliance/a11y/`. EAA posture is
 **voluntary** (see section 1); target is WCAG 2.2 AA.
@@ -166,3 +209,4 @@ a named human completes them:
 | 2026-08-07 | v1.6.0 + v1.7.0 release evidence, triage register (13 records), ADR 0002 | Andrea Margiovanni | approved |
 | 2026-08-07 | Annex I gap report incl. remediation states | Andrea Margiovanni | approved |
 | 2026-08-07 | EAA module: statement (partially compliant), SECURITY.md/CVD policy | Andrea Margiovanni | approved — manual a11y checks remain open |
+| 2026-11-06 | v1.8.0 release evidence (SBOM, diff, scan, 23 new + 3 updated triage records), ADR 0004/0005/0006, I.2a/I.2g updates, a11y re-scan (55 routes, 0 violations) | [pending — maintainer] | drafted by Claude; **ADR 0002 time box lapsed 2026-09-07** — renewal proposed in ADR 0006 |

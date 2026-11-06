@@ -1,0 +1,229 @@
+## SBOM diff
+
+`compliance/sbom/v1.7.2.cdx.json` → `compliance/sbom/v1.8.0.cdx.json`
+
+### Added (26)
+
+- `@astrojs/compiler-binding-android-arm64` 0.5.2
+- `@babel/runtime` 7.28.6
+- `@bruits/satteri-android-arm64` 0.11.6
+- `@bruits/satteri-freebsd-x64` 0.11.6
+- `@img/sharp-freebsd-wasm32` 0.35.5
+- `@img/sharp-webcontainers-wasm32` 0.35.5
+- `@rolldown/binding-android-arm-eabi` 1.3.0
+- `@rolldown/binding-wasm32-wasi` 1.3.0
+- `@testing-library/dom` 10.4.1
+- `@types/aria-query` 5.0.4
+- `ansi-regex` 5.0.1
+- `ansi-styles` 5.2.0
+- `client-zip` 2.5.1
+- `fast-string-truncated-width` 3.0.3
+- `fast-string-width` 3.0.2
+- `fast-wrap-ansi` 0.2.2
+- `fnv1a-64` 0.1.2
+- `heic-to` 1.6.6
+- `lz-string` 1.5.0
+- `pretty-format` 27.5.1
+- `react-is` 17.0.2
+- `std-env` 4.3.0
+- `tinyps` 0.5.1
+- `undici` 8.12.4
+- `verkit` 0.5.0
+- `yaml` 2.9.1
+
+### Removed (34)
+
+- `@esbuild/aix-ppc64` 0.28.1
+- `@esbuild/android-arm` 0.28.1
+- `@esbuild/android-arm64` 0.28.1
+- `@esbuild/android-x64` 0.28.1
+- `@esbuild/darwin-arm64` 0.28.1
+- `@esbuild/darwin-x64` 0.28.1
+- `@esbuild/freebsd-arm64` 0.28.1
+- `@esbuild/freebsd-x64` 0.28.1
+- `@esbuild/linux-arm` 0.28.1
+- `@esbuild/linux-arm64` 0.28.1
+- `@esbuild/linux-ia32` 0.28.1
+- `@esbuild/linux-loong64` 0.28.1
+- `@esbuild/linux-mips64el` 0.28.1
+- `@esbuild/linux-ppc64` 0.28.1
+- `@esbuild/linux-riscv64` 0.28.1
+- `@esbuild/linux-s390x` 0.28.1
+- `@esbuild/linux-x64` 0.28.1
+- `@esbuild/netbsd-arm64` 0.28.1
+- `@esbuild/netbsd-x64` 0.28.1
+- `@esbuild/openbsd-arm64` 0.28.1
+- `@esbuild/openbsd-x64` 0.28.1
+- `@esbuild/openharmony-arm64` 0.28.1
+- `@esbuild/sunos-x64` 0.28.1
+- `@esbuild/win32-arm64` 0.28.1
+- `@esbuild/win32-ia32` 0.28.1
+- `@esbuild/win32-x64` 0.28.1
+- `@rollup/pluginutils` 5.3.0
+- `argparse` 2.0.1
+- `esbuild` 0.28.1
+- `estree-walker` 2.0.2
+- `eventemitter3` 5.0.4
+- `js-yaml` 4.3.1
+- `ohash` 2.0.11
+- `p-timeout` 7.0.1
+
+### Version changed (157)
+
+- `@astrojs/compiler-binding` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-darwin-arm64` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-darwin-x64` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-linux-arm64-gnu` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-linux-arm64-musl` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-linux-x64-gnu` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-linux-x64-musl` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-wasm32-wasi` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-win32-arm64-msvc` 0.3.1 → 0.5.2
+- `@astrojs/compiler-binding-win32-x64-msvc` 0.3.1 → 0.5.2
+- `@astrojs/compiler-rs` 0.3.1 → 0.5.2
+- `@astrojs/internal-helpers` 0.10.1 → 0.13.1
+- `@astrojs/markdown-satteri` 0.3.3 → 0.4.7
+- `@astrojs/prism` 4.0.2 → 4.1.2
+- `@astrojs/solid-js` 7.0.1 → 7.0.2
+- `@astrojs/telemetry` 3.3.3 → 3.4.2
+- `@babel/core` 7.29.7 → 7.29.13
+- `@babel/generator` 7.29.8 → 7.29.13
+- `@babel/helper-compilation-targets` 7.29.7 → 7.29.13
+- `@babel/helper-module-transforms` 7.29.7 → 7.29.13
+- `@babel/helper-string-parser` 7.29.7 → 7.29.13
+- `@babel/helpers` 7.29.7 → 7.29.13
+- `@babel/parser` 7.29.8 → 7.29.13
+- `@babel/traverse` 7.29.8 → 7.29.13
+- `@babel/types` 7.29.8 → 7.29.11
+- `@bruits/satteri-darwin-arm64` 0.9.5 → 0.11.6
+- `@bruits/satteri-darwin-x64` 0.9.5 → 0.11.6
+- `@bruits/satteri-linux-arm64-gnu` 0.9.5 → 0.11.6
+- `@bruits/satteri-linux-arm64-musl` 0.9.5 → 0.11.6
+- `@bruits/satteri-linux-x64-gnu` 0.9.5 → 0.11.6
+- `@bruits/satteri-linux-x64-musl` 0.9.5 → 0.11.6
+- `@bruits/satteri-wasm32-wasi` 0.9.5 → 0.11.6
+- `@bruits/satteri-win32-arm64-msvc` 0.9.5 → 0.11.6
+- `@bruits/satteri-win32-x64-msvc` 0.9.5 → 0.11.6
+- `@capsizecss/unpack` 4.0.0 → 4.0.1
+- `@clack/core` 1.1.0 → 1.5.1
+- `@clack/prompts` 1.1.0 → 1.8.1
+- `@emnapi/core` 1.11.2 → 2.0.0-beta.2
+- `@emnapi/runtime` 1.11.1 → 2.0.0-beta.2
+- `@emnapi/wasi-threads` 1.2.2 → 2.2.0
+- `@img/sharp-darwin-arm64` 0.34.5 → 0.35.5
+- `@img/sharp-darwin-x64` 0.34.5 → 0.35.5
+- `@img/sharp-libvips-darwin-arm64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-darwin-x64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linux-arm` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linux-arm64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linux-ppc64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linux-riscv64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linux-s390x` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linux-x64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linuxmusl-arm64` 1.2.4 → 1.3.4
+- `@img/sharp-libvips-linuxmusl-x64` 1.2.4 → 1.3.4
+- `@img/sharp-linux-arm` 0.34.5 → 0.35.5
+- `@img/sharp-linux-arm64` 0.34.5 → 0.35.5
+- `@img/sharp-linux-ppc64` 0.34.5 → 0.35.5
+- `@img/sharp-linux-riscv64` 0.34.5 → 0.35.5
+- `@img/sharp-linux-s390x` 0.34.5 → 0.35.5
+- `@img/sharp-linux-x64` 0.34.5 → 0.35.5
+- `@img/sharp-linuxmusl-arm64` 0.34.5 → 0.35.5
+- `@img/sharp-linuxmusl-x64` 0.34.5 → 0.35.5
+- `@img/sharp-wasm32` 0.34.5 → 0.35.5
+- `@img/sharp-win32-arm64` 0.34.5 → 0.35.5
+- `@img/sharp-win32-ia32` 0.34.5 → 0.35.5
+- `@img/sharp-win32-x64` 0.34.5 → 0.35.5
+- `@jridgewell/sourcemap-codec` 1.5.5 → 1.6.0
+- `@napi-rs/wasm-runtime` 1.1.6 → 1.2.7
+- `@oxc-project/types` 0.143.0 → 0.157.0
+- `@rolldown/binding-android-arm64` 1.2.3 → 1.3.0
+- `@rolldown/binding-darwin-arm64` 1.2.3 → 1.3.0
+- `@rolldown/binding-darwin-x64` 1.2.3 → 1.3.0
+- `@rolldown/binding-freebsd-x64` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-arm-gnueabihf` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-arm64-gnu` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-arm64-musl` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-ppc64-gnu` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-s390x-gnu` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-x64-gnu` 1.2.3 → 1.3.0
+- `@rolldown/binding-linux-x64-musl` 1.2.3 → 1.3.0
+- `@rolldown/binding-openharmony-arm64` 1.2.3 → 1.3.0
+- `@rolldown/binding-win32-arm64-msvc` 1.2.3 → 1.3.0
+- `@rolldown/binding-win32-x64-msvc` 1.2.3 → 1.3.0
+- `@shikijs/core` 4.3.1 → 4.6.0
+- `@shikijs/engine-javascript` 4.3.1 → 4.6.0
+- `@shikijs/engine-oniguruma` 4.3.1 → 4.6.0
+- `@shikijs/langs` 4.3.1 → 4.6.0
+- `@shikijs/primitive` 4.3.1 → 4.6.0
+- `@shikijs/themes` 4.3.1 → 4.6.0
+- `@shikijs/types` 4.3.1 → 4.6.0
+- `@shikijs/vscode-textmate` 10.0.2 → 10.1.0
+- `@testing-library/jest-dom` 6.9.1 → 7.0.1
+- `@tybys/wasm-util` 0.10.3 → 0.10.4
+- `@types/node` 26.1.2 → 26.2.0
+- `@ungap/structured-clone` 1.3.3 → 1.4.0
+- `actions/attest-build-provenance` v3 → v4
+- `am-i-vibing` 0.4.0 → 0.5.0
+- `astro` 7.0.7 → 7.4.7
+- `babel-plugin-jsx-dom-expressions` 0.40.7 → 0.40.11
+- `babel-preset-solid` 1.9.12 → 1.9.16
+- `baseline-browser-mapping` 2.11.12 → 2.11.35
+- `browserslist` 4.28.7 → 4.29.5
+- `caniuse-lite` 1.0.30001809 → 1.0.30001823
+- `cookie` 1.1.1 → 2.0.2
+- `css-select` 5.2.2 → 6.0.0
+- `css-what` 6.2.2 → 7.0.0
+- `devalue` 5.8.1 → 6.0.3
+- `diff` 8.0.3 → 9.0.0
+- `docker/build-push-action` v7.3.0 → v7.4.0
+- `docker/login-action` v4.6.0 → v4.7.0
+- `docker/setup-buildx-action` v4.2.0 → v4.4.1
+- `docker/setup-qemu-action` v4.2.0 → v4.4.0
+- `electron-to-chromium` 1.5.402 → 1.5.478
+- `es-module-lexer` 2.0.0 → 3.0.4
+- `fuse.js` 7.4.2 → 7.5.0
+- `get-tsconfig` 5.0.0-beta.4 → 5.0.0-beta.6
+- `hast-util-to-html` 9.0.5 → 9.0.6
+- `http-cache-semantics` 4.2.0 → 4.3.0
+- `magic-string` 0.30.21 → 1.4.5
+- `magicast` 0.5.2 → 0.5.5
+- `micromark-util-types` 2.0.2 → 2.0.3
+- `nanoid` 3.3.17 → 3.3.20
+- `neotraverse` 0.6.18 → 1.0.1
+- `node-mock-http` 1.0.4 → 1.0.5
+- `node-releases` 2.0.53 → 2.0.63
+- `obug` 2.1.1 → 3.0.0
+- `p-limit` 7.3.0 → 7.3.3
+- `p-queue` 9.1.0 → 10.0.0
+- `package-manager-detector` 1.6.0 → 1.9.0
+- `picomatch` 4.0.5 → 4.0.7
+- `postcss` 8.5.26 → 8.5.32
+- `readdirp` 5.0.0 → 5.1.1
+- `rolldown` 1.2.3 → 1.3.0
+- `satteri` 0.9.5 → 0.11.6
+- `sax` 1.5.0 → 1.6.1
+- `semver` 7.7.4 → 7.8.6
+- `seroval` 1.5.4 → 1.6.12
+- `seroval-plugins` 1.5.4 → 1.6.12
+- `sharp` 0.34.5 → 0.35.5
+- `shiki` 4.3.1 → 4.6.0
+- `smol-toml` 1.7.0 → 1.9.1
+- `solid-js` 1.9.14 → 1.9.18
+- `source-map-js` 1.2.1 → 1.2.2
+- `svgo` 4.0.2 → 4.1.0
+- `tinyclip` 0.1.12 → 1.0.3
+- `tinyexec` 1.0.4 → 1.3.1
+- `tools-collection` 1.7.2 → 1.8.0
+- `tslib` 2.8.1 → 2.9.1
+- `ufo` 1.6.3 → 1.6.4
+- `ultrahtml` 1.6.0 → 1.7.0
+- `unifont` 0.7.4 → 1.0.3
+- `unist-util-visit` 5.1.0 → 5.2.0
+- `unist-util-visit-parents` 6.0.2 → 6.1.0
+- `unstorage` 1.17.5 → 1.17.6
+- `update-browserslist-db` 1.3.0 → 1.3.4
+- `vite` 8.2.1 → 8.3.6
+- `vite-plugin-solid` 2.11.14 → 2.11.15
+- `vitefu` 1.1.2 → 1.1.3
+- `zod` 4.3.6 → 4.6.7

@@ -33,3 +33,8 @@ Product is out of CRA scope (voluntary dossier); assessment recorded for complet
 
 - **Evidence of active exploitation:** none known
 - **Notification required:** no
+
+## Resolved 2026-11-06 (v1.8.0)
+
+No longer present in the v1.8.0 scan: the dependency was upgraded to astro 7.4.7
+(chore(deps), #162). Kept for the record.

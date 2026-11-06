@@ -40,6 +40,11 @@ live. Local `npm ci` passes because darwin never needs those entries.
    `@napi-rs`) must be grafted back from the previous lockfile before commit.
 2. Dependabot-authored lockfiles are regenerated on Linux and are trustworthy;
    prefer `@dependabot recreate` over resolving its lockfile conflicts locally.
+3. (2026-11-06) The drop is npm 11's, not macOS's: npm 11 drops the `@emnapi/*`
+   entries on Linux too. Before committing any lockfile rewritten by hand,
+   run `npm ci` in a `node:22` container (the CI's npm 10) on it; if it fails
+   with `Missing: @emnapi/...`, run a plain `npm install` with npm 10 in that
+   container to complete the lock, and re-run `npm ci` there before commit.
 
 ## 2026-08-07 — "Bypassed rule violations" means main CI is red
 
