@@ -1,8 +1,8 @@
 import { onMount, onCleanup } from 'solid-js'
-import { decodeState, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from './share'
+import { decodeState, readSharedParam, withoutLegacyParam, TOOL_STATE_REQUEST, TOOL_STATE_RESPONSE } from './share'
 
 interface UseToolStateOptions {
-  /** Called with saved state decoded from the URL ?s= parameter */
+  /** Called with saved state decoded from the URL #s= fragment (or a legacy ?s=) */
   onRestore: (saved: Record<string, unknown>) => void
   /** Returns current component state for sharing */
   getState: () => Record<string, unknown>
@@ -10,7 +10,11 @@ interface UseToolStateOptions {
 
 export function useToolState(options: UseToolStateOptions): void {
   onMount(async () => {
-    const saved = await decodeState(new URLSearchParams(location.search).get('s'))
+    const shared = readSharedParam(location)
+    // A legacy ?s= link: take the state out of the query so it is not sent
+    // again on reload or kept in server-visible history entries.
+    if (shared?.legacy) history.replaceState(history.state, '', withoutLegacyParam(location.href))
+    const saved = await decodeState(shared?.value ?? null)
     if (saved) {
       options.onRestore(saved)
     }
