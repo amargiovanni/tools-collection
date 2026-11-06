@@ -79,3 +79,11 @@ test.describe('Content Security Policy', () => {
     expect(await res.text()).toContain('Contact:')
   })
 })
+
+test('default-language.js is served as JavaScript', async ({ request }) => {
+  // Every page loads it; without the file the static host answers with the
+  // HTML 404 page, which the browser refuses to execute (console error).
+  const res = await request.get('/default-language.js')
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toMatch(/javascript/)
+})
