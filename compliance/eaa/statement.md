@@ -26,7 +26,7 @@ surface some. This section must be updated when they do.
 ## Feedback mechanism
 
 To report an accessibility barrier:
-**https://github.com/amargiovanni/tools-collection/issues** (public issue,
+**https://github.com/BuildBandits/tools-collection/issues** (public issue,
 label `accessibility`). Reports are read by the repository maintainer.
 No account-holding user data is involved — the site has no accounts.
 

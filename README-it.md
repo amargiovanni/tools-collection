@@ -2,7 +2,7 @@
 
 Una raccolta modulare e type-safe di 50+ strumenti per sviluppatori che funzionano nel browser. Costruita con Astro, Solid.js, TypeScript strict e Tailwind CSS 4. Distribuibile su Cloudflare Pages o su qualsiasi hosting statico.
 
-![CI](https://github.com/amargiovanni/tools-collection/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/BuildBandits/tools-collection/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)
 ![Astro](https://img.shields.io/badge/Astro-7-ff5d01.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -92,7 +92,7 @@ src/
 ### Installazione e Avvio
 
 ```bash
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/BuildBandits/tools-collection.git
 cd tools-collection
 npm install
 npm run dev
@@ -223,5 +223,5 @@ MIT — vedi [LICENSE](LICENSE).
 ---
 
 <div align="center">
-  <a href="https://github.com/amargiovanni/tools-collection/issues">Segnala un bug</a> · <a href="https://github.com/amargiovanni/tools-collection/issues">Richiedi una feature</a>
+  <a href="https://github.com/BuildBandits/tools-collection/issues">Segnala un bug</a> · <a href="https://github.com/BuildBandits/tools-collection/issues">Richiedi una feature</a>
 </div>

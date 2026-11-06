@@ -145,7 +145,7 @@ function sheetHtml(s, ctx) {
       <h4>Run it yourself</h4>
       <p>The whole site is static files. It is published as a container image you can run on your own network:</p>
       <pre>docker run -p 8080:80 \\
-  ghcr.io/amargiovanni/tools-collection</pre>
+  ghcr.io/buildbandits/tools-collection</pre>
     </div>
   </div>
   <div class="cats">${categories
@@ -201,7 +201,7 @@ function sheetHtml(s, ctx) {
   <div class="bk-mark">&gt;_</div>
   <p class="bk-line">Fast, private utilities.<br>Your data never leaves the tab.</p>
   <div class="colophon">
-    <p>Tools Collection ${esc(version)} — free and open-source software, MIT licence. Source: github.com/amargiovanni/tools-collection</p>
+    <p>Tools Collection ${esc(version)} — free and open-source software, MIT licence. Source: github.com/BuildBandits/tools-collection</p>
     <p>Set in Space Grotesk, Inter and JetBrains Mono (SIL Open Font License 1.1). Screenshots taken from the built site; text generated from the tool catalogue on ${esc(date)}.</p>
   </div>
 </section>`

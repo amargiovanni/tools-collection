@@ -5,7 +5,7 @@ Thanks for your interest in contributing to Tools Collection.
 ## Getting Started
 
 ```bash
-git clone https://github.com/amargiovanni/tools-collection.git
+git clone https://github.com/BuildBandits/tools-collection.git
 cd tools-collection
 npm install
 npm run dev
@@ -139,7 +139,7 @@ grep -rn 'console.log' src/ --include='*.ts' --include='*.tsx'
 
 ## Reporting Issues
 
-Open an issue at https://github.com/amargiovanni/tools-collection/issues with:
+Open an issue at https://github.com/BuildBandits/tools-collection/issues with:
 
 - What you expected
 - What happened

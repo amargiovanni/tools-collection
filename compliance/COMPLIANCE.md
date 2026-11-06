@@ -1,6 +1,6 @@
 # Compliance Evidence Dossier — Tools Collection
 
-**Repository:** amargiovanni/tools-collection
+**Repository:** BuildBandits/tools-collection (transferred from amargiovanni/tools-collection on 2026-11-06; GitHub redirects the old URLs. Container images up to v1.8.0 remain at ghcr.io/amargiovanni/tools-collection, later ones at ghcr.io/buildbandits/tools-collection)
 **Status:** Reviewed — approved by maintainer 2026-08-07 (scope, triage decisions, gap report, EAA module)
 **Last updated:** 2026-11-06 by Claude (drafter) / Andrea Margiovanni (reviewer)
 
