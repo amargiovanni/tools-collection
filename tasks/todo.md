@@ -100,3 +100,32 @@ Outcome (2026-11-06):
   analytics beacon; the only CSP-blocked inline script is Cloudflare's injected
   bot-detection snippet. Container v1.8.0: attestation verified, 1 CVE left.
 
+
+# Code scanning alerts (2026-11-06)
+
+Triage of the 8 open CodeQL alerts on BuildBandits/tools-collection.
+
+- [x] #3–#7 `js/incomplete-sanitization` in `src/tools/docker-run-to-compose.ts`
+      — real defect. YAML quoting escaped `"` but not `\`: `C:\Users\app`
+      came back as `C:\Users<BEL>pp`, `C:\Users` made the YAML unparseable
+      (`\U`), and a trailing `\` broke out of the scalar. Fix: `yamlQuoted`
+      is `JSON.stringify` (a JSON string is a valid YAML double-quoted
+      scalar), used by every quoted emitter.
+- [x] #7 `shellQuote` (Compose → docker run) wrapped values in double quotes,
+      so `$(...)`, backticks and `$VAR` in a Compose value were expanded by the
+      shell when the generated command was pasted. Fix: POSIX single quotes,
+      `'` written as `'\''`. Verified by running the output through `sh`.
+- [x] #1, #2 `actions/missing-workflow-permissions` in `ci.yml` — workflow-level
+      `permissions: contents: read`; no job pushes, comments or writes.
+- [ ] #8 `js/incomplete-url-substring-sanitization` in
+      `e2e/tools/domain-extractor.spec.ts:65` — false positive: a test filter
+      on output lines, not a sanitizer. To dismiss as "used in tests"
+      (Andrea's call).
+
+Impact note: everything runs in the visitor's browser and the input is the
+visitor's own, so no third party can exploit it; the shell case still made the
+tool emit a command that did something other than what it showed, which is
+why it is treated as a vulnerability and stated in the PR.
+
+Unrelated, flagged: `npm run check` (`astro check`) refuses TypeScript 7.0.2;
+CI uses `tsc --noEmit`, which is clean.
