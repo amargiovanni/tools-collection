@@ -21,7 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "client-zip": "^2.5.1",
     "fuse.js": "^7.5.0",
-    "heic-to": "^1.6.6",
+    "heic-to": "^1.6.7",
     "solid-js": "^1.9.15",
     "uqr": "^0.1.3"
   },
