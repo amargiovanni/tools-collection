@@ -20,7 +20,9 @@ export function decodeUrl(input: string): Result<string> {
   if (!validated.ok) return validated
 
   try {
-    return ok(decodeURI(validated.value))
+    // decodeURIComponent also undoes %2F %3F %26 %3D …, which Encode Component
+    // produces and decodeURI would leave encoded.
+    return ok(decodeURIComponent(validated.value))
   } catch {
     return err('DECODE_ERROR', 'Error: invalid URL')
   }
